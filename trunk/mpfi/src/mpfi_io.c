@@ -129,9 +129,9 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
       overflow_right = mpfr_set(&(x->right),&(x->left), GMP_RNDU);
       if (mpfr_number_p(&(x->right))) {
         if (mpfr_cmp_ui(&(x->right),0) >= 0) 
-          overflow_right |= mpfr_add_one_ulp(&(x->right), GMP_RNDU);
+          mpfr_add_one_ulp(&(x->right), GMP_RNDU);
         else
-          overflow_right |= mpfr_sub_one_ulp(&(x->right), GMP_RNDU);
+          mpfr_sub_one_ulp(&(x->right), GMP_RNDU);
       }
       if ( (overflow_left>0) || (overflow_right>0) )
         return (1);
@@ -167,9 +167,9 @@ size_t mpfi_inp_str(mpfi_ptr x,FILE *s,int base)
     left = mpfr_set(&(x->left), tmp, MPFI_RNDD);
     right = mpfr_set(&(x->right), tmp, MPFI_RNDD);
     if (mpfr_cmp_ui(&(x->right),0) >= 0)
-      dummy = mpfr_add_one_ulp(&(x->right), MPFI_RNDU);
+      mpfr_add_one_ulp(&(x->right), MPFI_RNDU);
     else
-      dummy = mpfr_sub_one_ulp(&(x->right), MPFI_RNDU);
+      mpfr_sub_one_ulp(&(x->right), MPFI_RNDU);
     mpfr_clear(tmp);
     return t;
   }
@@ -209,3 +209,8 @@ void mpfi_print_binary(mpfi_srcptr x)
   printf(" ]");
 }
 
+#ifdef mp_get_memory_functions
+void * (*mpfi_allocate_func)   (size_t);
+void * (*mpfi_reallocate_func) (void *, size_t, size_t);
+void   (*mpfi_free_func)       (void *, size_t);
+#endif

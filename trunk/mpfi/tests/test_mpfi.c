@@ -24,6 +24,7 @@ MA 02111-1307, USA. */
 
 
 #include <time.h>
+#include <stdlib.h>
 #include "mpfi_io.h"
 
 int mpfr_test_op(mpfi_srcptr z,mpfi_srcptr x,mpfi_srcptr y,
@@ -146,4 +147,5 @@ int main(int argc, char *argv[])
   mpfi_clear(z);
   mpfr_clear(e);
   mpfr_clear(f);
+  return(0);
 }

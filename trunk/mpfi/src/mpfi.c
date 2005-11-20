@@ -592,7 +592,7 @@ int mpfi_diam_rel(mpfr_ptr diam, mpfi_srcptr interv)
       {
       inexact_neg = mpfr_neg(centre, centre, GMP_RNDD);
       if ( (!inexact_neg) || (inexact_mid<0) )
-        inexact_sub2 = mpfr_sub_one_ulp(centre, GMP_RNDD);
+        mpfr_sub_one_ulp(centre, GMP_RNDD);
       }
   
     if (!mpfr_cmp_ui(centre,0))

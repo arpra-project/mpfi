@@ -334,4 +334,5 @@ printf("\n\n");
   mpfi_clear(SinX);
   mpfi_clear(CosX);
   mpfi_clear(TanX);
+  return(0);
 }

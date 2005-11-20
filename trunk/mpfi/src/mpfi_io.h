@@ -33,7 +33,7 @@ MA 02111-1307, USA. */
 #include <string.h> 
 #include <ctype.h> 
 
-#define isblank isspace
+/*#define isblank isspace*/
 #define MPFI_ISSPACE isspace
 
 size_t mpfi_out_str(FILE *stream, int base, size_t n_digits, mpfi_srcptr op);
