@@ -52,42 +52,43 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
 
   i=0;
   /* read the blanks */
-  while ((i<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
+  while ((((unsigned int) i)<=strlen(s)) && 
+	 MPFI_ISSPACE(s[i])) i++;
 
   if (s[i]=='[') {
     i++;
     /* read the blanks */
-    while ((i<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
+    while ((((unsigned int)i)<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
 
     /* Copy the first number in the string tmp and then in x->left */
     start1=i;
     /* determine the end of the first number in s */
-    while ((i<=strlen(s)) && !MPFI_ISSPACE(s[i]) && ((s[i])!=',')) i++;
-    if (i<=strlen(s)) {
+    while ((((unsigned int)i)<=strlen(s)) && !MPFI_ISSPACE(s[i]) && ((s[i])!=',')) i++;
+    if (((unsigned int)i)<=strlen(s)) {
       strncpy(tmp,&(s[start1]),i-start1);
       tmp[i-start1]='\0';
       overflow_left = mpfr_set_str(&(x->left),tmp,base,MPFI_RNDD);
 
       /* s[i] is now the first character after the first endpoint */
       /* If progression in s has stopped because of a blank, read until the comma */
-      while ((i<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
+      while ((((unsigned int)i)<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
       if (s[i]==',') {
         i++;
         /* read the blanks */
-        while ((i<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
+        while ((((unsigned int)i)<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
 
         /* Copy the second number in the string tmp and then in x->right */
         start2=i;
         /* determine the end of the first number in s */
-        while ((i<=strlen(s)) && !MPFI_ISSPACE(s[i]) && ((s[i])!=']')) i++;
-        if (i<=strlen(s)) {
+        while ((((unsigned int)i)<=strlen(s)) && !MPFI_ISSPACE(s[i]) && ((s[i])!=']')) i++;
+        if (((unsigned int)i)<=strlen(s)) {
           strncpy(tmp,&(s[start2]),i-start2);
           tmp[i-start2]='\0';
           overflow_right = mpfr_set_str(&(x->right),tmp,base,MPFI_RNDU);
 
           /* s[i] is now the first character after the second endpoint */
           /* Read until the closing bracket */
-          while ((i<=strlen(s)) && ((s[i])!=']')) i++;
+          while ((((unsigned int)i)<=strlen(s)) && ((s[i])!=']')) i++;
           if (s[i] != ']') { /* The closing square bracket is missing */
             fprintf(stderr,"Missing closing square bracket in mpfi_set_str: %s \n", s);
             return(1);
@@ -116,13 +117,13 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
   else { /* Only one number to store as an interval */
     i++;
     /* read the blanks */
-    while ((i<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
+    while ((((unsigned int)i)<=strlen(s)) && MPFI_ISSPACE(s[i])) i++;
 
     /* Copy the number in the string tmp and then in x->left */
     start1=i;
     /* determine the end of the number in s */
-    while ((i<=strlen(s)) && !MPFI_ISSPACE(s[i])) i++;
-    if (i<=strlen(s)) {
+    while ((((unsigned int)i)<=strlen(s)) && !MPFI_ISSPACE(s[i])) i++;
+    if (((unsigned int)i)<=strlen(s)) {
       strncpy(tmp,&(s[start1]),i-start1);
       tmp[i-start1]='\0';
       overflow_left = mpfr_set_str(&(x->left),tmp,base,MPFI_RNDD);
@@ -153,7 +154,7 @@ int    mpfi_init_set_str(mpfi_ptr x,char *s,int base)
 size_t mpfi_inp_str(mpfi_ptr x,FILE *s,int base)
 {
   size_t t;
-  int size_s = 100, left=0, right=0, dummy, i;
+  int size_s = 100, left=0, right=0, i;
   char *str;
   mpfr_t tmp;
   int c=fgetc(s);

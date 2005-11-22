@@ -1304,116 +1304,86 @@ int   mpfi_d_div(mpfi_ptr a, const double b, mpfi_srcptr c)
 
 int   mpfi_add_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_add, inexact=0;
+  int inexact_left, inexact_right, inexact=0;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_ui(tmp,c);
-  inexact_add = mpfi_add(a,b,tmp);
-  MPFI_CLEAR(tmp);
-
-  if (MPFI_NAN_P(a)) 
-    MPFR_RET_NAN;
-
-  if ( mpfr_inf_p(&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT(inexact_add)) /* overflow */
-    inexact += 1;
+  if (c==0) {
+    return (mpfi_set(a,b) );
   }
-  else if (MPFI_LEFT_IS_INEXACT(inexact_set) || MPFI_LEFT_IS_INEXACT(inexact_add))
-    inexact += 1;
-  if ( mpfr_inf_p(&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT(inexact_add) )  /* overflow */
-    inexact += 2;
+  else if (MPFI_IS_ZERO(b)) {
+    return ( mpfi_set_ui(a,c) );
   }
-  else if (MPFI_RIGHT_IS_INEXACT(inexact_set) || MPFI_RIGHT_IS_INEXACT(inexact_add))
-    inexact += 2;
+  else {
+    inexact_left = mpfr_add_ui(&(a->left),&(b->left),c,MPFI_RNDD);
+    inexact_right = mpfr_add_ui(&(a->right),&(b->right),c,MPFI_RNDU);
+    if (MPFI_NAN_P(a))
+      MPFR_RET_NAN;
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
 
-  if (mpfi_revert_if_needed(a)) {
-    /*
-    fprintf(stderr, "Pb endpoints in reverse order in mpfi_add_ui: ");
-    mpfi_out_str(stderr, 10, 0, a);
-    fprintf(stderr, "\n");
-    */
-    inexact = MPFI_REVERT_INEXACT_FLAGS(inexact);
+    if (mpfi_revert_if_needed(a)) {
+      inexact=MPFI_REVERT_INEXACT_FLAGS(inexact);
+    }
+    return inexact;
   }
-
-  return inexact;
 }
 
 int   mpfi_sub_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_sub, inexact=0;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_ui(tmp,c);
-  inexact_sub = mpfi_sub(a,b,tmp);
-  MPFI_CLEAR(tmp);
+  int inexact_left, inexact_right, inexact=0;
 
-  if (MPFI_NAN_P(a)) 
-    MPFR_RET_NAN;
-
-  if ( mpfr_inf_p(&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT(inexact_sub)) /* overflow */
-    inexact += 1;
+  if (c==0) {
+    return(mpfi_set(a,b));
+   }
+  else if (MPFI_IS_ZERO(b)) {
+    mpfi_set_ui(a,c);
+    return (mpfi_neg(a,a));
   }
-  else if (MPFI_RIGHT_IS_INEXACT(inexact_set) || MPFI_LEFT_IS_INEXACT(inexact_sub))
-    inexact += 1;
-  if ( mpfr_inf_p(&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT(inexact_sub) )  /* overflow */
-    inexact += 2;
-  }
-  else if (MPFI_LEFT_IS_INEXACT(inexact_set) || MPFI_RIGHT_IS_INEXACT(inexact_sub))
-    inexact += 2;
+  else {
+    inexact_left  = mpfr_sub_ui(&(a->left), &(b->left),c, MPFI_RNDD);
+    inexact_right = mpfr_sub_ui(&(a->right), &(b->right), c, MPFI_RNDU);
+    if (MPFI_NAN_P(a))
+      MPFR_RET_NAN;
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
 
-  if (mpfi_revert_if_needed(a)) {
-    /*
-    fprintf(stderr, "Pb endpoints in reverse order in mpfi_sub_ui: ");
-    mpfi_out_str(stderr, 10, 0, a);
-    fprintf(stderr, "\n");
-    */
-    inexact = MPFI_REVERT_INEXACT_FLAGS(inexact);
+    if (mpfi_revert_if_needed(a)) {
+      inexact=MPFI_REVERT_INEXACT_FLAGS(inexact);
+    }
+    return inexact;
   }
-
-  return inexact;
 }
 
 int   mpfi_ui_sub(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_sub, inexact=0;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_ui(tmp,b);
-  inexact_sub = mpfi_sub(a,tmp,c);
-  MPFI_CLEAR(tmp);
+  int inexact_left, inexact_right, inexact=0;
 
-  if (MPFI_NAN_P(a)) 
-    MPFR_RET_NAN;
-
-  if ( mpfr_inf_p(&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT(inexact_sub)) /* overflow */
-    inexact += 1;
+  if (MPFI_IS_ZERO(c)) {
+    return(mpfi_set_ui(a,b));
+   }
+  else if (b==0) {
+    return (mpfi_sub(a,a,c));
   }
-  else if (MPFI_LEFT_IS_INEXACT(inexact_set) || MPFI_LEFT_IS_INEXACT(inexact_sub))
-    inexact += 1;
-  if ( mpfr_inf_p(&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT(inexact_sub) )  /* overflow */
-    inexact += 2;
-  }
-  else if (MPFI_RIGHT_IS_INEXACT(inexact_set) || MPFI_RIGHT_IS_INEXACT(inexact_sub))
-    inexact += 2;
+  else {
+    inexact_left  = mpfr_ui_sub(&(a->left), b,&(c->right), MPFI_RNDD);
+    inexact_right = mpfr_ui_sub(&(a->right),b,&(c->right), MPFI_RNDU);
+    if (MPFI_NAN_P(a))
+      MPFR_RET_NAN;
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
 
-  if (mpfi_revert_if_needed(a)) {
-    /*
-    fprintf(stderr, "Pb endpoints in reverse order in mpfi_ui_sub: ");
-    mpfi_out_str(stderr, 10, 0, a);
-    fprintf(stderr, "\n");
-    */
-    inexact = MPFI_REVERT_INEXACT_FLAGS(inexact);
+    if (mpfi_revert_if_needed(a)) {
+      inexact=MPFI_REVERT_INEXACT_FLAGS(inexact);
+    }
+    return inexact;
   }
-
-  return inexact;
 }
 
 int   mpfi_mul_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)

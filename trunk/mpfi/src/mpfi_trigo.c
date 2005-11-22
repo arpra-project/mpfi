@@ -29,7 +29,7 @@ MA 02111-1307, USA. */
 #include "mpfi-impl.h"
 
 /* Conversion of a mpfr which has an integer value into a mpz */
-void mpfi_mpz_exact_set_fr (mpz_ptr z, mpfr_srcptr x)
+static void mpfi_mpz_exact_set_fr (mpz_ptr z, mpfr_srcptr x)
 {
   mp_exp_t expo;
   int sign;
@@ -47,7 +47,7 @@ void mpfi_mpz_exact_set_fr (mpz_ptr z, mpfr_srcptr x)
 /* returns in quad the integer part of the division of x by Pi/2        */
 /* the result is exact                                                  */
 /* the returned value is the precision required to perform the division */
-mp_prec_t mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
+static mp_prec_t mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
 {
 /* Assumption: x is neither a NaN nor an Infinite */
   int ok=0;
@@ -89,7 +89,7 @@ mp_prec_t mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
 
 /* compares z * Pi/2 - x and y where z is an integer (mpz)              */
 /* the result is exact                                                  */
-int mpfi_cmp_sym_pi (mpz_srcptr z, mpfr_srcptr x, mpfr_srcptr y, mp_prec_t prec_init)
+static int mpfi_cmp_sym_pi (mpz_srcptr z, mpfr_srcptr x, mpfr_srcptr y, mp_prec_t prec_init)
 {
 /* Assumption: x and y are neither NaN nor Infinite */
   mp_prec_t prec;
@@ -129,7 +129,7 @@ int mpfi_sin(mpfi_ptr a, mpfi_srcptr b)
 {
   int inexact_left, inexact_right, inexact=0;
   mp_prec_t prec, prec_left, prec_right;
-  mpfr_t tmp, pi_over_2;
+  mpfr_t tmp;
   mpz_t z, zmod4;
   mpz_t quad_left, quad_right;
   int ql_mod4, qr_mod4;
@@ -312,7 +312,7 @@ int mpfi_cos(mpfi_ptr a, mpfi_srcptr b)
 {
   int inexact_left, inexact_right, inexact=0;
   mp_prec_t prec, prec_left, prec_right;
-  mpfr_t tmp, pi_over_2;
+  mpfr_t tmp;
   mpz_t z, zmod4;
   mpz_t quad_left, quad_right;
   int ql_mod4, qr_mod4;
