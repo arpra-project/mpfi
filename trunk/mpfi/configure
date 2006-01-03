@@ -864,7 +864,7 @@ Optional Packages:
 
   --with-gmp-incpath=DIR : GMP include directory
 
-  --with-mpfr-dir=DIR : GMP installation directory
+  --with-mpfr-dir=DIR : MPFR installation directory
 
   --with-mpfr-libpath=DIR : MPFR library directory
 

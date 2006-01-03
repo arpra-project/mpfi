@@ -28,7 +28,7 @@ AC_ARG_WITH(gmp-incpath,
 	    with_gmp_include=$withval)
 # Initialisation des repertoires de MPFR
 AC_ARG_WITH(mpfr-dir,
-	    AC_HELP_STRING([--with-mpfr-dir=DIR : GMP installation directory]),
+	    AC_HELP_STRING([--with-mpfr-dir=DIR : MPFR installation directory]),
             with_mpfr_include=$withval/include
 	    with_mpfr_lib=$withval/lib)
 AC_ARG_WITH(mpfr-libpath,

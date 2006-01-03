@@ -4006,3 +4006,7 @@ int mpfi_bisect(mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
   return inexact_centre;
 }
 
+char * mpfi_get_version()
+{
+  return(VERSION);
+}

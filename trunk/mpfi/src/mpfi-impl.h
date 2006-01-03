@@ -36,6 +36,8 @@ MA 02111-1307, USA. */
    where only the right one is exact, where both are inexact.
    Not very proud of that: it depends explicitely on the representation by endpoints...
 */
+
+/* move in mpfi.h
 #define MPFI_FLAGS_BOTH_ENDPOINTS_EXACT       0
 #define MPFI_FLAGS_LEFT_ENDPOINT_INEXACT      1
 #define MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT     2
@@ -54,7 +56,7 @@ MA 02111-1307, USA. */
 #define MPFI_IS_ZERO(a)  (MPFI_NAN_P(a) ? 0 : ((MPFR_SIGN(&(a->right))==0) && (MPFR_SIGN(&(a->left))==0)))
 
 #define MPFI_CLEAR(m) {mpfr_clear(&(m->right)); mpfr_clear(&(m->left));}
-
+*/
 #if defined(GMP_NUMB_BITS) /* GMP 4.1.2 or above */
 # define BITS_PER_MP_LIMB  (GMP_NUMB_BITS+GMP_NAIL_BITS)
 #elif defined (__GMP_BITS_PER_MP_LIMB) /* Older versions 4.x.x */

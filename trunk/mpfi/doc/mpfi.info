@@ -28,8 +28,8 @@ translation approved by the Free Software Foundation.
 
 File: mpfi.info,  Node: Top,  Next: Copying,  Prev: (dir),  Up: (dir)
 
-MPFI 1.0
-********
+MPFI 1.3.4
+**********
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -831,8 +831,8 @@ they overlap or if one is contained in the other.
  -- Function: int mpfi_cmp_z (mpfi_t OP1, mpz_t OP2)
  -- Function: int mpfi_cmp_q (mpfi_t OP1, mpq_t OP2)
  -- Function: int mpfi_cmp_fr (mpfi_t OP1, mpfr_t OP2)
-     Compares OP1 and OP2.  Return a positive value if OP1 < OP2, zero
-     if OP1 overlaps or contains OP2, and a negative value if OP1 > OP2.
+     Compares OP1 and OP2.  Return a positive value if OP1 > OP2, zero
+     if OP1 overlaps or contains OP2, and a negative value if OP1 < OP2.
      In case one of the operands is invalid (which is represented by at
      least one NaN endpoint), it returns 1, even if both are invalid.
 
@@ -1381,31 +1381,31 @@ Function and Type Index
 
 Tag Table:
 Node: Top1218
-Node: Copying1879
-Node: Introduction to MPFI3647
-Node: Installing MPFI4772
-Node: Reporting Bugs7039
-Node: MPFI Basics8415
-Node: Interval Functions11912
-Node: Return Values13171
-Node: Rounding Modes and Precision Handling14130
-Node: Initializing and Assigning Intervals17217
-Node: Initializing Intervals17576
-Node: Assigning Intervals19349
-Node: Simultaneous Interval Init & Assign21384
-Node: Floating-point Quantities22647
-Node: Converting Intervals25059
-Node: Interval Arithmetic25534
-Node: Special Functions31723
-Node: Interval Comparison35536
-Node: I/O of Intervals38364
-Node: Operating on the Endpoints41378
-Node: Set Operations43780
-Node: Miscellaneous Interval Functions45595
-Node: Error Handling46724
-Node: Contributors47240
-Node: References47521
-Node: Concept Index48644
-Node: Function Index51577
+Node: Copying1883
+Node: Introduction to MPFI3651
+Node: Installing MPFI4776
+Node: Reporting Bugs7043
+Node: MPFI Basics8419
+Node: Interval Functions11916
+Node: Return Values13175
+Node: Rounding Modes and Precision Handling14134
+Node: Initializing and Assigning Intervals17221
+Node: Initializing Intervals17580
+Node: Assigning Intervals19353
+Node: Simultaneous Interval Init & Assign21388
+Node: Floating-point Quantities22651
+Node: Converting Intervals25063
+Node: Interval Arithmetic25538
+Node: Special Functions31727
+Node: Interval Comparison35540
+Node: I/O of Intervals38368
+Node: Operating on the Endpoints41382
+Node: Set Operations43784
+Node: Miscellaneous Interval Functions45599
+Node: Error Handling46728
+Node: Contributors47244
+Node: References47525
+Node: Concept Index48648
+Node: Function Index51581
 
 End Tag Table

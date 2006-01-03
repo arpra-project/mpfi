@@ -1,7 +1,7 @@
 \input texinfo    @c -*-texinfo-*-
 @c %**start of header
 @setfilename mpfi.info
-@settitle MPFI 1.0
+@settitle MPFI 1.3.4
 @synindex tp fn
 @iftex
 @afourpaper
@@ -64,9 +64,9 @@ by the Free Software Foundation.
 @titlepage
 @c  use the new format for titles
 
-@title MPFI 1.0
+@title MPFI 1.3.4
 @subtitle Multiple Precision Floating-Point Interval Library
-@subtitle April 2002
+@subtitle January 2006
 
 @author Spaces, INRIA Lorraine, 
 @author Arenaire, INRIA Rhone-Alpes,
@@ -106,7 +106,7 @@ by the Free Software Foundation.
 @ifinfo
 @node Top, Copying, (dir), (dir)
 
-@top MPFI 1.0
+@top MPFI 1.3.4
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -1115,15 +1115,15 @@ in the other.
 @deftypefunx int mpfi_cmp_q (mpfi_t @var{op1}, mpq_t @var{op2})
 @deftypefunx int mpfi_cmp_fr (mpfi_t @var{op1}, mpfr_t @var{op2})
 @ifinfo
-Compares @var{op1} and @var{op2}.  Return a positive value if @var{op1} <
-@var{op2}, zero if @var{op1} overlaps or contains @var{op2}, and a negative value if @var{op1} >
+Compares @var{op1} and @var{op2}.  Return a positive value if @var{op1} >
+@var{op2}, zero if @var{op1} overlaps or contains @var{op2}, and a negative value if @var{op1} <
 @var{op2}.
 @end ifinfo
 @iftex
 @tex
-Compares @var{op1} and @var{op2}.  Return a positive value if $@var{op1} <
+Compares @var{op1} and @var{op2}.  Return a positive value if $@var{op1} >
 @var{op2}$, zero if @var{op1} overlaps, contains or is contained in @var{op2}, and a negative value if $@var{op1}
-> @var{op2}$.
+< @var{op2}$.
 @end tex
 @end iftex
 In case one of the operands is invalid (which is represented by at least one NaN endpoint), it returns 1, even if
