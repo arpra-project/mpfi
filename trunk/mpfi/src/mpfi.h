@@ -46,6 +46,9 @@ typedef __mpfi_struct mpfi_t[1];
 typedef __mpfi_struct *mpfi_ptr;
 typedef __gmp_const __mpfi_struct *mpfi_srcptr;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Rounding                                     */
 int mpfi_round_prec(mpfi_ptr,mp_prec_t prec);
@@ -224,21 +227,22 @@ int mpfi_const_euler(mpfi_ptr);
 /* Warning: the meaning of interval comparison is not clearly defined */
 /* customizable comparison functions */
 
-int    (*mpfi_cmp)     (mpfi_srcptr,mpfi_srcptr);
-int    (*mpfi_cmp_d)   (mpfi_srcptr,const double);
-int    (*mpfi_cmp_ui)  (mpfi_srcptr,const unsigned long);
-int    (*mpfi_cmp_si)  (mpfi_srcptr,const long);
-int    (*mpfi_cmp_z)   (mpfi_srcptr,mpz_srcptr);
-int    (*mpfi_cmp_q)   (mpfi_srcptr,mpq_srcptr);
-int    (*mpfi_cmp_fr)(mpfi_srcptr,mpfr_srcptr);
+extern int    (*mpfi_cmp)     (mpfi_srcptr,mpfi_srcptr);
 
-int    (*mpfi_is_pos)     (mpfi_srcptr);
-int    (*mpfi_is_nonneg)  (mpfi_srcptr);
-int    (*mpfi_is_neg)     (mpfi_srcptr);
-int    (*mpfi_is_nonpos)  (mpfi_srcptr);
-int    (*mpfi_is_zero)    (mpfi_srcptr);
-int    (*mpfi_is_strictly_pos) (mpfi_srcptr);
-int    (*mpfi_is_strictly_neg) (mpfi_srcptr);
+extern int    (*mpfi_cmp_d)   (mpfi_srcptr,const double);
+extern int    (*mpfi_cmp_ui)  (mpfi_srcptr,const unsigned long);
+extern int    (*mpfi_cmp_si)  (mpfi_srcptr,const long);
+extern int    (*mpfi_cmp_z)   (mpfi_srcptr,mpz_srcptr);
+extern int    (*mpfi_cmp_q)   (mpfi_srcptr,mpq_srcptr);
+extern int    (*mpfi_cmp_fr)(mpfi_srcptr,mpfr_srcptr);
+
+extern int    (*mpfi_is_pos)     (mpfi_srcptr);
+extern int    (*mpfi_is_nonneg)  (mpfi_srcptr);
+extern int    (*mpfi_is_neg)     (mpfi_srcptr);
+extern int    (*mpfi_is_nonpos)  (mpfi_srcptr);
+extern int    (*mpfi_is_zero)    (mpfi_srcptr);
+extern int    (*mpfi_is_strictly_pos) (mpfi_srcptr);
+extern int    (*mpfi_is_strictly_neg) (mpfi_srcptr);
 
 /* default comparison functions */
 int    mpfi_is_pos_default          (mpfi_srcptr);
@@ -337,6 +341,9 @@ char * mpfi_get_version();
 void   mpfi_reset_error(void);
 void   mpfi_set_error(const int);
 int    mpfi_is_error(void);
+#ifdef __cplusplus
+}
+#endif
 
 #define MPFI_FLAGS_BOTH_ENDPOINTS_EXACT       0
 #define MPFI_FLAGS_LEFT_ENDPOINT_INEXACT      1
