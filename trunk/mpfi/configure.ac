@@ -1,12 +1,16 @@
 # initialisation autoconf
-AC_INIT(mpfi,1.3.4-RC2,[Nathalie.Revol@ens-lyon.fr,Fabrice.Rouillier@inria.fr])
+AC_INIT(mpfi,1.3.4-RC4,[Nathalie.Revol@ens-lyon.fr,Fabrice.Rouillier@inria.fr])
 
 # initialisation automake
-AM_INIT_AUTOMAKE(mpfi,1.3.4-RC2)
+AM_INIT_AUTOMAKE(mpfi,1.3.4-RC4)
 
 # fichier contenant les definitions de toutes
 # les macros definies par Autoconf
 AC_CONFIG_HEADERS([mpfi_config.h])
+
+# pour la construction d'une librairie dynamique
+AC_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
 
 # traitement des sous-repertoires
 MPFI_SUBDIRS="src tests doc"
@@ -40,7 +44,6 @@ AC_ARG_WITH(mpfr-incpath,
 
 # Checks for programs.
 AC_PROG_CC
-AC_PROG_RANLIB
 
 # Checks for libraries.
 

@@ -32,16 +32,12 @@ MA 02111-1307, USA. */
 static void mpfi_mpz_exact_set_fr (mpz_ptr z, mpfr_srcptr x)
 {
   mp_exp_t expo;
-  int sign;
 
-  sign = MPFR_SIGN(x);
   expo = mpfr_get_z_exp(z, x);
   if (expo >= 0)
     mpz_mul_2exp(z, z, expo);
   else
     mpz_fdiv_q_2exp(z, z, -expo);
-  if (sign < 0)
-    mpz_neg(z, z);
 }
 
 /* returns in quad the integer part of the division of x by Pi/2        */
@@ -101,20 +97,28 @@ static int mpfi_cmp_sym_pi (mpz_srcptr z, mpfr_srcptr x, mpfr_srcptr y, mp_prec_
   mpfi_init2(pi_over_two, prec);
   mpfi_init2(tmp, prec);
 
-  do {
-    mpfi_const_pi(pi_over_two);
-    mpfi_div_2exp(pi_over_two, pi_over_two, 1);
+  if(mpz_cmp_ui(z,0)==0) {
+    not_ok=0;
+    mpfi_set_prec(tmp, mpfr_get_prec(x));
+    mpfi_set_fr(tmp,x);
+    mpfi_neg(tmp, tmp);
+  }
+  else {
+    do {
+      mpfi_const_pi(pi_over_two);
+      mpfi_div_2exp(pi_over_two, pi_over_two, 1);
 
-    mpfi_mul_z(tmp, pi_over_two, z);
-    mpfi_sub_fr(tmp, tmp, x);
+      mpfi_mul_z(tmp, pi_over_two, z);
+      mpfi_sub_fr(tmp, tmp, x);
 
-    not_ok = mpfi_is_inside_fr(y, tmp);
-    if (not_ok) {
-      prec += BITS_PER_MP_LIMB;
-      mpfi_set_prec(pi_over_two, prec);
-      mpfi_set_prec(tmp, prec);
-    }
-  } while (not_ok);
+      not_ok = mpfi_is_inside_fr(y, tmp);
+      if (not_ok) {
+	prec += BITS_PER_MP_LIMB;
+	mpfi_set_prec(pi_over_two, prec);
+	mpfi_set_prec(tmp, prec);
+      }
+    } while (not_ok);
+  }
 
   not_ok = mpfi_cmp_fr_default(tmp, y);
   mpfi_clear(pi_over_two);
