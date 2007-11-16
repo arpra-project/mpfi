@@ -60,15 +60,15 @@ int mpfi_is_error()
 
 /* Miscellaneous utilities */
 
-#define MPFI_IS_POS(x) ((MPFR_SIGN((&(x->left)))>=0) && (MPFR_SIGN((&(x->right)))>0))
-#define MPFI_IS_STRICTLY_POS(x) ((MPFR_SIGN((&(x->left)))>0) && (MPFR_SIGN((&(x->right)))>0))
-#define MPFI_IS_NONNEG(x) ((MPFR_SIGN((&(x->left)))>=0) && (MPFR_SIGN((&(x->right)))>=0))
-#define MPFI_IS_NEG(x) ((MPFR_SIGN((&(x->left)))<0) && (MPFR_SIGN((&(x->right)))<=0))
-#define MPFI_IS_STRICTLY_NEG(x) ((MPFR_SIGN((&(x->left)))<0) && (MPFR_SIGN((&(x->right)))<0))
-#define MPFI_IS_NONPOS(x) ((MPFR_SIGN((&(x->left)))<=0) && (MPFR_SIGN((&(x->right)))<=0))
-#define MPFI_IS_NULL(x) ((MPFR_SIGN((&(x->left)))==0) && (MPFR_SIGN((&(x->right)))==0))
-#define MPFI_HAS_ZERO(x) ((MPFR_SIGN((&(x->left)))<0) && (MPFR_SIGN((&(x->right)))>0))
-#define MPFI_HAS_ZERO_NONSTRICT(x) ((MPFR_SIGN((&(x->left)))<=0) && (MPFR_SIGN((&(x->right)))>=0))
+#define MPFI_IS_POS(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>0))
+#define MPFI_IS_STRICTLY_POS(x) ((mpfr_sgn((&(x->left)))>0) && (mpfr_sgn((&(x->right)))>0))
+#define MPFI_IS_NONNEG(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>=0))
+#define MPFI_IS_NEG(x) ((mpfr_sgn((&(x->left)))<0) && (mpfr_sgn((&(x->right)))<=0))
+#define MPFI_IS_STRICTLY_NEG(x) ((mpfr_sgn((&(x->left)))<0) && (mpfr_sgn((&(x->right)))<0))
+#define MPFI_IS_NONPOS(x) ((mpfr_sgn((&(x->left)))<=0) && (mpfr_sgn((&(x->right)))<=0))
+#define MPFI_IS_NULL(x) ((mpfr_sgn((&(x->left)))==0) && (mpfr_sgn((&(x->right)))==0))
+#define MPFI_HAS_ZERO(x) ((mpfr_sgn((&(x->left)))<0) && (mpfr_sgn((&(x->right)))>0))
+#define MPFI_HAS_ZERO_NONSTRICT(x) ((mpfr_sgn((&(x->left)))<=0) && (mpfr_sgn((&(x->right)))>=0))
 
 /* Default sign testing functions                  */
 
@@ -118,8 +118,8 @@ int mpfi_is_zero_default(mpfi_srcptr a)
 {
   if ( mpfi_nan_p(a) )
     return 0;
-  return((MPFR_SIGN(&(a->right))==0) &&
-         (MPFR_SIGN(&(a->left))==0));
+  return((mpfr_sgn(&(a->right))==0) &&
+         (mpfr_sgn(&(a->left))==0));
 }
 
 
@@ -862,14 +862,14 @@ int     mpfi_mul(mpfi_ptr a,mpfi_srcptr u,mpfi_srcptr c)
   /* In the following, double rounding can occur: in order to cope with a result equal
      to one argument, a multiplication is performed and stored in a temporary variable
      and then assigned to the corresponding endpoint.                                  */
-  if (MPFR_SIGN(&(u->left))>=0) {
-    if (MPFR_SIGN(&(c->left))>=0) {
+  if (mpfr_sgn(&(u->left))>=0) {
+    if (mpfr_sgn(&(c->left))>=0) {
       /* u nonnegative and c nonnegative */
       inexact_left = mpfr_mul(&(a->left),&(u->left),&(c->left),MPFI_RNDD);
       inexact_right = mpfr_mul(&(a->right),&(u->right),&(c->right),MPFI_RNDU);
     }
     else {
-      if (MPFR_SIGN(&(c->right))<=0) {
+      if (mpfr_sgn(&(c->right))<=0) {
 	/* u nonnegative and c non-positive */
         mpfr_init2(t1, mpfi_get_prec(a));
         inexact_left = mpfr_mul(t1, &(u->right), &(c->left), MPFI_RNDD);
@@ -888,9 +888,9 @@ int     mpfi_mul(mpfi_ptr a,mpfi_srcptr u,mpfi_srcptr c)
     }
   }
   else {
-    if (MPFR_SIGN(&(u->right))<=0) {
+    if (mpfr_sgn(&(u->right))<=0) {
       /* u non-positive */
-      if (MPFR_SIGN(&(c->left))>=0) {
+      if (mpfr_sgn(&(c->left))>=0) {
         /* u non-positive and c nonnegative */
 	mpfr_init2(t1,mpfi_get_prec(a));
         inexact_left = mpfr_mul(t1,&(u->left),&(c->right),MPFI_RNDD);
@@ -899,7 +899,7 @@ int     mpfi_mul(mpfi_ptr a,mpfi_srcptr u,mpfi_srcptr c)
 	mpfr_clear(t1);
       }
       else {
-        if (MPFR_SIGN(&(c->right))<=0) {
+        if (mpfr_sgn(&(c->right))<=0) {
 	  /* u non-positive and c non-positive */
           mpfr_init2(t1, mpfi_get_prec(a));
           inexact_left = mpfr_mul(t1, &(u->right), &(c->right), MPFI_RNDD);
@@ -919,7 +919,7 @@ int     mpfi_mul(mpfi_ptr a,mpfi_srcptr u,mpfi_srcptr c)
     }
     else {
       /* u contains 0 */
-      if (MPFR_SIGN(&(c->left))>=0) {
+      if (mpfr_sgn(&(c->left))>=0) {
 	/* u overlapping 0 and c nonnegative  */
         mpfr_init2(t1, mpfi_get_prec(a));
 	inexact_left = mpfr_mul(t1,&(u->left),&(c->right),MPFI_RNDD);
@@ -928,7 +928,7 @@ int     mpfi_mul(mpfi_ptr a,mpfi_srcptr u,mpfi_srcptr c)
         mpfr_clear(t1);
       }
       else {
-	if (MPFR_SIGN(&(c->right))<=0) {
+	if (mpfr_sgn(&(c->right))<=0) {
 	  /* u overlapping 0 and c non-positive */
           mpfr_init2(t1, mpfi_get_prec(a));
 	  inexact_left = mpfr_mul(t1,&(u->right),&(c->left),MPFI_RNDD);
@@ -2461,13 +2461,13 @@ int     mpfi_sqr(mpfi_ptr a,mpfi_srcptr u)
     mpfr_set_nan(&(a->right));
     MPFR_RET_NAN;
   }
-  if (MPFR_SIGN(&(u->left))>=0) {
+  if (mpfr_sgn(&(u->left))>=0) {
       /* u nonnegative */
       inexact_left = mpfr_mul(&(a->left),&(u->left),&(u->left),MPFI_RNDD);
       inexact_right = mpfr_mul(&(a->right),&(u->right),&(u->right),MPFI_RNDU);
   }
   else {
-    if (MPFR_SIGN(&(u->right))<=0) {
+    if (mpfr_sgn(&(u->right))<=0) {
       /* u non-positive -> beware the case where a = u */
       mpfr_init2(t1,mpfi_get_prec(a));
       inexact_right = mpfr_mul(t1, &(u->left), &(u->left), MPFI_RNDU);
@@ -2518,7 +2518,7 @@ int mpfi_inv(mpfi_ptr a, mpfi_srcptr b)
     mpfr_set_nan(&(a->right));
     MPFR_RET_NAN;
   }
-  else if ( (MPFR_SIGN(&(b->left))<0) && (MPFR_SIGN(&(b->right))>0) ) {
+  else if ( (mpfr_sgn(&(b->left))<0) && (mpfr_sgn(&(b->right))>0) ) {
     /* b has endpoints of opposite signs */
     /* b can even be [0-, 0+] */
     /* The result is [-oo, +oo] and both endpoints are exact. */

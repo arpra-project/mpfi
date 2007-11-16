@@ -53,7 +53,7 @@ MA 02111-1307, USA. */
 
 #define MPFI_NAN_P(a) ( MPFR_IS_NAN(&(a->left)) || MPFR_IS_NAN (&(a->right)) )
 #define MPFI_INF_P(a) ( MPFR_IS_INF(&(a->left)) || MPFR_IS_INF (&(a->right)) )
-#define MPFI_IS_ZERO(a)  (MPFI_NAN_P(a) ? 0 : ((MPFR_SIGN(&(a->right))==0) && (MPFR_SIGN(&(a->left))==0)))
+#define MPFI_IS_ZERO(a)  (MPFI_NAN_P(a) ? 0 : ((mpfr_sgn(&(a->right))==0) && (mpfr_sgn(&(a->left))==0)))
 
 #define MPFI_CLEAR(m) {mpfr_clear(&(m->right)); mpfr_clear(&(m->left));}
 */

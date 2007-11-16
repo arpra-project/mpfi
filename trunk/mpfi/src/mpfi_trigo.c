@@ -29,6 +29,7 @@ MA 02111-1307, USA. */
 #include "mpfi-impl.h"
 
 /* Conversion of a mpfr which has an integer value into a mpz */
+/*
 static void mpfi_mpz_exact_set_fr (mpz_ptr z, mpfr_srcptr x)
 {
   mp_exp_t expo;
@@ -39,6 +40,7 @@ static void mpfi_mpz_exact_set_fr (mpz_ptr z, mpfr_srcptr x)
   else
     mpz_fdiv_q_2exp(z, z, -expo);
 }
+*/
 
 /* returns in quad the integer part of the division of x by Pi/2        */
 /* the result is exact                                                  */
@@ -75,7 +77,7 @@ static mp_prec_t mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
       }
     } while (ok != 0);
 
-    mpfi_mpz_exact_set_fr(quad, &(tmp->left));
+    mpfr_get_z(quad, &(tmp->left), GMP_RNDN); //exact
 
     mpfi_clear(two_over_pi);
     mpfi_clear(tmp);
