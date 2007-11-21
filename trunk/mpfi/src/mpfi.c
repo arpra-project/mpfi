@@ -588,14 +588,13 @@ int mpfi_diam_rel(mpfr_ptr diam, mpfi_srcptr interv)
     mpfr_init2(centre, mpfr_get_prec(diam));
     inexact_mid = mpfi_mid(centre, interv);
   
-    if (mpfr_cmp_ui(centre, 0) <0)
-      {
+    if (mpfr_cmp_ui(centre, 0) <0) {
       inexact_neg = mpfr_neg(centre, centre, GMP_RNDD);
       if ( (!inexact_neg) || (inexact_mid<0) )
         mpfr_sub_one_ulp(centre, GMP_RNDD);
-      }
+    }
   
-    if (!mpfr_cmp_ui(centre,0))
+    if (mpfr_cmp_ui(centre,0))
       inexact = mpfr_div(diam, diam, centre, GMP_RNDU);
   
     mpfr_clear(centre);
