@@ -1365,13 +1365,13 @@ int   mpfi_ui_sub(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 
   if (MPFI_IS_ZERO(c)) {
     return(mpfi_set_ui(a,b));
-   }
+  }
   else if (b==0) {
     return (mpfi_sub(a,a,c));
   }
   else {
     inexact_left  = mpfr_ui_sub(&(a->left), b,&(c->right), MPFI_RNDD);
-    inexact_right = mpfr_ui_sub(&(a->right),b,&(c->right), MPFI_RNDU);
+    inexact_right = mpfr_ui_sub(&(a->right),b,&(c->left), MPFI_RNDU);
     if (MPFI_NAN_P(a))
       MPFR_RET_NAN;
     if (inexact_left)
