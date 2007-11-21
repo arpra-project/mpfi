@@ -1367,7 +1367,7 @@ int   mpfi_ui_sub(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
     return(mpfi_set_ui(a,b));
   }
   else if (b==0) {
-    return (mpfi_sub(a,a,c));
+    return (mpfi_neg(a,c));
   }
   else {
     inexact_left  = mpfr_ui_sub(&(a->left), b,&(c->right), MPFI_RNDD);
