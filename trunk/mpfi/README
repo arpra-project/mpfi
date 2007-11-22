@@ -1,6 +1,6 @@
-$Date: 2005-11-08 17:24:22 $
+$Date: 2007-11-22 16:31:27 $
 $Name: not supported by cvs2svn $ 
-$Revision: 1.1.1.1 $ 
+$Revision: 1.2 $ 
 
 To install MPFI library :
 
@@ -8,3 +8,10 @@ To install MPFI library :
 
 --with-gmp-dir=<gmp installation directory>
 
+Note that default install path is /usr/local/lib.
+Systems like Debian do not search libraries at this place by default.
+If you compile a soft using mpfi and have an error at execution time such as:
+
+error while loading shared libraries: libmpfi.so.0: cannot open shared object file: No such file or directory
+
+try adding /usr/local/lib to LD_LIBRARY_PATH
