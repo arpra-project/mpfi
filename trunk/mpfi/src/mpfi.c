@@ -1392,10 +1392,13 @@ int   mpfi_ui_sub(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 int   mpfi_mul_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_mul, inexact=0;
+  int inexact_mul, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_ui(tmp,c);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_ui(tmp,c); /* Exact */
   inexact_mul = mpfi_mul(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1407,11 +1410,7 @@ int   mpfi_mul_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
   if (mpfr_inf_p(&(a->right)) && MPFI_RIGHT_IS_INEXACT(inexact_mul))  /* overflow */
     inexact += 2;
   if (mpfi_bounded_p(a)) {
-    if (inexact_set) /* if the conversion of c into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else 
-      inexact = inexact_mul;
+    inexact = inexact_mul;
   }
 
   if (mpfi_revert_if_needed(a)) {
@@ -1429,10 +1428,14 @@ int   mpfi_mul_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 int   mpfi_div_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_div, inexact=0;
+  int inexact_div, inexact=0;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_ui(tmp,c);
+  mp_prec_t tmpprec;
+
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_ui(tmp,c);
   inexact_div = mpfi_div(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1444,11 +1447,7 @@ int   mpfi_div_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
   if (mpfr_inf_p(&(a->right)) && MPFI_RIGHT_IS_INEXACT(inexact_div))  /* overflow */
     inexact += 2;
   if (mpfi_bounded_p(a)) {
-    if (inexact_set) /* if the conversion of c into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else 
-      inexact = inexact_div;
+    inexact = inexact_div;
   }
 
   if (mpfi_revert_if_needed(a)) {
@@ -1466,10 +1465,13 @@ int   mpfi_div_ui(mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 int   mpfi_ui_div(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_div, inexact=0;
+  int inexact_div, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_ui(tmp,b);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(b) * 8 > tmpprec) tmpprec = sizeof(b) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_ui(tmp,b); /* Exact */
   inexact_div = mpfi_div(a,tmp,c);
   MPFI_CLEAR(tmp);
 
@@ -1481,10 +1483,6 @@ int   mpfi_ui_div(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
   if (mpfr_inf_p(&(a->right)) && MPFI_RIGHT_IS_INEXACT(inexact_div))  /* overflow */
     inexact += 2;
   if (mpfi_bounded_p(a)) {
-    if (inexact_set) /* if the conversion of b into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else 
       inexact = inexact_div;
   }
 
