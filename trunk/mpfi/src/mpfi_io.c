@@ -42,19 +42,23 @@ size_t mpfi_out_str(FILE *f, int base, size_t n_digits, mpfi_srcptr a)
     return 0;
 }
 
-int    mpfi_set_str(mpfi_ptr x,char *s,int base)
+int mpfi_set_str(mpfi_ptr x,char *s,int base)
 {
   int i,start1,start2,overflow_left=0, overflow_right=0;
+  int slen;
   char tmp[1000];
 
   /* bzero(tmp,1000); */
   memset(tmp,0,1000);
 
+  slen= (int)strlen(s);
+  if(slen >=1000) return -1;
+
   i=0;
   /* read the blanks */
-  while ((((unsigned int) i)<strlen(s)) && MPFI_ISSPACE(s[i])) i++;
+  while ((((unsigned int) i)<slen) && MPFI_ISSPACE(s[i])) i++;
   /* Now s[i] is the first non blank character if any or '\0' otherwise */
-  if( ((unsigned int) i) == strlen(s) ) {
+  if( ((unsigned int) i) == slen ) {
     fprintf(stderr,"Error: blank string in mpfi_set_str: %s\n", s);
     return(1);
   }
@@ -63,8 +67,8 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     i++;
 
     /* read the blanks between '[' and the number itself */
-    while ((((unsigned int)i)<strlen(s)) && MPFI_ISSPACE(s[i])) i++;
-    if( ((unsigned int) i) == strlen(s) ) {
+    while ((((unsigned int)i)<slen) && MPFI_ISSPACE(s[i])) i++;
+    if( ((unsigned int) i) == slen ) {
       fprintf(stderr,"Error: no number in string in mpfi_set_str: %s\n", s);
       return(1);
     }
@@ -74,8 +78,8 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     i++;
 
     /* determine the end of the first number in s */
-    while ((((unsigned int)i)<strlen(s)) && !MPFI_ISSPACE(s[i]) && ((s[i])!=',')) i++;
-    if( ((unsigned int) i) == strlen(s) ) {
+    while ((((unsigned int)i)<slen) && !MPFI_ISSPACE(s[i]) && ((s[i])!=',')) i++;
+    if( ((unsigned int) i) == slen ) {
       fprintf(stderr,"Error: only one number in string in mpfi_set_str: %s\n", s);
       return(1);
     }
@@ -90,8 +94,8 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     overflow_left = mpfr_set_str(&(x->left),tmp,base,MPFI_RNDD);
 
     /* Read (possibly) blank characters between the first number and the comma */
-    while ((((unsigned int)i)<strlen(s)) && MPFI_ISSPACE(s[i])) i++;
-    if( ((unsigned int) i) == strlen(s) ) {
+    while ((((unsigned int)i)<slen) && MPFI_ISSPACE(s[i])) i++;
+    if( ((unsigned int) i) == slen ) {
       fprintf(stderr,"Error: only one number in string in mpfi_set_str: %s\n", s);
       return(1);
     }
@@ -104,8 +108,8 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     i++;
 
     /* read (possibly) blank characters between the comma and the 2nd number */
-    while ((((unsigned int)i)<strlen(s)) && MPFI_ISSPACE(s[i])) i++;
-    if( ((unsigned int) i) == strlen(s) ) {
+    while ((((unsigned int)i)<slen) && MPFI_ISSPACE(s[i])) i++;
+    if( ((unsigned int) i) == slen ) {
       fprintf(stderr,"Error: only one number in string in mpfi_set_str: %s\n", s);
       return(1);
     }
@@ -117,8 +121,8 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     i++;
 
     /* determine the end of the first number in s */
-    while ((((unsigned int)i)<strlen(s)) && !MPFI_ISSPACE(s[i]) && ((s[i])!=']')) i++;
-    if( ((unsigned int) i) == strlen(s) ) {
+    while ((((unsigned int)i)<slen) && !MPFI_ISSPACE(s[i]) && ((s[i])!=']')) i++;
+    if( ((unsigned int) i) == slen ) {
       fprintf(stderr,"Error: missing closing square bracket in mpfi_set_str:: %s\n", s);
       return(1);
     }
@@ -130,8 +134,8 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
 
     /* Read (possibly) blank characters between the 2nd number and */
     /* closing square bracket */
-    while ((((unsigned int)i)<strlen(s)) && MPFI_ISSPACE(s[i])) i++;
-    if( ((unsigned int) i) == strlen(s) ) {
+    while ((((unsigned int)i)<slen) && MPFI_ISSPACE(s[i])) i++;
+    if( ((unsigned int) i) == slen ) {
       fprintf(stderr,"Error: missing closing square bracket in mpfi_set_str: %s\n", s);
       return(1);
     }
@@ -159,7 +163,7 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     i++;
 
     /* determine the end of the number in s */
-    while ((((unsigned int)i)<strlen(s)) && !MPFI_ISSPACE(s[i])) i++;
+    while ((((unsigned int)i)<slen) && !MPFI_ISSPACE(s[i])) i++;
 
     /* Now s[i] is the first character after the number */
     /* Note that, for now, in a string such as " 123foo321 bar" */
@@ -170,13 +174,18 @@ int    mpfi_set_str(mpfi_ptr x,char *s,int base)
     strncpy(tmp,&(s[start1]),i-start1);
     tmp[i-start1]='\0';
     overflow_left = mpfr_set_str(&(x->left),tmp,base,MPFI_RNDD);
-    overflow_right = mpfr_set(&(x->right),&(x->left), GMP_RNDU);
-    if (mpfr_number_p(&(x->right))) {
+    overflow_right = mpfr_set_str(&(x->right),tmp,base,MPFI_RNDU);
+
+    /*
+      overflow_right = mpfr_set(&(x->right),&(x->left), GMP_RNDU);
+      if (mpfr_number_p(&(x->right))) {
       if (mpfr_cmp_ui(&(x->right),0) >= 0) 
-	mpfr_add_one_ulp(&(x->right), GMP_RNDU);
+      mpfr_add_one_ulp(&(x->right), GMP_RNDU);
       else
-	mpfr_sub_one_ulp(&(x->right), GMP_RNDU);
-    }
+      mpfr_sub_one_ulp(&(x->right), GMP_RNDU);
+      }
+    */
+
     if ( (overflow_left>0) || (overflow_right>0) )
       return (1);
     else if (overflow_left || overflow_right)
