@@ -1,4 +1,4 @@
-/* mpfi.c -- Implementation mpfi functions.
+* mpfi.c -- Implementation mpfi functions.
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 
                      Spaces project, Inria Lorraine
@@ -579,10 +579,12 @@ int mpfi_diam_abs(mpfr_ptr diam, mpfi_srcptr interv)
 /* return value: 0 if the result is exact, > 0 otherwise */
 int mpfi_diam_rel(mpfr_ptr diam, mpfi_srcptr interv)
 {
-  mpfr_t centre;
+  mpfr_t centre, tmp_diam;
   int inexact_sub, inexact_mid, inexact_neg, inexact_sub2=0, inexact=0;
 
-  inexact_sub = mpfr_sub(diam,&(interv->right),&(interv->left), GMP_RNDU);
+  mpfr_init2(tmp_diam, mpfr_get_prec(diam));
+
+  inexact_sub = mpfr_sub(tmp_diam,&(interv->right),&(interv->left), GMP_RNDU);
 
   if (mpfi_bounded_p(interv)) {
     mpfr_init2(centre, mpfr_get_prec(diam));
@@ -595,10 +597,12 @@ int mpfi_diam_rel(mpfr_ptr diam, mpfi_srcptr interv)
     }
   
     if (mpfr_cmp_ui(centre,0))
-      inexact = mpfr_div(diam, diam, centre, GMP_RNDU);
+      inexact = mpfr_div(diam, tmp_diam, centre, GMP_RNDU);
   
     mpfr_clear(centre);
   } /* if interv is bounded, then a relative diameter can be computed */
+
+  mpfr_clear(tmp_diam);
 
   if ( mpfr_nan_p(diam) )
     MPFR_RET_NAN;
