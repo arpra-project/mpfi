@@ -1,4 +1,4 @@
-* mpfi.c -- Implementation mpfi functions.
+/* mpfi.c -- Implementation mpfi functions.
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 
                      Spaces project, Inria Lorraine
