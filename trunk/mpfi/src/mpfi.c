@@ -735,7 +735,7 @@ double mpfi_get_d (mpfi_srcptr a)
   mpfr_t tmp;
   int dummy;
 
-  mpfr_init2(tmp, 53);
+  mpfr_init2(tmp, 53); /* Could be 64 and the code may lead to just a faithful result */
   dummy = mpfi_mid(tmp, a);
   res = mpfr_get_d(tmp, GMP_RNDN);
   mpfr_clear(tmp);
@@ -1084,7 +1084,7 @@ int   mpfi_add_d(mpfi_ptr a, mpfi_srcptr b, const double c)
   mpfi_t tmp;
   int inexact_set, inexact_add, inexact=0;
 
-  mpfi_init2(tmp, 53);
+  mpfi_init2(tmp, 64); /* 64 for IA86-FPU87 issues */
   inexact_set = mpfi_set_d(tmp, c);
   inexact_add = mpfi_add(a, b, tmp);
   MPFI_CLEAR(tmp);
@@ -1121,7 +1121,7 @@ int   mpfi_sub_d(mpfi_ptr a, mpfi_srcptr b, const double c)
   mpfi_t tmp;
   int inexact_set, inexact_sub, inexact=0;
 
-  mpfi_init2(tmp, 53);
+  mpfi_init2(tmp, 64); /* 64 for IA86-FPU87 issues */
   inexact_set = mpfi_set_d(tmp,c);
   inexact_sub = mpfi_sub(a,b,tmp);
   MPFI_CLEAR(tmp);
@@ -1158,7 +1158,7 @@ int   mpfi_d_sub(mpfi_ptr a, const double b, mpfi_srcptr c)
   mpfi_t tmp;
   int inexact_set, inexact_sub, inexact=0;
 
-  mpfi_init2(tmp, 53);
+  mpfi_init2(tmp, 64); /* 64 for IA86-FPU87 issues */
   inexact_set = mpfi_set_d(tmp,b);
   inexact_sub = mpfi_sub(a,tmp,c);
   MPFI_CLEAR(tmp);
@@ -1195,7 +1195,7 @@ int   mpfi_mul_d(mpfi_ptr a, mpfi_srcptr b, const double c)
   mpfi_t tmp;
   int inexact_set, inexact_mul, inexact=0;
 
-  mpfi_init2(tmp, 53);
+  mpfi_init2(tmp, 64); /* 64 for IA86-FPU87 issues */
   inexact_set = mpfi_set_d(tmp,c);
   inexact_mul = mpfi_mul(a,b,tmp);
   MPFI_CLEAR(tmp);
@@ -1232,8 +1232,8 @@ int   mpfi_div_d(mpfi_ptr a, mpfi_srcptr b, const double c)
   mpfi_t tmp;
   int inexact_set, inexact_div, inexact=0;
 
-  mpfi_init2(tmp, 53);
-  inexact_set = mpfi_set_d(tmp,c);
+  mpfi_init2(tmp, 64); /* 64 for IA87-FPU87 issues */
+  inexact_set = mpfi_set_d(tmp,c); /* Need the check for NaN issues */
   inexact_div = mpfi_div(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1269,8 +1269,8 @@ int   mpfi_d_div(mpfi_ptr a, const double b, mpfi_srcptr c)
   mpfi_t tmp;
   int inexact_set, inexact_div, inexact=0;
 
-  mpfi_init2(tmp, 53);
-  inexact_set = mpfi_set_d(tmp,b);
+  mpfi_init2(tmp, 64); /* 64 for IA86-FPU87 issues */
+  inexact_set = mpfi_set_d(tmp,b); /* Need the check for NaN issues */
   inexact_div = mpfi_div(a,tmp,c);
   MPFI_CLEAR(tmp);
 
@@ -1505,10 +1505,13 @@ int   mpfi_ui_div(mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 int   mpfi_add_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_add, inexact=0;
+  int inexact_add, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_si(tmp,c);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_si(tmp,c); /* Exact */
   inexact_add = mpfi_add(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1519,13 +1522,13 @@ int   mpfi_add_si(mpfi_ptr a, mpfi_srcptr b, const long c)
     if  (MPFI_LEFT_IS_INEXACT(inexact_add)) /* overflow */
     inexact += 1;
   }
-  else if (MPFI_LEFT_IS_INEXACT(inexact_set) || MPFI_LEFT_IS_INEXACT(inexact_add))
+  else if (MPFI_LEFT_IS_INEXACT(inexact_add))
     inexact += 1;
   if ( mpfr_inf_p(&(a->right)) ) {
     if (MPFI_RIGHT_IS_INEXACT(inexact_add) )  /* overflow */
     inexact += 2;
   }
-  else if (MPFI_RIGHT_IS_INEXACT(inexact_set) || MPFI_RIGHT_IS_INEXACT(inexact_add))
+  else if (MPFI_RIGHT_IS_INEXACT(inexact_add))
     inexact += 2;
 
   if (mpfi_revert_if_needed(a)) {
@@ -1543,10 +1546,13 @@ int   mpfi_add_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 int   mpfi_sub_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_sub, inexact=0;
+  int inexact_sub, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_si(tmp,c);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_si(tmp,c); /* Exact */
   inexact_sub = mpfi_sub(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1557,13 +1563,13 @@ int   mpfi_sub_si(mpfi_ptr a, mpfi_srcptr b, const long c)
     if  (MPFI_LEFT_IS_INEXACT(inexact_sub)) /* overflow */
     inexact += 1;
   }
-  else if (MPFI_RIGHT_IS_INEXACT(inexact_set) || MPFI_LEFT_IS_INEXACT(inexact_sub))
+  else if (MPFI_LEFT_IS_INEXACT(inexact_sub))
     inexact += 1;
   if ( mpfr_inf_p(&(a->right)) ) {
     if (MPFI_RIGHT_IS_INEXACT(inexact_sub) )  /* overflow */
     inexact += 2;
   }
-  else if (MPFI_LEFT_IS_INEXACT(inexact_set) || MPFI_RIGHT_IS_INEXACT(inexact_sub))
+  else if (MPFI_RIGHT_IS_INEXACT(inexact_sub))
     inexact += 2;
 
   if (mpfi_revert_if_needed(a)) {
@@ -1581,10 +1587,13 @@ int   mpfi_sub_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 int   mpfi_si_sub(mpfi_ptr a, const long b, mpfi_srcptr c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_sub, inexact=0;
+  int inexact_sub, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_si(tmp,b);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(b) * 8 > tmpprec) tmpprec = sizeof(b) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_si(tmp,b); /* Exact */
   inexact_sub = mpfi_sub(a,tmp,c);
   MPFI_CLEAR(tmp);
 
@@ -1595,13 +1604,13 @@ int   mpfi_si_sub(mpfi_ptr a, const long b, mpfi_srcptr c)
     if  (MPFI_LEFT_IS_INEXACT(inexact_sub)) /* overflow */
     inexact += 1;
   }
-  else if (MPFI_LEFT_IS_INEXACT(inexact_set) || MPFI_LEFT_IS_INEXACT(inexact_sub))
+  else if (MPFI_LEFT_IS_INEXACT(inexact_sub))
     inexact += 1;
   if ( mpfr_inf_p(&(a->right)) ) {
     if (MPFI_RIGHT_IS_INEXACT(inexact_sub) )  /* overflow */
     inexact += 2;
   }
-  else if (MPFI_RIGHT_IS_INEXACT(inexact_set) || MPFI_RIGHT_IS_INEXACT(inexact_sub))
+  else if (MPFI_RIGHT_IS_INEXACT(inexact_sub))
     inexact += 2;
 
   if (mpfi_revert_if_needed(a)) {
@@ -1619,10 +1628,13 @@ int   mpfi_si_sub(mpfi_ptr a, const long b, mpfi_srcptr c)
 int   mpfi_mul_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_mul, inexact=0;
+  int inexact_mul, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_si(tmp,c);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_si(tmp,c); /* Exact */
   inexact_mul = mpfi_mul(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1634,11 +1646,7 @@ int   mpfi_mul_si(mpfi_ptr a, mpfi_srcptr b, const long c)
   if (mpfr_inf_p(&(a->right)) && MPFI_RIGHT_IS_INEXACT(inexact_mul))  /* overflow */
     inexact += 2;
   if (mpfi_bounded_p(a)) {
-    if (inexact_set) /* if the conversion of c into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else 
-      inexact = inexact_mul;
+    inexact = inexact_mul;
   }
 
   if (mpfi_revert_if_needed(a)) {
@@ -1656,10 +1664,13 @@ int   mpfi_mul_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 int   mpfi_div_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_div, inexact=0;
+  int inexact_div, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_si(tmp,c);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_si(tmp,c); /* Exact */
   inexact_div = mpfi_div(a,b,tmp);
   MPFI_CLEAR(tmp);
 
@@ -1671,11 +1682,7 @@ int   mpfi_div_si(mpfi_ptr a, mpfi_srcptr b, const long c)
   if (mpfr_inf_p(&(a->right)) && MPFI_RIGHT_IS_INEXACT(inexact_div))  /* overflow */
     inexact += 2;
   if (mpfi_bounded_p(a)) {
-    if (inexact_set) /* if the conversion of c into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else 
-      inexact = inexact_div;
+    inexact = inexact_div;
   }
 
   if (mpfi_revert_if_needed(a)) {
@@ -1693,10 +1700,13 @@ int   mpfi_div_si(mpfi_ptr a, mpfi_srcptr b, const long c)
 int   mpfi_si_div(mpfi_ptr a, const long b, mpfi_srcptr c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_div, inexact=0;
+  int inexact_div, inexact=0;
+  mp_prec_t tmpprec;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_si(tmp,b);
+  tmpprec = mpfi_get_prec(a);
+  if (sizeof(b) * 8 > tmpprec) tmpprec = sizeof(b) * 8;
+  mpfi_init2(tmp,tmpprec);
+  mpfi_set_si(tmp,b); /* Exact */
   inexact_div = mpfi_div(a,tmp,c);
   MPFI_CLEAR(tmp);
 
@@ -1708,11 +1718,7 @@ int   mpfi_si_div(mpfi_ptr a, const long b, mpfi_srcptr c)
   if (mpfr_inf_p(&(a->right)) && MPFI_RIGHT_IS_INEXACT(inexact_div))  /* overflow */
     inexact += 2;
   if (mpfi_bounded_p(a)) {
-    if (inexact_set) /* if the conversion of b into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else 
-      inexact = inexact_div;
+    inexact = inexact_div;
   }
 
   if (mpfi_revert_if_needed(a)) {
@@ -3141,8 +3147,11 @@ int mpfi_cmp_d_default (mpfi_srcptr a,const double b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  dummy = mpfi_set_d(tmp,b);
+  mp_prec_t tmpprec;
+  tmpprec = mpfi_get_prec(a);
+  if (tmpprec < 64) tmpprec = 64; /* 64 for IA86-FPU87 issues */
+  mpfi_init2(tmp,tmpprec);
+  dummy = mpfi_set_d(tmp,b); /* Exact */
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
   return(res);
@@ -3152,8 +3161,11 @@ int mpfi_cmp_ui_default (mpfi_srcptr a,const unsigned long b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  dummy = mpfi_set_ui(tmp,b);
+  mp_prec_t tmpprec;
+  tmpprec = mpfi_get_prec(a);
+  if (8 * sizeof(b) > tmpprec) tmpprec = 8 * sizeof(b);
+  mpfi_init2(tmp,tmpprec);
+  dummy = mpfi_set_ui(tmp,b); /* Exact */
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
   return(res);
@@ -3163,8 +3175,11 @@ int mpfi_cmp_si_default (mpfi_srcptr a,const long b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  dummy = mpfi_set_si(tmp,b);
+  mp_prec_t tmpprec;
+  tmpprec = mpfi_get_prec(a);
+  if (8 * sizeof(b) > tmpprec) tmpprec = 8 * sizeof(b);
+  mpfi_init2(tmp,tmpprec);
+  dummy = mpfi_set_si(tmp,b); /* Exact */
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
   return(res);
@@ -3196,7 +3211,7 @@ int mpfi_cmp_fr_default (mpfi_srcptr a,mpfr_srcptr b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mpfi_init2(tmp,mpfi_get_prec(a));
+  mpfi_init2(tmp,mpfr_get_prec(b));
   dummy = mpfi_set_fr(tmp,b);
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
@@ -3292,27 +3307,30 @@ int mpfi_put_d(mpfi_ptr a,const double b)
 {
   mpfi_t tmp;
   int inexact_set=0, inexact_left=0, inexact_right=0, inexact=0;
+  mp_prec_t tmpprec;
 
   if ( MPFI_NAN_P(a) )
     MPFR_RET_NAN;
 
-  mpfi_init2(tmp,mpfi_get_prec(a));
-  inexact_set = mpfi_set_d(tmp,b);
+  tmpprec = mpfi_get_prec(a);
+  if (tmpprec < 64) tmpprec = 64; /* 64 for IA86-FPU87 issues */
+  mpfi_init2(tmp,tmpprec);
+  inexact_set = mpfi_set_d(tmp,b); /* Exact unless NaN */
   if ( MPFI_NAN_P(tmp) ) {
     mpfr_set_nan(&(a->left));
     mpfr_set_nan(&(a->right));
   }
   else {
     if (mpfr_cmp(&(a->left), &(tmp->left)) > 0 ) {
-      inexact_left = mpfr_set(&(a->left), &(tmp->left), MPFI_RNDD);
-      if ( MPFI_LEFT_IS_INEXACT(inexact_set) )
+      inexact_left = mpfr_set(&(a->left), &(tmp->left), MPFI_RNDD); 
+    }
+    if ( MPFI_LEFT_IS_INEXACT(inexact_set) )
         inexact_left = 1;
-      }
     if (mpfr_cmp(&(a->right), &(tmp->right)) < 0 ) {
       inexact_right = mpfr_set(&(a->right), &(tmp->right), MPFI_RNDD);
-      if ( MPFI_RIGHT_IS_INEXACT(inexact_set) )
-        inexact_right = 1;
-      }
+    }
+    if ( MPFI_RIGHT_IS_INEXACT(inexact_set) )
+      inexact_right = 1;
   }
   MPFI_CLEAR(tmp);
 
@@ -3551,8 +3569,8 @@ int mpfi_interv_d(mpfi_ptr a,const double b,const double c)
 int mpfi_interv_si(mpfi_ptr a,const long b,const long c)
 {
   int inexact_left, inexact_right, inexact=0;
-  mpfi_set_si(a,b);
-  mpfi_put_si(a,c);
+  /* mpfi_set_si(a,b);
+     mpfi_put_si(a,c); CQL: I think these lines do nothing actually */
 
   if (b<=c) {
     inexact_left = mpfr_set_si(&(a->left), b, MPFI_RNDD);
@@ -3732,8 +3750,11 @@ int   mpfi_is_inside_d     (const double a, mpfi_srcptr b)
 {
   int dummy, res;
   mpfi_t tmp;
-  mpfi_init2(tmp,mpfi_get_prec(b));
-  dummy = mpfi_set_d(tmp,a);
+  mp_prec_t tmpprec;
+  tmpprec = mpfi_get_prec(b);
+  if (tmpprec < 64) tmpprec = 64; /* 64 for IA86-FPU87 issues */
+  mpfi_init2(tmp,tmpprec);
+  dummy = mpfi_set_d(tmp,a); /* Exact */
   res=mpfi_is_inside(tmp,b);
   MPFI_CLEAR(tmp);
   return(res);
