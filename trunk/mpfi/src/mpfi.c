@@ -735,7 +735,7 @@ double mpfi_get_d (mpfi_srcptr a)
   mpfr_t tmp;
   int dummy;
 
-  mpfr_init2(tmp, 53); /* Could be 64 and the code may lead to just a faithful result */
+  mpfr_init2(tmp, 53); /* Double rounding may occur for subnormal numbers */
   dummy = mpfi_mid(tmp, a);
   res = mpfr_get_d(tmp, GMP_RNDN);
   mpfr_clear(tmp);
@@ -3147,11 +3147,8 @@ int mpfi_cmp_d_default (mpfi_srcptr a,const double b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mp_prec_t tmpprec;
-  tmpprec = mpfi_get_prec(a);
-  if (tmpprec < 64) tmpprec = 64; /* 64 for IA86-FPU87 issues */
-  mpfi_init2(tmp,tmpprec);
-  dummy = mpfi_set_d(tmp,b); /* Exact */
+  mpfi_init2(tmp,mpfi_get_prec(a));
+  dummy = mpfi_set_d(tmp,b);
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
   return(res);
@@ -3161,11 +3158,8 @@ int mpfi_cmp_ui_default (mpfi_srcptr a,const unsigned long b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mp_prec_t tmpprec;
-  tmpprec = mpfi_get_prec(a);
-  if (8 * sizeof(b) > tmpprec) tmpprec = 8 * sizeof(b);
-  mpfi_init2(tmp,tmpprec);
-  dummy = mpfi_set_ui(tmp,b); /* Exact */
+  mpfi_init2(tmp,mpfi_get_prec(a));
+  dummy = mpfi_set_ui(tmp,b);
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
   return(res);
@@ -3175,11 +3169,8 @@ int mpfi_cmp_si_default (mpfi_srcptr a,const long b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mp_prec_t tmpprec;
-  tmpprec = mpfi_get_prec(a);
-  if (8 * sizeof(b) > tmpprec) tmpprec = 8 * sizeof(b);
-  mpfi_init2(tmp,tmpprec);
-  dummy = mpfi_set_si(tmp,b); /* Exact */
+  mpfi_init2(tmp,mpfi_get_prec(a));
+  dummy = mpfi_set_si(tmp,b);
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
   return(res);
@@ -3211,7 +3202,7 @@ int mpfi_cmp_fr_default (mpfi_srcptr a,mpfr_srcptr b)
 {
   int dummy, res=0;
   mpfi_t tmp;
-  mpfi_init2(tmp,mpfr_get_prec(b));
+  mpfi_init2(tmp,mpfi_get_prec(a));
   dummy = mpfi_set_fr(tmp,b);
   res=mpfi_cmp(a,tmp);
   MPFI_CLEAR(tmp);
@@ -3307,15 +3298,13 @@ int mpfi_put_d(mpfi_ptr a,const double b)
 {
   mpfi_t tmp;
   int inexact_set=0, inexact_left=0, inexact_right=0, inexact=0;
-  mp_prec_t tmpprec;
 
   if ( MPFI_NAN_P(a) )
     MPFR_RET_NAN;
 
-  tmpprec = mpfi_get_prec(a);
-  if (tmpprec < 64) tmpprec = 64; /* 64 for IA86-FPU87 issues */
-  mpfi_init2(tmp,tmpprec);
-  inexact_set = mpfi_set_d(tmp,b); /* Exact unless NaN */
+  mpfi_init2(tmp,mpfi_get_prec(a));
+  inexact_set = mpfi_set_d(tmp,b);
+
   if ( MPFI_NAN_P(tmp) ) {
     mpfr_set_nan(&(a->left));
     mpfr_set_nan(&(a->right));
@@ -3323,14 +3312,17 @@ int mpfi_put_d(mpfi_ptr a,const double b)
   else {
     if (mpfr_cmp(&(a->left), &(tmp->left)) > 0 ) {
       inexact_left = mpfr_set(&(a->left), &(tmp->left), MPFI_RNDD); 
-    }
-    if ( MPFI_LEFT_IS_INEXACT(inexact_set) )
+
+      if ( MPFI_LEFT_IS_INEXACT(inexact_set) )
         inexact_left = 1;
+    }
+
     if (mpfr_cmp(&(a->right), &(tmp->right)) < 0 ) {
       inexact_right = mpfr_set(&(a->right), &(tmp->right), MPFI_RNDD);
+
+      if ( MPFI_RIGHT_IS_INEXACT(inexact_set) )
+	inexact_right = 1;
     }
-    if ( MPFI_RIGHT_IS_INEXACT(inexact_set) )
-      inexact_right = 1;
   }
   MPFI_CLEAR(tmp);
 
@@ -3569,8 +3561,6 @@ int mpfi_interv_d(mpfi_ptr a,const double b,const double c)
 int mpfi_interv_si(mpfi_ptr a,const long b,const long c)
 {
   int inexact_left, inexact_right, inexact=0;
-  /* mpfi_set_si(a,b);
-     mpfi_put_si(a,c); CQL: I think these lines do nothing actually */
 
   if (b<=c) {
     inexact_left = mpfr_set_si(&(a->left), b, MPFI_RNDD);
@@ -3750,11 +3740,8 @@ int   mpfi_is_inside_d     (const double a, mpfi_srcptr b)
 {
   int dummy, res;
   mpfi_t tmp;
-  mp_prec_t tmpprec;
-  tmpprec = mpfi_get_prec(b);
-  if (tmpprec < 64) tmpprec = 64; /* 64 for IA86-FPU87 issues */
-  mpfi_init2(tmp,tmpprec);
-  dummy = mpfi_set_d(tmp,a); /* Exact */
+  mpfi_init2(tmp,mpfi_get_prec(b));
+  dummy = mpfi_set_d(tmp,a);
   res=mpfi_is_inside(tmp,b);
   MPFI_CLEAR(tmp);
   return(res);
