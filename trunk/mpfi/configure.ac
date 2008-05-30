@@ -13,7 +13,7 @@ AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
 # traitement des sous-repertoires
-MPFI_SUBDIRS="src tests doc"
+MPFI_SUBDIRS="src tests doc LinSys/src LinSys/tests"
 AC_SUBST(MPFI_SUBDIRS)
 
 # ajout des options sur la ligne de commande du configure
@@ -133,7 +133,7 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
 
 # generation des fichiers suivants par autoconf
-AC_OUTPUT([Makefile src/Makefile tests/Makefile doc/Makefile])
+AC_OUTPUT([Makefile src/Makefile tests/Makefile doc/Makefile LinSys/src/Makefile LinSys/tests/Makefile])
 
 # pour la configurer la distrib
 # configure --with-gmp-dir=/users/rouillie/DEVELOP/i686_Linux_libc6/GMP --prefix=/tmp/mpfi
