@@ -117,6 +117,8 @@ int mpfr_mat_round_prec(mpfr_mat_ptr x, mp_prec_t prec,
 
 void mpfr_mat_init (mpfr_mat_ptr x,int r, int c)
 {
+  int i,j;
+
   if(x->init == 32){
     if(x->rows == r && x->cols == c&& x->prec == mpfr_get_default_prec())
       return;
@@ -130,8 +132,6 @@ void mpfr_mat_init (mpfr_mat_ptr x,int r, int c)
     }
     mpfr_mat_clear(x);
   }
-
-  int i,j;
 
   x->rows = r;
   x->cols = c;
@@ -151,6 +151,8 @@ void mpfr_mat_init (mpfr_mat_ptr x,int r, int c)
 void mpfr_mat_init2 (mpfr_mat_ptr x,int r, int c,
 		     mp_prec_t p)
 {
+  int i,j;
+
   if(x->init == 32){
     if(x->rows == r && x->cols == c&& x->prec == p)
       return;
@@ -164,8 +166,6 @@ void mpfr_mat_init2 (mpfr_mat_ptr x,int r, int c,
     }
     mpfr_mat_clear(x);
   }
-
-  int i,j;
 
   x->rows = r;
   x->cols = c;
