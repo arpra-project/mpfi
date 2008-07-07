@@ -220,3 +220,49 @@ void toeplitz_mat_fi(mpfi_mat_ptr a,
     }
   }
 }
+
+int read_double_matrix_fr(mpfr_mat_ptr a,			  
+			  int prec, int init,
+			  char *filename
+			  )
+{
+  FILE *file;
+  unsigned int rows,cols;
+  int i,j;
+
+  file = fopen(filename, "r");
+
+  if(file==NULL) {
+    printf("Error: cannot open file %s.\n", filename);
+    return 1;
+  }
+
+  if (fread(&rows, sizeof(int),1,file) < 1 ||
+      fread(&cols, sizeof(int),1,file) < 1){
+    printf("Error: cannot get matrix size. \n");
+    return 1;
+  }
+
+  if(init == 1)
+    mpfr_mat_init2(a, rows, cols, prec);
+  else{
+    if (rows != a->rows || cols != a->cols){
+      printf("Incompatible size. Cannot read matrix from file \n");
+      return -1;
+    }
+  }
+
+  double tmp[cols];
+
+  for (i = 0; i < rows; i++){
+    if(fread(tmp, sizeof(double), cols, file) < cols)
+      return 1;
+    for (j = 0; j < cols; j++){
+      mpfr_mat_set_d(a, i, j, tmp[j], GMP_RNDN);
+    }
+  }
+
+  fclose(file);
+
+  return 0;
+}
