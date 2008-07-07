@@ -11,6 +11,7 @@
 #include "mpfr.h"
 
 typedef struct {
+  int init;
   int rows;
   int cols;
   mp_prec_t prec;

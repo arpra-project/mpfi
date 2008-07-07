@@ -117,9 +117,26 @@ int mpfr_mat_round_prec(mpfr_mat_ptr x, mp_prec_t prec,
 
 void mpfr_mat_init (mpfr_mat_ptr x,int r, int c)
 {
+  if(x->init == 32){
+    if(x->rows == r && x->cols == c&& x->prec == mpfr_get_default_prec())
+      return;
+    if(x->rows == r && x->cols == c){
+      for (i = 0; i < r; i++){
+	for (j = 0; j < c; j++){
+	  mpfr_init(MME(x,i,j));
+	}
+      }
+      return;
+    }
+    mpfr_mat_clear(x);
+  }
+
+  int i,j;
+
   x->rows = r;
   x->cols = c;
-  int i,j;
+  x->init = 32;
+
   x->mems = (mpfr_ptr*)malloc(r * sizeof(mpfr_ptr));
   for (i = 0; i < r; i++){
     x->mems[i] = (mpfr_ptr)malloc(c * sizeof(mpfr_t));
@@ -127,27 +144,50 @@ void mpfr_mat_init (mpfr_mat_ptr x,int r, int c)
       mpfr_init(MME(x,i,j));
     }
   }
+
   x->prec = mpfr_get_prec(MME(x,0,0));
 }
 
 void mpfr_mat_init2 (mpfr_mat_ptr x,int r, int c,
 		     mp_prec_t p)
 {
+  if(x->init == 32){
+    if(x->rows == r && x->cols == c&& x->prec == p)
+      return;
+    if(x->rows == r && x->cols == c){
+      for (i = 0; i < r; i++){
+	for (j = 0; j < c; j++){
+	  mpfr_init2(MME(x,i,j), p);
+	}
+      }
+      return;
+    }
+    mpfr_mat_clear(x);
+  }
+
+  int i,j;
+
   x->rows = r;
   x->cols = c;
   x->prec = p;
-  int i,j;
+  x->init = 32;
+
   x->mems = (mpfr_ptr*)malloc(r * sizeof(mpfr_ptr));
   for (i = 0; i < r; i++){
     x->mems[i] = (mpfr_ptr)malloc(c * sizeof(mpfr_t));
-    for (j = 0; j < x->cols; j++){
-      mpfr_init2(MME(x,i,j),p);
+    for (j = 0; j < c; j++){
+      mpfr_init2(MME(x,i,j), p);
     }
   }
 }
 
 void mpfr_mat_clear(mpfr_mat_ptr x)
 {
+  // if the mat hasn't been initialized, no need to clear it
+  if(x->init != 32)
+    return;
+
+  x->init = 0;
   int i,j;
   for (i = 0; i < x->rows; i++){
     for (j = 0; j < x->cols; j++){
