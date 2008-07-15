@@ -54,7 +54,7 @@ void mpfr_mat_out_str(FILE *f, int base,
   return ret;
 
 #define MPFR_MAT_TEST_FLAGS()			\
-  (mpfr_underflow_p() || mpfr_nanflag_p())
+  (mpfr_overflow_p() | mpfr_nanflag_p())
 
 #define MPFR_MAT_STOP_IF_NAN_W(x, warning)			\
   {								\
@@ -196,6 +196,7 @@ void mpfr_mat_clear(mpfr_mat_ptr x)
     free(x->mems[i]);
   }
   free(x->mems);
+  x->mems = NULL;
 }
 
 mp_prec_t mpfr_mat_get_prec(mpfr_mat_srcptr x)
@@ -340,19 +341,19 @@ int mpfr_mat_add (mpfr_mat_ptr r, mpfr_mat_srcptr a,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
   int i,j;
+  int flags;
   for (i = 0; i < a->rows; i++){
     for (j = 0; j < a->cols; j++){
-      inexact |= mpfr_add(MME(r,i,j), MME(a,i,j),
+      mpfr_add(MME(r,i,j), MME(a,i,j),
 	       MME(b,i,j), rnd);
 
-      if(MPFR_MAT_TEST_FLAGS())
-	MPFR_MAT_FUNC_RET(inexact);
     }
+    if(flags = MPFR_MAT_TEST_FLAGS())
+      MPFR_MAT_FUNC_RET(flags);
   }
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_sub (mpfr_mat_ptr r, mpfr_mat_srcptr a,
@@ -365,17 +366,17 @@ int mpfr_mat_sub (mpfr_mat_ptr r, mpfr_mat_srcptr a,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
   int i,j;
+  int flags;
   for (i = 0; i < a->rows; i++){
     for (j = 0; j < a->cols; j++){
-      inexact |= mpfr_sub(MME(r,i,j), MME(a,i,j),
+      mpfr_sub(MME(r,i,j), MME(a,i,j),
 	       MME(b,i,j), rnd);
-      if(MPFR_MAT_TEST_FLAGS())
-	MPFR_MAT_FUNC_RET(inexact);
     }
+    if(flags = MPFR_MAT_TEST_FLAGS())
+      MPFR_MAT_FUNC_RET(flags);
   }
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 
@@ -389,7 +390,7 @@ int mpfr_mat_mul (mpfr_mat_ptr r, mpfr_mat_srcptr a,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
+  int flags;
   int i,j, k;
   mpfr_t tmp,tmpmul;
 
@@ -398,32 +399,27 @@ int mpfr_mat_mul (mpfr_mat_ptr r, mpfr_mat_srcptr a,
 
   for (i = 0; i < a->rows; i++){
     for (j = 0; j < b->cols; j++){
-      inexact |= mpfr_mul(tmp, MME(a,i,0),
-			  MME(b,0,j), rnd);
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmp);
-	mpfr_clear(tmpmul);
-	MPFR_MAT_FUNC_RET(inexact);
-      }
+      mpfr_mul(tmp, MME(a,i,0),
+	       MME(b,0,j), rnd);
 	
       for (k = 1; k < a->cols; k++){
-	inexact |= mpfr_mul(tmpmul, MME(a,i,k), MME(b,k,j), rnd);
-	inexact |= mpfr_add(tmp, tmp, tmpmul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmp);
-	  mpfr_clear(tmpmul);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmpmul, MME(a,i,k), MME(b,k,j), rnd);
+	mpfr_add(tmp, tmp, tmpmul, rnd);
       }
-      inexact |= mpfr_set(MME(r,i,j), tmp, rnd);
+      mpfr_set(MME(r,i,j), tmp, rnd);
+
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	mpfr_clear(tmp);
+	mpfr_clear(tmpmul);
+	MPFR_MAT_FUNC_RET(flags);
+      }
     }
   }
 
   mpfr_clear(tmp);
   mpfr_clear(tmpmul);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 
@@ -445,7 +441,7 @@ int mpfr_mat_lu (mpfr_mat_ptr l, mpfr_mat_ptr u,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
+  int flags;
   int i, j, k, r = a->rows;
   mpfr_ptr tmpl;
   mpfr_t tmpmul, tmpu;
@@ -466,8 +462,8 @@ int mpfr_mat_lu (mpfr_mat_ptr l, mpfr_mat_ptr u,
   if (l != u){
     for (i = 0; i < r; i++){
       for (j = i + 1; j < r; j++){
-	inexact |= mpfr_mat_set_ui(u, j, i, 0, rnd);
-	inexact |= mpfr_mat_set_ui(l, i, j, 0, rnd);
+	mpfr_mat_set_ui(u, j, i, 0, rnd);
+	mpfr_mat_set_ui(l, i, j, 0, rnd);
       }
     }
   }
@@ -476,16 +472,16 @@ int mpfr_mat_lu (mpfr_mat_ptr l, mpfr_mat_ptr u,
     for (i = k; i < r; i++){
       mpfr_set(tmpl + i, MME(a,i,k), rnd);
       for (j = 0; j < k; j++){
-	inexact |= mpfr_mul(tmpmul, MME(l,i,j), MME(u,j,k), rnd);
-	inexact |= mpfr_sub(tmpl + i, tmpl + i, tmpmul, rnd);
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmpmul);
-	  mpfr_clear(tmpu);
-	  for (i = 0; i < r; i++)
-	    mpfr_clear(tmpl + i);
-	  free(tmpl);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmpmul, MME(l,i,j), MME(u,j,k), rnd);
+	mpfr_sub(tmpl + i, tmpl + i, tmpmul, rnd);
+      }
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	mpfr_clear(tmpmul);
+	mpfr_clear(tmpu);
+	for (i = 0; i < r; i++)
+	  mpfr_clear(tmpl + i);
+	free(tmpl);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
@@ -496,42 +492,41 @@ int mpfr_mat_lu (mpfr_mat_ptr l, mpfr_mat_ptr u,
       on ne stocque pas le pivot de L (qui vaut 1)
      */
     if (l != u)
-      inexact |= mpfr_mat_set_ui(l, k, k, 1, rnd);
+      mpfr_mat_set_ui(l, k, k, 1, rnd);
 
     for (i = k + 1; i < r; i++){
-      inexact |= mpfr_div(MME(l,i,k), tmpl + i, tmpl + k, rnd);
-
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmpmul);
-	mpfr_clear(tmpu);
-	for (i = 0; i < r; i++)
-	  mpfr_clear(tmpl + i);
-	free(tmpl);
-	MPFR_MAT_FUNC_RET(inexact);
-      }
+      mpfr_div(MME(l,i,k), tmpl + i, tmpl + k, rnd);
+    }
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmpmul);
+      mpfr_clear(tmpu);
+      for (i = 0; i < r; i++)
+	mpfr_clear(tmpl + i);
+      free(tmpl);
+      MPFR_MAT_FUNC_RET(flags);
     }
 
     /*
       Calculer les elements de la ligne k de U
      */
-    inexact |= mpfr_mat_set(u, k, k, tmpl + k, rnd);
+    mpfr_mat_set(u, k, k, tmpl + k, rnd);
 
     for (i = k + 1; i < r; i++){
       mpfr_set(tmpu, MME(a,k,i), rnd);
       for (j = 0; j < k; j++){
-	inexact |= mpfr_mul(tmpmul, MME(l,k,j), MME(u,j,i), rnd);
-	inexact |= mpfr_sub(tmpu, tmpu, tmpmul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmpmul);
-	  mpfr_clear(tmpu);
-	  for (i = 0; i < r; i++)
-	    mpfr_clear(tmpl + i);
-	  free(tmpl);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmpmul, MME(l,k,j), MME(u,j,i), rnd);
+	mpfr_sub(tmpu, tmpu, tmpmul, rnd);
       }
-      inexact |= mpfr_set(MME(u,k,i), tmpu, rnd);
+      mpfr_set(MME(u,k,i), tmpu, rnd);
+
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	mpfr_clear(tmpmul);
+	mpfr_clear(tmpu);
+	for (i = 0; i < r; i++)
+	  mpfr_clear(tmpl + i);
+	free(tmpl);
+	MPFR_MAT_FUNC_RET(flags);
+      }
     }
   }
 
@@ -541,7 +536,7 @@ int mpfr_mat_lu (mpfr_mat_ptr l, mpfr_mat_ptr u,
     mpfr_clear(tmpl + i);
   free(tmpl);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 
@@ -632,7 +627,7 @@ int mpfr_mat_plu (int *p, mpfr_mat_ptr l,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
+  int flags;
   int i, j, k, r = a->rows;
   mpfr_ptr tmpl;
   mpfr_t tmpmul, tmpu;
@@ -660,8 +655,8 @@ int mpfr_mat_plu (int *p, mpfr_mat_ptr l,
   if (l != u){
     for (i = 0; i < r; i++){
       for (j = i + 1; j < r; j++){
-	inexact |= mpfr_mat_set_ui(u, j, i, 0, rnd);
-	inexact |= mpfr_mat_set_ui(l, i, j, 0, rnd);
+	mpfr_mat_set_ui(u, j, i, 0, rnd);
+	mpfr_mat_set_ui(l, i, j, 0, rnd);
       }
     }
   }
@@ -670,18 +665,17 @@ int mpfr_mat_plu (int *p, mpfr_mat_ptr l,
     for (i = k; i < r; i++){
       mpfr_set(tmpl + i, MME(a,i,k), rnd);
       for (j = 0; j < k; j++){
-	inexact |= mpfr_mul(tmpmul, MME(l,i,j), MME(u,j,k), rnd);
-	inexact |= mpfr_sub(tmpl + i, tmpl + i, tmpmul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmpmul);
-	  mpfr_clear(tmpu);
-	  for (i = 0; i < r; i++)
-	    mpfr_clear(tmpl + i);
-	  free(tmpl);
-	  free(q);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmpmul, MME(l,i,j), MME(u,j,k), rnd);
+	mpfr_sub(tmpl + i, tmpl + i, tmpmul, rnd);
+      }
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	mpfr_clear(tmpmul);
+	mpfr_clear(tmpu);
+	for (i = 0; i < r; i++)
+	  mpfr_clear(tmpl + i);
+	free(tmpl);
+	free(q);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
@@ -707,44 +701,43 @@ int mpfr_mat_plu (int *p, mpfr_mat_ptr l,
     // <--- FIN DU PIVOTTAGE
 
     if (l != u)
-      inexact |= mpfr_mat_set_ui(l, k, k, 1, rnd);
+      mpfr_mat_set_ui(l, k, k, 1, rnd);
 
     for (i = k + 1; i < r; i++){
       cmp = mpfr_cmp_ui(tmpl + i, 0);
       if (cmp == 0)
 	mpfr_set_ui(MME(l,i,k), 0, rnd);
       else
-	inexact |= mpfr_div(MME(l,i,k), tmpl + i, tmpl + k, rnd);
+	mpfr_div(MME(l,i,k), tmpl + i, tmpl + k, rnd);
+    }
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmpmul);
+      mpfr_clear(tmpu);
+      for (i = 0; i < r; i++)
+	mpfr_clear(tmpl + i);
+      free(tmpl);
+      free(q);
+      MPFR_MAT_FUNC_RET(flags);
+    }
 
-      if(MPFR_MAT_TEST_FLAGS()){
+    mpfr_mat_set(u, k, k, tmpl + k, rnd);
+    for (i = k + 1; i < r; i++){
+      mpfr_set(tmpu, MME(a,k,i), rnd);
+      for (j = 0; j < k; j++){
+	mpfr_mul(tmpmul, MME(l,k,j), MME(u,j,i), rnd);
+	mpfr_sub(tmpu, tmpu, tmpmul, rnd);
+      }
+      mpfr_set(MME(u,k,i), tmpu, rnd);
+
+      if(flags = MPFR_MAT_TEST_FLAGS()){
 	mpfr_clear(tmpmul);
 	mpfr_clear(tmpu);
 	for (i = 0; i < r; i++)
 	  mpfr_clear(tmpl + i);
 	free(tmpl);
 	free(q);
-	MPFR_MAT_FUNC_RET(inexact);
+	MPFR_MAT_FUNC_RET(flags);
       }
-    }
-
-    mpfr_mat_set(u, k, k, tmpl + k, rnd);
-    for (i = k + 1; i < r; i++){
-      inexact |= mpfr_set(tmpu, MME(a,k,i), rnd);
-      for (j = 0; j < k; j++){
-	inexact |= mpfr_mul(tmpmul, MME(l,k,j), MME(u,j,i), rnd);
-	inexact |= mpfr_sub(tmpu, tmpu, tmpmul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmpmul);
-	  mpfr_clear(tmpu);
-	  for (i = 0; i < r; i++)
-	    mpfr_clear(tmpl + i);
-	  free(tmpl);
-	  free(q);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
-      }
-      inexact |= mpfr_set(MME(u,k,i), tmpu, rnd);
     }
   }
 
@@ -776,7 +769,7 @@ int mpfr_mat_plu (int *p, mpfr_mat_ptr l,
   free(tmpl);
   free(q);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 /*
@@ -808,7 +801,7 @@ int mpfr_mat_inv_uptriangle(mpfr_mat_ptr r,
 
   int i,j,k, rows = a->rows;
   int cmp;
-  int inexact = 0;
+  int flags;
   
   mpfr_t tmp, tmpmul;
 
@@ -825,44 +818,38 @@ int mpfr_mat_inv_uptriangle(mpfr_mat_ptr r,
 
     if (r != a){
       for (j = i+1; j < rows; j++){
-	inexact |= mpfr_mat_set_ui(r, j, i, 0, rnd);
+	mpfr_mat_set_ui(r, j, i, 0, rnd);
       }
     }
 
     for (j = rows - 1; j > i; j--){
       mpfr_set_ui(tmp, 0, rnd);
       for (k = j; k > i; k--){
-	inexact |= mpfr_mul(tmpmul, MME(a,i,k), MME(r,k,j), rnd);
-	inexact |= mpfr_sub(tmp, tmp, tmpmul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmpmul);
-	  mpfr_clear(tmp);	
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmpmul, MME(a,i,k), MME(r,k,j), rnd);
+	mpfr_sub(tmp, tmp, tmpmul, rnd);
       }
-      inexact |= mpfr_div(MME(r,i,j), tmp,
-			  MME(a,i,i), rnd);
+      mpfr_div(MME(r,i,j), tmp,
+	       MME(a,i,i), rnd);
 
-      if(MPFR_MAT_TEST_FLAGS()){
+      if(flags = MPFR_MAT_TEST_FLAGS()){
 	mpfr_clear(tmpmul);
 	mpfr_clear(tmp);	
-	MPFR_MAT_FUNC_RET(inexact);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
     mpfr_ui_div(MME(r,i,i), 1, MME(a,i,i), rnd);
 
-    if(MPFR_MAT_TEST_FLAGS()){
+    if(flags = MPFR_MAT_TEST_FLAGS()){
       mpfr_clear(tmpmul);
       mpfr_clear(tmp);	
-      MPFR_MAT_FUNC_RET(inexact);
+      MPFR_MAT_FUNC_RET(flags);
     }
   }
   mpfr_clear(tmpmul);
   mpfr_clear(tmp);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 /*
@@ -896,7 +883,7 @@ int __inv_lowtriangle_ext(mpfr_mat_ptr r,
 
   int i,j,k, rows = a->rows;
   int cmp;
-  int inexact = 0;
+  int flags;
   
   mpfr_t tmpmul, tmp;
 
@@ -915,39 +902,35 @@ int __inv_lowtriangle_ext(mpfr_mat_ptr r,
 
     if (r != a){
       for (j = 0; j < i; j++){
-	inexact |= mpfr_mat_set_ui(r, j, i, 0, rnd);
+	mpfr_mat_set_ui(r, j, i, 0, rnd);
       }
     }
 
     for (j = 0; j < i; j++){
       if (pivot_unit == 1){
-	inexact |= mpfr_set(tmp, MME(a,i,j), rnd);
+	mpfr_set(tmp, MME(a,i,j), rnd);
       }
       else{
-	inexact |= mpfr_mul(tmp, MME(a,i,j), MME(r,j,j), rnd);
+	mpfr_mul(tmp, MME(a,i,j), MME(r,j,j), rnd);
       }
-      inexact |= mpfr_neg(tmp, tmp, rnd);
+      mpfr_neg(tmp, tmp, rnd);
 
       for (k = j+1; k < i; k++){
-	inexact |= mpfr_mul(tmpmul, MME(a,i,k), MME(r,k,j),rnd);
-	inexact |= mpfr_sub(tmp, tmp, tmpmul, rnd);
+	mpfr_mul(tmpmul, MME(a,i,k), MME(r,k,j),rnd);
+	mpfr_sub(tmp, tmp, tmpmul, rnd);
 
-	if(MPFR_MAT_TEST_FLAGS()){
-	  mpfr_clear(tmpmul);
-	  mpfr_clear(tmp);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
       }
+
       if (pivot_unit != 1)
-	inexact |= mpfr_div(MME(r,i,j), tmp,
+	mpfr_div(MME(r,i,j), tmp,
 			    MME(a,i,i), rnd);
       else
-	inexact |= mpfr_set(MME(r,i,j), tmp, rnd);
+	mpfr_set(MME(r,i,j), tmp, rnd);
 
-      if(MPFR_MAT_TEST_FLAGS()){
+      if(flags = MPFR_MAT_TEST_FLAGS()){
 	mpfr_clear(tmpmul);
 	mpfr_clear(tmp);
-	MPFR_MAT_FUNC_RET(inexact);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
@@ -957,12 +940,18 @@ int __inv_lowtriangle_ext(mpfr_mat_ptr r,
       de la matrice resultat
      */
     if (pivot_unit != 1)
-      inexact |= mpfr_ui_div(MME(r,i,i), 1,MME(a,i,i),rnd);
+      mpfr_ui_div(MME(r,i,i), 1,MME(a,i,i),rnd);
+  }
+
+  if(flags = MPFR_MAT_TEST_FLAGS()){
+    mpfr_clear(tmpmul);
+    mpfr_clear(tmp);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
   mpfr_clear(tmpmul);
   mpfr_clear(tmp);
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 
@@ -987,7 +976,7 @@ int mpfr_mat_inv_lu_method_D(mpfr_mat_ptr r, mpfr_mat_srcptr a,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
+  int flags;
   int i, j, k, rows = a->rows;
 
   int *p = NULL;
@@ -997,28 +986,28 @@ int mpfr_mat_inv_lu_method_D(mpfr_mat_ptr r, mpfr_mat_srcptr a,
     p = (int*)malloc(rows * sizeof(int));
 
   if (pivot == 1)
-    inexact |= mpfr_mat_plu(p, r, r, a, rnd);
+    flags = mpfr_mat_plu(p, r, r, a, rnd);
   else
-    inexact |= mpfr_mat_lu(r, r, a, rnd);
+    flags = mpfr_mat_lu(r, r, a, rnd);
 
-  if(MPFR_MAT_TEST_FLAGS()){
+  if(flags != 0){
     if (pivot == 1)
       free(p);
-    MPFR_MAT_FUNC_RET(inexact);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
-  inexact |= mpfr_mat_inv_uptriangle(r, r, rnd); 
-  if(MPFR_MAT_TEST_FLAGS()){
+  flags = mpfr_mat_inv_uptriangle(r, r, rnd); 
+  if(flags != 0){
     if (pivot == 1)
       free(p);
-    MPFR_MAT_FUNC_RET(inexact);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
-  inexact |= __inv_lowtriangle_ext(r, r, rnd, 1);
-  if(MPFR_MAT_TEST_FLAGS()){
+  flags = __inv_lowtriangle_ext(r, r, rnd, 1);
+  if(flags){
     if (pivot == 1)
       free(p);
-    MPFR_MAT_FUNC_RET(inexact);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
   /*
@@ -1031,34 +1020,35 @@ int mpfr_mat_inv_lu_method_D(mpfr_mat_ptr r, mpfr_mat_srcptr a,
     for (j = 0; j < i; j++){
       mpfr_set_ui(tmp_add, 0, rnd);
       for (k = i; k < rows; k++){
-	inexact |= mpfr_mul(tmp_mul, MME(r,i,k), MME(r,k,j), rnd);
-	inexact |= mpfr_add(tmp_add, tmp_add, tmp_mul, rnd);
-	if(MPFR_MAT_TEST_FLAGS()){
-	  if (pivot == 1)
-	    free(p);
-	  mpfr_clear(tmp_add);
-	  mpfr_clear(tmp_mul);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmp_mul, MME(r,i,k), MME(r,k,j), rnd);
+	mpfr_add(tmp_add, tmp_add, tmp_mul, rnd);
       }
-      inexact |= mpfr_set(MME(r,i,j), tmp_add, rnd);
+      mpfr_set(MME(r,i,j), tmp_add, rnd);
+
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	if (pivot == 1)
+	  free(p);
+	mpfr_clear(tmp_add);
+	mpfr_clear(tmp_mul);
+	MPFR_MAT_FUNC_RET(flags);
+      }
     }
 
     for (j = i; j < rows; j++){
-      inexact |= mpfr_set(tmp_add, MME(r,i,j), rnd);
+      mpfr_set(tmp_add, MME(r,i,j), rnd);
       for (k = j + 1; k < rows; k++){
-	inexact |= mpfr_mul(tmp_mul, MME(r,i,k), MME(r,k,j), rnd);
-	inexact |= mpfr_add(tmp_add, tmp_add, tmp_mul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  if (pivot == 1)
-	    free(p);
-	  mpfr_clear(tmp_add);
-	  mpfr_clear(tmp_mul);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmp_mul, MME(r,i,k), MME(r,k,j), rnd);
+	mpfr_add(tmp_add, tmp_add, tmp_mul, rnd);
       }
-      inexact |= mpfr_set(MME(r,i,j), tmp_add, rnd);
+      mpfr_set(MME(r,i,j), tmp_add, rnd);
+
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	if (pivot == 1)
+	  free(p);
+	mpfr_clear(tmp_add);
+	mpfr_clear(tmp_mul);
+	MPFR_MAT_FUNC_RET(flags);
+      }
     }
   }
 
@@ -1080,7 +1070,7 @@ int mpfr_mat_inv_lu_method_D(mpfr_mat_ptr r, mpfr_mat_srcptr a,
     free(p);
   }
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 
@@ -1099,7 +1089,7 @@ int mpfr_mat_inv_lu_method_B(mpfr_mat_ptr r,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
+  int flags;
   int i, j, k, rows = a->rows;
 
   int *p = NULL;
@@ -1110,22 +1100,23 @@ int mpfr_mat_inv_lu_method_B(mpfr_mat_ptr r,
     p = (int*)malloc(rows * sizeof(int));
 
   if (pivot == 1)
-    inexact |= mpfr_mat_plu(p, r, r, a, rnd);
+    flags = mpfr_mat_plu(p, r, r, a, rnd);
   else
-    inexact |= mpfr_mat_lu(r, r, a, rnd);
+    flags = mpfr_mat_lu(r, r, a, rnd);
 
-  if(MPFR_MAT_TEST_FLAGS()){
+  if(flags){
     if(pivot == 1)
       free(p);
-    MPFR_MAT_FUNC_RET(inexact);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
+
   // Calculer inv(U)
-  inexact |= mpfr_mat_inv_uptriangle(r, r, rnd); 
-  if(MPFR_MAT_TEST_FLAGS()){
+  flags = mpfr_mat_inv_uptriangle(r, r, rnd); 
+  if(flags){
     if(pivot == 1)
       free(p);
-    MPFR_MAT_FUNC_RET(inexact);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
   mpfr_init2(tmp_mul, mpfr_mat_get_prec(r));
@@ -1139,43 +1130,43 @@ int mpfr_mat_inv_lu_method_B(mpfr_mat_ptr r,
   for(k = rows - 1; k >= 0; k--){
     for(i = 0; i < k + 1 ; i++){
       for (j = k + 1; j < rows; j++){
-	inexact |= mpfr_mul(tmp_mul, MME(r,i,j),
+	mpfr_mul(tmp_mul, MME(r,i,j),
 			    MME(r,j,k), rnd);
-	inexact |= mpfr_sub(MME(r,i,k), MME(r,i,k),
+	mpfr_sub(MME(r,i,k), MME(r,i,k),
 			    tmp_mul, rnd);
+      }
 
-	if(MPFR_MAT_TEST_FLAGS()){
-	  if(pivot == 1)
-	    free(p);
-	  mpfr_clear(tmp_add);
-	  mpfr_clear(tmp_mul);
-	  for(i = 0; i < rows; i++){
-	    mpfr_clear(tmp + i);
-	  }
-	  free(tmp);
-	  MPFR_MAT_FUNC_RET(inexact);
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	if(pivot == 1)
+	  free(p);
+	mpfr_clear(tmp_add);
+	mpfr_clear(tmp_mul);
+	for(i = 0; i < rows; i++){
+	  mpfr_clear(tmp + i);
 	}
+	free(tmp);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
     for (; i < rows; i++){
       mpfr_set_ui(tmp + i, 0, GMP_RNDN);
       for (j = k + 1; j < rows; j++){
-	inexact |= mpfr_mul(tmp_mul, MME(r,i,j),
+	mpfr_mul(tmp_mul, MME(r,i,j),
 			    MME(r,j,k), rnd);
-	inexact |= mpfr_sub(tmp + i, tmp + i, tmp_mul, rnd);
+	mpfr_sub(tmp + i, tmp + i, tmp_mul, rnd);
+      }
 
-	if(MPFR_MAT_TEST_FLAGS()){
-	  if(pivot == 1)
-	    free(p);
-	  mpfr_clear(tmp_add);
-	  mpfr_clear(tmp_mul);
-	  for(i = 0; i < rows; i++){
-	    mpfr_clear(tmp + i);
-	  }
-	  free(tmp);
-	  MPFR_MAT_FUNC_RET(inexact);
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	if(pivot == 1)
+	  free(p);
+	mpfr_clear(tmp_add);
+	mpfr_clear(tmp_mul);
+	for(i = 0; i < rows; i++){
+	  mpfr_clear(tmp + i);
 	}
+	free(tmp);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
@@ -1207,7 +1198,7 @@ int mpfr_mat_inv_lu_method_B(mpfr_mat_ptr r,
     free(p);
   }
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 /*
@@ -1225,7 +1216,7 @@ int mpfr_mat_inv_lu_method_C(mpfr_mat_ptr r,
 
   MPFR_MAT_FUNC_INIT();
 
-  int inexact = 0;
+  int flags;
   int i, j, k, rows = a->rows;
 
   int *p = NULL;
@@ -1236,14 +1227,14 @@ int mpfr_mat_inv_lu_method_C(mpfr_mat_ptr r,
     p = (int*)malloc(rows * sizeof(int));
 
   if (pivot == 1)
-    inexact |= mpfr_mat_plu(p, r, r, a, rnd);
+    flags = mpfr_mat_plu(p, r, r, a, rnd);
   else
-    inexact |= mpfr_mat_lu(r, r, a, rnd);
+    flags = mpfr_mat_lu(r, r, a, rnd);
 
-  if(MPFR_MAT_TEST_FLAGS()){
+  if(flags){
     if(pivot == 1)
       free(p);
-    MPFR_MAT_FUNC_RET(inexact);
+    MPFR_MAT_FUNC_RET(flags);
   }
 
   mpfr_init2(tmp_mul, mpfr_mat_get_prec(r));
@@ -1258,21 +1249,20 @@ int mpfr_mat_inv_lu_method_C(mpfr_mat_ptr r,
     for (i = k + 1; i < rows; i++){
       mpfr_set_ui(tmp + i, 0, GMP_RNDN);
       for (j = k + 1; j < rows; j++){
-	inexact |= mpfr_mul(tmp_mul, MME(r,k,j),
-			    MME(r,j,i), rnd);
-	inexact |= mpfr_sub(tmp + i, tmp + i, tmp_mul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  if(pivot == 1)
-	    free(p);
-	  mpfr_clear(tmp_add);
-	  mpfr_clear(tmp_mul);
-	  for(i = 0; i < rows; i++){
-	    mpfr_clear(tmp + i);
-	  }
-	  free(tmp);
-	  MPFR_MAT_FUNC_RET(inexact);
+	mpfr_mul(tmp_mul, MME(r,k,j),
+		 MME(r,j,i), rnd);
+	mpfr_sub(tmp + i, tmp + i, tmp_mul, rnd);
+      }
+      if(flags = MPFR_MAT_TEST_FLAGS()){
+	if(pivot == 1)
+	  free(p);
+	mpfr_clear(tmp_add);
+	mpfr_clear(tmp_mul);
+	for(i = 0; i < rows; i++){
+	  mpfr_clear(tmp + i);
 	}
+	free(tmp);
+	MPFR_MAT_FUNC_RET(flags);
       }
     }
 
@@ -1283,46 +1273,12 @@ int mpfr_mat_inv_lu_method_C(mpfr_mat_ptr r,
     for (i = k + 1; i < rows; i++){
       mpfr_set_ui(tmp + i, 0, GMP_RNDN);
       for (j = k + 1; j < rows; j++){
-	inexact |= mpfr_mul(tmp_mul, MME(r,i,j),
-			    MME(r,j,k), rnd);
-	inexact |= mpfr_sub(tmp + i, tmp + i, tmp_mul, rnd);
-
-	if(MPFR_MAT_TEST_FLAGS()){
-	  if(pivot == 1)
-	    free(p);
-	  mpfr_clear(tmp_add);
-	  mpfr_clear(tmp_mul);
-	  for(i = 0; i < rows; i++){
-	    mpfr_clear(tmp + i);
-	  }
-	  free(tmp);
-	  MPFR_MAT_FUNC_RET(inexact);
-	}
+	mpfr_mul(tmp_mul, MME(r,i,j),
+		 MME(r,j,k), rnd);
+	mpfr_sub(tmp + i, tmp + i, tmp_mul, rnd);
       }
-    }
 
-    //-------
-    mpfr_ui_div(MME(r,k,k), 1, MME(r,k,k), rnd);
-
-    if(MPFR_MAT_TEST_FLAGS()){
-      if(pivot == 1)
-	free(p);
-      mpfr_clear(tmp_add);
-      mpfr_clear(tmp_mul);
-      for(i = 0; i < rows; i++){
-	mpfr_clear(tmp + i);
-      }
-      free(tmp);
-      MPFR_MAT_FUNC_RET(inexact);
-    }
-
-    for (j = k + 1; j < rows; j++){
-      inexact |= mpfr_mul(tmp_mul, MME(r,k,j),
-			  MME(r,j,k), rnd);
-      inexact |= mpfr_sub(MME(r,k,k), MME(r,k,k),
-			  tmp_mul, rnd);
-
-      if(MPFR_MAT_TEST_FLAGS()){
+      if(flags = MPFR_MAT_TEST_FLAGS()){
 	if(pivot == 1)
 	  free(p);
 	mpfr_clear(tmp_add);
@@ -1331,12 +1287,46 @@ int mpfr_mat_inv_lu_method_C(mpfr_mat_ptr r,
 	  mpfr_clear(tmp + i);
 	}
 	free(tmp);
-	MPFR_MAT_FUNC_RET(inexact);
+	MPFR_MAT_FUNC_RET(flags);
       }
+    }
+
+    //-------
+    mpfr_ui_div(MME(r,k,k), 1, MME(r,k,k), rnd);
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      if(pivot == 1)
+	free(p);
+      mpfr_clear(tmp_add);
+      mpfr_clear(tmp_mul);
+      for(i = 0; i < rows; i++){
+	mpfr_clear(tmp + i);
+      }
+      free(tmp);
+      MPFR_MAT_FUNC_RET(flags);
+    }
+
+    for (j = k + 1; j < rows; j++){
+      mpfr_mul(tmp_mul, MME(r,k,j),
+	       MME(r,j,k), rnd);
+      mpfr_sub(MME(r,k,k), MME(r,k,k),
+	       tmp_mul, rnd);
     }
     
     for (i = k + 1; i < rows; i++){
       mpfr_swap(MME(r,i,k), tmp + i);
+    }
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      if(pivot == 1)
+	free(p);
+      mpfr_clear(tmp_add);
+      mpfr_clear(tmp_mul);
+      for(i = 0; i < rows; i++){
+	mpfr_clear(tmp + i);
+      }
+      free(tmp);
+      MPFR_MAT_FUNC_RET(flags);
     }
   }
   
@@ -1363,40 +1353,47 @@ int mpfr_mat_inv_lu_method_C(mpfr_mat_ptr r,
     free(p);
   }
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_mul_fr (mpfr_mat_ptr r, mpfr_mat_srcptr a,
 		     mpfr_srcptr b, mp_rnd_t rnd){
   int i,j;
-  int inexact = 0;
-  for (i = 0; i < a->rows; i++){
-    for (j = 0; j < a->cols; j++){
-      inexact |= mpfr_mul(MME(r,i,j), MME(a,i,j),
-	       b, rnd);
-      MPFR_MAT_STOP_IF_NAN(MME(r,i,j));
-    }
-  }
-  return inexact;
-}
-
-int mpfr_mat_div_fr (mpfr_mat_ptr r, mpfr_mat_srcptr a,
-		     mpfr_srcptr b, mp_rnd_t rnd){
-  int i,j;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
   for (i = 0; i < a->rows; i++){
     for (j = 0; j < a->cols; j++){
-      inexact |= mpfr_div(MME(r,i,j), MME(a,i,j),
+      mpfr_mul(MME(r,i,j), MME(a,i,j),
 	       b, rnd);
-
-      if(MPFR_MAT_TEST_FLAGS())
-	MPFR_MAT_FUNC_RET(inexact);
     }
+
+    if(flags = MPFR_MAT_TEST_FLAGS())
+      MPFR_MAT_FUNC_RET(flags);
   }
-  MPFR_MAT_FUNC_RET(inexact);
+
+  MPFR_MAT_FUNC_RET(0);
+}
+
+int mpfr_mat_div_fr (mpfr_mat_ptr r, mpfr_mat_srcptr a,
+		     mpfr_srcptr b, mp_rnd_t rnd){
+  int i,j;
+  int flags;
+
+  MPFR_MAT_FUNC_INIT();
+
+  for (i = 0; i < a->rows; i++){
+    for (j = 0; j < a->cols; j++){
+      mpfr_div(MME(r,i,j), MME(a,i,j),
+	       b, rnd);
+    }
+
+    if(flags = MPFR_MAT_TEST_FLAGS())
+      MPFR_MAT_FUNC_RET(flags);
+  }
+
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_dotmul(mpfr_mat_ptr r, 
@@ -1404,20 +1401,20 @@ int mpfr_mat_dotmul(mpfr_mat_ptr r,
 		    mpfr_mat_srcptr b,
 		    mp_rnd_t rnd){
   int i,j;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
   for (i = 0; i < a->rows; i++){
     for (j = 0; j < a->cols; j++){
-      inexact |= mpfr_mul(MME(r,i,j), MME(a,i,j),
+      mpfr_mul(MME(r,i,j), MME(a,i,j),
 	       MME(b,i,j), rnd);
-
-      if(MPFR_MAT_TEST_FLAGS())
-	MPFR_MAT_FUNC_RET(inexact);
     }
+
+    if(flags = MPFR_MAT_TEST_FLAGS())
+      MPFR_MAT_FUNC_RET(flags);
   }
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_dotdiv(mpfr_mat_ptr r, 
@@ -1425,20 +1422,21 @@ int mpfr_mat_dotdiv(mpfr_mat_ptr r,
 		    mpfr_mat_srcptr b,
 		    mp_rnd_t rnd){
   int i,j;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
   for (i = 0; i < a->rows; i++){
     for (j = 0; j < a->cols; j++){
-      inexact |= mpfr_div(MME(r,i,j), MME(a,i,j),
+      mpfr_div(MME(r,i,j), MME(a,i,j),
 	       MME(b,i,j), rnd);
-
-      if(MPFR_MAT_TEST_FLAGS())
-	MPFR_MAT_FUNC_RET(inexact);
     }
+
+    if(flags = MPFR_MAT_TEST_FLAGS())
+      MPFR_MAT_FUNC_RET(flags);
   }
-  MPFR_MAT_FUNC_RET(inexact);
+
+  MPFR_MAT_FUNC_RET(0);
 }
 
 
@@ -1449,7 +1447,7 @@ int mpfr_mat_norm_1(mpfr_ptr norm, mpfr_mat_ptr a){
   
   mpfr_t tmp;
   mpfr_t tmp_n;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
@@ -1461,24 +1459,24 @@ int mpfr_mat_norm_1(mpfr_ptr norm, mpfr_mat_ptr a){
   for (i = 0; i < rows; i++){
     mpfr_set_ui(tmp_n, 0, GMP_RNDD);
     for (j = 0; j < cols; j++){
-      inexact |= mpfr_abs(tmp, MME(a,i,j), GMP_RNDU);
-      inexact |= mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
-
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmp);
-	mpfr_clear(tmp_n);
-	MPFR_MAT_FUNC_RET(inexact);
-      }
+      mpfr_abs(tmp, MME(a,i,j), GMP_RNDU);
+      mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
     }
     if(mpfr_cmp(norm, tmp_n) < 0){
       mpfr_set(norm, tmp_n, GMP_RNDU);
+    }
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmp);
+      mpfr_clear(tmp_n);
+      MPFR_MAT_FUNC_RET(flags);
     }
   }
 
   mpfr_clear(tmp);
   mpfr_clear(tmp_n);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_norm_8(mpfr_ptr norm, mpfr_mat_ptr a){
@@ -1488,7 +1486,7 @@ int mpfr_mat_norm_8(mpfr_ptr norm, mpfr_mat_ptr a){
   
   mpfr_t tmp;
   mpfr_t tmp_n;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
@@ -1500,24 +1498,24 @@ int mpfr_mat_norm_8(mpfr_ptr norm, mpfr_mat_ptr a){
   for (i = 0; i < cols; i++){
     mpfr_set_ui(tmp_n, 0, GMP_RNDD);
     for (j = 0; j < rows; j++){
-      inexact |= mpfr_abs(tmp, MME(a,j,i), GMP_RNDU);
-      inexact |= mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
-
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmp);
-	mpfr_clear(tmp_n);
-	MPFR_MAT_FUNC_RET(inexact);
-      }
+      mpfr_abs(tmp, MME(a,j,i), GMP_RNDU);
+      mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
     }
     if(mpfr_cmp(norm, tmp_n) < 0){
       mpfr_set(norm, tmp_n, GMP_RNDU);
+    }
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmp);
+      mpfr_clear(tmp_n);
+      MPFR_MAT_FUNC_RET(flags);
     }
   }
   
   mpfr_clear(tmp);
   mpfr_clear(tmp_n);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_norm_1_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
@@ -1528,7 +1526,7 @@ int mpfr_mat_norm_1_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
   mpfr_t tmp;
   mpfr_t tmp_n;
   mpfr_t tmpr;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
@@ -1542,24 +1540,24 @@ int mpfr_mat_norm_1_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
     mpfr_set_ui(tmp_n, 0, GMP_RNDD);
     for (j = 0; j < cols; j++){
       if (j == i){
-	inexact |= mpfr_sub_ui(tmpr, MME(a,i,j), ext, GMP_RND_MAX);
-	inexact |= mpfr_abs(tmp, tmpr, GMP_RNDU);
+	mpfr_sub_ui(tmpr, MME(a,i,j), ext, GMP_RND_MAX);
+	mpfr_abs(tmp, tmpr, GMP_RNDU);
 
       }
       else{
 	mpfr_abs(tmp, MME(a,i,j), GMP_RNDU);
       }
-      inexact |= mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
-
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmp);
-	mpfr_clear(tmp_n);
-	mpfr_clear(tmpr);
-	MPFR_MAT_FUNC_RET(inexact);
-      }
+      mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
     }
     if(mpfr_cmp(norm, tmp_n) < 0){
       mpfr_set(norm, tmp_n, GMP_RNDU);
+    }
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmp);
+      mpfr_clear(tmp_n);
+      mpfr_clear(tmpr);
+      MPFR_MAT_FUNC_RET(flags);
     }
   }
 
@@ -1567,7 +1565,7 @@ int mpfr_mat_norm_1_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
   mpfr_clear(tmp_n);
   mpfr_clear(tmpr);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_norm_8_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
@@ -1578,7 +1576,7 @@ int mpfr_mat_norm_8_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
   mpfr_t tmp;
   mpfr_t tmp_n;
   mpfr_t tmpr;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
@@ -1592,23 +1590,23 @@ int mpfr_mat_norm_8_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
     mpfr_set_ui(tmp_n, 0, GMP_RNDD);
     for (j = 0; j < rows; j++){
       if (i == j){
-	inexact |= mpfr_sub_ui(tmpr, MME(a,i,i), ext, GMP_RND_MAX);
-	inexact |= mpfr_abs(tmp, tmpr, GMP_RNDU);
+	mpfr_sub_ui(tmpr, MME(a,i,i), ext, GMP_RND_MAX);
+	mpfr_abs(tmp, tmpr, GMP_RNDU);
       }
       else{
 	mpfi_mag(tmp, MME(a,j,i));
       }
-      inexact |= mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
-
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmp);
-	mpfr_clear(tmp_n);
-	mpfr_clear(tmpr);
-	MPFR_MAT_FUNC_RET(inexact);
-      }
+      mpfr_add(tmp_n, tmp_n, tmp, GMP_RNDU);
     }
     if(mpfr_cmp(norm, tmp_n) < 0){
       mpfr_set(norm, tmp_n, GMP_RNDU);
+    }
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmp);
+      mpfr_clear(tmp_n);
+      mpfr_clear(tmpr);
+      MPFR_MAT_FUNC_RET(flags);
     }
   }
   
@@ -1616,7 +1614,7 @@ int mpfr_mat_norm_8_ext_ui(mpfr_ptr norm, mpfr_mat_ptr a, unsigned int ext){
   mpfr_clear(tmp_n);
   mpfr_clear(tmpr);
 
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 int mpfr_mat_scaled_max_norm_colwise(mpfr_mat_srcptr a,
@@ -1629,7 +1627,7 @@ int mpfr_mat_scaled_max_norm_colwise(mpfr_mat_srcptr a,
     return -1;
   if (a->cols != norm->cols)
     return -1;
-  int inexact = 0;
+  int flags;
 
   MPFR_MAT_FUNC_INIT();
 
@@ -1641,27 +1639,27 @@ int mpfr_mat_scaled_max_norm_colwise(mpfr_mat_srcptr a,
 	     MME(u,0,0), GMP_RNDU);
 
     for (i = 1; i < a->rows; i++){
-      inexact |= mpfr_div(tmp, MME(a,i,k),
+      mpfr_div(tmp, MME(a,i,k),
 	       MME(u,i,0), GMP_RNDU);
 
       cmp = mpfr_cmp(tmp, max);
       if (cmp > 0){
 	mpfr_swap(max, tmp);
       }
-
-      if(MPFR_MAT_TEST_FLAGS()){
-	mpfr_clear(tmp);
-	mpfr_clear(max);
-	MPFR_MAT_FUNC_RET(inexact);
-      }	
     }
 
     mpfr_set(MME(norm,0,k), max, GMP_RNDU);
+
+    if(flags = MPFR_MAT_TEST_FLAGS()){
+      mpfr_clear(tmp);
+      mpfr_clear(max);
+      MPFR_MAT_FUNC_RET(flags);
+    }	
   }
 
   mpfr_clear(tmp);
   mpfr_clear(max);
-  MPFR_MAT_FUNC_RET(inexact);
+  MPFR_MAT_FUNC_RET(0);
 }
 
 /*
@@ -1787,7 +1785,7 @@ void mpfr_mat_minmax(mpfr_ptr min, mpfr_ptr max,
 }
 
 void mpfr_mat_abs (mpfr_mat_ptr r, mpfr_mat_srcptr a,
-		  mp_rnd_t rnd)
+		   mp_rnd_t rnd)
 {
   if (a->rows != r-> rows || a->cols != r->cols)
     return;
