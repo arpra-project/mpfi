@@ -15,3 +15,5 @@ If you compile a soft using mpfi and have an error at execution time such as:
 error while loading shared libraries: libmpfi.so.0: cannot open shared object file: No such file or directory
 
 try adding /usr/local/lib to LD_LIBRARY_PATH
+
+Trying something.
