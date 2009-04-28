@@ -1,7 +1,7 @@
 \input texinfo    @c -*-texinfo-*-
 @c %**start of header
 @setfilename mpfi.info
-@settitle MPFI 1.3.4
+@settitle MPFI 1.4.
 @synindex tp fn
 @iftex
 @afourpaper
@@ -34,7 +34,7 @@ This file documents MPFI, a library for interval arithmetic,
 which is part of the MPFR multiple precision floating-point
 arithmetic library
 
-Copyright (C) 2002, Spaces team, INRIA Lorraine and LORIA, France,
+Copyright (C) 2002-2009, Spaces team, INRIA Lorraine and LORIA, France,
 Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France,
 and Lab. ANO, University of Sciences and Technologies of Lille, France.
 
@@ -64,9 +64,9 @@ by the Free Software Foundation.
 @titlepage
 @c  use the new format for titles
 
-@title MPFI 1.3.4
+@title MPFI 1.4.
 @subtitle Multiple Precision Floating-Point Interval Library
-@subtitle January 2006
+@subtitle April 2009
 
 @author Spaces, INRIA Lorraine, 
 @author Arenaire, INRIA Rhone-Alpes,
@@ -106,7 +106,7 @@ by the Free Software Foundation.
 @ifinfo
 @node Top, Copying, (dir), (dir)
 
-@top MPFI 1.3.4
+@top MPFI 1.4.
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -240,7 +240,7 @@ in the working directory.
 This will make some random tests in order to check
 whether MPFI was built correctly.  
 If you get error messages from the test program, please
-report this to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr}.  (@xref{Reporting Bugs}, for
+report this to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr, sylvain.chevillard@@ens-lyon.org, christoph.lauter@@ens-lyon.org, hong.diep.nguyen@@ens-lyon.fr}.  (@xref{Reporting Bugs}, for
 information on what to include in useful bug reports.)
 @end enumerate
 
@@ -286,12 +286,12 @@ Delete all object files and archive files, but not the configuration files.
 @section Known Build Problems
 
 The installation procedure and MPFI itself have been tested
-only on Solaris 2.6 and 2.8 and some Linux distributions.
+only on some Linux distributions.
 Since it has not been intensively tested,
 you may discover that
 MPFI suffers from all bugs of the underlying libraries, plus many many more.
 
-Please report any problem to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr}.
+Please report any problem to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr, sylvain.chevillard@@ens-lyon.org, christoph.lauter@@ens-lyon.org, hong.diep.nguyen@@ens-lyon.fr}.
 @xref{Reporting Bugs}.
 
 @node Reporting Bugs, MPFI Basics, Installing MPFI, Top
@@ -321,7 +321,7 @@ If your bug report is good, we will do our best to help you to get a corrected
 version of the library; if the bug report is poor, we won't do anything about
 it (except kidding you for sending poor bug reports).
 
-Send your bug report to: @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr}.
+Send your bug report to: @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr, sylvain.chevillard@@ens-lyon.org, christoph.lauter@@ens-lyon.org, hong.diep.nguyen@@ens-lyon.fr}.
 
 If you think something in this manual is unclear, or downright incorrect, or if
 the language needs to be improved, please send a note to the same address.
@@ -1409,9 +1409,10 @@ Resets the error number to 0.
 @comment  node-name,  next,  previous,  up
 @unnumbered Contributors
 
-MPFI has been written by Fabrice Rouillier and Nathalie Revol.
-Its development has greatly benefited from the patient and supportive
-help of the MPFR team.
+MPFI has been written by Fabrice Rouillier, Nathalie Revol, Sylvain
+Chevillard, Hong Diep Nguyen and Christoph Lauter. Its development
+has greatly benefited from the patient and supportive help of the MPFR
+team.
 
 @node References, Concept Index, Contributors, Top
 @comment  node-name,  next,  previous,  up

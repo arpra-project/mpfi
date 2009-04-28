@@ -1,4 +1,4 @@
-This is mpfi.info, produced by makeinfo version 4.8 from mpfi.texi.
+This is mpfi.info, produced by makeinfo version 4.11 from mpfi.texi.
 
 START-INFO-DIR-ENTRY
 * mpfi: (mpfi.info).               Multiple Precision Floating-Point Interval Library.
@@ -7,9 +7,9 @@ END-INFO-DIR-ENTRY
    This file documents MPFI, a library for interval arithmetic, which
 is part of the MPFR multiple precision floating-point arithmetic library
 
-   Copyright (C) 2002, Spaces team, INRIA Lorraine and LORIA, France,
-Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France, and Lab.
-ANO, University of Sciences and Technologies of Lille, France.
+   Copyright (C) 2002-2009, Spaces team, INRIA Lorraine and LORIA,
+France, Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France, and
+Lab. ANO, University of Sciences and Technologies of Lille, France.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -28,8 +28,8 @@ translation approved by the Free Software Foundation.
 
 File: mpfi.info,  Node: Top,  Next: Copying,  Prev: (dir),  Up: (dir)
 
-MPFI 1.3.4
-**********
+MPFI 1.4.
+*********
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -140,8 +140,10 @@ systems:
      This will make some random tests in order to check whether MPFI
      was built correctly.  If you get error messages from the test
      program, please report this to `Nathalie.Revol@ens-lyon.fr,
-     Fabrice.Rouillier@loria.fr'.  (*Note Reporting Bugs::, for
-     information on what to include in useful bug reports.)
+     Fabrice.Rouillier@loria.fr, sylvain.chevillard@ens-lyon.org,
+     christoph.lauter@ens-lyon.org, hong.diep.nguyen@ens-lyon.fr'.
+     (*Note Reporting Bugs::, for information on what to include in
+     useful bug reports.)
 
    There are some other useful make targets:
 
@@ -163,12 +165,14 @@ systems:
 ========================
 
 The installation procedure and MPFI itself have been tested only on
-Solaris 2.6 and 2.8 and some Linux distributions.  Since it has not
-been intensively tested, you may discover that MPFI suffers from all
-bugs of the underlying libraries, plus many many more.
+some Linux distributions.  Since it has not been intensively tested,
+you may discover that MPFI suffers from all bugs of the underlying
+libraries, plus many many more.
 
    Please report any problem to `Nathalie.Revol@ens-lyon.fr,
-Fabrice.Rouillier@loria.fr'.  *Note Reporting Bugs::.
+Fabrice.Rouillier@loria.fr, sylvain.chevillard@ens-lyon.org,
+christoph.lauter@ens-lyon.org, hong.diep.nguyen@ens-lyon.fr'.  *Note
+Reporting Bugs::.
 
 
 File: mpfi.info,  Node: Reporting Bugs,  Next: MPFI Basics,  Prev: Installing MPFI,  Up: Top
@@ -199,7 +203,8 @@ corrected version of the library; if the bug report is poor, we won't
 do anything about it (except kidding you for sending poor bug reports).
 
    Send your bug report to: `Nathalie.Revol@ens-lyon.fr,
-Fabrice.Rouillier@loria.fr'.
+Fabrice.Rouillier@loria.fr, sylvain.chevillard@ens-lyon.org,
+christoph.lauter@ens-lyon.org, hong.diep.nguyen@ens-lyon.fr'.
 
    If you think something in this manual is unclear, or downright
 incorrect, or if the language needs to be improved, please send a note
@@ -417,7 +422,7 @@ numbers.
      filled with zeroes.  Otherwise, the mantissas are outwards rounded
      to precision PREC.  In both cases, the precision of X is changed
      to PREC.  It returns a value indicating whether the possibly
-     rounded endpoints are exact or not, cf. *Note Return Values::.
+     rounded endpoints are exact or not, cf. *note Return Values::.
 
 
 File: mpfi.info,  Node: Initializing and Assigning Intervals,  Next: Floating-point Quantities,  Prev: Rounding Modes and Precision Handling,  Up: Interval Functions
@@ -1072,9 +1077,9 @@ File: mpfi.info,  Node: Contributors,  Next: References,  Prev: Interval Functio
 Contributors
 ************
 
-MPFI has been written by Fabrice Rouillier and Nathalie Revol.  Its
-development has greatly benefited from the patient and supportive help
-of the MPFR team.
+MPFI has been written by Fabrice Rouillier, Nathalie Revol, Sylvain
+Chevillard, Hong Diep Nguyen and Christoph Lauter. Its development has
+greatly benefited from the patient and supportive help of the MPFR team.
 
 
 File: mpfi.info,  Node: References,  Next: Concept Index,  Prev: Contributors,  Up: Top
@@ -1380,32 +1385,32 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1218
-Node: Copying1883
-Node: Introduction to MPFI3651
-Node: Installing MPFI4776
-Node: Reporting Bugs7043
-Node: MPFI Basics8419
-Node: Interval Functions11916
-Node: Return Values13175
-Node: Rounding Modes and Precision Handling14134
-Node: Initializing and Assigning Intervals17221
-Node: Initializing Intervals17580
-Node: Assigning Intervals19353
-Node: Simultaneous Interval Init & Assign21388
-Node: Floating-point Quantities22651
-Node: Converting Intervals25063
-Node: Interval Arithmetic25538
-Node: Special Functions31727
-Node: Interval Comparison35540
-Node: I/O of Intervals38368
-Node: Operating on the Endpoints41382
-Node: Set Operations43784
-Node: Miscellaneous Interval Functions45599
-Node: Error Handling46728
-Node: Contributors47244
-Node: References47525
-Node: Concept Index48648
-Node: Function Index51581
+Node: Top1224
+Node: Copying1887
+Node: Introduction to MPFI3655
+Node: Installing MPFI4780
+Node: Reporting Bugs7220
+Node: MPFI Basics8690
+Node: Interval Functions12187
+Node: Return Values13446
+Node: Rounding Modes and Precision Handling14405
+Node: Initializing and Assigning Intervals17492
+Node: Initializing Intervals17851
+Node: Assigning Intervals19624
+Node: Simultaneous Interval Init & Assign21659
+Node: Floating-point Quantities22922
+Node: Converting Intervals25334
+Node: Interval Arithmetic25809
+Node: Special Functions31998
+Node: Interval Comparison35811
+Node: I/O of Intervals38639
+Node: Operating on the Endpoints41653
+Node: Set Operations44055
+Node: Miscellaneous Interval Functions45870
+Node: Error Handling46999
+Node: Contributors47515
+Node: References47851
+Node: Concept Index48974
+Node: Function Index51907
 
 End Tag Table
