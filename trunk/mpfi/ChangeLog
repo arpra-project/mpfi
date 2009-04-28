@@ -1,3 +1,13 @@
+2009-04-28 03:00  clauter
+
+	* configure.ac, doc/mpfi.info, doc/mpfi.texi: Changed version
+	  number to something greater than all different version numbers in
+	  the doc etc. Adapted documentation.
+
+2009-04-28 02:04  clauter
+
+	* ChangeLog, NEWS, README: Some history editing for releasing
+
 2009-04-22 19:07  schevill
 
 	* README: reverted nothing
