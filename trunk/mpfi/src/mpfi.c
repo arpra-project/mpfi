@@ -3123,6 +3123,14 @@ int mpfi_const_euler(mpfi_ptr a)
   return MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
 }
 
+int mpfi_const_catalan (mpfi_ptr a)
+{
+  mpfr_const_catalan (&(a->left), MPFI_RNDD);
+  mpfr_const_catalan (&(a->right), MPFI_RNDU);
+
+  return MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
+}
+
 
 /************************************************/
 /* Comparison functions                         */

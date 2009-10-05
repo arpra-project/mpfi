@@ -1,4 +1,4 @@
-This is mpfi.info, produced by makeinfo version 4.11 from mpfi.texi.
+This is ../../../src/mpfi-trunk/mpfi/doc/mpfi.info, produced by makeinfo version 4.11 from ../../../src/mpfi-trunk/mpfi/doc/mpfi.texi.
 
 START-INFO-DIR-ENTRY
 * mpfi: (mpfi.info).               Multiple Precision Floating-Point Interval Library.
@@ -814,6 +814,11 @@ information, see the MPFR documentation or related bibliography.
      Returns an indication of whether none, one or both endpoints are
      exact.
 
+ -- Function: int mpfi_const_catalan (mpfi_t ROP)
+     Sets ROP to the Catalan's constant, with the precision of ROP.
+     Returns an indication of whether none, one or both endpoints are
+     exact.
+
 
 File: mpfi.info,  Node: Interval Comparison,  Next: I/O of Intervals,  Prev: Special Functions,  Up: Interval Functions
 
@@ -1203,6 +1208,7 @@ Function and Type Index
 * mpfi_cmp_si:                           Interval Comparison. (line  19)
 * mpfi_cmp_ui:                           Interval Comparison. (line  18)
 * mpfi_cmp_z:                            Interval Comparison. (line  20)
+* mpfi_const_catalan:                    Special Functions.   (line  85)
 * mpfi_const_euler:                      Special Functions.   (line  80)
 * mpfi_const_log2:                       Special Functions.   (line  72)
 * mpfi_const_pi:                         Special Functions.   (line  76)
@@ -1385,32 +1391,32 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1224
-Node: Copying1887
-Node: Introduction to MPFI3655
-Node: Installing MPFI4780
-Node: Reporting Bugs7220
-Node: MPFI Basics8690
-Node: Interval Functions12187
-Node: Return Values13446
-Node: Rounding Modes and Precision Handling14405
-Node: Initializing and Assigning Intervals17492
-Node: Initializing Intervals17851
-Node: Assigning Intervals19624
-Node: Simultaneous Interval Init & Assign21659
-Node: Floating-point Quantities22922
-Node: Converting Intervals25334
-Node: Interval Arithmetic25809
-Node: Special Functions31998
-Node: Interval Comparison35811
-Node: I/O of Intervals38639
-Node: Operating on the Endpoints41653
-Node: Set Operations44055
-Node: Miscellaneous Interval Functions45870
-Node: Error Handling46999
-Node: Contributors47515
-Node: References47851
-Node: Concept Index48974
-Node: Function Index51907
+Node: Top1290
+Node: Copying1953
+Node: Introduction to MPFI3721
+Node: Installing MPFI4846
+Node: Reporting Bugs7286
+Node: MPFI Basics8756
+Node: Interval Functions12253
+Node: Return Values13512
+Node: Rounding Modes and Precision Handling14471
+Node: Initializing and Assigning Intervals17558
+Node: Initializing Intervals17917
+Node: Assigning Intervals19690
+Node: Simultaneous Interval Init & Assign21725
+Node: Floating-point Quantities22988
+Node: Converting Intervals25400
+Node: Interval Arithmetic25875
+Node: Special Functions32064
+Node: Interval Comparison36078
+Node: I/O of Intervals38906
+Node: Operating on the Endpoints41920
+Node: Set Operations44322
+Node: Miscellaneous Interval Functions46137
+Node: Error Handling47266
+Node: Contributors47782
+Node: References48118
+Node: Concept Index49241
+Node: Function Index52174
 
 End Tag Table

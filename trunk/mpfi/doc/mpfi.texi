@@ -1092,6 +1092,12 @@ with the precision of @var{rop}.
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
+@deftypefun int mpfi_const_catalan (mpfi_t @var{rop})
+Sets @var{rop} to the Catalan's constant,
+with the precision of @var{rop}. 
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
 @node Interval Comparison, I/O of Intervals, Special Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Comparison Functions
