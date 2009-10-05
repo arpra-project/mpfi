@@ -2575,6 +2575,23 @@ int mpfi_sqrt(mpfi_ptr a, mpfi_srcptr b)
   return inexact;
 }
 
+int mpfi_cbrt(mpfi_ptr a, mpfi_srcptr b)
+{
+  int inexact_left, inexact_right, inexact=0;
+
+  inexact_left = mpfr_cbrt(&(a->left), &(b->left), MPFI_RNDD);
+  inexact_right = mpfr_cbrt(&(a->right), &(b->right), MPFI_RNDU);
+
+  if ( MPFI_NAN_P(a) )
+    MPFR_RET_NAN;
+
+  if (inexact_left)
+    inexact += 1;
+  if (inexact_right)
+    inexact += 2;
+  return inexact;
+}
+
 int mpfi_abs(mpfi_ptr a, mpfi_srcptr b)
 {
   /* the result a contains the absolute values of every element of b */

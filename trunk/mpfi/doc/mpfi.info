@@ -706,6 +706,10 @@ intervals when the divisor contains 0, should be available soon.
      negative.  Returns an indication of whether none, one or both
      endpoints are exact.
 
+ -- Function: int mpfi_sqrt (mpfi_t ROP, mpfi_t OP)
+     Sets ROP to the cubic root of OP.  Returns an indication of
+     whether none, one or both endpoints are exact.
+
  -- Function: int mpfi_abs (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the interval containing the absolute value of every
      element of OP.  Returns an indication of whether none, one or both
@@ -1178,7 +1182,7 @@ Function and Type Index
 * Menu:
 
 * mp_prec_t:                             MPFI Basics.         (line  34)
-* mpfi_abs:                              Interval Arithmetic. (line  98)
+* mpfi_abs:                              Interval Arithmetic. (line 102)
 * mpfi_acos:                             Special Functions.   (line  32)
 * mpfi_acosh:                            Special Functions.   (line  47)
 * mpfi_add:                              Interval Arithmetic. (line   7)
@@ -1223,9 +1227,9 @@ Function and Type Index
 * mpfi_diam_rel:                         Floating-point Quantities.
                                                               (line  17)
 * mpfi_div:                              Interval Arithmetic. (line  58)
-* mpfi_div_2exp:                         Interval Arithmetic. (line 113)
-* mpfi_div_2si:                          Interval Arithmetic. (line 116)
-* mpfi_div_2ui:                          Interval Arithmetic. (line 115)
+* mpfi_div_2exp:                         Interval Arithmetic. (line 117)
+* mpfi_div_2si:                          Interval Arithmetic. (line 120)
+* mpfi_div_2ui:                          Interval Arithmetic. (line 119)
 * mpfi_div_d:                            Interval Arithmetic. (line  59)
 * mpfi_div_fr:                           Interval Arithmetic. (line  71)
 * mpfi_div_q:                            Interval Arithmetic. (line  69)
@@ -1315,9 +1319,9 @@ Function and Type Index
 * mpfi_mig:                              Floating-point Quantities.
                                                               (line  37)
 * mpfi_mul:                              Interval Arithmetic. (line  36)
-* mpfi_mul_2exp:                         Interval Arithmetic. (line 104)
-* mpfi_mul_2si:                          Interval Arithmetic. (line 107)
-* mpfi_mul_2ui:                          Interval Arithmetic. (line 106)
+* mpfi_mul_2exp:                         Interval Arithmetic. (line 108)
+* mpfi_mul_2si:                          Interval Arithmetic. (line 111)
+* mpfi_mul_2ui:                          Interval Arithmetic. (line 110)
 * mpfi_mul_d:                            Interval Arithmetic. (line  37)
 * mpfi_mul_fr:                           Interval Arithmetic. (line  43)
 * mpfi_mul_q:                            Interval Arithmetic. (line  42)
@@ -1407,16 +1411,16 @@ Node: Simultaneous Interval Init & Assign21725
 Node: Floating-point Quantities22988
 Node: Converting Intervals25400
 Node: Interval Arithmetic25875
-Node: Special Functions32064
-Node: Interval Comparison36078
-Node: I/O of Intervals38906
-Node: Operating on the Endpoints41920
-Node: Set Operations44322
-Node: Miscellaneous Interval Functions46137
-Node: Error Handling47266
-Node: Contributors47782
-Node: References48118
-Node: Concept Index49241
-Node: Function Index52174
+Node: Special Functions32234
+Node: Interval Comparison36248
+Node: I/O of Intervals39076
+Node: Operating on the Endpoints42090
+Node: Set Operations44492
+Node: Miscellaneous Interval Functions46307
+Node: Error Handling47436
+Node: Contributors47952
+Node: References48288
+Node: Concept Index49411
+Node: Function Index52344
 
 End Tag Table

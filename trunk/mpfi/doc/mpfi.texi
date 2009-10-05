@@ -924,6 +924,11 @@ Sets @var{rop} to NaN if @var{op} is negative.
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
+@deftypefun int mpfi_cbrt (mpfi_t @var{rop}, mpfi_t @var{op})
+Sets @var{rop} to the cubic root of @var{op}.
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
 @deftypefun int mpfi_abs (mpfi_t @var{rop}, mpfi_t @var{op})
 @ifinfo
 Sets @var{rop} to the interval containing the absolute value of every element of @var{op}.

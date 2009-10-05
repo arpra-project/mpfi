@@ -182,6 +182,7 @@ int   mpfi_sqr        (mpfi_ptr ,mpfi_srcptr);
 int   mpfi_inv        (mpfi_ptr, mpfi_srcptr);
 /* the sqrt of a (partially) negative interval is a NaN */
 int   mpfi_sqrt       (mpfi_ptr, mpfi_srcptr);
+int   mpfi_cbrt       (mpfi_ptr, mpfi_srcptr);
 /* the first interval contains the absolute values of */
 /* every element of the second interval */
 int   mpfi_abs        (mpfi_ptr, mpfi_srcptr);
