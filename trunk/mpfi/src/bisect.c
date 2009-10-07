@@ -1,0 +1,69 @@
+/* bisect.c -- Split an interval into two halves.
+
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+                     Spaces project, Inria Lorraine
+                     and Salsa project, INRIA Rocquencourt,
+                     and Arenaire project, Inria Rhone-Alpes, France
+                     and Lab. ANO, USTL (Univ. of Lille),  France
+
+This file is part of the MPFI Library.
+
+The MPFI Library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or (at your
+option) any later version.
+
+The MPFI Library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with the MPFI Library; see the file COPYING.LIB.  If not, write to
+the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+MA 02110-1301, USA. */
+
+
+#include "mpfi.h"
+#include "mpfi-impl.h"
+
+int
+mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
+{
+  mp_prec_t prec, prec1, prec2;
+  mpfr_t centre;
+  int inexact_centre, dummy;
+
+  if ( MPFI_NAN_P (y) ) {
+    mpfr_set_nan (&(y1->left));
+    mpfr_set_nan (&(y1->right));
+    mpfr_set_nan (&(y2->left));
+    mpfr_set_nan (&(y2->right));
+    MPFR_RET_NAN;
+  }
+  else if ( !mpfi_bounded_p (y) ) {
+    dummy = mpfi_set (y1, y);
+    mpfr_set_nan (&(y2->left));
+    mpfr_set_nan (&(y2->right));
+    MPFR_RET_NAN;
+  }
+
+  prec=mpfi_get_prec (y);
+  prec1=mpfi_get_prec (y1);
+  prec2=mpfi_get_prec (y2);
+  if ( (prec1 >= prec2) && (prec1 >= prec))
+    prec = prec1;
+  else if ( (prec2 >= prec1) && (prec2 >= prec))
+    prec = prec2;
+  mpfr_init2 (centre, prec);
+
+  inexact_centre = mpfi_mid (centre, y);
+
+  dummy = mpfr_set (&(y1->left), &(y->left), MPFI_RNDD);
+  dummy = mpfr_set (&(y2->right), &(y->right), MPFI_RNDU);
+  dummy = mpfr_set (&(y1->right), centre, MPFI_RNDU);
+  dummy = mpfr_set (&(y2->left), centre, MPFI_RNDD);
+
+  mpfr_clear (centre);
+  return inexact_centre;
+}

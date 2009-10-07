@@ -74,7 +74,7 @@ int   mpfi_set_ui     (mpfi_ptr, const unsigned long);
 int   mpfi_set_d      (mpfi_ptr, const double);
 int   mpfi_set_z      (mpfi_ptr, mpz_srcptr);
 int   mpfi_set_q      (mpfi_ptr, mpq_srcptr);
-int   mpfi_set_fr   (mpfi_ptr, mpfr_srcptr);
+int   mpfi_set_fr     (mpfi_ptr, mpfr_srcptr);
 int   mpfi_set_str    (mpfi_ptr, char *, int);
 
 /* combined initialization and assignment functions */
@@ -84,7 +84,7 @@ int   mpfi_init_set_ui     (mpfi_ptr, const unsigned long);
 int   mpfi_init_set_d      (mpfi_ptr, const double);
 int   mpfi_init_set_z      (mpfi_ptr, mpz_srcptr);
 int   mpfi_init_set_q      (mpfi_ptr, mpq_srcptr);
-int   mpfi_init_set_fr   (mpfi_ptr, mpfr_srcptr);
+int   mpfi_init_set_fr     (mpfi_ptr, mpfr_srcptr);
 int   mpfi_init_set_str    (mpfi_ptr, char *, int);
 
 /* swapping two intervals */
@@ -231,12 +231,12 @@ int mpfi_const_catalan(mpfi_ptr);
 
 extern int    (*mpfi_cmp)     (mpfi_srcptr,mpfi_srcptr);
 
-extern int    (*mpfi_cmp_d)   (mpfi_srcptr,const double);
-extern int    (*mpfi_cmp_ui)  (mpfi_srcptr,const unsigned long);
-extern int    (*mpfi_cmp_si)  (mpfi_srcptr,const long);
-extern int    (*mpfi_cmp_z)   (mpfi_srcptr,mpz_srcptr);
-extern int    (*mpfi_cmp_q)   (mpfi_srcptr,mpq_srcptr);
-extern int    (*mpfi_cmp_fr)(mpfi_srcptr,mpfr_srcptr);
+extern int    (*mpfi_cmp_d)  (mpfi_srcptr,const double);
+extern int    (*mpfi_cmp_ui) (mpfi_srcptr,const unsigned long);
+extern int    (*mpfi_cmp_si) (mpfi_srcptr,const long);
+extern int    (*mpfi_cmp_z)  (mpfi_srcptr,mpz_srcptr);
+extern int    (*mpfi_cmp_q)  (mpfi_srcptr,mpq_srcptr);
+extern int    (*mpfi_cmp_fr) (mpfi_srcptr,mpfr_srcptr);
 
 extern int    (*mpfi_is_pos)     (mpfi_srcptr);
 extern int    (*mpfi_is_nonneg)  (mpfi_srcptr);
@@ -245,24 +245,6 @@ extern int    (*mpfi_is_nonpos)  (mpfi_srcptr);
 extern int    (*mpfi_is_zero)    (mpfi_srcptr);
 extern int    (*mpfi_is_strictly_pos) (mpfi_srcptr);
 extern int    (*mpfi_is_strictly_neg) (mpfi_srcptr);
-
-/* default comparison functions */
-int    mpfi_is_pos_default          (mpfi_srcptr);
-int    mpfi_is_nonneg_default       (mpfi_srcptr);
-int    mpfi_is_neg_default          (mpfi_srcptr);
-int    mpfi_is_nonpos_default       (mpfi_srcptr);
-int    mpfi_is_zero_default         (mpfi_srcptr);
-int    mpfi_is_strictly_neg_default (mpfi_srcptr a);
-int    mpfi_is_strictly_pos_default (mpfi_srcptr a);
-
-int    mpfi_cmp_default      (mpfi_srcptr,mpfi_srcptr);
-int    mpfi_cmp_d_default    (mpfi_srcptr,const double);
-int    mpfi_cmp_ui_default   (mpfi_srcptr,const unsigned long);
-int    mpfi_cmp_si_default   (mpfi_srcptr,const long);
-int    mpfi_cmp_z_default    (mpfi_srcptr,mpz_srcptr);
-int    mpfi_cmp_q_default    (mpfi_srcptr,mpq_srcptr);
-int    mpfi_cmp_fr_default (mpfi_srcptr,mpfr_srcptr);
-
 
 int mpfi_has_zero (mpfi_srcptr);
 
@@ -286,13 +268,13 @@ int   mpfi_revert_if_needed  (mpfi_ptr);
 /* extends the interval defined by the first argument 
    so that it contains the second one */
 
-int   mpfi_put        (mpfi_ptr,mpfi_srcptr);
-int   mpfi_put_d      (mpfi_ptr,const double);
-int   mpfi_put_si     (mpfi_ptr,const long);
-int   mpfi_put_ui     (mpfi_ptr,const unsigned long);
-int   mpfi_put_z      (mpfi_ptr,mpz_srcptr);
-int   mpfi_put_q      (mpfi_ptr,mpq_srcptr);
-int   mpfi_put_fr     (mpfi_ptr,mpfr_srcptr);
+int   mpfi_put    (mpfi_ptr,mpfi_srcptr);
+int   mpfi_put_d  (mpfi_ptr,const double);
+int   mpfi_put_si (mpfi_ptr,const long);
+int   mpfi_put_ui (mpfi_ptr,const unsigned long);
+int   mpfi_put_z  (mpfi_ptr,mpz_srcptr);
+int   mpfi_put_q  (mpfi_ptr,mpq_srcptr);
+int   mpfi_put_fr (mpfi_ptr,mpfr_srcptr);
 
 /* builds an interval whose left bound is the lower (round -infty)
    than the second argument and the right bound is greater 
@@ -346,6 +328,11 @@ int    mpfi_is_error(void);
 #ifdef __cplusplus
 }
 #endif
+
+#define MPFI_ERROR(s)						\
+  do {								\
+    if(!mpfi_error) mpfi_error=1;fprintf(stderr,"\n%s\n",s);	\
+  } while (0)
 
 #define MPFI_FLAGS_BOTH_ENDPOINTS_EXACT       0
 #define MPFI_FLAGS_LEFT_ENDPOINT_INEXACT      1

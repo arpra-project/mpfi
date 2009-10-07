@@ -57,6 +57,18 @@ MA 02110-1301, USA. */
 
 #define MPFI_CLEAR(m) {mpfr_clear(&(m->right)); mpfr_clear(&(m->left));}
 */
+
+#define MPFI_IS_POS(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>0))
+#define MPFI_IS_STRICTLY_POS(x) ((mpfr_sgn((&(x->left)))>0) && (mpfr_sgn((&(x->right)))>0))
+#define MPFI_IS_NONNEG(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>=0))
+#define MPFI_IS_NEG(x) ((mpfr_sgn((&(x->left)))<0) && (mpfr_sgn((&(x->right)))<=0))
+#define MPFI_IS_STRICTLY_NEG(x) ((mpfr_sgn((&(x->left)))<0) && (mpfr_sgn((&(x->right)))<0))
+#define MPFI_IS_NONPOS(x) ((mpfr_sgn((&(x->left)))<=0) && (mpfr_sgn((&(x->right)))<=0))
+#define MPFI_IS_NULL(x) ((mpfr_sgn((&(x->left)))==0) && (mpfr_sgn((&(x->right)))==0))
+#define MPFI_HAS_ZERO(x) ((mpfr_sgn((&(x->left)))<0) && (mpfr_sgn((&(x->right)))>0))
+#define MPFI_HAS_ZERO_NONSTRICT(x) ((mpfr_sgn((&(x->left)))<=0) && (mpfr_sgn((&(x->right)))>=0))
+
+
 #if defined(GMP_NUMB_BITS) /* GMP 4.1.2 or above */
 # define BITS_PER_MP_LIMB  (GMP_NUMB_BITS+GMP_NAIL_BITS)
 #elif defined (__GMP_BITS_PER_MP_LIMB) /* Older versions 4.x.x */
@@ -92,6 +104,36 @@ extern void * (*mpfi_allocate_func)   (size_t);
 extern void * (*mpfi_reallocate_func) (void *, size_t, size_t);
 extern void   (*mpfi_free_func)       (void *, size_t);
 
+#endif
+
+/* Internal functions */
+
+#if defined (__cplusplus)
+extern "C" {
+#endif
+
+mp_prec_t mpfi_quadrant (mpz_ptr, mpfr_srcptr);
+int     mpfi_cmp_sym_pi (mpz_srcptr, mpfr_srcptr, mpfr_srcptr, mp_prec_t);
+
+/* default comparison functions */
+int    	mpfi_cmp_default    (mpfi_srcptr, mpfi_srcptr);
+int    	mpfi_cmp_d_default  (mpfi_srcptr, const double);
+int    	mpfi_cmp_ui_default (mpfi_srcptr, const unsigned long);
+int    	mpfi_cmp_si_default (mpfi_srcptr, const long);
+int    	mpfi_cmp_z_default  (mpfi_srcptr, mpz_srcptr);
+int    	mpfi_cmp_q_default  (mpfi_srcptr, mpq_srcptr);
+int    	mpfi_cmp_fr_default (mpfi_srcptr, mpfr_srcptr);
+
+int    	mpfi_is_pos_default          (mpfi_srcptr);
+int    	mpfi_is_nonneg_default       (mpfi_srcptr);
+int    	mpfi_is_neg_default          (mpfi_srcptr);
+int    	mpfi_is_nonpos_default       (mpfi_srcptr);
+int    	mpfi_is_zero_default         (mpfi_srcptr);
+int    	mpfi_is_strictly_neg_default (mpfi_srcptr);
+int    	mpfi_is_strictly_pos_default (mpfi_srcptr);
+
+#if defined (__cplusplus)
+}
 #endif
 
 #endif
