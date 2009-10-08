@@ -5,7 +5,7 @@ libmpfi_la_SOURCES = mpfi-impl.h abs.c acos.c acosh.c add.c	\
    add_d.c add_fr.c add_q.c add_si.c add_ui.c add_z.c alea.c	\
    asin.c asinh.c atan.c atanh.c bisect.c blow.c cbrt.c		\
    clear.c cmp.c cmp_sym_pi.c constants.c cos.c cosh.c csc.c	\
-   d_div.c d_sub.c diam.c div.c div_2exp.c div_2si.c		\
+   cot.c d_div.c d_sub.c diam.c div.c div_2exp.c div_2si.c	\
    div_2ui.c div_d.c div_fr.c div_q.c div_si.c div_ui.c		\
    div_z.c error.c exp.c exp2.c expm1.c fr_div.c fr_sub.c	\
    get_endpoints.c get_fr.c get_d.c get_prec.c get_version.c	\

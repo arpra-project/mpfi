@@ -210,6 +210,7 @@ int mpfi_atan (mpfi_ptr, mpfi_srcptr);
 
 int mpfi_sec  (mpfi_ptr, mpfi_srcptr);
 int mpfi_csc  (mpfi_ptr, mpfi_srcptr);
+int mpfi_cot  (mpfi_ptr, mpfi_srcptr);
 
 int mpfi_cosh (mpfi_ptr, mpfi_srcptr);
 int mpfi_sinh (mpfi_ptr, mpfi_srcptr);
