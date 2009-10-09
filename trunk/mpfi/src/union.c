@@ -30,7 +30,7 @@ MA 02110-1301, USA. */
 int
 mpfi_union (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
 {
-/* Union of two intervals, without gap: convex hull of the union */
+  /* Union of two intervals, without gap: convex hull of the union */
   int inexact_left, inexact_right, inexact=0;
 
   if ( MPFI_NAN_P (b) || MPFI_NAN_P (c) ) {
@@ -55,9 +55,11 @@ mpfi_union (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     inexact += 2;
 
   if (mpfi_revert_if_needed (a)) {
-    fprintf (stderr, "Pb endpoints in reverse order in mpfi_union: ");
-    mpfi_out_str (stderr, 10, 0, a);
-    fprintf (stderr, "\n");
+    /*
+      fprintf (stderr, "Pb endpoints in reverse order in mpfi_union: ");
+      mpfi_out_str (stderr, 10, 0, a);
+      fprintf (stderr, "\n");
+    */
     inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
   }
 

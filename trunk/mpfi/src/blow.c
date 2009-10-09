@@ -78,9 +78,11 @@ mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
     inexact += 2;
 
   if (mpfi_revert_if_needed (y)) {
-    fprintf (stderr, "Pb endpoints in reverse order in mpfi_blow: ");
-    mpfi_out_str (stderr, 10, 0, y);
-    fprintf (stderr, "\n");
+    /*
+      fprintf (stderr, "Pb endpoints in reverse order in mpfi_blow: ");
+      mpfi_out_str (stderr, 10, 0, y);
+      fprintf (stderr, "\n");
+    */
     inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
   }
 
