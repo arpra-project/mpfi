@@ -63,7 +63,7 @@ mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
       }
     } while (ok != 0);
 
-    mpfr_get_z (quad, &(tmp->left), GMP_RNDN); //exact
+    mpfr_get_z (quad, &(tmp->left), GMP_RNDN); /* exact */
 
     mpfi_clear (two_over_pi);
     mpfi_clear (tmp);
