@@ -24,6 +24,7 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
+#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -53,19 +54,8 @@ mpfi_sub (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     if (inexact_right)
       inexact += 2;
 
-    if (mpfi_revert_if_needed (a)) {
-      /*
-	fprintf(stdout, "Pb endpoints in reverse order in mpfi_sub\n");
-	fprintf(stdout, "Pb endpoints in reverse order in mpfi_sub, 1st operand: ");
-	mpfi_out_str(stdout, 10, 0, b);
-	fprintf(stdout, "\n");
-	fprintf(stdout, "Pb endpoints in reverse order in mpfi_sub, 2nd operand: ");
-	mpfi_out_str(stdout, 10, 0, c);
-	fprintf(stdout, "\n");
-	fprintf(stdout, "Pb endpoints in reverse order in mpfi_sub, result: ");
-	mpfi_out_str(stdout, 10, 0, a);
-	fprintf(stdout, "\n");
-      */
+    if (mpfi_revert_if_needed (a)) { 
+      WARNING_REVERTED_ENDPOINTS (a, "mpfi_sub");
       inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
     }
 

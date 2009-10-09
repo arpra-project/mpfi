@@ -24,6 +24,7 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
+#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -44,11 +45,7 @@ mpfi_mul_2exp (mpfi_ptr a, mpfi_srcptr b, unsigned long c)
     inexact += 2;
 
   if (mpfi_revert_if_needed (a)) {
-    /*
-    fprintf (stderr, "Pb endpoints in reverse order in mpfi_mul_2exp: ");
-    mpfi_out_str (stderr, 10, 0, a);
-    fprintf (stderr, "\n");
-    */
+    WARNING_REVERTED_ENDPOINTS (a, "mpfi_mul_2exp");
     inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
   }
 

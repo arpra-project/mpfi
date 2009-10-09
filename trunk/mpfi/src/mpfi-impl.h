@@ -141,4 +141,17 @@ int    	mpfi_is_strictly_pos_default (mpfi_srcptr);
 }
 #endif
 
+/* Debug macros */
+#ifdef WARN_IF_REVERTED_ENDPOINTS
+/* include stdio.h when using this macro */
+# define WARNING_REVERTED_ENDPOINTS(a, fname)                           \
+  do {									\
+  fprintf (stdout, "Pb endpoints in reverse order in %s\n", fname);     \
+  mpfi_out_str (stdout, 10, 0, a);                                      \
+  fprintf (stdout, "\n");						\
+  while (0)
+#else
+# define WARNING_REVERTED_ENDPOINTS(a, fname)
+#endif
+
 #endif
