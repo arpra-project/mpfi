@@ -112,6 +112,11 @@ extern void   (*mpfi_free_func)       (void *, size_t);
 extern "C" {
 #endif
 
+/* WARNING: this is an MPFR internal function which may be removed in future
+   MPFR versions. Should be replaced by mpfr_printf. */
+void mpfr_print_binary _MPFR_PROTO ((mpfr_srcptr));
+
+
 mp_prec_t mpfi_quadrant (mpz_ptr, mpfr_srcptr);
 int     mpfi_cmp_sym_pi (mpz_srcptr, mpfr_srcptr, mpfr_srcptr, mp_prec_t);
 
