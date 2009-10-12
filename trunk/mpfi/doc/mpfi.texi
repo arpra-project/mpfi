@@ -1356,7 +1356,7 @@ Warning: this function can return an empty interval (i.e. with endpoints
 in reverse order).
 @end deftypefun
 
-@deftypefun int mpfi_union (mpfi_t @var{rop}, @var{op1}, @var{op2})
+@deftypefun int mpfi_union (mpfi_t @var{rop}, mpfi_t @var{op1}, mpfi_t @var{op2})
 Sets @var{rop} to the convex hull of the union of the intervals @var{op1} and @var{op2}.
 It returns a value indicating whether none, one or both endpoints are inexact
 (due to possible roundings).

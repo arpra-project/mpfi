@@ -706,7 +706,7 @@ intervals when the divisor contains 0, should be available soon.
      negative.  Returns an indication of whether none, one or both
      endpoints are exact.
 
- -- Function: int mpfi_sqrt (mpfi_t ROP, mpfi_t OP)
+ -- Function: int mpfi_cbrt (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the cubic root of OP.  Returns an indication of
      whether none, one or both endpoints are exact.
 
@@ -1026,14 +1026,14 @@ File: mpfi.info,  Node: Set Operations,  Next: Miscellaneous Interval Functions,
      special functions to handle empty intervals: this is the
      responsability of the user to avoid computing with empty intervals.
 
- -- Function: int mpfi_intersect (mpfi_t ROP, OP1, OP2)
+ -- Function: int mpfi_intersect (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the intersection (possibly empty) of the intervals OP1
      and OP2.  It returns a value indicating whether none, one or both
      endpoints are inexact (due to possible roundings).  Warning: this
      function can return an empty interval (i.e. with endpoints in
      reverse order).
 
- -- Function: int mpfi_union (mpfi_t ROP, OP1, OP2)
+ -- Function: int mpfi_union (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the convex hull of the union of the intervals OP1 and
      OP2.  It returns a value indicating whether none, one or both
      endpoints are inexact (due to possible roundings).
@@ -1203,6 +1203,7 @@ Function and Type Index
 * mpfi_blow:                             Miscellaneous Interval Functions.
                                                               (line  12)
 * mpfi_bounded_p:                        Interval Comparison. (line  63)
+* mpfi_cbrt:                             Interval Arithmetic. (line  98)
 * mpfi_clear:                            Initializing Intervals.
                                                               (line  28)
 * mpfi_cmp:                              Interval Comparison. (line  16)
@@ -1416,11 +1417,11 @@ Node: Interval Comparison36248
 Node: I/O of Intervals39076
 Node: Operating on the Endpoints42090
 Node: Set Operations44492
-Node: Miscellaneous Interval Functions46307
-Node: Error Handling47436
-Node: Contributors47952
-Node: References48288
-Node: Concept Index49411
-Node: Function Index52344
+Node: Miscellaneous Interval Functions46335
+Node: Error Handling47464
+Node: Contributors47980
+Node: References48316
+Node: Concept Index49439
+Node: Function Index52372
 
 End Tag Table
