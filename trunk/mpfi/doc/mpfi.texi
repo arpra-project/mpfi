@@ -1347,7 +1347,7 @@ to handle empty intervals: this is the responsability of the user
 to avoid computing with empty intervals.
 @end deftypefun
 
-@deftypefun int mpfi_intersect (mpfi_t @var{rop}, @var{op1}, @var{op2})
+@deftypefun int mpfi_intersect (mpfi_t @var{rop}, mpfi_t @var{op1}, mpfi_t @var{op2})
 Sets @var{rop} to the intersection (possibly empty) of the intervals
 @var{op1} and @var{op2}.
 It returns a value indicating whether none, one or both endpoints are inexact
