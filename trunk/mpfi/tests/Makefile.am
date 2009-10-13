@@ -1,9 +1,11 @@
-noinst_PROGRAMS = test_mpfi test_trigo
-test_mpfi_SOURCES = test_mpfi.c
-test_trigo_SOURCES = test_trigo.c
-test_mpfi_LDADD = ${top_builddir}/src/.libs/libmpfi.a @LDADD@
-test_trigo_LDADD = ${top_builddir}/src/.libs/libmpfi.a @LDADD@
+LDADD = libmpfi-tests.la $(top_builddir)/src/.libs/libmpfi.la
+AM_CPPFLAGS = -I$(top_srcdir)/src
 
-# ici on utilise la variable GMP_INC_PATH declaree par le configure
+check_LTLIBRARIES = libmpfi-tests.la
+libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c mpfi-tests.c
 
-INCLUDES = -I. -I${top_srcdir}/src @INCLUDES@
+check_PROGRAMS = tadd tsub
+
+EXTRA_DIST = add.dat sub.dat
+
+TESTS = $(check_PROGRAMS)
