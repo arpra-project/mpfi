@@ -1,5 +1,4 @@
 lib_LTLIBRARIES = libmpfi.la
-include_HEADERS = mpfi.h mpfi_io.h
 
 libmpfi_la_SOURCES = mpfi-impl.h abs.c acos.c acosh.c add.c	\
    add_d.c add_fr.c add_q.c add_si.c add_ui.c add_z.c alea.c	\
