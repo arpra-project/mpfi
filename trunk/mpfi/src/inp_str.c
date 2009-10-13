@@ -27,6 +27,15 @@ MA 02110-1301, USA. */
 #include "mpfi_io.h"
 #include "mpfi-impl.h"
 
+#ifdef mp_get_memory_functions
+/* putting 0 as initial values forces those symbols to be fully defined,
+   and always resolved, otherwise they are only tentatively defined, which
+   leads to problems on e.g. MacOS. */
+void * (*mpfi_allocate_func) (size_t) = 0;
+void * (*mpfi_reallocate_func) (void *,size_t, size_t) = 0;
+void   (*mpfi_free_func) (void *, size_t) = 0;
+#endif
+
 size_t
 mpfi_inp_str (mpfi_ptr x, FILE *s, int base)
 {
