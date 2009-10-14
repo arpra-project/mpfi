@@ -1009,6 +1009,15 @@ Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
 
+@deftypefun int mpfi_sec (mpfi_t @var{rop}, mpfi_t @var{op})
+@deftypefunx int mpfi_csc (mpfi_t @var{rop}, mpfi_t @var{op})
+@deftypefunx int mpfi_cot (mpfi_t @var{rop}, mpfi_t @var{op})
+Sets @var{rop} to the secant, cosecant or cotangent of @var{op},
+with the precision of @var{rop}.
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
+
 @c @deftypefun void mpfi_sin_cos (mpfi_t @var{sop}, mpfi_t @var{cop}, mpfi_t @var{op})
 @c Sets @var{sop} to the sine of @var{op}, @var{cop} to the cosine of @var{op},
 @c with the precision of the result (@var{sop} and @var{cop}).
@@ -1033,6 +1042,15 @@ Sets @var{cop} to the hyperbolic cosine of @var{op},
 with the precision of the result.
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
+
+@deftypefun int mpfi_sech (mpfi_t @var{rop}, mpfi_t @var{op})
+@deftypefunx int mpfi_csch (mpfi_t @var{rop}, mpfi_t @var{op})
+@deftypefunx int mpfi_coth (mpfi_t @var{rop}, mpfi_t @var{op})
+Sets @var{rop} to the hyperbolic secant, cosecant or cotangent of @var{op},
+with the precision of @var{rop}.
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
 
 @deftypefun int mpfi_acosh (mpfi_t @var{rop}, mpfi_t @var{op})
 @deftypefunx int mpfi_asinh (mpfi_t @var{rop}, mpfi_t @var{op})

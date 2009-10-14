@@ -218,6 +218,10 @@ int mpfi_acosh (mpfi_ptr, mpfi_srcptr);
 int mpfi_asinh (mpfi_ptr, mpfi_srcptr);
 int mpfi_atanh (mpfi_ptr, mpfi_srcptr);
 
+int mpfi_sech  (mpfi_ptr, mpfi_srcptr);
+int mpfi_csch  (mpfi_ptr, mpfi_srcptr);
+int mpfi_coth  (mpfi_ptr, mpfi_srcptr);
+
 int mpfi_log1p (mpfi_ptr, mpfi_srcptr);
 int mpfi_expm1 (mpfi_ptr, mpfi_srcptr);
 

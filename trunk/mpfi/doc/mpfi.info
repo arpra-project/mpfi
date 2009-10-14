@@ -765,6 +765,13 @@ information, see the MPFR documentation or related bibliography.
      of ROP.  Returns an indication of whether none, one or both
      endpoints are exact.
 
+ -- Function: int mpfi_sec (mpfi_t ROP, mpfi_t OP)
+ -- Function: int mpfi_csc (mpfi_t ROP, mpfi_t OP)
+ -- Function: int mpfi_cot (mpfi_t ROP, mpfi_t OP)
+     Sets ROP to the secant, cosecant or cotangent of OP, with the
+     precision of ROP.  Returns an indication of whether none, one or
+     both endpoints are exact.
+
  -- Function: int mpfi_acos (mpfi_t ROP, mpfi_t OP)
  -- Function: int mpfi_asin (mpfi_t ROP, mpfi_t OP)
  -- Function: int mpfi_atan (mpfi_t ROP, mpfi_t OP)
@@ -778,6 +785,13 @@ information, see the MPFR documentation or related bibliography.
      Sets COP to the hyperbolic cosine of OP, SOP to the hyperbolic
      sine of OP, TOP to the hyperbolic tangent of OP, with the
      precision of the result.  Returns an indication of whether none,
+     one or both endpoints are exact.
+
+ -- Function: int mpfi_sech (mpfi_t ROP, mpfi_t OP)
+ -- Function: int mpfi_csch (mpfi_t ROP, mpfi_t OP)
+ -- Function: int mpfi_coth (mpfi_t ROP, mpfi_t OP)
+     Sets ROP to the hyperbolic secant, cosecant or cotangent of OP,
+     with the precision of ROP.  Returns an indication of whether none,
      one or both endpoints are exact.
 
  -- Function: int mpfi_acosh (mpfi_t ROP, mpfi_t OP)
@@ -1183,8 +1197,8 @@ Function and Type Index
 
 * mp_prec_t:                             MPFI Basics.         (line  34)
 * mpfi_abs:                              Interval Arithmetic. (line 102)
-* mpfi_acos:                             Special Functions.   (line  32)
-* mpfi_acosh:                            Special Functions.   (line  47)
+* mpfi_acos:                             Special Functions.   (line  39)
+* mpfi_acosh:                            Special Functions.   (line  61)
 * mpfi_add:                              Interval Arithmetic. (line   7)
 * mpfi_add_d:                            Interval Arithmetic. (line   8)
 * mpfi_add_fr:                           Interval Arithmetic. (line  14)
@@ -1194,10 +1208,10 @@ Function and Type Index
 * mpfi_add_z:                            Interval Arithmetic. (line  12)
 * mpfi_alea:                             Floating-point Quantities.
                                                               (line  48)
-* mpfi_asin:                             Special Functions.   (line  33)
-* mpfi_asinh:                            Special Functions.   (line  48)
-* mpfi_atan:                             Special Functions.   (line  34)
-* mpfi_atanh:                            Special Functions.   (line  49)
+* mpfi_asin:                             Special Functions.   (line  40)
+* mpfi_asinh:                            Special Functions.   (line  62)
+* mpfi_atan:                             Special Functions.   (line  41)
+* mpfi_atanh:                            Special Functions.   (line  63)
 * mpfi_bisect:                           Miscellaneous Interval Functions.
                                                               (line  18)
 * mpfi_blow:                             Miscellaneous Interval Functions.
@@ -1213,12 +1227,16 @@ Function and Type Index
 * mpfi_cmp_si:                           Interval Comparison. (line  19)
 * mpfi_cmp_ui:                           Interval Comparison. (line  18)
 * mpfi_cmp_z:                            Interval Comparison. (line  20)
-* mpfi_const_catalan:                    Special Functions.   (line  85)
-* mpfi_const_euler:                      Special Functions.   (line  80)
-* mpfi_const_log2:                       Special Functions.   (line  72)
-* mpfi_const_pi:                         Special Functions.   (line  76)
+* mpfi_const_catalan:                    Special Functions.   (line  99)
+* mpfi_const_euler:                      Special Functions.   (line  94)
+* mpfi_const_log2:                       Special Functions.   (line  86)
+* mpfi_const_pi:                         Special Functions.   (line  90)
 * mpfi_cos:                              Special Functions.   (line  25)
-* mpfi_cosh:                             Special Functions.   (line  39)
+* mpfi_cosh:                             Special Functions.   (line  46)
+* mpfi_cot:                              Special Functions.   (line  34)
+* mpfi_coth:                             Special Functions.   (line  56)
+* mpfi_csc:                              Special Functions.   (line  33)
+* mpfi_csch:                             Special Functions.   (line  55)
 * mpfi_d_div:                            Interval Arithmetic. (line  60)
 * mpfi_d_sub:                            Interval Arithmetic. (line  20)
 * mpfi_diam:                             Floating-point Quantities.
@@ -1240,7 +1258,7 @@ Function and Type Index
 * MPFI_ERROR:                            Error Handling.      (line   7)
 * mpfi_exp:                              Special Functions.   (line  16)
 * mpfi_exp2:                             Special Functions.   (line  21)
-* mpfi_expm1:                            Special Functions.   (line  60)
+* mpfi_expm1:                            Special Functions.   (line  74)
 * mpfi_fr_div:                           Interval Arithmetic. (line  72)
 * mpfi_fr_sub:                           Interval Arithmetic. (line  32)
 * mpfi_get_d:                            Converting Intervals.
@@ -1310,9 +1328,9 @@ Function and Type Index
 * mpfi_is_strictly_pos:                  Interval Comparison. (line  32)
 * mpfi_is_zero:                          Interval Comparison. (line  48)
 * mpfi_log:                              Special Functions.   (line  10)
-* mpfi_log10:                            Special Functions.   (line  66)
-* mpfi_log1p:                            Special Functions.   (line  54)
-* mpfi_log2:                             Special Functions.   (line  65)
+* mpfi_log10:                            Special Functions.   (line  80)
+* mpfi_log1p:                            Special Functions.   (line  68)
+* mpfi_log2:                             Special Functions.   (line  79)
 * mpfi_mag:                              Floating-point Quantities.
                                                               (line  31)
 * mpfi_mid:                              Floating-point Quantities.
@@ -1354,6 +1372,8 @@ Function and Type Index
                                                               (line  20)
 * mpfi_round_prec:                       Rounding Modes and Precision Handling.
                                                               (line  56)
+* mpfi_sec:                              Special Functions.   (line  32)
+* mpfi_sech:                             Special Functions.   (line  54)
 * mpfi_set:                              Assigning Intervals. (line  10)
 * mpfi_set_d:                            Assigning Intervals. (line  13)
 * mpfi_set_error:                        Error Handling.      (line  14)
@@ -1368,7 +1388,7 @@ Function and Type Index
 * mpfi_si_div:                           Interval Arithmetic. (line  66)
 * mpfi_si_sub:                           Interval Arithmetic. (line  26)
 * mpfi_sin:                              Special Functions.   (line  26)
-* mpfi_sinh:                             Special Functions.   (line  40)
+* mpfi_sinh:                             Special Functions.   (line  47)
 * mpfi_sqr:                              Interval Arithmetic. (line  80)
 * mpfi_sqrt:                             Interval Arithmetic. (line  93)
 * mpfi_sub:                              Interval Arithmetic. (line  18)
@@ -1381,7 +1401,7 @@ Function and Type Index
 * mpfi_swap:                             Assigning Intervals. (line  36)
 * mpfi_t:                                MPFI Basics.         (line  17)
 * mpfi_tan:                              Special Functions.   (line  27)
-* mpfi_tanh:                             Special Functions.   (line  41)
+* mpfi_tanh:                             Special Functions.   (line  48)
 * mpfi_ui_div:                           Interval Arithmetic. (line  64)
 * mpfi_ui_sub:                           Interval Arithmetic. (line  24)
 * mpfi_union:                            Set Operations.      (line  33)
@@ -1413,15 +1433,15 @@ Node: Floating-point Quantities22988
 Node: Converting Intervals25400
 Node: Interval Arithmetic25875
 Node: Special Functions32234
-Node: Interval Comparison36248
-Node: I/O of Intervals39076
-Node: Operating on the Endpoints42090
-Node: Set Operations44492
-Node: Miscellaneous Interval Functions46335
-Node: Error Handling47464
-Node: Contributors47980
-Node: References48316
-Node: Concept Index49439
-Node: Function Index52372
+Node: Interval Comparison36906
+Node: I/O of Intervals39734
+Node: Operating on the Endpoints42748
+Node: Set Operations45150
+Node: Miscellaneous Interval Functions46993
+Node: Error Handling48122
+Node: Contributors48638
+Node: References48974
+Node: Concept Index50097
+Node: Function Index53030
 
 End Tag Table
