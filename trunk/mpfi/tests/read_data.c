@@ -209,6 +209,8 @@ read_mpfi (FILE *f, mpfi_ptr a)
   mpfi_set_prec (a, read_prec (f));
   read_mpfr_number (f, &(a->left));
   read_mpfr_number (f, &(a->right));
+  if (mpfr_cmp (&(a->left), &(a->right)) > 0)
+    printf ("Warning: reverted endpoints line %lu\n", line_number - 1);
 }
 
 static void
