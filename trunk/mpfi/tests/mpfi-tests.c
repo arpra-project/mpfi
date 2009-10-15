@@ -34,6 +34,9 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
   mpfi_t x, y, z;
   mpfr_t e, f, g;
 
+  if (function.mpfr_func == NULL)
+    return;
+
   if (!rands_initialized) {
     printf ("Put test_start at the beginning of your test function.\n");
     exit (1);
