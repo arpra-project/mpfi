@@ -26,14 +26,42 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+/* the middle of two points is in their convex hull */
+int
+middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b)
+{
+  mpfr_t min, max;
+
+  if (mpfr_cmp (a, b) < 0) {
+    min[0] = a[0];
+    max[0] = b[0];
+  }
+  else {
+    min[0] = b[0];
+    max[0] = a[0];
+  }
+  mpfr_sub (m, max, min, MPFI_RNDU);
+  mpfr_div_2exp (m, m, 1, MPFI_RNDU);
+  mpfr_add (m, min, m, MPFI_RNDU);
+
+  return 0;
+}
+
+
 int
 main (int argc, char **argv)
 {
   mpfi_function iunion;
   iunion.func = mpfi_union;
-  iunion.mpfr_func = NULL;
+  iunion.mpfr_func = middle;
+  
+  test_start ();
+
   
   check_data (iunion, "union.dat");
+  check_random (iunion, 2, 1000, 10);
+
+  test_end ();
 
   return 0;
 }
