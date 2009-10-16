@@ -4,8 +4,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/src
 check_LTLIBRARIES = libmpfi-tests.la
 libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c mpfi-tests.c
 
-check_PROGRAMS = tadd tintersect tmul tsub tunion
+check_PROGRAMS = tadd tdiv tintersect tmul tsub tunion
 
-EXTRA_DIST = add.dat intersect.dat mul.dat sub.dat union.dat
+EXTRA_DIST = add.dat div.dat intersect.dat mul.dat sub.dat union.dat
 
 TESTS = $(check_PROGRAMS)
