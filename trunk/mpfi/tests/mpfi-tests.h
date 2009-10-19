@@ -30,13 +30,61 @@ MA 02110-1301, USA. */
 #include "mpfi-impl.h"
 #include "mpfi_io.h"
 
-typedef int (*mpfi_f) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
-typedef int (*mpfr_f) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
+#define STR(a) # a
+#define QUOTE(a) STR(a)
 
-typedef struct {
-  mpfi_f func;      /* MPFI function */
-  mpfr_f mpfr_func; /* associated MPFR function */
+
+/** GENERIC TESTS **/
+
+typedef int (*II_fun)  (mpfi_t, mpfi_srcptr);
+typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
+typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
+typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
+
+typedef union
+{
+  II_fun  II;      /* output: mpfi_t, input: mpfi_t */
+  III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
+} func_ptr;
+
+typedef union
+{
+  RR_fun  II;      /* output: mpfr_t, input: mpfr_t */
+  RRR_fun III;     /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
+} mpfr_func_ptr;
+
+typedef enum
+  {
+    II,   /* output: mpfr_t, input: mpc_t */
+    III,   /* output: mpc_t, input: mpc_t */
+  } func_type;
+
+typedef struct
+{
+  func_type      type;
+  char *         name;
+  func_ptr       func;
+  mpfr_func_ptr  mpfr_func; /* associated MPFR function */
 } mpfi_function;
+
+/* helper macro to abstract (to mask) mpfi_function type */
+
+#define MPFI_GET_TYPE(_mpfi_function)            (_mpfi_function).type
+#define MPFI_GET_FUNCTION_NAME(_mpfi_function)   (_mpfi_function).name
+#define MPFI_GET_FUNCTION(_mpfi_function, _type) (_mpfi_function).func._type
+#define MPFI_GET_MPFR_FUNCTION(_mpfi_function, _type)   \
+  (_mpfi_function).mpfr_func._type
+
+#define MPFI_SET_FUNCTION(_mpfi_function, _type, _func, _mpfr_func)     \
+  do {                                                                  \
+    (_mpfi_function).type = (_type);                                    \
+    (_mpfi_function).name = QUOTE (_func);                              \
+    (_mpfi_function).func._type = (_func);                              \
+    (_mpfi_function).mpfr_func._type = (_mpfr_func);                    \
+  } while (0)
+
+
+/* Helper functions */
 
 #ifdef __cplusplus
 extern "C" {

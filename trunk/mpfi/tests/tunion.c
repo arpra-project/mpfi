@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 
 /* the middle of two points is in their convex hull */
 int
-middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b)
+middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b, mp_rnd_t rnd)
 {
   mpfr_t min, max;
 
@@ -40,9 +40,9 @@ middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b)
     min[0] = b[0];
     max[0] = a[0];
   }
-  mpfr_sub (m, max, min, MPFI_RNDU);
-  mpfr_div_2exp (m, m, 1, MPFI_RNDU);
-  mpfr_add (m, min, m, MPFI_RNDU);
+  mpfr_sub (m, max, min, rnd);
+  mpfr_div_2exp (m, m, 1, rnd);
+  mpfr_add (m, min, m, rnd);
 
   return 0;
 }
@@ -52,12 +52,12 @@ int
 main (int argc, char **argv)
 {
   mpfi_function iunion;
-  iunion.func = mpfi_union;
-  iunion.mpfr_func = middle;
-  
+
+  MPFI_SET_FUNCTION(iunion, III, mpfi_union, middle);
+
   test_start ();
 
-  
+
   check_data (iunion, "union.dat");
   check_random (iunion, 2, 1000, 10);
 

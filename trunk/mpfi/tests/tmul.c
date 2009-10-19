@@ -30,9 +30,9 @@ int
 main (int argc, char **argv)
 {
   mpfi_function mul;
-  mul.func = mpfi_mul;
-  mul.mpfr_func = mpfr_mul;
-  
+
+  MPFI_SET_FUNCTION (mul, III, mpfi_mul, mpfr_mul);
+
   test_start ();
 
   check_data (mul, "mul.dat");

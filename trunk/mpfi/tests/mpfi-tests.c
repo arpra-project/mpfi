@@ -27,14 +27,14 @@ MA 02110-1301, USA. */
 
 void
 check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
-	      int nb_tests)
+              int nb_tests)
 {
   mp_prec_t prec;
   int i, dummy;
   mpfi_t x, y, z;
   mpfr_t e, f, g;
 
-  if (function.mpfr_func == NULL)
+  if (MPFI_GET_MPFR_FUNCTION (function, II) == NULL)
     return;
 
   if (!rands_initialized) {
@@ -43,24 +43,29 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
   }
 
   mpfi_init2 (x, prec_max);
-  mpfi_init2 (y, prec_max);
   mpfi_init2 (z, prec_max);
 
   mpfr_init2 (e, prec_max);
   mpfr_init2 (f, prec_max);
-  mpfr_init2 (g, prec_max);
+
+  if (MPFI_GET_TYPE (function) == III) {
+    mpfi_init2 (y, prec_max);
+    mpfr_init2 (g, prec_max);
+  }
 
   for (prec = prec_min; prec <= prec_max; ++prec) {
     mpfi_set_prec (x, prec);
-    mpfi_set_prec (y, prec);
     mpfi_set_prec (z, prec);
 
     mpfr_set_prec (e, prec);
     mpfr_set_prec (f, prec);
-    mpfr_set_prec (g, prec);
+
+    if (MPFI_GET_TYPE (function) == III) {
+      mpfi_set_prec (y, prec);
+      mpfr_set_prec (g, prec);
+    }
 
     for (i = 0; i < nb_tests; ++i) {
-
       mpfr_urandomb (e, rands);
       mpfr_ui_div (e, 1, e, MPFI_RNDD);
       mpfr_urandomb (f, rands);
@@ -69,48 +74,73 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
       mpfi_div_fr (x, x, f);
       mpfi_increase (x, e);
 
-      mpfr_urandomb (e, rands);
-      mpfr_ui_div (e, 1, e, MPFI_RNDD);
-      mpfr_urandomb (f, rands);
-      mpfi_set_fr (y, f);
-      mpfr_urandomb (f, rands);
-      mpfi_div_fr (y, y, f);
-      if (i % 2) mpfi_neg (y, y);
-      mpfi_increase (y, e);
+      if (MPFI_GET_TYPE (function) == II) {
+        mpfi_alea (e, x); /* FIXME use random seed */
 
-      dummy = function.func (z, x, y);
+        dummy = (MPFI_GET_FUNCTION (function, II)) (z, x);
+        dummy = (MPFI_GET_MPFR_FUNCTION (function, II)) (f, e, GMP_RNDN);
 
-      mpfi_alea (e, x); /* FIXME use random seed */
-      mpfi_alea (f, y); /* FIXME */
+        if (mpfr_cmp (f, &(z->left)) < 0 || mpfr_cmp (f, &(z->right)) > 0){
+          printf ("Error in op:\nthe result z of op(x) does not contain "
+                  "f = op(e) with e in x.\nx = ");
+          mpfi_out_str (stdout, 10, 0, x);
+          printf ("\nz = ");
+          mpfi_out_str (stdout, 10, 0, z);
+          printf ("\ne = ");
+          mpfr_out_str (stdout, 10, 0, e, MPFI_RNDU);
+          printf ("\nf = ");
+          mpfr_out_str (stdout, 10, 0, f, MPFI_RNDU);
+          putchar ('\n');
 
-      dummy = function.mpfr_func (g, e, f, GMP_RNDN);
-      
-      if (mpfr_cmp (g, &(z->left)) < 0 || mpfr_cmp (g, &(z->right)) > 0){
-	printf ("Error in op:\nthe result z of x op y does not contain "
-		"g = e op f with e in x and f in y.\nx = ");
-	mpfi_out_str (stdout, 10, 0, x);
-	printf ("\ny = ");
-	mpfi_out_str (stdout, 10, 0, y);
-	printf ("\nz = ");
-	mpfi_out_str (stdout, 10, 0, z);
-	printf ("\ne = ");
-	mpfr_out_str (stdout, 10, 0, e, MPFI_RNDU);
-	printf ("\nf = ");
-	mpfr_out_str (stdout, 10, 0, f, MPFI_RNDU);
-	printf ("\ng = ");
-	mpfr_out_str (stdout, 10, 0, g, MPFI_RNDU);
-	putchar ('\n');
-
-	exit (1);
+          exit (1);
+        }
       }
-    }      
+      else {
+        mpfr_urandomb (e, rands);
+        mpfr_ui_div (e, 1, e, MPFI_RNDD);
+        mpfr_urandomb (f, rands);
+        mpfi_set_fr (y, f);
+        mpfr_urandomb (f, rands);
+        mpfi_div_fr (y, y, f);
+        if (i % 2) mpfi_neg (y, y);
+        mpfi_increase (y, e);
+
+        mpfi_alea (e, x); /* FIXME use random seed */
+        mpfi_alea (f, y); /* FIXME */
+
+        dummy = (MPFI_GET_FUNCTION (function, III)) (z, x, y);
+        dummy = (MPFI_GET_MPFR_FUNCTION (function, III)) (g, e, f, GMP_RNDN);
+
+        if (mpfr_cmp (g, &(z->left)) < 0 || mpfr_cmp (g, &(z->right)) > 0){
+          printf ("Error in op:\nthe result z of x op y does not contain "
+                  "g = e op f with e in x and f in y.\nx = ");
+          mpfi_out_str (stdout, 10, 0, x);
+          printf ("\ny = ");
+          mpfi_out_str (stdout, 10, 0, y);
+          printf ("\nz = ");
+          mpfi_out_str (stdout, 10, 0, z);
+          printf ("\ne = ");
+          mpfr_out_str (stdout, 10, 0, e, MPFI_RNDU);
+          printf ("\nf = ");
+          mpfr_out_str (stdout, 10, 0, f, MPFI_RNDU);
+          printf ("\ng = ");
+          mpfr_out_str (stdout, 10, 0, g, MPFI_RNDU);
+          putchar ('\n');
+
+          exit (1);
+        }
+      }
+    }
   }
 
   mpfi_clear(x);
-  mpfi_clear(y);
   mpfi_clear(z);
 
   mpfr_clear(e);
   mpfr_clear(f);
-  mpfr_clear(g);
+
+  if (MPFI_GET_TYPE (function) == III) {
+    mpfi_clear(y);
+    mpfr_clear(g);
+  }
 }

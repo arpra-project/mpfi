@@ -30,9 +30,9 @@ int
 main (int argc, char **argv)
 {
   mpfi_function sub;
-  sub.func = mpfi_sub;
-  sub.mpfr_func = mpfr_sub;
-  
+
+  MPFI_SET_FUNCTION (sub, III, mpfi_sub, mpfr_sub);
+
   test_start ();
 
   check_data (sub, "sub.dat");

@@ -30,9 +30,9 @@ int
 main (int argc, char **argv)
 {
   mpfi_function intersect;
-  intersect.func = mpfi_intersect;
-  intersect.mpfr_func = NULL;
-  
+
+  MPFI_SET_FUNCTION (intersect, III, mpfi_intersect, NULL);
+
   check_data (intersect, "intersect.dat");
 
   return 0;

@@ -30,9 +30,9 @@ int
 main (int argc, char **argv)
 {
   mpfi_function div;
-  div.func = mpfi_div;
-  div.mpfr_func = mpfr_div;
-  
+
+  MPFI_SET_FUNCTION (div, III, mpfi_div, mpfr_div);
+
   test_start ();
 
   check_data (div, "div.dat");

@@ -142,7 +142,7 @@ read_exactness (FILE *f, int *exactness)
   nextchar = getc (f);
   if (!isspace(nextchar)) {
     printf ("Error: unexpected character '%c' after exactness flag"
-	    " in file '%s' line %lu\n", nextchar, pathname, line_number);
+            " in file '%s' line %lu\n", nextchar, pathname, line_number);
       exit (1);
     }
 
@@ -157,8 +157,8 @@ read_prec (FILE *f)
 
   if (nextchar == EOF) {
     printf ("Error: Unexpected EOF when reading mpfr precision "
-	    "in file '%s' line %lu\n",
-	    pathname, line_number);
+            "in file '%s' line %lu\n",
+            pathname, line_number);
     exit (1);
   }
   ungetc (nextchar, f);
@@ -167,7 +167,7 @@ read_prec (FILE *f)
     perror ("Error when reading precision");
   if (n == 0 || n == EOF || prec < MPFR_PREC_MIN || prec > MPFR_PREC_MAX) {
     printf ("Error: Impossible precision in file '%s' line %lu\n",
-	    pathname, line_number);
+            pathname, line_number);
     exit (1);
   }
   nextchar = getc (f);
@@ -213,10 +213,13 @@ read_mpfi (FILE *f, mpfi_ptr a)
     printf ("Warning: reverted endpoints line %lu\n", line_number - 1);
 }
 
+/* when one (at least) endpoint of the result is exact, it can be
+   used to check the function at a different precision. */
+
 static void
 check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
-			   mpfi_srcptr op1, mpfi_srcptr op2, int expected_inex,
-			   mp_prec_t prec)
+                           mpfi_srcptr op1, mpfi_srcptr op2,
+                           int expected_inex, mp_prec_t prec)
 {
   mpfi_t got;
   mpfr_t x;
@@ -224,16 +227,24 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
 
   mpfr_init2 (x, prec);
   mpfi_init2 (got, prec);
-  inex = function.func (got, op1, op2);
+
+  if (MPFI_GET_TYPE (function) == II) {
+    inex = (MPFI_GET_FUNCTION (function, II)) (got, op1);
+  }
+  else {
+    inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, op2);
+  }
 
   if (!MPFI_LEFT_IS_INEXACT (expected_inex)) {
     mpfr_set (x, &(expected->left), MPFI_RNDD);
     if (!same_mpfr_value (x, &(got->left))) {
       printf ("Error at precision = %lu (line %lu).\nop1 = ",
-	      (unsigned long)prec, line_number - 1);
+              (unsigned long)prec, line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
-      printf ("\nop2 = ");
-      mpfi_out_str (stdout, 16, 0, op2);
+      if (MPFI_GET_TYPE (function) == II) {
+        printf ("\nop2 = ");
+        mpfi_out_str (stdout, 16, 0, op2);
+      }
       printf ("\nleft endpoint: got = ");
       mpfr_out_str (stdout,  2, 0, &(got->left), MPFI_RNDD);
       printf ("\n          expected = ");
@@ -248,10 +259,12 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
     mpfr_set (x, &(expected->right), MPFI_RNDU);
     if (!same_mpfr_value (x, &(got->right))) {
       printf ("Error at precision = %lu (line %lu).\nop1 = ",
-	      (unsigned long)prec, line_number - 1);
+              (unsigned long)prec, line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
-      printf ("\nop2 = ");
-      mpfi_out_str (stdout, 16, 0, op2);
+      if (MPFI_GET_TYPE (function) == II) {
+        printf ("\nop2 = ");
+        mpfi_out_str (stdout, 16, 0, op2);
+      }
       printf ("\nright endpoint: got = ");
       mpfr_out_str (stdout,  2, 0, &(got->right), MPFI_RNDU);
       printf ("\n           expected = ");
@@ -267,7 +280,8 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
 }
 
 /* main function: read data in a file and compare them with the result of the
-   argument function */
+   given function */
+
 void
 check_data (mpfi_function function, const char *file_name)
 {
@@ -282,7 +296,12 @@ check_data (mpfi_function function, const char *file_name)
   mpfi_init (expected);
   mpfi_init (got);
   mpfi_init (op1);
-  mpfi_init (op2);
+
+  /* WARNING: when function type is II, op2 is unused but needed for the
+     check_with_different_prec call below. */
+  if (MPFI_GET_TYPE (function) == III) {
+    mpfi_init (op2);
+  }
 
   line_number = 1;
   nextchar = getc (f);
@@ -292,82 +311,102 @@ check_data (mpfi_function function, const char *file_name)
     read_exactness (f, &expected_inex);
     read_mpfi (f, expected);
     read_mpfi (f, op1);
-    read_mpfi (f, op2);
+    if (MPFI_GET_TYPE (function) == III) {
+      read_mpfi (f, op2);
+    }
 
     /* check with given precision */
     mpfi_set_prec (got, mpfi_get_prec (expected));
-    inex = function.func (got, op1, op2);
+
+    if (MPFI_GET_TYPE (function) == III) {
+      inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, op2);
+    }
+    else {
+      inex = (MPFI_GET_FUNCTION (function, II)) (got, op1);
+    }
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop1 = ", line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
-      printf ("\nop2 = ");
-      mpfi_out_str (stdout, 16, 0, op2);
+      if (MPFI_GET_TYPE (function) == III) {
+        printf ("\nop2 = ");
+        mpfi_out_str (stdout, 16, 0, op2);
+      }
       printf ("\ngot      = ");
       mpfi_out_str (stdout, 16, 0, got);
       printf ("\nexpected = ");
       mpfi_out_str (stdout, 16, 0, expected);
       putchar ('\n');
       if (inex != expected_inex)
-	printf ("inexact flag: got = %u, expected = %u\n",
-		inex, expected_inex);
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
 
       exit (1);
     }
 
+    /* when one endpoint is exact, compute function at lower and higher
+       precision */
     if (!MPFI_BOTH_ARE_INEXACT (expected_inex)) {
-      /* when one endpoint is exact, compute function at lower and higher
-	 precision */
       check_with_different_prec (function, expected, op1, op2, expected_inex,
-				 2);
+                                 2);
       check_with_different_prec (function, expected, op1, op2, expected_inex,
-				 2 * mpfi_get_prec (expected));
+                                 2 * mpfi_get_prec (expected));
     }
 
     /* reuse input variable as output (when they have the same precision) */
     if (mpfi_get_prec (got) == mpfi_get_prec (op1)) {
       mpfi_set (got, op1);
-      inex = function.func (got, got, op2);
+
+      if (MPFI_GET_TYPE (function) == III) {
+        inex = (MPFI_GET_FUNCTION (function, III)) (got, got, op2);
+      }
+      else {
+        inex = (MPFI_GET_FUNCTION (function, II)) (got, got);
+      }
 
       if (inex != expected_inex || !same_value (got, expected)) {
-	printf ("Error when reusing first argument as output (line %lu)."
-		"\nop1 = ", line_number - 1);
-	mpfi_out_str (stdout, 16, 0, op1);
-	printf ("\nop2 = ");
-	mpfi_out_str (stdout, 16, 0, op2);
-	printf ("\ngot      = ");
-	mpfi_out_str (stdout, 16, 0, got);
-	printf ("\nexpected = ");
-	mpfi_out_str (stdout, 16, 0, expected);
-	putchar ('\n');
-	if (inex != expected_inex)
-	  printf ("inexact flag: got = %u, expected = %u\n",
-		  inex, expected_inex);
+        printf ("Error when reusing%s input argument as output (line %lu)."
+                "\nop1 = ", (MPFI_GET_TYPE (function) == II ? " first" : ""),
+                line_number - 1);
+        mpfi_out_str (stdout, 16, 0, op1);
+        if (MPFI_GET_TYPE (function) == III) {
+          printf ("\nop2 = ");
+          mpfi_out_str (stdout, 16, 0, op2);
+        }
+        printf ("\ngot      = ");
+        mpfi_out_str (stdout, 16, 0, got);
+        printf ("\nexpected = ");
+        mpfi_out_str (stdout, 16, 0, expected);
+        putchar ('\n');
+        if (inex != expected_inex)
+          printf ("inexact flag: got = %u, expected = %u\n",
+                  inex, expected_inex);
 
-	exit (1);
+        exit (1);
       }
     }
 
-    if (mpfi_get_prec (got) == mpfi_get_prec (op2)) {
+    if (MPFI_GET_TYPE (function) == III
+        && mpfi_get_prec (got) == mpfi_get_prec (op2)) {
       mpfi_set (got, op2);
-      inex = function.func (got, op1, got);
+      inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, got);
 
       if (inex != expected_inex || !same_value (got, expected)) {
-	printf ("Error when reusing second argument as output (line %lu)."
-		"\nop1 = ", line_number - 1);
-	mpfi_out_str (stdout, 16, 0, op1);
-	printf ("\nop2 = ");
-	mpfi_out_str (stdout, 16, 0, op2);
-	printf ("\ngot      = ");
-	mpfi_out_str (stdout, 16, 0, got);
-	printf ("\nexpected = ");
-	mpfi_out_str (stdout, 16, 0, expected);
-	putchar ('\n');
-	if (inex != expected_inex)
-	  printf ("inexact flag: got = %u, expected = %u\n",
-		  inex, expected_inex);
+        printf ("Error when reusing second argument as output (line %lu)."
+                "\nop1 = ", line_number - 1);
+        mpfi_out_str (stdout, 16, 0, op1);
+        printf ("\nop2 = ");
+        mpfi_out_str (stdout, 16, 0, op2);
+        printf ("\ngot      = ");
+        mpfi_out_str (stdout, 16, 0, got);
+        printf ("\nexpected = ");
+        mpfi_out_str (stdout, 16, 0, expected);
+        putchar ('\n');
+        if (inex != expected_inex)
+          printf ("inexact flag: got = %u, expected = %u\n",
+                  inex, expected_inex);
 
-	exit (1);
+        exit (1);
       }
     }
   }
@@ -375,7 +414,9 @@ check_data (mpfi_function function, const char *file_name)
   mpfi_clear (expected);
   mpfi_clear (got);
   mpfi_clear (op1);
-  mpfi_clear (op2);
+  if (MPFI_GET_TYPE (function) == III) {
+    mpfi_clear (op2);
+  }
 
   close_data_file (f);
 }
