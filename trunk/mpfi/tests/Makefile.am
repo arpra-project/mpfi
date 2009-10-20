@@ -5,10 +5,11 @@ check_LTLIBRARIES = libmpfi-tests.la
 libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
     mpfi-tests.c
 
-check_PROGRAMS = tabs tadd tcbrt tdiv tintersect tmul tneg tsqr	\
-    tsqrt tsub tunion
+check_PROGRAMS = tabs tadd tcbrt tdiv tintersect tinv.dat	\
+    tmul tneg tsqr tsqrt tsub tunion
 
-EXTRA_DIST = abs.dat add.dat cbrt.dat div.dat intersect.dat mul.dat	\
-    neg.dat sqr.dat sqrt.dat sub.dat union.dat
+EXTRA_DIST = abs.dat add.dat cbrt.dat div.dat intersect.dat	\
+    inv.dat mul.dat neg.dat sqr.dat sqrt.dat sub.dat		\
+    union.dat
 
 TESTS = $(check_PROGRAMS)
