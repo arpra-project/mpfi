@@ -6,10 +6,10 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
     mpfi-tests.c
 
 check_PROGRAMS = tabs tadd tcbrt tdiv tintersect tinv.dat	\
-    tmul tneg tsqr tsqrt tsub tunion
+    tlog tmul tneg tsqr tsqrt tsub tunion
 
 EXTRA_DIST = abs.dat add.dat cbrt.dat div.dat intersect.dat	\
-    inv.dat mul.dat neg.dat sqr.dat sqrt.dat sub.dat		\
+    inv.dat log.dat mul.dat neg.dat sqr.dat sqrt.dat sub.dat	\
     union.dat
 
 TESTS = $(check_PROGRAMS)
