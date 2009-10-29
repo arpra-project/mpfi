@@ -53,5 +53,14 @@ mpfi_increase (mpfi_ptr a, mpfr_srcptr e)
     inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
   }
 
+  /* do not allow -0 as lower bound */
+  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+    mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+  }
+  /* do not allow +0 as upper bound */
+  if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+    mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+  }
+
   return inexact;
 }

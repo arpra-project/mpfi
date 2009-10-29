@@ -38,6 +38,15 @@ mpfi_log (mpfi_ptr a, mpfi_srcptr b)
   inexact_left = mpfr_log (&(a->left), &(b->left), MPFI_RNDD);
   inexact_right = mpfr_log (&(a->right), &(b->right), MPFI_RNDU);
 
+  /* do not allow -0 as lower bound */
+  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+    mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+  }
+  /* do not allow +0 as upper bound */
+  if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+    mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+  }
+
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
 
