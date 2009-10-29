@@ -211,6 +211,10 @@ read_mpfi (FILE *f, mpfi_ptr a)
   read_mpfr_number (f, &(a->right));
   if (mpfr_cmp (&(a->left), &(a->right)) > 0)
     printf ("Warning: reverted endpoints line %lu\n", line_number - 1);
+  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left)))
+    printf ("Warning: -0 as lower bound line %lu\n", line_number - 1);
+  if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right)))
+    printf ("Warning: +0 in upper bound line %lu\n", line_number - 1);
 }
 
 /* when one (at least) endpoint of the result is exact, it can be
