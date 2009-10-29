@@ -10,20 +10,15 @@
 0 53  nan  nan    53   +0  nan
 0 53  nan  nan    53  nan   +1
 0 53  nan  nan    53 +inf  nan
-0 53   -0   -0    53 -inf -inf
+0 53   +0   -0    53 -inf -inf
 0 53   -4   -0    53 -inf -.25
 0 53 -inf   -0    53 -inf   -0
-0 53   -0 +inf    53 -inf   +0
 0 53 -inf +inf    53 -inf   +4
 0 53 -inf +inf    53 -inf +inf
-0 53 -inf -inf    53   -0   -0
-0 53 -inf +inf    53   -0   +0
-0 53 -inf  +.5    53   -0   +2 # !FIXME wrong!
-0 53 -inf   +0    53   -0 +inf # !FIXME wrong!
-0 53 +inf +inf    53   +0   +0
-0 53   +4 +inf    53   +0 +.25
+0 53 -inf +inf    53   +0   -0
+0 53  +.5 +inf    53   +0   +2
 0 53   +0 +inf    53   +0 +inf
-0 53   +0   +0    53 +inf +inf
+0 53   +0   -0    53 +inf +inf
 
 # regular values
 0 53 -.5                                  -0.125
