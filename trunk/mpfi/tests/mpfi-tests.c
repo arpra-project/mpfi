@@ -157,7 +157,7 @@ void
 check_const (mpfi_function f, mp_prec_t prec_min, mp_prec_t prec_max)
 {
   mp_prec_t prec;
-  mpfi_t low_prec, high_prec, tmp;
+  mpfi_t low_prec, high_prec;
   mpfr_t fr_const;
 
   if (MPFI_GET_TYPE (f) != I) {
@@ -175,9 +175,7 @@ check_const (mpfi_function f, mp_prec_t prec_min, mp_prec_t prec_max)
   MPFI_GET_FUNCTION(f, I) (high_prec);
 
   for (prec = prec_min + 1; prec < prec_max; ++prec) {
-    tmp[0] = low_prec[0];
-    low_prec[0] = high_prec[0];
-    high_prec[0] = tmp[0];
+    mpfi_swap (low_prec, high_prec);
 
     mpfi_set_prec (high_prec, prec);
     MPFI_GET_FUNCTION(f, I) (high_prec);
