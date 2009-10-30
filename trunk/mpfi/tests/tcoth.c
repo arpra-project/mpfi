@@ -36,7 +36,13 @@ main (int argc, char **argv)
   test_start ();
 
 /*   check_data (i_coth, "coth.dat"); */
+
+#if MPFR_VERSION < MPFR_VERSION_NUM(2, 4, 2)
+  /* mpfr_coth is bugged: returns wrong value for +-0 */
+  check_random (i_coth, 16, 1000, 10);
+#else
   check_random (i_coth, 2, 1000, 10);
+#endif
 
   test_end ();
 
