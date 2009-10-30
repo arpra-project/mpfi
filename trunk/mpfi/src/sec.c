@@ -119,10 +119,10 @@ mpfi_sec (mpfi_ptr a, mpfi_srcptr b)
       mpz_add (z, z_left, z_right);
       mpz_add_ui (z, z, 1);
       if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
-	inexact_right = mpfr_sec (&(a->right), &(b->left), GMP_RNDD);
+	inexact_right = mpfr_sec (&(a->right), &(b->left), GMP_RNDU);
       else
-	inexact_right = mpfr_sec (&(a->right), &(b->right), GMP_RNDD);
-      inexact_left = mpfr_set_ui (&(a->left), +1, GMP_RNDU);
+	inexact_right = mpfr_sec (&(a->right), &(b->right), GMP_RNDU);
+      inexact_left = mpfr_set_ui (&(a->left), +1, GMP_RNDD);
     }
 
     if (inexact_left) inexact = 1;
