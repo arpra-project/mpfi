@@ -48,12 +48,12 @@ mpfi_sech (mpfi_ptr a, mpfi_srcptr b)
   }
   else if ( MPFI_HAS_ZERO (b) ) {
     mpfr_init2 (tmp, mpfi_get_prec (a));
-    inexact_right = mpfr_neg (tmp, &(b->left), MPFI_RNDU);
+    inexact_left = mpfr_neg (tmp, &(b->left), MPFI_RNDD);
     if (mpfr_cmp (tmp, &(b->right)) > 0)
-      inexact_right |= mpfr_sech ( &(a->right), tmp, MPFI_RNDU);
+      inexact_left |= mpfr_sech ( &(a->left), tmp, MPFI_RNDD);
     else
-      inexact_right = mpfr_sech ( &(a->right), &(b->right), MPFI_RNDU);
-    inexact_left = mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
+      inexact_left = mpfr_sech ( &(a->left), &(b->right), MPFI_RNDD);
+    inexact_right = mpfr_set_ui (&(a->right), 1, MPFI_RNDU);
     mpfr_clear (tmp);
   }
   else { /* b <= 0 */
