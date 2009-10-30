@@ -36,27 +36,32 @@ MA 02110-1301, USA. */
 
 /** GENERIC TESTS **/
 
+typedef int (*I_fun)   (mpfi_t);
 typedef int (*II_fun)  (mpfi_t, mpfi_srcptr);
 typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
+typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
 typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
 
 typedef union
 {
+  I_fun   I;       /* output: mpfi_t, no input */
   II_fun  II;      /* output: mpfi_t, input: mpfi_t */
   III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
 } func_ptr;
 
 typedef union
 {
+  R_fun   I;       /* output: mpfr_t, no input */
   RR_fun  II;      /* output: mpfr_t, input: mpfr_t */
   RRR_fun III;     /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
 } mpfr_func_ptr;
 
 typedef enum
   {
-    II,   /* output: mpfr_t, input: mpc_t */
-    III,   /* output: mpc_t, input: mpc_t */
+    I,     /* no input */
+    II,    /* one input */
+    III,   /* two inputs */
   } func_type;
 
 typedef struct
@@ -92,6 +97,7 @@ extern "C" {
 
 void check_data     (mpfi_function, const char *);
 void check_random   (mpfi_function, mp_prec_t, mp_prec_t, int);
+void check_const    (mpfi_function, mp_prec_t, mp_prec_t);
 
 extern gmp_randstate_t  rands;
 extern char             rands_initialized;

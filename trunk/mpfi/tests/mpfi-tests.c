@@ -1,4 +1,5 @@
-/* mpfi_tests.c -- Test with random values.
+/* mpfi_tests.c -- Test constant functions
+                   and test non-constant functions with random values.
 
 Copyright (C) 2001, 2002, 2009
                      Spaces project, Inria Lorraine
@@ -33,6 +34,13 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
   int i, dummy;
   mpfi_t x, y, z;
   mpfr_t e, f, g;
+
+  if (MPFI_GET_TYPE (function) != II && MPFI_GET_TYPE (function) != III) {
+    printf ("Wrong function type error.\n");
+    printf ("There is a bug in the test suite itself,"
+	    " you should not see this message.\n");
+    exit (1);
+  }
 
   if (MPFI_GET_MPFR_FUNCTION (function, II) == NULL)
     return;
@@ -143,4 +151,64 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
     mpfi_clear(y);
     mpfr_clear(g);
   }
+}
+
+void
+check_const (mpfi_function f, mp_prec_t prec_min, mp_prec_t prec_max)
+{
+  mp_prec_t prec;
+  mpfi_t low_prec, high_prec, tmp;
+  mpfr_t fr_const;
+
+  if (MPFI_GET_TYPE (f) != I) {
+    printf ("Wrong function type error.\n");
+    printf ("There is a bug in the test suite itself,"
+	    " you should not see this message.\n");
+    exit (1);
+  }
+
+  mpfi_init2 (low_prec, prec_max);
+  mpfi_init2 (high_prec, prec_max);
+  mpfr_init2 (fr_const, prec_max);
+
+  mpfi_set_prec (high_prec, prec_min);
+  MPFI_GET_FUNCTION(f, I) (high_prec);
+
+  for (prec = prec_min + 1; prec < prec_max; ++prec) {
+    tmp[0] = low_prec[0];
+    low_prec[0] = high_prec[0];
+    high_prec[0] = tmp[0];
+
+    mpfi_set_prec (high_prec, prec);
+    MPFI_GET_FUNCTION(f, I) (high_prec);
+
+    if ((mpfr_cmp (&(low_prec->left), &(high_prec->left)) > 0)
+	|| (mpfr_cmp (&(low_prec->right), &(high_prec->right)) < 0)) {
+      printf ("Error: wrong rounded value.\nAt precision %lu, %s returns\n",
+	      prec-1, MPFI_GET_FUNCTION_NAME (f));
+      mpfi_out_str (stdout, 10, 0, low_prec);
+      printf ("\nwhile at precision %lu, it returns\n", prec);
+      mpfi_out_str (stdout, 10, 0, high_prec);
+      putchar ('\n');
+
+      exit (1);
+    }
+  }
+
+  MPFI_GET_MPFR_FUNCTION(f, I)(fr_const, MPFI_RNDD);
+  if ((mpfr_cmp (&(high_prec->left), fr_const) > 0)
+      || (mpfr_cmp (&(high_prec->right), fr_const) <= 0)) {
+    printf ("Error: wrong rounded value.\nAt precision %lu, %s returns\n",\
+	    prec, MPFI_GET_FUNCTION_NAME (f));
+    mpfi_out_str (stdout, 10, 0, high_prec);
+    printf ("\nwhile mpfr function returns (rounding towards minus infinity)\n");
+    mpfr_out_str (stdout, 10, 0, fr_const, MPFI_RNDD);
+    putchar ('\n');
+
+    exit (1);
+  }
+
+  mpfi_clear (low_prec);
+  mpfi_clear (high_prec);
+  mpfr_clear (fr_const);
 }
