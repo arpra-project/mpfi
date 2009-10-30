@@ -51,15 +51,15 @@ middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b, mp_rnd_t rnd)
 int
 main (int argc, char **argv)
 {
-  mpfi_function iunion;
+  mpfi_function i_union;
 
-  MPFI_SET_FUNCTION(iunion, III, mpfi_union, middle);
+  MPFI_SET_FUNCTION(i_union, III, mpfi_union, middle);
 
   test_start ();
 
 
-  check_data (iunion, "union.dat");
-  check_random (iunion, 2, 1000, 10);
+  check_data (i_union, "union.dat");
+  check_random (i_union, 2, 1000, 10);
 
   test_end ();
 
