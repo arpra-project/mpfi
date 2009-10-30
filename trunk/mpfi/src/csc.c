@@ -134,7 +134,6 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
 
   mpz_clear (z_left);
   mpz_clear (z_right);
-  mpfr_clear (tmp);
 
   return inexact;
 }
