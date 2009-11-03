@@ -39,6 +39,12 @@ mpfi_set_fr (mpfi_ptr a, mpfr_srcptr b)
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
 
+  if (mpfr_zero_p (b)) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
@@ -64,6 +70,12 @@ mpfi_init_set_fr (mpfi_ptr a, mpfr_srcptr b)
 
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
+
+  if (mpfr_zero_p (b)) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
 
   if (inexact_left)
     inexact += 1;
