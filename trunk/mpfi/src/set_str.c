@@ -108,7 +108,7 @@ mpfi_set_str (mpfi_ptr x, const char *s, int base)
     start2 = i;
     i++;
 
-    /* determine the end of the first number in s */
+    /* determine the end of the second number in s */
     while ( (i < slen) && !MPFI_ISSPACE (s[i]) && ((s[i])!=']') ) i++;
     if ( i == slen ) {
       fprintf (stderr, "Error: missing closing square bracket in mpfi_set_str:: %s\n", s);
