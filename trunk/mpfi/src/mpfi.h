@@ -206,6 +206,7 @@ int mpfi_tan  (mpfi_ptr, mpfi_srcptr);
 int mpfi_acos (mpfi_ptr, mpfi_srcptr);
 int mpfi_asin (mpfi_ptr, mpfi_srcptr);
 int mpfi_atan (mpfi_ptr, mpfi_srcptr);
+int mpfi_atan2 (mpfi_ptr, mpfi_srcptr, mpfi_srcptr);
 
 int mpfi_sec  (mpfi_ptr, mpfi_srcptr);
 int mpfi_csc  (mpfi_ptr, mpfi_srcptr);

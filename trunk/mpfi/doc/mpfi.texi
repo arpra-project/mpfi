@@ -1033,6 +1033,12 @@ with the precision of @var{rop}.
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
+@deftypefun int mpfi_atan2 (mpfi_t @var{rop}, mpfi_t @var{op1}, mpfi_t @var{op2})
+Sets @var{rop} to the arc-tangent2 of @var{op1} and @var{op2},
+with the precision of @var{rop}.
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
 @deftypefun int mpfi_cosh (mpfi_t @var{cop}, mpfi_t @var{op})
 @deftypefunx int mpfi_sinh (mpfi_t @var{sop}, mpfi_t @var{op})
 @deftypefunx int mpfi_tanh (mpfi_t @var{top}, mpfi_t @var{op})
