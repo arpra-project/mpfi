@@ -28,11 +28,11 @@ MA 02110-1301, USA. */
 #include "mpfi-impl.h"
 
 int
-mpfi_set_str (mpfi_ptr x, char *s, int base)
+mpfi_set_str (mpfi_ptr x, const char *s, int base)
 {
   int start1, start2;
-  int overflow_left = 0;
-  int overflow_right = 0;
+  int invalid_left = 0;
+  int invalid_right = 0;
   size_t i, slen;
   char tmp[1000];
 
@@ -79,7 +79,7 @@ mpfi_set_str (mpfi_ptr x, char *s, int base)
 
     strncpy (tmp, &(s[start1]), i-start1);  /* s[start1]...s[i-1] */
     tmp[i-start1] = '\0';
-    overflow_left = mpfr_set_str (&(x->left), tmp, base, MPFI_RNDD);
+    invalid_left = mpfr_set_str (&(x->left), tmp, base, MPFI_RNDD);
 
     /* Read (possibly) blank characters between the first number and the comma */
     while ( (i < slen) && MPFI_ISSPACE (s[i]) ) i++;
@@ -118,7 +118,7 @@ mpfi_set_str (mpfi_ptr x, char *s, int base)
     /* Now s[i] is the first character after the second number */
     strncpy (tmp, &(s[start2]), i-start2);  /* s[start2]...s[i-1] */
     tmp[i-start2] = '\0';
-    overflow_right = mpfr_set_str (&(x->right), tmp, base, MPFI_RNDU);
+    invalid_right = mpfr_set_str (&(x->right), tmp, base, MPFI_RNDU);
 
     /* Read (possibly) blank characters between the 2nd number and */
     /* closing square bracket */
@@ -135,8 +135,8 @@ mpfi_set_str (mpfi_ptr x, char *s, int base)
 
     /* Note that the string may contain any character after the */
     /* closing square bracket: they will be ignored */
-    if (overflow_left || overflow_right)
-      return (-1);
+    if (invalid_left || invalid_right)
+      return (1);
     else
       return (0);
   }
@@ -161,13 +161,11 @@ mpfi_set_str (mpfi_ptr x, char *s, int base)
 
     strncpy (tmp, &(s[start1]), i-start1);
     tmp[i-start1] = '\0';
-    overflow_left = mpfr_set_str (&(x->left), tmp, base, MPFI_RNDD);
-    overflow_right = mpfr_set_str (&(x->right), tmp, base, MPFI_RNDU);
+    invalid_left = mpfr_set_str (&(x->left), tmp, base, MPFI_RNDD);
+    invalid_right = mpfr_set_str (&(x->right), tmp, base, MPFI_RNDU);
 
-    if ( (overflow_left > 0) || (overflow_right > 0) )
+    if (invalid_left || invalid_right)
       return (1);
-    else if (overflow_left || overflow_right)
-      return (-1);
     else
       return (0);
   }
@@ -175,7 +173,7 @@ mpfi_set_str (mpfi_ptr x, char *s, int base)
 }
 
 int
-mpfi_init_set_str (mpfi_ptr x, char *s, int base)
+mpfi_init_set_str (mpfi_ptr x, const char *s, int base)
 {
   mpfi_init (x);
   return (mpfi_set_str (x, s, base));

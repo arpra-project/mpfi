@@ -9,8 +9,8 @@ check_PROGRAMS = tabs tacos tacosh tadd tasin tasinh tatan	\
     tatan2 tatanh tcbrt tconst_catalan tconst_euler		\
     tconst_log2 tconst_pi tcos tcosh tcsc tcsch tcot tcoth	\
     tdiv texp texp2 texpm1 tintersect tinv tlog tlog2 tlog10	\
-    tlog1p tmul tneg tsec tsech tset tsin tsinh tsqr tsqrt	\
-    tsub ttan ttanh tunion
+    tlog1p tmul tneg tsec tsech tset tset_str tsin tsinh	\
+    tsqr tsqrt tsub ttan ttanh tunion
 
 EXTRA_DIST = abs.dat add.dat cbrt.dat div.dat intersect.dat	\
     inv.dat log.dat mul.dat neg.dat sqr.dat sqrt.dat sub.dat	\

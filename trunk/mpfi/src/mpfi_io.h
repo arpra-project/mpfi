@@ -42,8 +42,6 @@ extern "C" {
 size_t mpfi_out_str(FILE *stream, int base, size_t n_digits, mpfi_srcptr op);
 size_t mpfi_inp_str(mpfi_ptr x,FILE *stream,int base);
 
-int   mpfi_set_str    (mpfi_ptr, char *s, int base);
-
 void mpfi_print_binary(mpfi_srcptr);
 #ifdef __cplusplus
 }
