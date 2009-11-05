@@ -103,7 +103,7 @@ mpfi_sec (mpfi_ptr a, mpfi_srcptr b)
 	/* sec is decreasing on b */
 	inexact_left = mpfr_sec (tmp, &(b->right), GMP_RNDD);
 	inexact_right = mpfr_sec (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->right), tmp, GMP_RNDN);
+	mpfr_set (&(a->left), tmp, GMP_RNDN);
       }
     }
     else if (ql_mod4 == 1) {
