@@ -26,6 +26,65 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+/* random endpoint with non-uniform distribution:
+   Prob(x == -oo)     = 1/8
+   Prob(-oo < x < -1) = 1/4
+   Prob(-1  < x < 0)  = 1/8
+   Prob(0   < x < +1) = 1/8
+   Prob(+1 < x < +oo) = 1/4
+   Prob(x == +oo)     = 1/8
+ */
+void
+random_endpoint (mpfr_ptr x)
+{
+  unsigned long r;
+
+  r = gmp_urandomb_ui (rands, 3);
+  if (r < 1) {
+    mpfr_set_inf (x, +1);
+    return;
+  }
+  if (r < 2) {
+    mpfr_set_inf (x, -1);
+    return;
+  }
+  mpfr_urandomb (x, rands);
+  if (r < 3)
+    return;
+  if (r < 4) {
+    mpfr_neg (x, x, MPFI_RNDD);
+    return;
+  }
+  mpfr_ui_div (x, 1, x, MPFI_RNDD);
+  if (r < 6)
+    return;
+  mpfr_neg (x, x, MPFI_RNDD);
+}
+
+/* random interval with non-uniform distribution:
+   Prob(inf == -oo)     = Prob(sup == +oo)     = 1/8 + 7/64
+   Prob(-oo < inf < -1) = Prob(+1 < sup < +oo) = 3/8
+   Prob(-1  < inf < 0)  = Prob(0  < sup < +1)  = 1/16 + 5/64
+   Prob(0   < inf < +1) = Prob(-1 < sup < 0)   = 1/16 + 3/64
+   Prob(+1 < inf < +oo) = Prob(-oo < sup < -1) = 1/8
+   Prob(inf == +oo)     = Prob(sup == -oo)     = 1/64
+   where inf = left endpoint, sup = right endpoint
+ */
+void
+random_interval (mpfi_ptr i)
+{
+  mpfr_t x;
+
+  mpfr_init2 (x, mpfi_get_prec (i));
+
+  random_endpoint (x);
+  mpfi_set_fr (i, x);
+  random_endpoint (x);
+  mpfi_put_fr (i, x);
+
+  mpfr_clear (x);
+}
+
 void
 check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
               int nb_tests)
@@ -74,13 +133,7 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
     }
 
     for (i = 0; i < nb_tests; ++i) {
-      mpfr_urandomb (e, rands);
-      mpfr_ui_div (e, 1, e, MPFI_RNDD);
-      mpfr_urandomb (f, rands);
-      mpfi_set_fr (x, f);
-      mpfr_urandomb (f, rands);
-      mpfi_div_fr (x, x, f);
-      mpfi_increase (x, e);
+      random_interval (x);
 
       if (MPFI_GET_TYPE (function) == II) {
         mpfi_alea (e, x); /* FIXME use random seed */
@@ -104,14 +157,7 @@ check_random (mpfi_function function, mp_prec_t prec_min, mp_prec_t prec_max,
         }
       }
       else {
-        mpfr_urandomb (e, rands);
-        mpfr_ui_div (e, 1, e, MPFI_RNDD);
-        mpfr_urandomb (f, rands);
-        mpfi_set_fr (y, f);
-        mpfr_urandomb (f, rands);
-        mpfi_div_fr (y, y, f);
-        if (i % 2) mpfi_neg (y, y);
-        mpfi_increase (y, e);
+	random_interval (y);
 
         mpfi_alea (e, x); /* FIXME use random seed */
         mpfi_alea (f, y); /* FIXME */
