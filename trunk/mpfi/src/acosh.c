@@ -1,3 +1,4 @@
+
 /* acosh.c -- Inverse hyperbolic cosine of an interval.
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
@@ -32,7 +33,13 @@ mpfi_acosh (mpfi_ptr a, mpfi_srcptr b)
 {
   int inexact_left, inexact_right, inexact=0;
 
-  inexact_left = mpfr_acosh (&(a->left), &(b->left), MPFI_RNDD);
+  if (mpfr_cmp_si (&(b->left), -1) <= 0) {
+    inexact_left = 0;
+    mpfr_set_inf (&(a->left), -1);
+  }
+  else {
+    inexact_left = mpfr_acosh (&(a->left), &(b->left), MPFI_RNDD);
+  }
   inexact_right = mpfr_acosh (&(a->right), &(b->right), MPFI_RNDU);
 
   if ( MPFI_NAN_P (a) )
