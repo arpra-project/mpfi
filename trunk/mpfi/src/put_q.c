@@ -31,8 +31,6 @@ MA 02110-1301, USA. */
 int
 mpfi_put_q (mpfi_ptr a, mpq_srcptr b)
 {
-  mpfi_t tmp;
-  int inexact_set = 0;
   int inexact_left = 0;
   int inexact_right = 0;
   int inexact = 0;
@@ -40,30 +38,22 @@ mpfi_put_q (mpfi_ptr a, mpq_srcptr b)
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
 
-  mpfi_init2 (tmp, mpfi_get_prec (a));
-  inexact_set = mpfi_set_q (tmp, b);
-  /* No need to test if tmp is a NaN, it is not possible with mpfr_set_z */
+  if (mpfi_cmp_q (a, b) > 0 ) {
+    inexact_left = mpfr_set_q (&(a->left), b, MPFI_RNDD);
 
-  if (mpfr_cmp (&(a->left), &(tmp->left)) > 0 ) {
-    inexact_left = mpfr_set (&(a->left), &(tmp->left), MPFI_RNDD);
-    if ( MPFI_LEFT_IS_INEXACT (inexact_set) )
-      inexact_left = 1;
     /* do not allow -0 as lower bound */
     if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
       mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
     }
   }
+  else if (mpfr_cmp_q (a, b) < 0 ) {
+    inexact_right = mpfr_set_q (&(a->right), b, MPFI_RNDU);
 
-  if (mpfr_cmp (&(a->right), &(tmp->right)) < 0 ) {
-    inexact_right = mpfr_set (&(a->right), &(tmp->right), MPFI_RNDD);
-    if ( MPFI_RIGHT_IS_INEXACT (inexact_set) )
-      inexact_right = 1;
     /* do not allow +0 as upper bound */
     if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
       mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
     }
   }
-  MPFI_CLEAR (tmp);
 
   if (inexact_left)
     inexact += 1;

@@ -31,8 +31,6 @@ MA 02110-1301, USA. */
 int
 mpfi_put_d (mpfi_ptr a, const double b)
 {
-  mpfi_t tmp;
-  int inexact_set = 0;
   int inexact_left = 0;
   int inexact_right = 0;
   int inexact = 0;
@@ -40,39 +38,22 @@ mpfi_put_d (mpfi_ptr a, const double b)
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
 
-  mpfi_init2 (tmp, mpfi_get_prec (a));
-  inexact_set = mpfi_set_d (tmp, b);
+  if (mpfi_cmp_d (a, b) > 0 ) {
+    inexact_left = mpfr_set_d (&(a->left), b, MPFI_RNDD);
 
-  if ( MPFI_NAN_P (tmp) ) {
-    mpfr_set_nan (&(a->left));
-    mpfr_set_nan (&(a->right));
-  }
-  else {
-    if (mpfr_cmp (&(a->left), &(tmp->left)) > 0 ) {
-      inexact_left = mpfr_set (&(a->left), &(tmp->left), MPFI_RNDD);
-
-      if ( MPFI_LEFT_IS_INEXACT (inexact_set) )
-        inexact_left = 1;
-
-      /* do not allow -0 as lower bound */
-      if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
-        mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
-      }
-    }
-
-    if (mpfr_cmp (&(a->right), &(tmp->right)) < 0 ) {
-      inexact_right = mpfr_set (&(a->right), &(tmp->right), MPFI_RNDU);
-
-      if ( MPFI_RIGHT_IS_INEXACT (inexact_set) )
-        inexact_right = 1;
-
-      /* do not allow +0 as upper bound */
-      if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
-        mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
-      }
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
     }
   }
-  MPFI_CLEAR (tmp);
+  else if (mpfr_cmp_d (a, b) < 0 ) {
+    inexact_right = mpfr_set_d (&(a->right), b, MPFI_RNDU);
+
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
+  }
 
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
