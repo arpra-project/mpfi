@@ -45,10 +45,19 @@ mpfi_put_fr (mpfi_ptr a, mpfr_srcptr b)
 
   if ( mpfr_cmp (&(a->left), b) > 0 ) {
     inexact_left = mpfr_set (&(a->left), b, MPFI_RNDD);
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
   }
   if (mpfr_cmp (&(a->right), b) < 0) {
     inexact_right = mpfr_set (&(a->right), b, MPFI_RNDU);
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
   }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)

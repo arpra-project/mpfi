@@ -43,6 +43,7 @@ mpfi_put_z (mpfi_ptr a, mpz_srcptr b)
   mpfi_init2 (tmp, mpfi_get_prec (a));
   inexact_set = mpfi_set_z (tmp, b);
   /* No need to test if tmp is a NaN, it is not possible with mpfr_set_z */
+
   if (mpfr_cmp (&(a->left), &(tmp->left)) > 0 ) {
     inexact_left = mpfr_set (&(a->left), &(tmp->left), MPFI_RNDD);
     if ( MPFI_LEFT_IS_INEXACT (inexact_set) )
@@ -52,6 +53,9 @@ mpfi_put_z (mpfi_ptr a, mpz_srcptr b)
     inexact_right = mpfr_set (&(a->right), &(tmp->right), MPFI_RNDD);
     if ( MPFI_RIGHT_IS_INEXACT (inexact_set) )
       inexact_right = 1;
+    if (b == 0)
+      /* zero upper bound is -0 */
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
     }
   MPFI_CLEAR (tmp);
 

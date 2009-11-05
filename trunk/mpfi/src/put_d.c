@@ -53,13 +53,23 @@ mpfi_put_d (mpfi_ptr a, const double b)
 
       if ( MPFI_LEFT_IS_INEXACT (inexact_set) )
         inexact_left = 1;
+
+      /* do not allow -0 as lower bound */
+      if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+        mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+      }
     }
 
     if (mpfr_cmp (&(a->right), &(tmp->right)) < 0 ) {
-      inexact_right = mpfr_set (&(a->right), &(tmp->right), MPFI_RNDD);
+      inexact_right = mpfr_set (&(a->right), &(tmp->right), MPFI_RNDU);
 
       if ( MPFI_RIGHT_IS_INEXACT (inexact_set) )
-	inexact_right = 1;
+        inexact_right = 1;
+
+      /* do not allow +0 as upper bound */
+      if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+        mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+      }
     }
   }
   MPFI_CLEAR (tmp);

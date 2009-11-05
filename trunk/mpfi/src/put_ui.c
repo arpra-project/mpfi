@@ -43,6 +43,9 @@ mpfi_put_ui (mpfi_ptr a, const unsigned long b)
   }
   if (mpfr_cmp_ui (&(a->right), b) < 0) {
     inexact_right = mpfr_set_ui (&(a->right), b, MPFI_RNDU);
+    if (b == 0)
+      /* zero upper bound is -0 */
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
   }
   if (inexact_left)
     inexact += 1;
