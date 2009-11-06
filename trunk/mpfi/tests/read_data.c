@@ -56,41 +56,6 @@ same_value (mpfi_ptr a, mpfi_ptr b)
 }
 
 
-/* file processing functions */
-
-static FILE *
-open_data_file (const char *file_name)
-{
-  FILE *fp;
-  char *src_dir;
-  char default_srcdir[] = ".";
-
-  src_dir = getenv ("srcdir");
-  if (src_dir == NULL)
-    src_dir = default_srcdir;
-
-  pathname = (char *) malloc ((strlen (src_dir)) + strlen (file_name) + 2);
-  if (pathname == NULL) {
-    printf ("Cannot allocate memory\n");
-    exit (1);
-  }
-  sprintf (pathname, "%s/%s", src_dir, file_name);
-  fp = fopen (pathname, "r");
-  if (fp == NULL) {
-    fprintf (stderr, "Unable to open %s\n", pathname);
-    exit (1);
-  }
-
-  return fp;
-}
-
-static void
-close_data_file (FILE *f)
-{
-  free (pathname);
-  fclose (f);
-}
-
 /* read primitives */
 
 /* skips characters until reaching '\n' or EOF;
@@ -283,19 +248,16 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
   mpfi_clear (got);
 }
 
-/* main function: read data in a file and compare them with the result of the
-   given function */
+/* check_data_i: read  data in  the given file and compare them with
+   result of the given function.
+   check_data_i handles functions with only intervals as input. */
 
-void
-check_data (mpfi_function function, const char *file_name)
+static void
+check_data_i (mpfi_function function, FILE *file)
 {
-  FILE *f;
-
   int expected_inex, inex;
   mpfi_t expected, got;
   mpfi_t op1, op2;
-
-  f = open_data_file (file_name);
 
   mpfi_init (expected);
   mpfi_init (got);
@@ -308,15 +270,15 @@ check_data (mpfi_function function, const char *file_name)
   }
 
   line_number = 1;
-  nextchar = getc (f);
-  skip_whitespace_comments (f);
+  nextchar = getc (file);
+  skip_whitespace_comments (file);
 
   while (nextchar != EOF) {
-    read_exactness (f, &expected_inex);
-    read_mpfi (f, expected);
-    read_mpfi (f, op1);
+    read_exactness (file, &expected_inex);
+    read_mpfi (file, expected);
+    read_mpfi (file, op1);
     if (MPFI_GET_TYPE (function) == III) {
-      read_mpfi (f, op2);
+      read_mpfi (file, op2);
     }
 
     /* check with given precision */
@@ -421,6 +383,39 @@ check_data (mpfi_function function, const char *file_name)
   if (MPFI_GET_TYPE (function) == III) {
     mpfi_clear (op2);
   }
+}
 
-  close_data_file (f);
+/* main function */
+
+void
+check_data (mpfi_function function, const char *file_name)
+{
+  FILE *fp;
+  char *src_dir;
+  char default_srcdir[] = ".";
+
+  src_dir = getenv ("srcdir");
+  if (src_dir == NULL)
+    src_dir = default_srcdir;
+
+  pathname = (char *) malloc ((strlen (src_dir)) + strlen (file_name) + 2);
+  if (pathname == NULL) {
+    printf ("Cannot allocate memory\n");
+    exit (1);
+  }
+  sprintf (pathname, "%s/%s", src_dir, file_name);
+  fp = fopen (pathname, "r");
+  if (fp == NULL) {
+    fprintf (stderr, "Unable to open %s\n", pathname);
+    exit (1);
+  }
+
+  switch (MPFI_GET_TYPE (function)) {
+  case II:
+  case III:
+    check_data_i (function, fp);
+  }
+
+  free (pathname);
+  fclose (fp);
 }
