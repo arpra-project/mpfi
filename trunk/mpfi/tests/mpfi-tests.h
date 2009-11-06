@@ -42,6 +42,7 @@ MA 02110-1301, USA. */
 typedef int (*I_fun)   (mpfi_t);
 typedef int (*II_fun)  (mpfi_t, mpfi_srcptr);
 typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
+typedef int (*IR_fun)  (mpfi_t, mpfr_srcptr);
 typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
 typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
@@ -51,6 +52,7 @@ typedef union
   I_fun   I;       /* output: mpfi_t, no input */
   II_fun  II;      /* output: mpfi_t, input: mpfi_t */
   III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
+  IR_fun  IR;      /* output: mpfi_t, input: mpfr_t */
 } func_ptr;
 
 typedef union
@@ -58,13 +60,15 @@ typedef union
   R_fun   I;       /* output: mpfr_t, no input */
   RR_fun  II;      /* output: mpfr_t, input: mpfr_t */
   RRR_fun III;     /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
+  IR_fun  IR;      /* dummy, no corresponding mpfr function */
 } mpfr_func_ptr;
 
 typedef enum
   {
     I,     /* no input */
-    II,    /* one input */
+    II,    /* one input: interval */
     III,   /* two inputs */
+    IR,    /* one input: mpfr_t */
   } func_type;
 
 typedef struct
