@@ -24,7 +24,6 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-#include <stdlib.h>
 #include <string.h>
 #include "mpfi-tests.h"
 
@@ -141,6 +140,27 @@ read_prec (FILE *f)
 }
 
 static void
+read_mpq (FILE *f, mpq_ptr x)
+{
+   if (nextchar == EOF) {
+      printf ("Error: Unexpected EOF when reading mpq number"
+              "in file '%s' line %lu\n",
+              pathname, line_number);
+      exit (1);
+   }
+   ungetc (nextchar, f);
+   if (mpq_inp_str (x, f, 0) == 0) {
+      printf ("Error: Impossible to read mpq number "
+              "in file '%s' line %lu\n",
+              pathname, line_number);
+      exit (1);
+   }
+
+   nextchar = getc (f);
+   skip_whitespace_comments (f);
+}
+
+static void
 read_mpfr_number (FILE *f, mpfr_ptr x)
 {
    if (nextchar == EOF) {
@@ -248,8 +268,62 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
   mpfi_clear (got);
 }
 
+/* check_data_iq:
+   read  data in the given file and compare them with
+   result of the given function. */
+static void
+check_data_iq (mpfi_function function, FILE *file)
+{
+  int expected_inex, inex;
+  mpfi_t expected, got;
+  mpq_t op;
+
+
+  mpfi_init (expected);
+  mpfi_init (got);
+  mpq_init (op);
+
+  line_number = 1;
+  nextchar = getc (file);
+  skip_whitespace_comments (file);
+
+  while (nextchar != EOF) {
+    read_mpfi (file, got);
+    read_exactness (file, &expected_inex);
+    read_mpfi (file, expected);
+    read_mpq (file, op);
+
+    /* data validation */
+    if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
+      printf ("Error in data file %s line %lu\nThe precisions of interval "
+              "are different.\n", pathname, line_number);
+      exit (1);
+    }
+
+    inex = (MPFI_GET_FUNCTION (function, IQ)) (got, op);
+
+    if (inex != expected_inex || !same_value (got, expected)) {
+      printf ("Failed line %lu.\nop = ", line_number - 1);
+      mpq_out_str (stdout, 16, op);
+      printf ("\ngot      = ");
+      mpfi_out_str (stdout, 16, 0, got);
+      printf ("\nexpected = ");
+      mpfi_out_str (stdout, 16, 0, expected);
+      putchar ('\n');
+      if (inex != expected_inex)
+	printf ("inexact flag: got = %u, expected = %u\n",
+		inex, expected_inex);
+
+      exit (1);
+    }
+  }
+  mpfi_clear (expected);
+  mpfi_clear (got);
+  mpq_clear (op);
+}
+
 /* check_data_ir:
-   read  data in  the given file and compare them with
+   read  data in the given file and compare them with
    result of the given function. */
 static void
 check_data_ir (mpfi_function function, FILE *file)
@@ -466,12 +540,16 @@ check_data_i (mpfi_function function, FILE *file)
     }
 
     switch (MPFI_GET_TYPE (function)) {
-    case IR:
-      check_data_ir (function, fp);
-      break;
     case II:
     case III:
       check_data_i (function, fp);
+      break;
+    case IQ:
+      check_data_iq (function, fp);
+      break;
+    case IR:
+      check_data_ir (function, fp);
+      break;
     }
 
     free (pathname);
