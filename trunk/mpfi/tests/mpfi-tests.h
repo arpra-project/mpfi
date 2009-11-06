@@ -107,6 +107,7 @@ extern char             rands_initialized;
 
 void test_start     (void);
 void test_end       (void);
+void random_interval (mpfi_ptr);
 
 #ifdef __cplusplus
 }
