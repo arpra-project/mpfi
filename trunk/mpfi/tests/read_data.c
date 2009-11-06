@@ -275,7 +275,7 @@ check_data_ir (mpfi_function function, FILE *file)
 
     /* data validation */
     if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
-      printf ("Error in data file %s line %lu\nThe precision of interval "
+      printf ("Error in data file %s line %lu\nThe precisions of interval "
               "are different.\n", pathname, line_number);
       exit (1);
     }
