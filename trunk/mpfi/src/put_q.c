@@ -46,7 +46,7 @@ mpfi_put_q (mpfi_ptr a, mpq_srcptr b)
       mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
     }
   }
-  else if (mpfr_cmp_q (a, b) < 0 ) {
+  else if (mpfi_cmp_q (a, b) < 0 ) {
     inexact_right = mpfr_set_q (&(a->right), b, MPFI_RNDU);
 
     /* do not allow +0 as upper bound */
