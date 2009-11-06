@@ -24,6 +24,9 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
+#ifndef _mpfi_tests_h
+#define _mpfi_tests_h
+
 #include <stdlib.h>
 
 #include "mpfi.h"
@@ -108,3 +111,5 @@ void test_end       (void);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /*_mpfi_tests_h */
