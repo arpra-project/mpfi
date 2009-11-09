@@ -140,6 +140,27 @@ read_prec (FILE *f)
 }
 
 static void
+read_mpz (FILE *f, mpz_ptr x)
+{
+   if (nextchar == EOF) {
+      printf ("Error: Unexpected EOF when reading mpz number"
+              "in file '%s' line %lu\n",
+              pathname, line_number);
+      exit (1);
+   }
+   ungetc (nextchar, f);
+   if (mpz_inp_str (x, f, 0) == 0) {
+      printf ("Error: Impossible to read mpz number "
+              "in file '%s' line %lu\n",
+              pathname, line_number);
+      exit (1);
+   }
+
+   nextchar = getc (f);
+   skip_whitespace_comments (f);
+}
+
+static void
 read_mpq (FILE *f, mpq_ptr x)
 {
    if (nextchar == EOF) {
@@ -268,6 +289,60 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
   mpfi_clear (got);
 }
 
+/* check_data_iz:
+   read  data in the given file and compare them with
+   result of the given function. */
+static void
+check_data_iz (mpfi_function function, FILE *file)
+{
+  int expected_inex, inex;
+  mpfi_t expected, got;
+  mpz_t op;
+
+
+  mpfi_init (expected);
+  mpfi_init (got);
+  mpz_init (op);
+
+  line_number = 1;
+  nextchar = getc (file);
+  skip_whitespace_comments (file);
+
+  while (nextchar != EOF) {
+    read_mpfi (file, got);
+    read_exactness (file, &expected_inex);
+    read_mpfi (file, expected);
+    read_mpz (file, op);
+
+    /* data validation */
+    if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
+      printf ("Error in data file %s line %lu\nThe precisions of interval "
+              "are different.\n", pathname, line_number - 1);
+      exit (1);
+    }
+
+    inex = (MPFI_GET_FUNCTION (function, IZ)) (got, op);
+
+    if (inex != expected_inex || !same_value (got, expected)) {
+      printf ("Failed line %lu.\nop = ", line_number - 1);
+      mpz_out_str (stdout, 16, op);
+      printf ("\ngot      = ");
+      mpfi_out_str (stdout, 16, 0, got);
+      printf ("\nexpected = ");
+      mpfi_out_str (stdout, 16, 0, expected);
+      putchar ('\n');
+      if (inex != expected_inex)
+	printf ("inexact flag: got = %u, expected = %u\n",
+		inex, expected_inex);
+
+      exit (1);
+    }
+  }
+  mpfi_clear (expected);
+  mpfi_clear (got);
+  mpz_clear (op);
+}
+
 /* check_data_iq:
    read  data in the given file and compare them with
    result of the given function. */
@@ -296,7 +371,7 @@ check_data_iq (mpfi_function function, FILE *file)
     /* data validation */
     if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
       printf ("Error in data file %s line %lu\nThe precisions of interval "
-              "are different.\n", pathname, line_number);
+              "are different.\n", pathname, line_number - 1);
       exit (1);
     }
 
@@ -350,7 +425,7 @@ check_data_ir (mpfi_function function, FILE *file)
     /* data validation */
     if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
       printf ("Error in data file %s line %lu\nThe precisions of interval "
-              "are different.\n", pathname, line_number);
+              "are different.\n", pathname, line_number - 1);
       exit (1);
     }
 
@@ -543,6 +618,9 @@ check_data_i (mpfi_function function, FILE *file)
     case II:
     case III:
       check_data_i (function, fp);
+      break;
+    case IZ:
+      check_data_iz (function, fp);
       break;
     case IQ:
       check_data_iq (function, fp);
