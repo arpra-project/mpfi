@@ -14,7 +14,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tasin tasinh tatan	\
     tunion
 
 EXTRA_DIST = abs.dat add.dat cbrt.dat div.dat intersect.dat	\
-    inv.dat log.dat mul.dat neg.dat put_fr set_fr.dat		\
-    sqr.dat sqrt.dat sub.dat union.dat
+    inv.dat log.dat mul.dat neg.dat put_fr.dat put_q.dat	\
+    set_fr.dat set_q.dat sqr.dat sqrt.dat sub.dat union.dat
 
 TESTS = $(check_PROGRAMS)
