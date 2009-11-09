@@ -35,6 +35,13 @@ mpfi_set_z (mpfi_ptr a, mpz_srcptr b)
 
   inexact_left = mpfr_set_z (&(a->left), b, MPFI_RNDD);
   inexact_right = mpfr_set_z (&(a->right), b, MPFI_RNDU);
+
+  if (mpz_cmp_ui (b, 0) == 0) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
@@ -57,6 +64,13 @@ mpfi_init_set_z (mpfi_ptr a, mpz_srcptr b)
 
   inexact_left = mpfr_init_set_z (&(a->left), b, MPFI_RNDD);
   inexact_right = mpfr_init_set_z (&(a->right), b, MPFI_RNDU);
+
+  if (mpz_cmp_ui (b, 0) == 0) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
