@@ -34,11 +34,16 @@ mpfi_put_d (mpfi_ptr a, const double b)
   int inexact_left = 0;
   int inexact_right = 0;
   int inexact = 0;
+  /* MPFR erange flag is used to determine if b is NaN */
+  int erange_old;
 
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
 
-  if (mpfi_cmp_d (a, b) > 0 ) {
+  erange_old = mpfr_erangeflag_p ();
+  mpfr_clear_erangeflag ();
+
+  if (mpfr_cmp_d (&(a->left), b) > 0 ) {
     inexact_left = mpfr_set_d (&(a->left), b, MPFI_RNDD);
 
     /* do not allow -0 as lower bound */
@@ -46,7 +51,7 @@ mpfi_put_d (mpfi_ptr a, const double b)
       mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
     }
   }
-  else if (mpfr_cmp_d (a, b) < 0 ) {
+  else if (mpfr_cmp_d (&(a->right), b) < 0 ) {
     inexact_right = mpfr_set_d (&(a->right), b, MPFI_RNDU);
 
     /* do not allow +0 as upper bound */
@@ -54,6 +59,12 @@ mpfi_put_d (mpfi_ptr a, const double b)
       mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
     }
   }
+  else if (mpfr_cmp_d (&(a->left), b) == 0 && mpfr_erangeflag_p ()) {
+    /* d is NaN */
+    mpfr_set_nan (&(a->left));
+  }
+
+  erange_old ? mpfr_set_erangeflag () : mpfr_clear_erangeflag ();
 
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
