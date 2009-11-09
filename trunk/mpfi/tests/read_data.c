@@ -38,13 +38,13 @@ int nextchar; /* character appearing next in the file, may be EOF */
 int
 same_mpfr_value (mpfr_ptr got, mpfr_ptr ref)
 {
-   if (mpfr_nan_p (got))
-      return mpfr_nan_p (ref);
-   if (mpfr_inf_p (got))
-      return mpfr_inf_p (ref) && mpfr_signbit (got) == mpfr_signbit (ref);
-   if (mpfr_zero_p (got))
-      return mpfr_zero_p (ref) && mpfr_signbit (got) == mpfr_signbit (ref);
-   return mpfr_cmp (got, ref) == 0;
+  if (mpfr_nan_p (got))
+    return mpfr_nan_p (ref);
+  if (mpfr_inf_p (got))
+    return mpfr_inf_p (ref) && mpfr_signbit (got) == mpfr_signbit (ref);
+  if (mpfr_zero_p (got))
+    return mpfr_zero_p (ref) && mpfr_signbit (got) == mpfr_signbit (ref);
+  return mpfr_cmp (got, ref) == 0;
 }
 
 int
@@ -98,17 +98,17 @@ read_exactness (FILE *f, int *exactness)
 {
   if (!isdigit (nextchar) || nextchar < '0' || nextchar > '4') {
     printf ("Error: unexpected exactness flag '%c' in file '%s' line %lu\n",
-              nextchar, pathname, line_number);
-      exit (1);
-    }
+	    nextchar, pathname, line_number);
+    exit (1);
+  }
 
   *exactness = nextchar - '0';
   nextchar = getc (f);
   if (!isspace(nextchar)) {
     printf ("Error: unexpected character '%c' after exactness flag"
             " in file '%s' line %lu\n", nextchar, pathname, line_number);
-      exit (1);
-    }
+    exit (1);
+  }
 
   skip_whitespace_comments (f);
 }
@@ -142,71 +142,71 @@ read_prec (FILE *f)
 static void
 read_mpz (FILE *f, mpz_ptr x)
 {
-   if (nextchar == EOF) {
-      printf ("Error: Unexpected EOF when reading mpz number"
-              "in file '%s' line %lu\n",
-              pathname, line_number);
-      exit (1);
-   }
-   ungetc (nextchar, f);
-   if (mpz_inp_str (x, f, 0) == 0) {
-      printf ("Error: Impossible to read mpz number "
-              "in file '%s' line %lu\n",
-              pathname, line_number);
-      exit (1);
-   }
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading mpz number"
+	    "in file '%s' line %lu\n",
+	    pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpz_inp_str (x, f, 0) == 0) {
+    printf ("Error: Impossible to read mpz number "
+	    "in file '%s' line %lu\n",
+	    pathname, line_number);
+    exit (1);
+  }
 
-   nextchar = getc (f);
-   skip_whitespace_comments (f);
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
 }
 
 static void
 read_mpq (FILE *f, mpq_ptr x)
 {
-   if (nextchar == EOF) {
-      printf ("Error: Unexpected EOF when reading mpq number"
-              "in file '%s' line %lu\n",
-              pathname, line_number);
-      exit (1);
-   }
-   ungetc (nextchar, f);
-   if (mpq_inp_str (x, f, 0) == 0) {
-      printf ("Error: Impossible to read mpq number "
-              "in file '%s' line %lu\n",
-              pathname, line_number);
-      exit (1);
-   }
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading mpq number"
+	    "in file '%s' line %lu\n",
+	    pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpq_inp_str (x, f, 0) == 0) {
+    printf ("Error: Impossible to read mpq number "
+	    "in file '%s' line %lu\n",
+	    pathname, line_number);
+    exit (1);
+  }
 
-   nextchar = getc (f);
-   skip_whitespace_comments (f);
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
 }
 
 static void
 read_mpfr_number (FILE *f, mpfr_ptr x)
 {
-   if (nextchar == EOF) {
-      printf ("Error: Unexpected EOF when reading mpfr number"
-              "in file '%s' line %lu\n",
-              pathname, line_number);
-      exit (1);
-   }
-   ungetc (nextchar, f);
-   if (mpfr_inp_str (x, f, 0, GMP_RNDN) == 0) {
-      printf ("Error: Impossible to read mpfr number "
-              "in file '%s' line %lu\n",
-              pathname, line_number);
-      exit (1);
-   }
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading mpfr number"
+	    "in file '%s' line %lu\n",
+	    pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, GMP_RNDN) == 0) {
+    printf ("Error: Impossible to read mpfr number "
+	    "in file '%s' line %lu\n",
+	    pathname, line_number);
+    exit (1);
+  }
 
-   nextchar = getc (f);
-   skip_whitespace_comments (f);
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
 }
 
 static void
 read_mpfr (FILE *f, mpfr_ptr x)
 {
-   mpfr_set_prec (x, read_prec (f));
-   read_mpfr_number (f, x);
+  mpfr_set_prec (x, read_prec (f));
+  read_mpfr_number (f, x);
 }
 
 static void
@@ -332,8 +332,8 @@ check_data_iz (mpfi_function function, FILE *file)
       mpfi_out_str (stdout, 16, 0, expected);
       putchar ('\n');
       if (inex != expected_inex)
-	printf ("inexact flag: got = %u, expected = %u\n",
-		inex, expected_inex);
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
 
       exit (1);
     }
@@ -386,8 +386,8 @@ check_data_iq (mpfi_function function, FILE *file)
       mpfi_out_str (stdout, 16, 0, expected);
       putchar ('\n');
       if (inex != expected_inex)
-	printf ("inexact flag: got = %u, expected = %u\n",
-		inex, expected_inex);
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
 
       exit (1);
     }
@@ -440,8 +440,8 @@ check_data_ir (mpfi_function function, FILE *file)
       mpfi_out_str (stdout, 16, 0, expected);
       putchar ('\n');
       if (inex != expected_inex)
-	printf ("inexact flag: got = %u, expected = %u\n",
-		inex, expected_inex);
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
 
       exit (1);
     }
@@ -453,7 +453,7 @@ check_data_ir (mpfi_function function, FILE *file)
 
 /* check_data_i:
    read data in the given file and compare them with result of the
-   given function.   
+   given function.
    handle functions with only intervals as input. */
 
 static void
@@ -499,8 +499,8 @@ check_data_i (mpfi_function function, FILE *file)
       printf ("Failed line %lu.\nop1 = ", line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
       if (MPFI_GET_TYPE (function) == III) {
-	printf ("\nop2 = ");
-	mpfi_out_str (stdout, 16, 0, op2);
+        printf ("\nop2 = ");
+        mpfi_out_str (stdout, 16, 0, op2);
       }
       printf ("\ngot      = ");
       mpfi_out_str (stdout, 16, 0, got);
@@ -508,8 +508,8 @@ check_data_i (mpfi_function function, FILE *file)
       mpfi_out_str (stdout, 16, 0, expected);
       putchar ('\n');
       if (inex != expected_inex)
-	printf ("inexact flag: got = %u, expected = %u\n",
-		inex, expected_inex);
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
 
       exit (1);
     }
@@ -518,9 +518,9 @@ check_data_i (mpfi_function function, FILE *file)
        precision */
     if (!MPFI_BOTH_ARE_INEXACT (expected_inex)) {
       check_with_different_prec (function, expected, op1, op2, expected_inex,
-				 2);
+                                 2);
       check_with_different_prec (function, expected, op1, op2, expected_inex,
-				 2 * mpfi_get_prec (expected));
+                                 2 * mpfi_get_prec (expected));
     }
 
     /* reuse input variable as output (when they have the same precision) */
@@ -528,55 +528,55 @@ check_data_i (mpfi_function function, FILE *file)
       mpfi_set (got, op1);
 
       if (MPFI_GET_TYPE (function) == III) {
-	inex = (MPFI_GET_FUNCTION (function, III)) (got, got, op2);
+        inex = (MPFI_GET_FUNCTION (function, III)) (got, got, op2);
       }
       else {
-	inex = (MPFI_GET_FUNCTION (function, II)) (got, got);
+        inex = (MPFI_GET_FUNCTION (function, II)) (got, got);
       }
 
       if (inex != expected_inex || !same_value (got, expected)) {
-	printf ("Error when reusing%s input argument as output (line %lu)."
-		"\nop1 = ", (MPFI_GET_TYPE (function) == II ? " first" : ""),
-		line_number - 1);
-	mpfi_out_str (stdout, 16, 0, op1);
-	if (MPFI_GET_TYPE (function) == III) {
-	  printf ("\nop2 = ");
-	  mpfi_out_str (stdout, 16, 0, op2);
-	}
-	printf ("\ngot      = ");
-	mpfi_out_str (stdout, 16, 0, got);
-	printf ("\nexpected = ");
-	mpfi_out_str (stdout, 16, 0, expected);
-	putchar ('\n');
-	if (inex != expected_inex)
-	  printf ("inexact flag: got = %u, expected = %u\n",
-		  inex, expected_inex);
+        printf ("Error when reusing%s input argument as output (line %lu)."
+                "\nop1 = ", (MPFI_GET_TYPE (function) == II ? " first" : ""),
+                line_number - 1);
+        mpfi_out_str (stdout, 16, 0, op1);
+        if (MPFI_GET_TYPE (function) == III) {
+          printf ("\nop2 = ");
+          mpfi_out_str (stdout, 16, 0, op2);
+        }
+        printf ("\ngot      = ");
+        mpfi_out_str (stdout, 16, 0, got);
+        printf ("\nexpected = ");
+        mpfi_out_str (stdout, 16, 0, expected);
+        putchar ('\n');
+        if (inex != expected_inex)
+          printf ("inexact flag: got = %u, expected = %u\n",
+                  inex, expected_inex);
 
-	exit (1);
+        exit (1);
       }
     }
 
     if (MPFI_GET_TYPE (function) == III
-	&& mpfi_get_prec (got) == mpfi_get_prec (op2)) {
+        && mpfi_get_prec (got) == mpfi_get_prec (op2)) {
       mpfi_set (got, op2);
       inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, got);
 
       if (inex != expected_inex || !same_value (got, expected)) {
-	printf ("Error when reusing second argument as output (line %lu)."
-		"\nop1 = ", line_number - 1);
-	mpfi_out_str (stdout, 16, 0, op1);
-	printf ("\nop2 = ");
-	mpfi_out_str (stdout, 16, 0, op2);
-	printf ("\ngot      = ");
-	mpfi_out_str (stdout, 16, 0, got);
-	printf ("\nexpected = ");
-	mpfi_out_str (stdout, 16, 0, expected);
-	putchar ('\n');
-	if (inex != expected_inex)
-	  printf ("inexact flag: got = %u, expected = %u\n",
-		  inex, expected_inex);
+        printf ("Error when reusing second argument as output (line %lu)."
+                "\nop1 = ", line_number - 1);
+        mpfi_out_str (stdout, 16, 0, op1);
+        printf ("\nop2 = ");
+        mpfi_out_str (stdout, 16, 0, op2);
+        printf ("\ngot      = ");
+        mpfi_out_str (stdout, 16, 0, got);
+        printf ("\nexpected = ");
+        mpfi_out_str (stdout, 16, 0, expected);
+        putchar ('\n');
+        if (inex != expected_inex)
+          printf ("inexact flag: got = %u, expected = %u\n",
+                  inex, expected_inex);
 
-	exit (1);
+        exit (1);
       }
     }
   }
@@ -589,47 +589,47 @@ check_data_i (mpfi_function function, FILE *file)
   }
 }
 
-  /* main function */
+/* main function */
 
-  void
-    check_data (mpfi_function function, const char *file_name)
-  {
-    FILE *fp;
-    char *src_dir;
-    char default_srcdir[] = ".";
+void
+check_data (mpfi_function function, const char *file_name)
+{
+  FILE *fp;
+  char *src_dir;
+  char default_srcdir[] = ".";
 
-    src_dir = getenv ("srcdir");
-    if (src_dir == NULL)
-      src_dir = default_srcdir;
+  src_dir = getenv ("srcdir");
+  if (src_dir == NULL)
+    src_dir = default_srcdir;
 
-    pathname = (char *) malloc ((strlen (src_dir)) + strlen (file_name) + 2);
-    if (pathname == NULL) {
-      printf ("Cannot allocate memory\n");
-      exit (1);
-    }
-    sprintf (pathname, "%s/%s", src_dir, file_name);
-    fp = fopen (pathname, "r");
-    if (fp == NULL) {
-      fprintf (stderr, "Unable to open %s\n", pathname);
-      exit (1);
-    }
-
-    switch (MPFI_GET_TYPE (function)) {
-    case II:
-    case III:
-      check_data_i (function, fp);
-      break;
-    case IZ:
-      check_data_iz (function, fp);
-      break;
-    case IQ:
-      check_data_iq (function, fp);
-      break;
-    case IR:
-      check_data_ir (function, fp);
-      break;
-    }
-
-    free (pathname);
-    fclose (fp);
+  pathname = (char *) malloc ((strlen (src_dir)) + strlen (file_name) + 2);
+  if (pathname == NULL) {
+    printf ("Cannot allocate memory\n");
+    exit (1);
   }
+  sprintf (pathname, "%s/%s", src_dir, file_name);
+  fp = fopen (pathname, "r");
+  if (fp == NULL) {
+    fprintf (stderr, "Unable to open %s\n", pathname);
+    exit (1);
+  }
+
+  switch (MPFI_GET_TYPE (function)) {
+  case II:
+  case III:
+    check_data_i (function, fp);
+    break;
+  case IZ:
+    check_data_iz (function, fp);
+    break;
+  case IQ:
+    check_data_iq (function, fp);
+    break;
+  case IR:
+    check_data_ir (function, fp);
+    break;
+  }
+
+  free (pathname);
+  fclose (fp);
+}
