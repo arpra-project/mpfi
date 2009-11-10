@@ -35,6 +35,13 @@ mpfi_set_si (mpfi_ptr a, const long b)
 
   inexact_left = mpfr_set_si (&(a->left), b, MPFI_RNDD);
   inexact_right = mpfr_set_si (&(a->right), b, MPFI_RNDU);
+
+  if (b == 0) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
@@ -57,6 +64,13 @@ mpfi_init_set_si (mpfi_ptr a, const long b)
 
   inexact_left = mpfr_init_set_si (&(a->left), b, MPFI_RNDD);
   inexact_right = mpfr_init_set_si (&(a->right), b, MPFI_RNDU);
+
+  if (b == 0) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
