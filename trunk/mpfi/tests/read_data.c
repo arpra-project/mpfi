@@ -34,6 +34,11 @@ unsigned long line_number; /* file name with complete path and currently read
                               passing */
 int nextchar; /* character appearing next in the file, may be EOF */
 
+typedef union {
+  unsigned long ui;
+  signed long   si;
+} mpfi_tests_integer;
+
 /* comparisons: return true when arguments have the same value (even if both
    are NaN) */
 int
@@ -138,6 +143,60 @@ read_prec (FILE *f)
   nextchar = getc (f);
   skip_whitespace_comments (f);
   return (mpfr_prec_t) prec;
+}
+
+static int
+read_integer (FILE *f, mpfi_tests_integer *i, int signed_int)
+{
+  int ret;
+  mpfr_t x;
+
+  mpfr_init2 (x, 32);
+
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading integer "
+            "in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
+    printf ("Error: Impossible to read integer in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+
+  if (signed_int) {
+    if (mpfr_fits_slong_p (x, MPFI_RNDD))
+      (*i).si = mpfr_get_si (x, MPFI_RNDD);
+    else {
+      printf ("Error: the number ");
+      mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
+      printf (" read in file '%s' line %lu does not fit in a long int\n",
+              pathname, line_number);
+      exit (1);
+    }
+  }
+  else {
+    if (mpfr_fits_ulong_p (x, MPFI_RNDD))
+      (*i).ui = mpfr_get_ui (x, MPFI_RNDD);
+    else {
+      printf ("Error: the number ");
+      mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
+      printf (" read in file '%s' line %lu does not fit "
+              "in an unsigned long int\n",
+              pathname, line_number);
+      exit (1);
+    }
+  }
+
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+
+  mpfr_clear (x);
+
+  return ret;
 }
 
 static int
@@ -323,6 +382,62 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
   }
 
   mpfr_clear (x);
+  mpfi_clear (got);
+}
+
+/* check_data_integer:
+   read  data in the given file and compare them with
+   result of the given function. */
+static void
+check_data_integer (mpfi_function function, FILE *file)
+{
+  int expected_inex, inex;
+  mpfi_t expected, got;
+  mpfi_tests_integer op;
+
+  mpfi_init (expected);
+  mpfi_init (got);
+
+  line_number = 1;
+  nextchar = getc (file);
+  skip_whitespace_comments (file);
+
+  while (nextchar != EOF) {
+    read_mpfi (file, got);
+    read_exactness (file, &expected_inex);
+    read_mpfi (file, expected);
+    read_integer (file, &op, (MPFI_GET_TYPE (function) == IS));
+
+    /* data validation */
+    if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
+      printf ("Error in data file %s line %lu\nThe precisions of interval "
+              "are different.\n", pathname, line_number - 1);
+      exit (1);
+    }
+    if (MPFI_GET_TYPE (function) == IS)
+      inex = (MPFI_GET_FUNCTION (function, IS)) (got, op.si);
+    else
+      inex = (MPFI_GET_FUNCTION (function, IU)) (got, op.ui);
+
+    if (inex != expected_inex || !same_value (got, expected)) {
+      printf ("Failed line %lu.\nop = ", line_number - 1);
+      if (MPFI_GET_TYPE (function) == IS)
+        printf ("%ld", op.si);
+      else
+        printf ("%lu", op.ui);
+      printf ("\ngot      = ");
+      mpfi_out_str (stdout, 16, 0, got);
+      printf ("\nexpected = ");
+      mpfi_out_str (stdout, 16, 0, expected);
+      putchar ('\n');
+      if (inex != expected_inex)
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
+
+      exit (1);
+    }
+  }
+  mpfi_clear (expected);
   mpfi_clear (got);
 }
 
@@ -709,6 +824,10 @@ check_data (mpfi_function function, const char *file_name)
   case II:
   case III:
     check_data_i (function, fp);
+    break;
+  case IS:
+  case IU:
+    check_data_integer (function, fp);
     break;
   case ID:
     check_data_id (function, fp);
