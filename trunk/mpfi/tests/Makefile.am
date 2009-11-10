@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src
 
 check_LTLIBRARIES = libmpfi-tests.la
 libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
-    mpfi-tests.c
+    check_data.c  mpfi-tests.c
 
 check_PROGRAMS = tabs tacos tacosh tadd tasin tasinh tatan	\
     tatan2 tatanh tcbrt tconst_catalan tconst_euler		\

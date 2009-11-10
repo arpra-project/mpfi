@@ -45,8 +45,8 @@ typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
 typedef int (*IS_fun)  (mpfi_t, long);
 typedef int (*IU_fun)  (mpfi_t, unsigned long);
 typedef int (*ID_fun)  (mpfi_t, double);
-typedef int (*IZ_fun)  (mpfi_t, mpz_ptr);
-typedef int (*IQ_fun)  (mpfi_t, mpq_ptr);
+typedef int (*IZ_fun)  (mpfi_t, mpz_srcptr);
+typedef int (*IQ_fun)  (mpfi_t, mpq_srcptr);
 typedef int (*IR_fun)  (mpfi_t, mpfr_srcptr);
 typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
@@ -116,6 +116,13 @@ typedef struct
     (_mpfi_function).mpfr_func._type = (_mpfr_func);                    \
   } while (0)
 
+/* type for operands */
+
+typedef union {
+  unsigned long ui;
+  signed long   si;
+} mpfi_tests_integer;
+
 
 /* Helper functions */
 
@@ -133,6 +140,18 @@ extern char             rands_initialized;
 void test_start     (void);
 void test_end       (void);
 void random_interval (mpfi_ptr);
+
+int  same_mpfr_value (mpfr_ptr, mpfr_ptr);
+int  same_value      (mpfi_ptr, mpfi_ptr); 
+
+void skip_whitespace_comments (FILE*);
+void read_exactness  (FILE*, int*);
+void read_integer    (FILE*, mpfi_tests_integer*, int);
+int  read_double     (FILE*, double*);
+void read_mpz        (FILE*, mpz_ptr);
+void read_mpq        (FILE*, mpq_ptr);
+void read_mpfr       (FILE*, mpfr_ptr);
+void read_mpfi       (FILE*, mpfi_ptr);
 
 #ifdef __cplusplus
 }
