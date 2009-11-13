@@ -64,7 +64,7 @@ typedef union
   IZ_fun  IZ;      /* output: mpfi_t, input: mpz_t */
   IQ_fun  IQ;      /* output: mpfi_t, input: mpq_t */
   IR_fun  IR;      /* output: mpfi_t, input: mpfr_t */
-} func_ptr;
+} mpfi_fun_ptr;
 
 typedef union
 {
@@ -77,7 +77,7 @@ typedef union
   NULL_fun IZ;     /* dummy, no corresponding mpfr function */
   NULL_fun IQ;     /* dummy, no corresponding mpfr function */
   NULL_fun IR;     /* dummy, no corresponding mpfr function */
-} mpfr_func_ptr;
+} mpfi_fun_mpfr_ptr;
 
 typedef enum
   {
@@ -90,25 +90,25 @@ typedef enum
     IZ,    /* one input: mpz_t */
     IQ,    /* one input: mpq_t */
     IR,    /* one input: mpfr_t */
-  } func_type;
+  } mpfi_fun_type;
 
 typedef struct
 {
-  func_type      type;
+  mpfi_fun_type  type;
   char *         name;
-  func_ptr       func;
-  mpfr_func_ptr  mpfr_func; /* associated MPFR function */
-} mpfi_function;
+  mpfi_fun_ptr   func;
+  mpfi_fun_mpfr_ptr  mpfr_func; /* associated MPFR function */
+} mpfi_function_t;
 
 /* helper macro to abstract (to mask) mpfi_function type */
 
-#define MPFI_GET_TYPE(_mpfi_function)            (_mpfi_function).type
-#define MPFI_GET_FUNCTION_NAME(_mpfi_function)   (_mpfi_function).name
-#define MPFI_GET_FUNCTION(_mpfi_function, _type) (_mpfi_function).func._type
-#define MPFI_GET_MPFR_FUNCTION(_mpfi_function, _type)   \
+#define MPFI_FUN_TYPE(_mpfi_function)       (_mpfi_function).type
+#define MPFI_FUN_NAME(_mpfi_function)       (_mpfi_function).name
+#define MPFI_FUN_GET(_mpfi_function, _type) (_mpfi_function).func._type
+#define MPFI_FUN_MPFR_FUNCTION(_mpfi_function, _type)   \
   (_mpfi_function).mpfr_func._type
 
-#define MPFI_SET_FUNCTION(_mpfi_function, _type, _func, _mpfr_func)     \
+#define MPFI_FUN_SET(_mpfi_function, _type, _func, _mpfr_func)          \
   do {                                                                  \
     (_mpfi_function).type = (_type);                                    \
     (_mpfi_function).name = QUOTE (_func);                              \
@@ -130,15 +130,15 @@ typedef union {
 extern "C" {
 #endif
 
-void check_data     (mpfi_function, const char *);
-void check_random   (mpfi_function, mp_prec_t, mp_prec_t, int);
-void check_const    (mpfi_function, mp_prec_t, mp_prec_t);
+void check_data     (mpfi_function_t, const char *);
+void check_random   (mpfi_function_t, mp_prec_t, mp_prec_t, int);
+void check_const    (mpfi_function_t, mp_prec_t, mp_prec_t);
 
 extern gmp_randstate_t  rands;
 extern char             rands_initialized;
 
-void test_start     (void);
-void test_end       (void);
+void test_start      (void);
+void test_end        (void);
 void random_interval (mpfi_ptr);
 
 int  same_mpfr_value (mpfr_ptr, mpfr_ptr);

@@ -36,7 +36,7 @@ extern int nextchar;
    used to check the function at a different precision. */
 
 static void
-check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
+check_with_different_prec (mpfi_function_t function, mpfi_srcptr expected,
                            mpfi_srcptr op1, mpfi_srcptr op2,
                            int expected_inex, mp_prec_t prec)
 {
@@ -47,11 +47,11 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
   mpfr_init2 (x, prec);
   mpfi_init2 (got, prec);
 
-  if (MPFI_GET_TYPE (function) == II) {
-    inex = (MPFI_GET_FUNCTION (function, II)) (got, op1);
+  if (MPFI_FUN_TYPE (function) == II) {
+    inex = (MPFI_FUN_GET (function, II)) (got, op1);
   }
   else {
-    inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, op2);
+    inex = (MPFI_FUN_GET (function, III)) (got, op1, op2);
   }
 
   if (!MPFI_LEFT_IS_INEXACT (expected_inex)) {
@@ -60,7 +60,7 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
       printf ("Error at precision = %lu (line %lu).\nop1 = ",
               (unsigned long)prec, line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
-      if (MPFI_GET_TYPE (function) == II) {
+      if (MPFI_FUN_TYPE (function) == II) {
         printf ("\nop2 = ");
         mpfi_out_str (stdout, 16, 0, op2);
       }
@@ -80,7 +80,7 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
       printf ("Error at precision = %lu (line %lu).\nop1 = ",
               (unsigned long)prec, line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
-      if (MPFI_GET_TYPE (function) == II) {
+      if (MPFI_FUN_TYPE (function) == II) {
         printf ("\nop2 = ");
         mpfi_out_str (stdout, 16, 0, op2);
       }
@@ -102,7 +102,7 @@ check_with_different_prec (mpfi_function function, mpfi_srcptr expected,
    read  data in the given file and compare them with
    result of the given function. */
 static void
-check_data_integer (mpfi_function function, FILE *file)
+check_data_integer (mpfi_function_t function, FILE *file)
 {
   int expected_inex, inex;
   mpfi_t expected, got;
@@ -119,7 +119,7 @@ check_data_integer (mpfi_function function, FILE *file)
     read_mpfi (file, got);
     read_exactness (file, &expected_inex);
     read_mpfi (file, expected);
-    read_integer (file, &op, (MPFI_GET_TYPE (function) == IS));
+    read_integer (file, &op, (MPFI_FUN_TYPE (function) == IS));
 
     /* data validation */
     if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
@@ -127,14 +127,14 @@ check_data_integer (mpfi_function function, FILE *file)
               "are different.\n", pathname, line_number - 1);
       exit (1);
     }
-    if (MPFI_GET_TYPE (function) == IS)
-      inex = (MPFI_GET_FUNCTION (function, IS)) (got, op.si);
+    if (MPFI_FUN_TYPE (function) == IS)
+      inex = (MPFI_FUN_GET (function, IS)) (got, op.si);
     else
-      inex = (MPFI_GET_FUNCTION (function, IU)) (got, op.ui);
+      inex = (MPFI_FUN_GET (function, IU)) (got, op.ui);
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop = ", line_number - 1);
-      if (MPFI_GET_TYPE (function) == IS)
+      if (MPFI_FUN_TYPE (function) == IS)
         printf ("%ld", op.si);
       else
         printf ("%lu", op.ui);
@@ -158,7 +158,7 @@ check_data_integer (mpfi_function function, FILE *file)
    read  data in the given file and compare them with
    result of the given function. */
 static void
-check_data_id (mpfi_function function, FILE *file)
+check_data_id (mpfi_function_t function, FILE *file)
 {
   int expected_inex, inex;
   mpfi_t expected, got;
@@ -188,7 +188,7 @@ check_data_id (mpfi_function function, FILE *file)
       exit (1);
     }
 
-    inex = (MPFI_GET_FUNCTION (function, ID)) (got, op);
+    inex = (MPFI_FUN_GET (function, ID)) (got, op);
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop = %a", line_number - 1, op);
@@ -212,7 +212,7 @@ check_data_id (mpfi_function function, FILE *file)
    read  data in the given file and compare them with
    result of the given function. */
 static void
-check_data_iz (mpfi_function function, FILE *file)
+check_data_iz (mpfi_function_t function, FILE *file)
 {
   int expected_inex, inex;
   mpfi_t expected, got;
@@ -240,7 +240,7 @@ check_data_iz (mpfi_function function, FILE *file)
       exit (1);
     }
 
-    inex = (MPFI_GET_FUNCTION (function, IZ)) (got, op);
+    inex = (MPFI_FUN_GET (function, IZ)) (got, op);
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop = ", line_number - 1);
@@ -266,7 +266,7 @@ check_data_iz (mpfi_function function, FILE *file)
    read  data in the given file and compare them with
    result of the given function. */
 static void
-check_data_iq (mpfi_function function, FILE *file)
+check_data_iq (mpfi_function_t function, FILE *file)
 {
   int expected_inex, inex;
   mpfi_t expected, got;
@@ -294,7 +294,7 @@ check_data_iq (mpfi_function function, FILE *file)
       exit (1);
     }
 
-    inex = (MPFI_GET_FUNCTION (function, IQ)) (got, op);
+    inex = (MPFI_FUN_GET (function, IQ)) (got, op);
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop = ", line_number - 1);
@@ -320,7 +320,7 @@ check_data_iq (mpfi_function function, FILE *file)
    read  data in the given file and compare them with
    result of the given function. */
 static void
-check_data_ir (mpfi_function function, FILE *file)
+check_data_ir (mpfi_function_t function, FILE *file)
 {
   int expected_inex, inex;
   mpfi_t expected, got;
@@ -348,7 +348,7 @@ check_data_ir (mpfi_function function, FILE *file)
       exit (1);
     }
 
-    inex = (MPFI_GET_FUNCTION (function, IR)) (got, op);
+    inex = (MPFI_FUN_GET (function, IR)) (got, op);
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop = ", line_number - 1);
@@ -376,7 +376,7 @@ check_data_ir (mpfi_function function, FILE *file)
    handle functions with only intervals as input. */
 
 static void
-check_data_i (mpfi_function function, FILE *file)
+check_data_i (mpfi_function_t function, FILE *file)
 {
   int expected_inex, inex;
   mpfi_t expected, got;
@@ -388,7 +388,7 @@ check_data_i (mpfi_function function, FILE *file)
 
   /* WARNING: when function type is II, op2 is unused but needed for the
      check_with_different_prec call below. */
-  if (MPFI_GET_TYPE (function) == III) {
+  if (MPFI_FUN_TYPE (function) == III) {
     mpfi_init (op2);
   }
 
@@ -400,24 +400,24 @@ check_data_i (mpfi_function function, FILE *file)
     read_exactness (file, &expected_inex);
     read_mpfi (file, expected);
     read_mpfi (file, op1);
-    if (MPFI_GET_TYPE (function) == III) {
+    if (MPFI_FUN_TYPE (function) == III) {
       read_mpfi (file, op2);
     }
 
     /* check with given precision */
     mpfi_set_prec (got, mpfi_get_prec (expected));
 
-    if (MPFI_GET_TYPE (function) == III) {
-      inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, op2);
+    if (MPFI_FUN_TYPE (function) == III) {
+      inex = (MPFI_FUN_GET (function, III)) (got, op1, op2);
     }
     else {
-      inex = (MPFI_GET_FUNCTION (function, II)) (got, op1);
+      inex = (MPFI_FUN_GET (function, II)) (got, op1);
     }
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Failed line %lu.\nop1 = ", line_number - 1);
       mpfi_out_str (stdout, 16, 0, op1);
-      if (MPFI_GET_TYPE (function) == III) {
+      if (MPFI_FUN_TYPE (function) == III) {
         printf ("\nop2 = ");
         mpfi_out_str (stdout, 16, 0, op2);
       }
@@ -446,19 +446,19 @@ check_data_i (mpfi_function function, FILE *file)
     if (mpfi_get_prec (got) == mpfi_get_prec (op1)) {
       mpfi_set (got, op1);
 
-      if (MPFI_GET_TYPE (function) == III) {
-        inex = (MPFI_GET_FUNCTION (function, III)) (got, got, op2);
+      if (MPFI_FUN_TYPE (function) == III) {
+        inex = (MPFI_FUN_GET (function, III)) (got, got, op2);
       }
       else {
-        inex = (MPFI_GET_FUNCTION (function, II)) (got, got);
+        inex = (MPFI_FUN_GET (function, II)) (got, got);
       }
 
       if (inex != expected_inex || !same_value (got, expected)) {
         printf ("Error when reusing%s input argument as output (line %lu)."
-                "\nop1 = ", (MPFI_GET_TYPE (function) == II ? " first" : ""),
+                "\nop1 = ", (MPFI_FUN_TYPE (function) == II ? " first" : ""),
                 line_number - 1);
         mpfi_out_str (stdout, 16, 0, op1);
-        if (MPFI_GET_TYPE (function) == III) {
+        if (MPFI_FUN_TYPE (function) == III) {
           printf ("\nop2 = ");
           mpfi_out_str (stdout, 16, 0, op2);
         }
@@ -475,10 +475,10 @@ check_data_i (mpfi_function function, FILE *file)
       }
     }
 
-    if (MPFI_GET_TYPE (function) == III
+    if (MPFI_FUN_TYPE (function) == III
         && mpfi_get_prec (got) == mpfi_get_prec (op2)) {
       mpfi_set (got, op2);
-      inex = (MPFI_GET_FUNCTION (function, III)) (got, op1, got);
+      inex = (MPFI_FUN_GET (function, III)) (got, op1, got);
 
       if (inex != expected_inex || !same_value (got, expected)) {
         printf ("Error when reusing second argument as output (line %lu)."
@@ -503,7 +503,7 @@ check_data_i (mpfi_function function, FILE *file)
   mpfi_clear (expected);
   mpfi_clear (got);
   mpfi_clear (op1);
-  if (MPFI_GET_TYPE (function) == III) {
+  if (MPFI_FUN_TYPE (function) == III) {
     mpfi_clear (op2);
   }
 }
@@ -511,7 +511,7 @@ check_data_i (mpfi_function function, FILE *file)
 /* main function */
 
 void
-check_data (mpfi_function function, const char *file_name)
+check_data (mpfi_function_t function, const char *file_name)
 {
   FILE *fp;
   char *src_dir;
@@ -533,7 +533,7 @@ check_data (mpfi_function function, const char *file_name)
     exit (1);
   }
 
-  switch (MPFI_GET_TYPE (function)) {
+  switch (MPFI_FUN_TYPE (function)) {
   case II:
   case III:
     check_data_i (function, fp);

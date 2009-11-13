@@ -29,9 +29,9 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function sqr;
+  mpfi_function_t sqr;
 
-  MPFI_SET_FUNCTION (sqr, II, mpfi_sqr, mpfr_sqr);
+  MPFI_FUN_SET (sqr, II, mpfi_sqr, mpfr_sqr);
 
   test_start ();
 

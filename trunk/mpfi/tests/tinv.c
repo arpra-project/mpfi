@@ -35,9 +35,9 @@ fr_inv (mpfr_ptr y, mpfr_srcptr x, mp_rnd_t rnd)
 int
 main (int argc, char **argv)
 {
-  mpfi_function inv;
+  mpfi_function_t inv;
 
-  MPFI_SET_FUNCTION (inv, II, mpfi_inv, fr_inv);
+  MPFI_FUN_SET (inv, II, mpfi_inv, fr_inv);
 
   test_start ();
 

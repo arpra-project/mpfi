@@ -51,9 +51,9 @@ middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b, mp_rnd_t rnd)
 int
 main (int argc, char **argv)
 {
-  mpfi_function i_union;
+  mpfi_function_t i_union;
 
-  MPFI_SET_FUNCTION(i_union, III, mpfi_union, middle);
+  MPFI_FUN_SET(i_union, III, mpfi_union, middle);
 
   test_start ();
 

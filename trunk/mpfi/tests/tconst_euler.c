@@ -29,9 +29,9 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function i_euler;
+  mpfi_function_t i_euler;
 
-  MPFI_SET_FUNCTION (i_euler, I, mpfi_const_euler, mpfr_const_euler);
+  MPFI_FUN_SET (i_euler, I, mpfi_const_euler, mpfr_const_euler);
   check_const (i_euler, 2, 1000);
 
   return 0;

@@ -29,9 +29,9 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function set_q;
+  mpfi_function_t set_q;
 
-  MPFI_SET_FUNCTION (set_q, IQ, mpfi_set_q, NULL);
+  MPFI_FUN_SET (set_q, IQ, mpfi_set_q, NULL);
 
   check_data (set_q, "set_q.dat");
 
