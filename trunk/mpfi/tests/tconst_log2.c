@@ -29,10 +29,10 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t i_log2;
+  struct mpfi_function_t i_log2;
 
   MPFI_FUN_SET (i_log2, I, mpfi_const_log2, mpfr_const_log2);
-  check_const (i_log2, 2, 1000);
+  check_const (&i_log2, 2, 1000);
 
   return 0;
 }

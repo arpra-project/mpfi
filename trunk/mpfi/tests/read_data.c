@@ -34,6 +34,47 @@ unsigned long line_number; /* file name with complete path and currently read
                               passing */
 int nextchar; /* character appearing next in the file, may be EOF */
 
+FILE*
+open_file (const char* file_name)
+{
+  FILE *fp;
+  char *src_dir;
+  char default_srcdir[] = ".";
+
+  src_dir = getenv ("srcdir");
+  if (src_dir == NULL)
+    src_dir = default_srcdir;
+
+  pathname = (char *) malloc ((strlen (src_dir)) + strlen (file_name) + 2);
+  if (pathname == NULL) {
+    printf ("Cannot allocate memory\n");
+    exit (1);
+  }
+  sprintf (pathname, "%s/%s", src_dir, file_name);
+  fp = fopen (pathname, "r");
+  if (fp == NULL) {
+    fprintf (stderr, "Unable to open %s\n", pathname);
+    exit (1);
+  }
+
+  return fp;
+}
+
+void
+close_file (FILE *f)
+{
+  free (pathname);
+  fclose (f);
+}
+
+void
+init_reading (FILE* f)
+{
+  line_number = 1;
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+}
+
 /* comparisons: return true when arguments have the same value (even if both
    are NaN) */
 int
@@ -118,7 +159,7 @@ read_exactness (FILE *f, int *exactness)
 }
 
 void
-read_integer (FILE *f, mpfi_tests_integer *i, int signed_int)
+read_ui (FILE *f, unsigned long *i)
 {
   mpfr_t x;
 
@@ -138,28 +179,51 @@ read_integer (FILE *f, mpfi_tests_integer *i, int signed_int)
   }
 
 
-  if (signed_int) {
-    if (mpfr_fits_slong_p (x, MPFI_RNDD))
-      (*i).si = mpfr_get_si (x, MPFI_RNDD);
-    else {
-      printf ("Error: the number ");
-      mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
-      printf (" read in file '%s' line %lu does not fit in a long int\n",
-              pathname, line_number);
-      exit (1);
-    }
-  }
+  if (mpfr_fits_ulong_p (x, MPFI_RNDD))
+    *i = mpfr_get_ui (x, MPFI_RNDD);
   else {
-    if (mpfr_fits_ulong_p (x, MPFI_RNDD))
-      (*i).ui = mpfr_get_ui (x, MPFI_RNDD);
-    else {
-      printf ("Error: the number ");
-      mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
-      printf (" read in file '%s' line %lu does not fit "
-              "in an unsigned long int\n",
-              pathname, line_number);
-      exit (1);
-    }
+    printf ("Error: the number ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
+    printf (" read in file '%s' line %lu does not fit "
+            "in an unsigned long int\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+
+  mpfr_clear (x);
+}
+
+void
+read_si (FILE *f, long *i)
+{
+  mpfr_t x;
+
+  mpfr_init2 (x, 32);
+
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading integer "
+            "in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
+    printf ("Error: Impossible to read integer in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  if (mpfr_fits_slong_p (x, MPFI_RNDD))
+    *i = mpfr_get_si (x, MPFI_RNDD);
+  else {
+    printf ("Error: the number ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
+    printf (" read in file '%s' line %lu does not fit in a long int\n",
+            pathname, line_number);
+    exit (1);
   }
 
   nextchar = getc (f);

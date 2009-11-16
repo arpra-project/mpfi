@@ -29,11 +29,11 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t intersect;
+  struct mpfi_function_t intersect;
 
   MPFI_FUN_SET (intersect, III, mpfi_intersect, NULL);
 
-  check_data (intersect, "intersect.dat");
+  check_data (&intersect, "intersect.dat");
 
   return 0;
 }

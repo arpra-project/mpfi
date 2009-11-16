@@ -35,14 +35,14 @@ fr_inv (mpfr_ptr y, mpfr_srcptr x, mp_rnd_t rnd)
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t inv;
+  struct mpfi_function_t inv;
 
   MPFI_FUN_SET (inv, II, mpfi_inv, fr_inv);
 
   test_start ();
 
-  check_data (inv, "inv.dat");
-  check_random (inv, 2, 1000, 10);
+  check_data (&inv, "inv.dat");
+  check_random (&inv, 2, 1000, 10);
 
   test_end ();
 

@@ -29,14 +29,14 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t i_log1p;
+  struct mpfi_function_t i_log1p;
 
   MPFI_FUN_SET (i_log1p, II, mpfi_log1p, mpfr_log1p);
 
   test_start ();
 
 /*   check_data (i_log1p, "log1p.dat"); */
-  check_random (i_log1p, 2, 1000, 10);
+  check_random (&i_log1p, 2, 1000, 10);
 
   test_end ();
 

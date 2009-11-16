@@ -29,7 +29,7 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t i_coth;
+  struct mpfi_function_t i_coth;
 
   MPFI_FUN_SET (i_coth, II, mpfi_coth, mpfr_coth);
 
@@ -39,9 +39,9 @@ main (int argc, char **argv)
 
 #if MPFR_VERSION < MPFR_VERSION_NUM(2, 4, 2)
   /* mpfr_coth is bugged: returns wrong value for +-0 */
-  check_random (i_coth, 16, 1000, 10);
+  check_random (&i_coth, 16, 1000, 10);
 #else
-  check_random (i_coth, 2, 1000, 10);
+  check_random (&i_coth, 2, 1000, 10);
 #endif
 
   test_end ();

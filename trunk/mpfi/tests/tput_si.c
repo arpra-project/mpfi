@@ -29,11 +29,11 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t put_si;
+  struct mpfi_function_t put_si;
 
   MPFI_FUN_SET (put_si, IS, mpfi_put_si, NULL);
 
-  check_data (put_si, "put_si.dat");
+  check_data (&put_si, "put_si.dat");
 
   return 0;
 }

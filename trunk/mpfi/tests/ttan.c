@@ -29,14 +29,14 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mpfi_function_t i_tan;
+  struct mpfi_function_t i_tan;
 
   MPFI_FUN_SET (i_tan, II, mpfi_tan, mpfr_tan);
 
   test_start ();
 
 /*   check_data (i_tan, "tan.dat"); */
-  check_random (i_tan, 2, 1000, 10);
+  check_random (&i_tan, 2, 1000, 10);
 
   test_end ();
 
