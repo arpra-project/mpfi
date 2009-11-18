@@ -8,11 +8,11 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 check_PROGRAMS = tabs tacos tacosh tadd tasin tasinh tatan	\
     tatan2 tatanh tcbrt tconst_catalan tconst_euler		\
     tconst_log2 tconst_pi tcos tcosh tcsc tcsch tcot tcoth	\
-    tdiv texp texp2 texpm1 tintersect tinv tlog tlog2 tlog10	\
-    tlog1p tmul tneg tput_d tput_fr tput_q tput_si tput_ui	\
-    tput_z tsec tsech tset tset_d tset_fr tset_q tset_str	\
-    tset_si tset_ui tset_z tsin tsinh tsqr tsqrt tsub ttan	\
-    ttanh tunion
+    tdiv texp texp2 texpm1 tinit_set tintersect tinv tlog	\
+    tlog2 tlog10 tlog1p tmul tneg tput_d tput_fr tput_q		\
+    tput_si tput_ui tput_z tsec tsech tset tset_d tset_fr	\
+    tset_q tset_str tset_si tset_ui tset_z tsin tsinh tsqr	\
+    tsqrt tsub ttan ttanh tunion
 
 EXTRA_DIST = abs.dat add.dat cbrt.dat div.dat intersect.dat	\
     inv.dat log.dat mul.dat neg.dat put_d.dat put_fr.dat	\
