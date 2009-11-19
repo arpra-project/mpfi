@@ -322,7 +322,7 @@ check_line_i (mpfi_function_ptr function)
 
   /* when one endpoint is exact, compute function at lower and higher
      precision */
-  if (!MPFI_BOTH_ARE_INEXACT (inex)) {
+  if (!MPFI_NAN_P (expected) && !MPFI_BOTH_ARE_INEXACT (inex)) {
     check_with_different_prec (function, 2);
     check_with_different_prec (function, 2 * mpfi_get_prec (expected));
     mpfi_set_prec (got, mpfi_get_prec (expected));
