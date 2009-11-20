@@ -33,9 +33,14 @@ mpfi_acosh (mpfi_ptr a, mpfi_srcptr b)
 {
   int inexact_left, inexact_right, inexact=0;
 
-  if (mpfr_cmp_si (&(b->left), -1) <= 0) {
-    inexact_left = 0;
-    mpfr_set_inf (&(a->left), -1);
+  if ( MPFI_NAN_P (b) ) {
+    mpfr_set_nan (&(a->left));
+    mpfr_set_nan (&(a->right));
+    MPFR_RET_NAN;
+  }
+
+  if (mpfr_cmp_ui (&(b->left), 1) <= 0) {
+    inexact_left = mpfr_set_ui (&(a->left), 0, MPFI_RNDU);
   }
   else {
     inexact_left = mpfr_acosh (&(a->left), &(b->left), MPFI_RNDD);
@@ -44,6 +49,11 @@ mpfi_acosh (mpfi_ptr a, mpfi_srcptr b)
 
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;
+
+  if (mpfr_sgn (&(a->right)) == 0) {
+    /* -0 as right endpoint */
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
 
   if (inexact_left)
     inexact += 1;
