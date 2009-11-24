@@ -35,7 +35,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (i_asinh, "asinh.dat"); */
+  check_data (&i_asinh, "asinh.dat");
   check_random (&i_asinh, 2, 1000, 10);
 
   test_end ();
