@@ -1,4 +1,8 @@
-Copyright 1999, 2000, 2001, 2002 - 2009 Spaces project, Inria Lorraine
+/* thypot.c -- Test mpfi_hypot.
+
+Copyright 2009
+                     Spaces project, Inria Lorraine
+                     and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
                      and Lab. ANO, USTL (Univ. of Lille),  France
 
@@ -17,30 +21,24 @@ License for more details.
 
 You should have received a copy of the GNU Lesser General Public License
 along with the MPFI Library; see the file COPYING.LIB.  If not, write to
-the Free Software Foundation, Inc.,  51 Franklin St, Fifth Floor, Boston,
-MA 02110-1301, USA
+the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+MA 02110-1301, USA. */
 
+#include "mpfi-tests.h"
 
-Changes between MPFI version 1.0 and 1.1
+int
+main (int argc, char **argv)
+{
+  struct mpfi_function_t i_hypot;
 
-* GNU autoconf/automake standards
-* mpfi-impl.h (non exported internal macros)
+  MPFI_FUN_SET (i_hypot, III, mpfi_hypot, mpfr_hypot);
 
+  test_start ();
 
-Changes between MPFI version 1.1 and 1.3.4-RC3
+/*   check_data (&i_hypot, "hypot.dat"); */
+  check_random (&i_hypot, 2, 1000, 10);
 
-* unknown history
+  test_end ();
 
-
-Changes between MPFI 1.3.4-RC3 and 1.4
-
-* bugfixes for trigonometric functions
-* add compilation for a shared library
-
-Changes between MPFI version 1.4 and ?
-
-* new functions : Catalan's constant, cubic root, reciprocal square root,
-  secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot
-* can now be compiled outside the source directory
-* each function is in its own file
-
+  return 0;
+}

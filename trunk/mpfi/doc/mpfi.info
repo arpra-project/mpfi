@@ -824,6 +824,11 @@ information, see the MPFR documentation or related bibliography.
      one or both endpoints are exact.  If OP contains negative numbers,
      then ROP has at least one NaN endpoint.
 
+ -- Function: int mpfi_hypot (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+     Sets ROP to the euclidean distance between points in OP1 and
+     points in OP2, with the precision of ROP.  Returns an indication
+     of whether none, one or both endpoints are exact.
+
  -- Function: int mpfi_const_log2 (mpfi_t ROP)
      Sets ROP to the logarithm of 2 with the precision of ROP.  Returns
      an indication of whether none, one or both endpoints are exact.
@@ -1233,10 +1238,10 @@ Function and Type Index
 * mpfi_cmp_si:                           Interval Comparison. (line  19)
 * mpfi_cmp_ui:                           Interval Comparison. (line  18)
 * mpfi_cmp_z:                            Interval Comparison. (line  20)
-* mpfi_const_catalan:                    Special Functions.   (line 104)
-* mpfi_const_euler:                      Special Functions.   (line  99)
-* mpfi_const_log2:                       Special Functions.   (line  91)
-* mpfi_const_pi:                         Special Functions.   (line  95)
+* mpfi_const_catalan:                    Special Functions.   (line 109)
+* mpfi_const_euler:                      Special Functions.   (line 104)
+* mpfi_const_log2:                       Special Functions.   (line  96)
+* mpfi_const_pi:                         Special Functions.   (line 100)
 * mpfi_cos:                              Special Functions.   (line  25)
 * mpfi_cosh:                             Special Functions.   (line  51)
 * mpfi_cot:                              Special Functions.   (line  34)
@@ -1278,6 +1283,7 @@ Function and Type Index
 * mpfi_get_right:                        Operating on the Endpoints.
                                                               (line  12)
 * mpfi_has_zero:                         Interval Comparison. (line  51)
+* mpfi_hypot:                            Special Functions.   (line  91)
 * mpfi_increase:                         Miscellaneous Interval Functions.
                                                               (line   7)
 * mpfi_inf_p:                            Interval Comparison. (line  59)
@@ -1439,15 +1445,15 @@ Node: Floating-point Quantities23012
 Node: Converting Intervals25424
 Node: Interval Arithmetic25899
 Node: Special Functions32258
-Node: Interval Comparison37157
-Node: I/O of Intervals39985
-Node: Operating on the Endpoints42999
-Node: Set Operations45401
-Node: Miscellaneous Interval Functions47244
-Node: Error Handling48373
-Node: Contributors48889
-Node: References49225
-Node: Concept Index50348
-Node: Function Index53281
+Node: Interval Comparison37415
+Node: I/O of Intervals40243
+Node: Operating on the Endpoints43257
+Node: Set Operations45659
+Node: Miscellaneous Interval Functions47502
+Node: Error Handling48631
+Node: Contributors49147
+Node: References49483
+Node: Concept Index50606
+Node: Function Index53539
 
 End Tag Table

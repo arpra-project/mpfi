@@ -229,6 +229,8 @@ int mpfi_expm1 (mpfi_ptr, mpfi_srcptr);
 int mpfi_log2 (mpfi_ptr, mpfi_srcptr);
 int mpfi_log10 (mpfi_ptr, mpfi_srcptr);
 
+int mpfi_hypot (mpfi_ptr, mpfi_srcptr, mpfi_srcptr);
+
 int mpfi_const_log2(mpfi_ptr);
 int mpfi_const_pi(mpfi_ptr);
 int mpfi_const_euler(mpfi_ptr);

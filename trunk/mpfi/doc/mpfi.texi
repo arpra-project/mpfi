@@ -1097,6 +1097,12 @@ If @var{op} contains negative numbers, then @var{rop} has at least one
 NaN endpoint.
 @end deftypefun
 
+@deftypefun int mpfi_hypot (mpfi_t @var{rop}, mpfi_t @var{op1}, mpfi_t @var{op2})
+Sets @var{rop} to the euclidean distance between points in @var{op1} and points in @var{op2},
+with the precision of @var{rop}.
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
 @deftypefun int mpfi_const_log2 (mpfi_t @var{rop})
 Sets @var{rop} to the logarithm of 2 
 with the precision of @var{rop}. 
