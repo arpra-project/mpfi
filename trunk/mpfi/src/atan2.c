@@ -31,6 +31,7 @@ int
 mpfi_atan2 (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
 {
   int inexact_left, inexact_right, inexact=0;
+  mpfi_t tmp;
 
   if ( MPFI_NAN_P (b) || MPFI_NAN_P (c) ) {
     mpfr_set_nan (&(a->left));
@@ -38,54 +39,59 @@ mpfi_atan2 (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     MPFR_RET_NAN;
   }
 
+  mpfi_init2 (tmp, mpfi_get_prec (a));
+
   if (MPFI_IS_POS (b)) {
     if (MPFI_IS_POS (c)) {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->left), &(c->right), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->right), &(c->left), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->left), &(c->right), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->right), &(c->left), MPFI_RNDU);
     }
     else if (MPFI_IS_NEG (c)) {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->right), &(c->right), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->left), &(c->left), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->right), &(c->right), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->left), &(c->left), MPFI_RNDU);
     }
     else {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->left), &(c->right), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->left), &(c->left), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->left), &(c->right), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->left), &(c->left), MPFI_RNDU);
     }
   }
   else if (MPFI_IS_NEG (b)) {
     if (MPFI_IS_POS (c)) {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->left), &(c->left), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->left), &(c->left), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->right), &(c->right), MPFI_RNDU);
     }
     else if (MPFI_IS_NEG (c)) {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->right), &(c->left), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->left), &(c->right), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->right), &(c->left), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->left), &(c->right), MPFI_RNDU);
     }
     else {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->right), &(c->left), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->right), &(c->left), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->right), &(c->right), MPFI_RNDU);
     }
   }
   else {
     if (MPFI_IS_POS (c)) {
-      inexact_left = mpfr_atan2 (&(a->left), &(b->left), &(c->left), MPFI_RNDD);
-      inexact_right = mpfr_atan2 (&(a->right), &(b->right), &(c->left), MPFI_RNDU);
+      inexact_left = mpfr_atan2 (&(tmp->left), &(b->left), &(c->left), MPFI_RNDD);
+      inexact_right = mpfr_atan2 (&(tmp->right), &(b->right), &(c->left), MPFI_RNDU);
     }
     else {
-      inexact_left = -mpfr_const_pi (&(a->left), MPFI_RNDU);
-      mpfr_neg (&(a->left), &(a->left), MPFI_RNDD);
-      inexact_right = mpfr_const_pi (&(a->right), MPFI_RNDU);
+      inexact_left = -mpfr_const_pi (&(tmp->left), MPFI_RNDU);
+      mpfr_neg (&(tmp->left), &(tmp->left), MPFI_RNDD);
+      inexact_right = mpfr_const_pi (&(tmp->right), MPFI_RNDU);
     }
   }
 
-  if (mpfr_sgn (&(a->left)) == 0) {
+  if (mpfr_sgn (&(tmp->left)) == 0) {
     /* +0 as left endpoint */
-    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(tmp->left), &(tmp->left), 0, MPFI_RNDU);
   }
-  if (mpfr_sgn (&(a->right)) == 0) {
+  if (mpfr_sgn (&(tmp->right)) == 0) {
     /* -0 as right endpoint */
-    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+    mpfr_setsign (&(tmp->right), &(tmp->right), 1, MPFI_RNDD);
   }
+
+  mpfi_set (a, tmp);
+  mpfi_clear (tmp);
 
   if (inexact_left)
     inexact += 1;
