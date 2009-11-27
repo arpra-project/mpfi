@@ -70,7 +70,6 @@ check_fi (mpfi_ptr out, mpfi_ptr in, int expected_inex,
 int
 main (int argc, char **argv)
 {
-  int inex;
   mpfi_t fi1;
   mpfi_t fi2;
 
