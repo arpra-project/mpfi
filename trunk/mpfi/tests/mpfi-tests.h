@@ -192,6 +192,32 @@ extern "C" {
   void read_mpfr       (FILE*, mpfr_ptr);
   void read_mpfi       (FILE*, mpfi_ptr);
 
+  void init            (mpfi_function_ptr);
+  void clear_ii        (mpfi_function_ptr);
+  void clear_iii       (mpfi_function_ptr);
+  void clear_iu        (mpfi_function_ptr);
+  void clear_is        (mpfi_function_ptr);
+  void clear_id        (mpfi_function_ptr);
+  void clear_iz        (mpfi_function_ptr);
+  void clear_iq        (mpfi_function_ptr);
+  void clear_ir        (mpfi_function_ptr);
+  void read_line_ii    (mpfi_function_ptr, FILE*);
+  void read_line_iii   (mpfi_function_ptr, FILE*);
+  void read_line_iu    (mpfi_function_ptr, FILE*);
+  void read_line_is    (mpfi_function_ptr, FILE*);
+  void read_line_id    (mpfi_function_ptr, FILE*);
+  void read_line_iz    (mpfi_function_ptr, FILE*);
+  void read_line_iq    (mpfi_function_ptr, FILE*);
+  void read_line_ir    (mpfi_function_ptr, FILE*);
+  void check_with_different_prec (mpfi_function_ptr, mp_prec_t);
+  void check_line_i    (mpfi_function_ptr);
+  void check_line_iu   (mpfi_function_ptr);
+  void check_line_is   (mpfi_function_ptr);
+  void check_line_id   (mpfi_function_ptr);
+  void check_line_iz   (mpfi_function_ptr);
+  void check_line_iq   (mpfi_function_ptr);
+  void check_line_ir   (mpfi_function_ptr);
+
 #ifdef __cplusplus
 }
 #endif
