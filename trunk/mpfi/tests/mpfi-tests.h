@@ -39,6 +39,10 @@ MA 02110-1301, USA. */
 
 /** GENERIC TESTS **/
 
+/* When adding a new generic test, one must declare a mpfi_function_t
+   variable and initialize it with the MPFI_FUN_SET macro before calling one
+   of the check_* functions. */
+
 typedef int (*I_fun)   (mpfi_t);
 typedef int (*II_fun)  (mpfi_t, mpfi_srcptr);
 typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
@@ -132,6 +136,12 @@ struct mpfi_function_t
 #define MPFI_FUN_ARG(_mpfi_function, _arg_no, _arg_type)        \
   ((_mpfi_function).operands[(_arg_no)]._arg_type)
 
+/* MPFI_FUN_SET macro usage
+   _mpfi_function_t: mpfi_function_t variable to initialize
+   _type:            identifier in mpfi_fun_type enum corresponding to the
+                     prototype of the MPFI function under test
+   _func:            MPFI function under test
+   _mpfr_func:       corresponding MPFR function if any, else NULL */
 #define MPFI_FUN_SET(_mpfi_function, _type, _func, _mpfr_func)          \
   do {                                                                  \
     (_mpfi_function).type            = (_type);                         \
@@ -151,11 +161,16 @@ struct mpfi_function_t
 extern "C" {
 #endif
 
+  /* public functions.
+     when adding a generic test, use the following functions: */
   void test_start      (void);
   void test_end        (void);
   void check_data      (mpfi_function_ptr, const char *);
   void check_random    (mpfi_function_ptr, mp_prec_t, mp_prec_t, int);
   void check_const     (mpfi_function_ptr, mp_prec_t, mp_prec_t);
+
+
+  /* internal functions */
 
   extern gmp_randstate_t  rands;
   extern char             rands_initialized;
