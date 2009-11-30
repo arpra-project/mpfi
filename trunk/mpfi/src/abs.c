@@ -60,8 +60,5 @@ mpfi_abs (mpfi_ptr a, mpfi_srcptr b)
       inexact += 2;
   }
 
-  if ( MPFI_NAN_P (a) )
-    MPFR_RET_NAN;
-  else
-    return inexact;
+  return inexact;
 }
