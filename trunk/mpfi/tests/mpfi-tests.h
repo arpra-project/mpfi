@@ -45,13 +45,15 @@ MA 02110-1301, USA. */
 
 typedef int (*I_fun)   (mpfi_t);
 typedef int (*II_fun)  (mpfi_t, mpfi_srcptr);
-typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
 typedef int (*IS_fun)  (mpfi_t, long);
 typedef int (*IU_fun)  (mpfi_t, unsigned long);
 typedef int (*ID_fun)  (mpfi_t, double);
 typedef int (*IZ_fun)  (mpfi_t, mpz_srcptr);
 typedef int (*IQ_fun)  (mpfi_t, mpq_srcptr);
 typedef int (*IR_fun)  (mpfi_t, mpfr_srcptr);
+typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
+typedef int (*IIU_fun) (mpfi_t, mpfi_t, unsigned long);
+
 typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
 typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
@@ -61,13 +63,14 @@ typedef union
 {
   I_fun   I;       /* output: mpfi_t, no input */
   II_fun  II;      /* output: mpfi_t, input: mpfi_t */
-  III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
   IS_fun  IS;      /* output: mpfi_t, input: long */
   IU_fun  IU;      /* output: mpfi_t, input: unsigned long */
   ID_fun  ID;      /* output: mpfi_t, input: double */
   IZ_fun  IZ;      /* output: mpfi_t, input: mpz_t */
   IQ_fun  IQ;      /* output: mpfi_t, input: mpq_t */
   IR_fun  IR;      /* output: mpfi_t, input: mpfr_t */
+  III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
+  IIU_fun IIU;     /* output: mpfi_t, inputs: mpfi_t, unsigned long */
 } mpfi_fun_ptr;
 
 typedef union
@@ -81,19 +84,21 @@ typedef union
   NULL_fun IZ;     /* dummy, no corresponding mpfr function */
   NULL_fun IQ;     /* dummy, no corresponding mpfr function */
   NULL_fun IR;     /* dummy, no corresponding mpfr function */
+  NULL_fun IIU;    /* dummy, no corresponding mpfr function */
 } mpfi_fun_mpfr_ptr;
 
 typedef enum
   {
     I,     /* no input */
     II,    /* one input: interval */
-    III,   /* two inputs */
     IS,    /* one input: long */
     IU,    /* one input: unsigned long */
     ID,    /* one input: double */
     IZ,    /* one input: mpz_t */
     IQ,    /* one input: mpq_t */
     IR,    /* one input: mpfr_t */
+    III,   /* two inputs: intervals */
+    IIU,   /* two inputs: interval, unsigned long */
   } mpfi_fun_type;
 
 typedef union {
@@ -194,21 +199,23 @@ extern "C" {
 
   void init            (mpfi_function_ptr);
   void clear_ii        (mpfi_function_ptr);
-  void clear_iii       (mpfi_function_ptr);
   void clear_iu        (mpfi_function_ptr);
   void clear_is        (mpfi_function_ptr);
   void clear_id        (mpfi_function_ptr);
   void clear_iz        (mpfi_function_ptr);
   void clear_iq        (mpfi_function_ptr);
   void clear_ir        (mpfi_function_ptr);
+  void clear_iii       (mpfi_function_ptr);
+  void clear_iiu       (mpfi_function_ptr);
   void read_line_ii    (mpfi_function_ptr, FILE*);
-  void read_line_iii   (mpfi_function_ptr, FILE*);
   void read_line_iu    (mpfi_function_ptr, FILE*);
   void read_line_is    (mpfi_function_ptr, FILE*);
   void read_line_id    (mpfi_function_ptr, FILE*);
   void read_line_iz    (mpfi_function_ptr, FILE*);
   void read_line_iq    (mpfi_function_ptr, FILE*);
   void read_line_ir    (mpfi_function_ptr, FILE*);
+  void read_line_iii   (mpfi_function_ptr, FILE*);
+  void read_line_iiu   (mpfi_function_ptr, FILE*);
   void check_with_different_prec (mpfi_function_ptr, mp_prec_t);
   void check_line_i    (mpfi_function_ptr);
   void check_line_iu   (mpfi_function_ptr);
@@ -217,6 +224,7 @@ extern "C" {
   void check_line_iz   (mpfi_function_ptr);
   void check_line_iq   (mpfi_function_ptr);
   void check_line_ir   (mpfi_function_ptr);
+  void check_line_iiu  (mpfi_function_ptr);
 
 #ifdef __cplusplus
 }
