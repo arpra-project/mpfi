@@ -34,7 +34,7 @@ mpfi_add_ui (mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
   int inexact_left, inexact_right, inexact = 0;
 
   if (c == 0) {
-    return (mpfi_set (a,b) );
+    return ( mpfi_set (a,b) );
   }
   else if (MPFI_IS_ZERO (b)) {
     return ( mpfi_set_ui (a,c) );
@@ -42,6 +42,16 @@ mpfi_add_ui (mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
   else {
     inexact_left = mpfr_add_ui (&(a->left), &(b->left), c, MPFI_RNDD);
     inexact_right = mpfr_add_ui (&(a->right), &(b->right), c, MPFI_RNDU);
+
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
+
     if (MPFI_NAN_P (a))
       MPFR_RET_NAN;
     if (inexact_left)
