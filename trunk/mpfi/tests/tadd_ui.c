@@ -26,6 +26,37 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+static void
+check_overflow ()
+{
+  mpfr_t max;
+  mpfi_t a;
+  int inexact;
+
+  mpfi_init2 (a, 53);
+  mpfr_init2 (max, 53);
+  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
+  mpfr_set_inf (max, +1);
+  mpfr_nextbelow (max);
+  mpfr_set (&(a->right), max, MPFI_RNDU);
+
+  inexact = mpfi_add_ui (a, a, +1);
+
+  if (!mpfr_inf_p (&(a->right))) {
+    printf ("Error: mpfi_add_ui does not correctly handle overflow.\n");
+    exit (1);
+  }
+
+  if (!MPFI_RIGHT_IS_INEXACT (inexact)) {
+    printf ("Error: mpfi_add_ui does not return correct value "
+            "when overflow.\n");
+    exit (1);
+  }
+
+  mpfi_clear (a);
+  mpfr_clear (max);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -34,6 +65,7 @@ main (int argc, char **argv)
   MPFI_FUN_SET (i_add_ui, IIU, mpfi_add_ui, NULL);
 
   check_data (&i_add_ui, "add_ui.dat");
+  check_overflow ();
 
   return 0;
 }
