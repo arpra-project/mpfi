@@ -148,8 +148,9 @@ clear_ir (mpfi_function_ptr this)
   MPFI_FUN_ARGS (*this) = NULL;
 }
 
+/* signed/unsigned long as second parameter */
 void
-clear_iiu (mpfi_function_ptr this)
+clear_iil (mpfi_function_ptr this)
 {
   /* [0] initial value (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 0, mpfi));
@@ -158,7 +159,7 @@ clear_iiu (mpfi_function_ptr this)
   mpfi_clear (MPFI_FUN_ARG (*this, 2, mpfi));
   /* [3] operand (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 3, mpfi));
-  /* [4] operand (unsigned long), needs no deallocation */
+  /* [4] operand (signed/unsigned long), needs no deallocation */
 
   free (MPFI_FUN_ARGS (*this));
   MPFI_FUN_ARGS (*this) = NULL;
@@ -327,12 +328,31 @@ init (mpfi_function_ptr this)
       mpfi_init2 (MPFI_FUN_ARG (*this, 2, mpfi), 1024);
       /* [3] first operand (mpfi_t) */
       mpfi_init2 (MPFI_FUN_ARG (*this, 3, mpfi), 1024);
-      /* [4] operand (unsigned long), needs no initialization */
+      /* [4] second operand (unsigned long), needs no initialization */
 
       /* init methods */
       this->read_line  = read_line_iiu;
       this->check_line = check_line_iiu;
-      this->clear      = clear_iiu;
+      this->clear      = clear_iil;
+      break;
+
+    case IIS:
+      MPFI_FUN_ARGS (*this) =
+        (mpfi_fun_operand_t*) malloc (5 * sizeof (mpfi_fun_operand_t));
+
+      /* [0] initial value (mpfi_t) */
+      mpfi_init2 (MPFI_FUN_ARG (*this, 0, mpfi), 1024);
+      /* [1] return value (int), needs no initialization */
+      /* [2] expected value (mpfi_t) */
+      mpfi_init2 (MPFI_FUN_ARG (*this, 2, mpfi), 1024);
+      /* [3] first operand (mpfi_t) */
+      mpfi_init2 (MPFI_FUN_ARG (*this, 3, mpfi), 1024);
+      /* [4] second operand (signed long), needs no initialization */
+
+      /* init methods */
+      this->read_line  = read_line_iis;
+      this->check_line = check_line_iis;
+      this->clear      = clear_iil;
       break;
 
     default:

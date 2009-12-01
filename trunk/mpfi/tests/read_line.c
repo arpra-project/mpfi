@@ -185,3 +185,16 @@ read_line_iiu (mpfi_function_ptr this, FILE* fp)
   /* [4] unsigned integral operand */
   read_ui (fp, &(MPFI_FUN_ARG (*this, 4, ui)));
 }
+
+void
+read_line_iis (mpfi_function_ptr this, FILE* fp)
+{
+  /* [1] return value */
+  read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
+  /* [2] expected value */
+  read_mpfi (fp, MPFI_FUN_ARG (*this, 2, mpfi));
+  /* [3] mpfi_t operand */
+  read_mpfi (fp, MPFI_FUN_ARG (*this, 3, mpfi));
+  /* [4] signed integral operand */
+  read_si (fp, &(MPFI_FUN_ARG (*this, 4, si)));
+}
