@@ -232,6 +232,8 @@ read_si (FILE *f, long *i)
   mpfr_clear (x);
 }
 
+/* WARNING: when reading a double value, all roundings are towards
+   minus infinity and the precision depends on the host system. */
 int
 read_double (FILE *f, double *d)
 {
