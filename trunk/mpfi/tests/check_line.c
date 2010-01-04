@@ -470,3 +470,58 @@ check_line_iis (mpfi_function_ptr this)
     exit (1);
   }
 }
+
+void
+check_line_iid (mpfi_function_ptr this)
+{
+  int inex;
+
+  /* rename operands for better readability */
+  IID_fun  f_IID    = MPFI_FUN_GET (*this, IID);
+  mpfi_ptr got      = MPFI_FUN_ARG (*this, 0, mpfi);
+  int expected_inex = MPFI_FUN_ARG (*this, 1, i);
+  mpfi_ptr expected = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr op1      = MPFI_FUN_ARG (*this, 3, mpfi);
+  double op2        = MPFI_FUN_ARG (*this, 4, d);
+
+  mpfi_set_prec (got, mpfi_get_prec (expected));
+
+  inex = f_IID (got, op1, op2);
+
+  if (inex != expected_inex || !same_value (got, expected)) {
+    printf ("Failed line %lu.\nop1 = ", test_line_number);
+    mpfi_out_str (stdout, 16, 0, op1);
+    printf ("\nop2 = %g", op2);
+    printf ("\ngot      = ");
+    mpfi_out_str (stdout, 16, 0, got);
+    printf ("\nexpected = ");
+    mpfi_out_str (stdout, 16, 0, expected);
+    putchar ('\n');
+    if (inex != expected_inex)
+      printf ("inexact flag: got = %u, expected = %u\n", inex, expected_inex);
+
+    exit (1);
+  }
+
+  /* reuse input variable as output */
+  mpfi_set (got, op1);
+
+  inex = f_IID (got, got, op2);
+
+  if (inex != expected_inex || !same_value (got, expected)) {
+    printf ("Error when reusing first input argument as output (line %lu)."
+            "\nop1 = ", test_line_number);
+    mpfi_out_str (stdout, 16, 0, op1);
+    printf ("\nop2 = %g", op2);
+    printf ("\ngot      = ");
+    mpfi_out_str (stdout, 16, 0, got);
+    printf ("\nexpected = ");
+    mpfi_out_str (stdout, 16, 0, expected);
+    putchar ('\n');
+    if (inex != expected_inex)
+      printf ("inexact flag: got = %u, expected = %u\n",
+              inex, expected_inex);
+
+    exit (1);
+  }
+}

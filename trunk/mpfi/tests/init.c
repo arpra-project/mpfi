@@ -165,6 +165,23 @@ clear_iil (mpfi_function_ptr this)
   MPFI_FUN_ARGS (*this) = NULL;
 }
 
+/* double as second parameter */
+void
+clear_iid (mpfi_function_ptr this)
+{
+  /* [0] initial value (mpfi_t) */
+  mpfi_clear (MPFI_FUN_ARG (*this, 0, mpfi));
+  /* [1] return value (int), needs no deallocation */
+  /* [2] expected value (mpfi_t) */
+  mpfi_clear (MPFI_FUN_ARG (*this, 2, mpfi));
+  /* [3] operand (mpfi_t) */
+  mpfi_clear (MPFI_FUN_ARG (*this, 3, mpfi));
+  /* [4] operand (double), needs no deallocation */
+
+  free (MPFI_FUN_ARGS (*this));
+  MPFI_FUN_ARGS (*this) = NULL;
+}
+
 /* Initializations, global function for all prototypes
    In operands array, variables are in the same order as for data in
    '.dat' files plus, when needed, one additional variable before them. */
@@ -353,6 +370,25 @@ init (mpfi_function_ptr this)
       this->read_line  = read_line_iis;
       this->check_line = check_line_iis;
       this->clear      = clear_iil;
+      break;
+
+    case IID:
+      MPFI_FUN_ARGS (*this) =
+        (mpfi_fun_operand_t*) malloc (5 * sizeof (mpfi_fun_operand_t));
+
+      /* [0] initial value (mpfi_t) */
+      mpfi_init2 (MPFI_FUN_ARG (*this, 0, mpfi), 1024);
+      /* [1] return value (int), needs no initialization */
+      /* [2] expected value (mpfi_t) */
+      mpfi_init2 (MPFI_FUN_ARG (*this, 2, mpfi), 1024);
+      /* [3] first operand (mpfi_t) */
+      mpfi_init2 (MPFI_FUN_ARG (*this, 3, mpfi), 1024);
+      /* [4] second operand (double), needs no initialization */
+
+      /* init methods */
+      this->read_line  = read_line_iid;
+      this->check_line = check_line_iid;
+      this->clear      = clear_iid;
       break;
 
     default:
