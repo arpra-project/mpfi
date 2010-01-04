@@ -27,11 +27,13 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 extern char *pathname;
-extern unsigned long line_number;
+extern unsigned long line_number; /* current line read in file */ 
+unsigned long test_line_number;   /* start line of a test      */
 
 void
 read_line_ii (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [1] return value */
   read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
   /* [2] expected value */
@@ -43,6 +45,7 @@ read_line_ii (mpfi_function_ptr this, FILE* fp)
 void
 read_line_iii (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [1] return value */
   read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
   /* [2] expected value */
@@ -56,6 +59,7 @@ read_line_iii (mpfi_function_ptr this, FILE* fp)
 void
 read_line_iu (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [0] initial value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value */
@@ -68,7 +72,7 @@ read_line_iu (mpfi_function_ptr this, FILE* fp)
   /* data validation */
   if (mpfi_get_prec (MPFI_FUN_ARG (*this, 0, mpfi)) != mpfi_get_prec (MPFI_FUN_ARG (*this, 2, mpfi))) {
     printf ("Error in data file %s line %lu\nThe precisions of interval "
-            "are different.\n", pathname, line_number - 1);
+            "are different.\n", pathname, test_line_number);
     exit (1);
   }
 }
@@ -76,6 +80,7 @@ read_line_iu (mpfi_function_ptr this, FILE* fp)
 void
 read_line_is (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [0] initial value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value */
@@ -88,7 +93,7 @@ read_line_is (mpfi_function_ptr this, FILE* fp)
   /* data validation */
   if (mpfi_get_prec (MPFI_FUN_ARG (*this, 0, mpfi)) != mpfi_get_prec (MPFI_FUN_ARG (*this, 2, mpfi))) {
     printf ("Error in data file %s line %lu\nThe precisions of interval "
-            "are different.\n", pathname, line_number - 1);
+            "are different.\n", pathname, test_line_number);
     exit (1);
   }
 }
@@ -96,6 +101,7 @@ read_line_is (mpfi_function_ptr this, FILE* fp)
 void
 read_line_id (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [0] initial value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value */
@@ -108,7 +114,7 @@ read_line_id (mpfi_function_ptr this, FILE* fp)
   /* data validation */
   if (mpfi_get_prec (MPFI_FUN_ARG (*this, 0, mpfi)) != mpfi_get_prec (MPFI_FUN_ARG (*this, 2, mpfi))) {
     printf ("Error in data file %s line %lu\nThe precisions of interval "
-            "are different.\n", pathname, line_number - 1);
+            "are different.\n", pathname, test_line_number);
     exit (1);
   }
 }
@@ -116,6 +122,7 @@ read_line_id (mpfi_function_ptr this, FILE* fp)
 void
 read_line_iz (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [0] initial value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value */
@@ -128,7 +135,7 @@ read_line_iz (mpfi_function_ptr this, FILE* fp)
   /* data validation */
   if (mpfi_get_prec (MPFI_FUN_ARG (*this, 0, mpfi)) != mpfi_get_prec (MPFI_FUN_ARG (*this, 2, mpfi))) {
     printf ("Error in data file %s line %lu\nThe precisions of interval "
-            "are different.\n", pathname, line_number - 1);
+            "are different.\n", pathname, test_line_number);
     exit (1);
   }
 }
@@ -136,6 +143,7 @@ read_line_iz (mpfi_function_ptr this, FILE* fp)
 void
 read_line_iq (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [0] initial value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value */
@@ -148,7 +156,7 @@ read_line_iq (mpfi_function_ptr this, FILE* fp)
   /* data validation */
   if (mpfi_get_prec (MPFI_FUN_ARG (*this, 0, mpfi)) != mpfi_get_prec (MPFI_FUN_ARG (*this, 2, mpfi))) {
     printf ("Error in data file %s line %lu\nThe precisions of interval "
-            "are different.\n", pathname, line_number - 1);
+            "are different.\n", pathname, test_line_number);
     exit (1);
   }
 }
@@ -156,6 +164,7 @@ read_line_iq (mpfi_function_ptr this, FILE* fp)
 void
 read_line_ir (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [0] initial value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value */
@@ -168,7 +177,7 @@ read_line_ir (mpfi_function_ptr this, FILE* fp)
   /* data validation */
   if (mpfi_get_prec (MPFI_FUN_ARG (*this, 0, mpfi)) != mpfi_get_prec (MPFI_FUN_ARG (*this, 2, mpfi))) {
     printf ("Error in data file %s line %lu\nThe precisions of interval "
-            "are different.\n", pathname, line_number - 1);
+            "are different.\n", pathname, test_line_number);
     exit (1);
   }
 }
@@ -176,6 +185,7 @@ read_line_ir (mpfi_function_ptr this, FILE* fp)
 void
 read_line_iiu (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [1] return value */
   read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
   /* [2] expected value */
@@ -189,6 +199,7 @@ read_line_iiu (mpfi_function_ptr this, FILE* fp)
 void
 read_line_iis (mpfi_function_ptr this, FILE* fp)
 {
+  test_line_number = line_number;
   /* [1] return value */
   read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
   /* [2] expected value */

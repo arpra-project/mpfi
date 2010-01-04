@@ -27,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 extern char *pathname;
-extern unsigned long line_number;
+extern unsigned long test_line_number;
 
 /* when one (at least) endpoint of the result is exact, it can be
    used to check the function at a different precision. */
@@ -59,7 +59,7 @@ check_with_different_prec (mpfi_function_ptr function, mp_prec_t prec)
     mpfr_set (x, &(expected->left), MPFI_RNDD);
     if (!same_mpfr_value (x, &(got->left))) {
       printf ("Error at precision = %lu (line %lu).\n",
-              (unsigned long)prec, line_number - 1);
+              (unsigned long)prec, test_line_number);
       if (type_II) {
         printf ("op = ");
         mpfi_out_str (stdout, 16, 0, op1);
@@ -84,7 +84,7 @@ check_with_different_prec (mpfi_function_ptr function, mp_prec_t prec)
     mpfr_set (x, &(expected->right), MPFI_RNDU);
     if (!same_mpfr_value (x, &(got->right))) {
       printf ("Error at precision = %lu (line %lu).\n",
-              (unsigned long)prec, line_number - 1);
+              (unsigned long)prec, test_line_number);
       if (type_II) {
         printf ("op = ");
         mpfi_out_str (stdout, 16, 0, op1);
@@ -141,7 +141,7 @@ check_line_i (mpfi_function_ptr function)
     inex = f_III (got, op1, op2);
 
   if (inex != expected_inex || !same_value (got, expected)) {
-    printf ("Failed line %lu.\n", line_number - 1);
+    printf ("Failed line %lu.\n", test_line_number);
     if (type_II) {
       printf ("op = ");
       mpfi_out_str (stdout, 16, 0, op1);
@@ -183,7 +183,7 @@ check_line_i (mpfi_function_ptr function)
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Error when reusing%s input argument as output (line %lu)."
               "\nop1 = ", (type_II ? " first" : ""),
-              line_number - 1);
+              test_line_number);
       mpfi_out_str (stdout, 16, 0, op1);
       if (!type_II) {
         printf ("\nop2 = ");
@@ -208,7 +208,7 @@ check_line_i (mpfi_function_ptr function)
 
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Error when reusing second argument as output (line %lu)."
-              "\nop1 = ", line_number - 1);
+              "\nop1 = ", test_line_number);
       mpfi_out_str (stdout, 16, 0, op1);
       printf ("\nop2 = ");
       mpfi_out_str (stdout, 16, 0, op2);
@@ -234,7 +234,7 @@ check_line_iu (mpfi_function_ptr this)
   inex = (MPFI_FUN_GET (*this, IU)) (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 3, ui));
   if (inex != MPFI_FUN_ARG (*this, 1, i)
       || !same_value (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 2, mpfi))) {
-    printf ("Failed line %lu.\nop = %lu", line_number - 1, MPFI_FUN_ARG (*this, 3, ui));
+    printf ("Failed line %lu.\nop = %lu", test_line_number, MPFI_FUN_ARG (*this, 3, ui));
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 0, mpfi));
     printf ("\nexpected = ");
@@ -255,7 +255,7 @@ check_line_is (mpfi_function_ptr this)
   inex = (MPFI_FUN_GET (*this, IS)) (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 3, si));
   if (inex != MPFI_FUN_ARG (*this, 1, i)
       || !same_value (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 2, mpfi))) {
-    printf ("Failed line %lu.\nop = %ld", line_number - 1, MPFI_FUN_ARG (*this, 3, si));
+    printf ("Failed line %lu.\nop = %ld", test_line_number, MPFI_FUN_ARG (*this, 3, si));
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 0, mpfi));
     printf ("\nexpected = ");
@@ -277,7 +277,7 @@ check_line_id (mpfi_function_ptr this)
   inex = (MPFI_FUN_GET (*this, ID)) (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 3, d));
   if (inex != MPFI_FUN_ARG (*this, 1, i)
       || !same_value (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 2, mpfi))) {
-    printf ("Failed line %lu.\nop = %a", line_number - 1, MPFI_FUN_ARG (*this, 3, d));
+    printf ("Failed line %lu.\nop = %a", test_line_number, MPFI_FUN_ARG (*this, 3, d));
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 0, mpfi));
     printf ("\nexpected = ");
@@ -300,7 +300,7 @@ check_line_iz (mpfi_function_ptr this)
   inex = (MPFI_FUN_GET (*this, IZ)) (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 3, mpz));
   if (inex != MPFI_FUN_ARG (*this, 1, i)
       || !same_value (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 2, mpfi))) {
-    printf ("Failed line %lu.\nop = ", line_number - 1);
+    printf ("Failed line %lu.\nop = ", test_line_number);
     mpz_out_str (stdout, 16, MPFI_FUN_ARG (*this, 3, mpz));
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 0, mpfi));
@@ -323,7 +323,7 @@ check_line_iq (mpfi_function_ptr this)
   inex = (MPFI_FUN_GET (*this, IQ)) (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 3, mpq));
   if (inex != MPFI_FUN_ARG (*this, 1, i)
       || !same_value (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 2, mpfi))) {
-    printf ("Failed line %lu.\nop = ", line_number - 1);
+    printf ("Failed line %lu.\nop = ", test_line_number);
     mpq_out_str (stdout, 16, MPFI_FUN_ARG (*this, 3, mpq));
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 0, mpfi));
@@ -346,7 +346,7 @@ check_line_ir (mpfi_function_ptr this)
   inex = (MPFI_FUN_GET (*this, IR)) (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 3, mpfr));
   if (inex != MPFI_FUN_ARG (*this, 1, i)
       || !same_value (MPFI_FUN_ARG (*this, 0, mpfi), MPFI_FUN_ARG (*this, 2, mpfi))) {
-    printf ("Failed line %lu.\nop = ", line_number - 1);
+    printf ("Failed line %lu.\nop = ", test_line_number);
     mpfr_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 3, mpfr), MPFI_RNDD);
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, MPFI_FUN_ARG (*this, 0, mpfi));
@@ -379,7 +379,7 @@ check_line_iiu (mpfi_function_ptr this)
   inex = f_IIU (got, op1, op2);
 
   if (inex != expected_inex || !same_value (got, expected)) {
-    printf ("Failed line %lu.\nop1 = ", line_number - 1);
+    printf ("Failed line %lu.\nop1 = ", test_line_number);
     mpfi_out_str (stdout, 16, 0, op1);
     printf ("\nop2 = %lu", op2);
     printf ("\ngot      = ");
@@ -400,7 +400,7 @@ check_line_iiu (mpfi_function_ptr this)
 
   if (inex != expected_inex || !same_value (got, expected)) {
     printf ("Error when reusing first input argument as output (line %lu)."
-            "\nop1 = ", line_number - 1);
+            "\nop1 = ", test_line_number);
     mpfi_out_str (stdout, 16, 0, op1);
     printf ("\nop2 = %lu", op2);
     printf ("\ngot      = ");
@@ -415,7 +415,6 @@ check_line_iiu (mpfi_function_ptr this)
     exit (1);
   }
 }
-
 
 void
 check_line_iis (mpfi_function_ptr this)
@@ -435,7 +434,7 @@ check_line_iis (mpfi_function_ptr this)
   inex = f_IIS (got, op1, op2);
 
   if (inex != expected_inex || !same_value (got, expected)) {
-    printf ("Failed line %lu.\nop1 = ", line_number - 1);
+    printf ("Failed line %lu.\nop1 = ", test_line_number);
     mpfi_out_str (stdout, 16, 0, op1);
     printf ("\nop2 = %ld", op2);
     printf ("\ngot      = ");
@@ -456,7 +455,7 @@ check_line_iis (mpfi_function_ptr this)
 
   if (inex != expected_inex || !same_value (got, expected)) {
     printf ("Error when reusing first input argument as output (line %lu)."
-            "\nop1 = ", line_number - 1);
+            "\nop1 = ", test_line_number);
     mpfi_out_str (stdout, 16, 0, op1);
     printf ("\nop2 = %ld", op2);
     printf ("\ngot      = ");

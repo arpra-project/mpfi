@@ -26,8 +26,6 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-extern char *pathname;
-extern unsigned long line_number;
 extern int nextchar;
 
 /* public main function */
