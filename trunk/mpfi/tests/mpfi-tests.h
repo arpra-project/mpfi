@@ -74,7 +74,7 @@ typedef union
   III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
   IIU_fun IIU;     /* output: mpfi_t, inputs: mpfi_t, unsigned long */
   IIS_fun IIS;     /* output: mpfi_t, inputs: mpfi_t, signed long */
-  IIS_fun IID;     /* output: mpfi_t, inputs: mpfi_t, double */
+  IID_fun IID;     /* output: mpfi_t, inputs: mpfi_t, double */
 } mpfi_fun_ptr;
 
 typedef union
@@ -215,6 +215,7 @@ extern "C" {
   void clear_ir        (mpfi_function_ptr);
   void clear_iii       (mpfi_function_ptr);
   void clear_iil       (mpfi_function_ptr);
+  void clear_iid       (mpfi_function_ptr);
   void read_line_ii    (mpfi_function_ptr, FILE*);
   void read_line_iu    (mpfi_function_ptr, FILE*);
   void read_line_is    (mpfi_function_ptr, FILE*);
