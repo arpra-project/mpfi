@@ -57,6 +57,7 @@ typedef int (*IIS_fun) (mpfi_t, mpfi_srcptr, long);
 typedef int (*IID_fun) (mpfi_t, mpfi_srcptr, double);
 typedef int (*IIZ_fun) (mpfi_t, mpfi_srcptr, mpz_srcptr);
 typedef int (*IIQ_fun) (mpfi_t, mpfi_srcptr, mpq_srcptr);
+typedef int (*IIR_fun) (mpfi_t, mpfi_srcptr, mpfr_srcptr);
 
 typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
@@ -79,6 +80,7 @@ typedef union
   IID_fun IID;     /* output: mpfi_t, inputs: mpfi_t, double */
   IIZ_fun IIZ;     /* output: mpfi_t, inputs: mpfi_t, mpz_t */
   IIQ_fun IIQ;     /* output: mpfi_t, inputs: mpfi_t, mpq_t */
+  IIR_fun IIR;     /* output: mpfi_t, inputs: mpfi_t, mpfr_t */
 } mpfi_fun_ptr;
 
 typedef union
@@ -97,6 +99,7 @@ typedef union
   NULL_fun IID;    /* dummy, no corresponding mpfr function */
   NULL_fun IIZ;    /* dummy, no corresponding mpfr function */
   NULL_fun IIQ;    /* dummy, no corresponding mpfr function */
+  NULL_fun IIR;    /* dummy, no corresponding mpfr function */
 } mpfi_fun_mpfr_ptr;
 
 typedef enum
@@ -115,6 +118,7 @@ typedef enum
     IID,   /* two inputs: interval, double */
     IIZ,   /* two inputs: interval, mpz_t */
     IIQ,   /* two inputs: interval, mpq_t */
+    IIR,   /* two inputs: interval, mpfr_t */
   } mpfi_fun_type;
 
 typedef union {
@@ -226,6 +230,7 @@ extern "C" {
   void clear_iid       (mpfi_function_ptr);
   void clear_iiz       (mpfi_function_ptr);
   void clear_iiq       (mpfi_function_ptr);
+  void clear_iir       (mpfi_function_ptr);
   void read_line_ii    (mpfi_function_ptr, FILE*);
   void read_line_iu    (mpfi_function_ptr, FILE*);
   void read_line_is    (mpfi_function_ptr, FILE*);
@@ -239,6 +244,7 @@ extern "C" {
   void read_line_iid   (mpfi_function_ptr, FILE*);
   void read_line_iiz   (mpfi_function_ptr, FILE*);
   void read_line_iiq   (mpfi_function_ptr, FILE*);
+  void read_line_iir   (mpfi_function_ptr, FILE*);
   void check_with_different_prec (mpfi_function_ptr, mp_prec_t);
   void check_line_i    (mpfi_function_ptr);
   void check_line_iu   (mpfi_function_ptr);
@@ -252,6 +258,7 @@ extern "C" {
   void check_line_iid  (mpfi_function_ptr);
   void check_line_iiz  (mpfi_function_ptr);
   void check_line_iiq  (mpfi_function_ptr);
+  void check_line_iir  (mpfi_function_ptr);
 
 #ifdef __cplusplus
 }

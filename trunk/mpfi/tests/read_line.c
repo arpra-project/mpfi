@@ -251,3 +251,17 @@ read_line_iiq (mpfi_function_ptr this, FILE* fp)
   /* [4] mpq_t operand */
   read_mpq (fp, MPFI_FUN_ARG (*this, 4, mpq));
 }
+
+void
+read_line_iir (mpfi_function_ptr this, FILE* fp)
+{
+  test_line_number = line_number;
+  /* [1] return value */
+  read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
+  /* [2] expected value */
+  read_mpfi (fp, MPFI_FUN_ARG (*this, 2, mpfi));
+  /* [3] mpfi_t operand */
+  read_mpfi (fp, MPFI_FUN_ARG (*this, 3, mpfi));
+  /* [4] mpfr_t operand */
+  read_mpfr (fp, MPFI_FUN_ARG (*this, 4, mpfr));
+}
