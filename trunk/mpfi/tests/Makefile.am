@@ -7,7 +7,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
     mpfi-tests.c
 
 check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_si		\
-    tadd_ui tasin tasinh tatan tatan2 tatanh tcbrt		\
+    tadd_ui tadd_z tasin tasinh tatan tatan2 tatanh tcbrt	\
     tconst_catalan tconst_euler tconst_log2 tconst_pi tcos	\
     tcosh tcot tcoth tcsc tcsch tdiv texp texp2 texpm1		\
     thypot tinit_set tintersect tinv tlog tlog10 tlog1p		\
@@ -17,11 +17,11 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_si		\
     ttanh tunion
 
 EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
-    add_si.dat add_ui.dat asin.dat asinh.dat atan.dat		\
-    atan2.dat cbrt.dat div.dat intersect.dat inv.dat log.dat	\
-    mul.dat neg.dat put_d.dat put_fr.dat put_q.dat		\
-    put_si.dat put_ui.dat put_z.dat set_d.dat set_fr.dat	\
-    set_q.dat set_si.dat set_ui.dat set_z.dat sqr.dat		\
-    sqrt.dat sub.dat union.dat
+    add_si.dat add_ui.dat add_z.dat asin.dat asinh.dat		\
+    atan.dat atan2.dat cbrt.dat div.dat intersect.dat		\
+    inv.dat log.dat mul.dat neg.dat put_d.dat put_fr.dat	\
+    put_q.dat put_si.dat put_ui.dat put_z.dat set_d.dat		\
+    set_fr.dat set_q.dat set_si.dat set_ui.dat set_z.dat	\
+    sqr.dat sqrt.dat sub.dat union.dat
 
 TESTS = $(check_PROGRAMS)
