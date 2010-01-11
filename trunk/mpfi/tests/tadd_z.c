@@ -1,6 +1,6 @@
 /* tadd_z.c -- Test mpfi_add_z.
 
-Copyright 2009
+Copyright 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
