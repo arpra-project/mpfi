@@ -548,11 +548,6 @@ check_line_iiz (mpfi_function_ptr this)
     mpz_out_str (stdout, 16, op2);
     printf ("\ngot      = ");
     mpfi_out_str (stdout, 16, 0, got);
-
-    /* DEBUG: remove it */
-    printf (" [prec=%lu]", mpfi_get_prec (got));
-    /* DEBUG */
-
     printf ("\nexpected = ");
     mpfi_out_str (stdout, 16, 0, expected);
     putchar ('\n');
