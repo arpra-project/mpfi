@@ -1,6 +1,6 @@
 /* read_line.c -- Read expected result and operands from file.
 
-Copyright 2009
+Copyright 2009, 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -236,4 +236,18 @@ read_line_iiz (mpfi_function_ptr this, FILE* fp)
   read_mpfi (fp, MPFI_FUN_ARG (*this, 3, mpfi));
   /* [4] signed integral operand */
   read_mpz (fp, MPFI_FUN_ARG (*this, 4, mpz));
+}
+
+void
+read_line_iiq (mpfi_function_ptr this, FILE* fp)
+{
+  test_line_number = line_number;
+  /* [1] return value */
+  read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
+  /* [2] expected value */
+  read_mpfi (fp, MPFI_FUN_ARG (*this, 2, mpfi));
+  /* [3] mpfi_t operand */
+  read_mpfi (fp, MPFI_FUN_ARG (*this, 3, mpfi));
+  /* [4] signed integral operand */
+  read_mpq (fp, MPFI_FUN_ARG (*this, 4, mpq));
 }
