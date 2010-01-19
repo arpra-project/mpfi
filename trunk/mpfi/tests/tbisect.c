@@ -58,6 +58,71 @@ check (mpfi_ptr left, mpfi_ptr right, mpfi_srcptr interval,
       printf ("\n");
       exit (1);
     }
+
+
+  /* reuse variable tests */
+
+  if (mpfi_get_prec (interval) == mpfi_get_prec (expected_left))
+    {
+      mpfi_set (left, interval);
+      ret = mpfi_bisect (left, right, left);
+      if (ret != expected_retval)
+        {
+          printf ("Error: mpfi_bisect does not return expected value when "
+                  "reusing the first variable.\ninterval:", ret);
+          mpfi_out_str (stdout, 16, 0, interval);
+          printf ("\n     got: %d\nexpected: %d\n", ret, expected_retval);
+          exit (1);
+        }
+      if (!same_value (left, expected_left)
+          || !same_value (right, expected_right))
+        {
+          printf ("Error: mpfi_bisect does not return expected interval when "
+                  "reusing the first variable.\ninitial interval:");
+          mpfi_out_str (stdout, 16, 0, interval);
+          printf ("\n            left:");
+          mpfi_out_str (stdout, 16, 0, left);
+          printf ("\n           right:");
+          mpfi_out_str (stdout, 16, 0, right);
+          printf ("\n   expected left:");
+          mpfi_out_str (stdout, 16, 0, expected_left);
+          printf ("\n  expected right:");
+          mpfi_out_str (stdout, 16, 0, expected_right);
+          printf ("\n");
+          exit (1);
+        }
+    }
+
+  if (mpfi_get_prec (interval) == mpfi_get_prec (expected_right))
+    {
+      mpfi_set (right, interval);
+      ret = mpfi_bisect (left, right, right);
+      if (ret != expected_retval)
+        {
+          printf ("Error: mpfi_bisect does not return expected value when "
+                  "reusing the second variable.\ninterval:", ret);
+          mpfi_out_str (stdout, 16, 0, interval);
+          printf ("\n     got: %d\nexpected: %d\n", ret, expected_retval);
+          exit (1);
+        }
+      if (!same_value (left, expected_left)
+          || !same_value (right, expected_right))
+        {
+          printf ("Error: mpfi_bisect does not return expected interval when "
+                  "reusing the second variable.\ninitial interval:");
+          mpfi_out_str (stdout, 16, 0, interval);
+          printf ("\n            left:");
+          mpfi_out_str (stdout, 16, 0, left);
+          printf ("\n           right:");
+          mpfi_out_str (stdout, 16, 0, right);
+          printf ("\n   expected left:");
+          mpfi_out_str (stdout, 16, 0, expected_left);
+          printf ("\n  expected right:");
+          mpfi_out_str (stdout, 16, 0, expected_right);
+          printf ("\n");
+          exit (1);
+        }
+    }
 }
 
 static void
@@ -210,6 +275,20 @@ check_regular (void)
   mpfi_init2 (right, 53);
   mpfi_init2 (expected_left, 53);
   mpfi_init2 (expected_right, 53);
+
+  mpfr_set_nan (&(left->left));
+  mpfr_set_nan (&(left->right));
+  mpfi_set (right, left);
+  /* [2, 2^53] -> [2, 2^52+1] u [2^52+1, 2^53] */
+  mpfr_set_ui (&(interval->left), 2, MPFI_RNDD);
+  mpfr_set_ui_2exp (&(interval->right), 1, 53, MPFI_RNDU);
+  mpfr_set_ui (&(expected_left->left), 2, MPFI_RNDD);
+  mpfr_set_ui_2exp (&(expected_left->right), 1, 52, MPFI_RNDU);
+  mpfr_add_ui (&(expected_left->right), &(expected_left->right), 1,
+               MPFI_RNDU);
+  mpfr_set (&(expected_right->left), &(expected_left->right), MPFI_RNDD);
+  mpfr_set_ui_2exp (&(expected_right->right), 1, 53, MPFI_RNDU);
+  check (left, right, interval, expected_left, expected_right, 0);
 
   /* double rounding error */
   mpfi_set_prec (left, 52);
