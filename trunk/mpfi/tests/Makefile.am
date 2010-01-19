@@ -8,10 +8,10 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 
 check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tadd_q tadd_si tadd_ui tadd_z tasin tasinh tatan tatan2	\
-    tatanh tcbrt tconst_catalan tconst_euler tconst_log2	\
-    tconst_pi tcos tcosh tcot tcoth tcsc tcsch tdiv texp	\
-    texp2 texpm1 thypot tinit_set tintersect tinv tlog		\
-    tlog10 tlog1p tlog2 tmul tneg tput_d tput_fr tput_q		\
+    tatanh tbisect tcbrt tconst_catalan tconst_euler		\
+    tconst_log2 tconst_pi tcos tcosh tcot tcoth tcsc tcsch	\
+    tdiv texp texp2 texpm1 thypot tinit_set tintersect tinv	\
+    tlog tlog10 tlog1p tlog2 tmul tneg tput_d tput_fr tput_q	\
     tput_si tput_ui tput_z tsec tsech tset tset_d tset_fr	\
     tset_q tset_si tset_str tset_ui tset_z tsin tsinh tsqr	\
     tsqrt tsub ttan ttanh tunion
