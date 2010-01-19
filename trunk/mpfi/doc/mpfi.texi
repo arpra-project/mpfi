@@ -1406,12 +1406,12 @@ It returns a value indicating whether none, one or both endpoints are inexact.
 @deftypefun int mpfi_blow (mpfi_t @var{rop}, mpfi_t @var{op1}, double @var{op2})
 @ifinfo
 Sets @var{rop} to the interval whose center is the center of @var{op1}
-and whose radius is the radius of @var{op1} multiplied by (1 + @var{op2}).
+and whose radius is the radius of @var{op1} multiplied by (1 + abs(@var{op2})).
 @end ifinfo
 @iftex
 @tex
 Sets @var{rop} to the interval whose center is the center of @var{op1}
-and whose radius is the radius of @var{op1} multiplied by (1 + @var{op2})$.
+and whose radius is the radius of @var{op1} multiplied by $(1 + | @var{op2} |)$.
 @end tex
 @end iftex
 It returns a value indicating whether none, one or both endpoints are inexact.
