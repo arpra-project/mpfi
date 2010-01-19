@@ -201,8 +201,8 @@ extern "C" {
   extern char             rands_initialized;
   void random_interval (mpfi_ptr);
 
-  int  same_mpfr_value (mpfr_ptr, mpfr_ptr);
-  int  same_value      (mpfi_ptr, mpfi_ptr); 
+  int  same_mpfr_value (mpfr_srcptr, mpfr_srcptr);
+  int  same_value      (mpfi_srcptr, mpfi_srcptr); 
 
   FILE* open_file      (const char *);
   void init_reading    (FILE*);

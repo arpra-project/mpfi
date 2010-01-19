@@ -78,7 +78,7 @@ init_reading (FILE* f)
 /* comparisons: return true when arguments have the same value (even if both
    are NaN) */
 int
-same_mpfr_value (mpfr_ptr got, mpfr_ptr ref)
+same_mpfr_value (mpfr_srcptr got, mpfr_srcptr ref)
 {
   if (mpfr_nan_p (got))
     return mpfr_nan_p (ref);
@@ -90,7 +90,7 @@ same_mpfr_value (mpfr_ptr got, mpfr_ptr ref)
 }
 
 int
-same_value (mpfi_ptr a, mpfi_ptr b)
+same_value (mpfi_srcptr a, mpfi_srcptr b)
 {
   return same_mpfr_value (&(a->left), &(b->left))
     && same_mpfr_value (&(a->right), &(b->right));
