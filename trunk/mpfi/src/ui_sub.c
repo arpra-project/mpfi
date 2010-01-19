@@ -32,16 +32,21 @@ int
 mpfi_ui_sub (mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 {
   int inexact_left, inexact_right, inexact=0;
+  mpfr_t tmp;
 
   if (MPFI_IS_ZERO (c)) {
-    return (mpfi_set_ui (a,b));
+    return (mpfi_set_ui (a, b));
   }
   else if (b == 0) {
-    return (mpfi_neg (a,c));
+    return (mpfi_neg (a, c));
   }
   else {
-    inexact_left  = mpfr_ui_sub (&(a->left), b, &(c->right), MPFI_RNDD);
+    mpfr_init2 (tmp, mpfi_get_prec (a));
+    mpfr_set (tmp, &(a->left), MPFI_RNDD);
+    inexact_left  = mpfr_ui_sub (tmp, b, &(c->right), MPFI_RNDD);
     inexact_right = mpfr_ui_sub (&(a->right), b, &(c->left), MPFI_RNDU);
+    inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
+    mpfr_clear (tmp);
     if (MPFI_NAN_P (a))
       MPFR_RET_NAN;
     if (inexact_left)
