@@ -48,9 +48,9 @@ mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
     MPFR_RET_NAN;
   }
 
-  prec=mpfi_get_prec (y);
-  prec1=mpfi_get_prec (y1);
-  prec2=mpfi_get_prec (y2);
+  prec = mpfi_get_prec (y);
+  prec1 = mpfi_get_prec (y1);
+  prec2 = mpfi_get_prec (y2);
   if ( (prec1 >= prec2) && (prec1 >= prec))
     prec = prec1;
   else if ( (prec2 >= prec1) && (prec2 >= prec))
@@ -61,8 +61,19 @@ mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
 
   dummy = mpfr_set (&(y1->left), &(y->left), MPFI_RNDD);
   dummy = mpfr_set (&(y2->right), &(y->right), MPFI_RNDU);
-  dummy = mpfr_set (&(y1->right), centre, MPFI_RNDU);
-  dummy = mpfr_set (&(y2->left), centre, MPFI_RNDD);
+  dummy = mpfr_set (&(y1->right), centre, MPFI_RNDU); /* FIXME: double
+                                                         rounding
+                                                         error */
+  dummy = mpfr_set (&(y2->left), centre, MPFI_RNDD); /* FIXME: double
+                                                         rounding
+                                                         error */
+
+  /* do not allow +0 as upper bound. Note that left endpoint of y2
+     cannot be -0 because if centre is zero its precision is
+     sufficient for it to be an exact result (then center = +0). */
+  if (mpfr_zero_p (&(y1->right)) && !mpfr_signbit (&(y1->right))) {
+    mpfr_neg (&(y1->right), &(y1->right), MPFI_RNDD);
+  }
 
   mpfr_clear (centre);
   return inexact_centre;
