@@ -1,8 +1,8 @@
 # initialisation autoconf
-AC_INIT(mpfi,1.3.4-RC4,[Nathalie.Revol@ens-lyon.fr,Fabrice.Rouillier@inria.fr])
+AC_INIT(mpfi,1.5-dev,[Nathalie.Revol@ens-lyon.fr,Fabrice.Rouillier@inria.fr])
 
 # initialisation automake
-AM_INIT_AUTOMAKE(mpfi,1.4)
+AM_INIT_AUTOMAKE(mpfi,1.5-dev)
 
 # fichier contenant les definitions de toutes
 # les macros definies par Autoconf

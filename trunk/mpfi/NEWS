@@ -43,4 +43,5 @@ Changes between MPFI version 1.4 and ?
   secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot
 * can now be compiled outside the source directory
 * each function is in its own file
-
+* fix bug in mpfi_ui_sub when reusing a variable (bug reported by
+  Sisyphus 2010-01-19).
