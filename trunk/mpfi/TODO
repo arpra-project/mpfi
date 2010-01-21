@@ -1,0 +1,10 @@
+From: Robert Bradshaw <robertwb@math.washington.edu>
+Date: January 20, 2010 8:53:54 PM CEST
+To: Nathalie.Revol@ens-lyon.fr, Fabrice.Rouillier@loria.fr
+Subject: Bug in mpfi
+
+In mpfi_set_str, you simply abort if the string is > 1000 characters. This should be handled more gracefully.
+
+Thanks,
+Robert
+------
