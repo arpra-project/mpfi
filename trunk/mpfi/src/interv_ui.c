@@ -41,7 +41,14 @@ mpfi_interv_ui (mpfi_ptr a, const unsigned long b, const unsigned long c)
     inexact_left = mpfr_set_ui (&(a->left), c, MPFI_RNDD);
     inexact_right = mpfr_set_ui (&(a->right), b, MPFI_RNDU);
   }
-  /* a cannot be a NaN, mpfr_set_ui never returns a NaN */
+
+  /* note: a cannot be a NaN, mpfr_set_ui never sets a NaN */
+
+  /* do not allow +0 as upper bound */
+  if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+    mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+  }
+
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
