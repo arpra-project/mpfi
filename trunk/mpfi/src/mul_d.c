@@ -35,17 +35,17 @@ mpfi_mul_d (mpfi_ptr a, mpfi_srcptr b, const double c)
   int inexact_set, inexact_mul, inexact=0;
 
   mpfi_init2 (tmp, 64); /* 64 for IA86-FPU87 issues */
-  inexact_set = mpfi_set_d (tmp,c);
-  inexact_mul = mpfi_mul (a,b,tmp);
+  inexact_set = mpfi_set_d (tmp, c);
+  inexact_mul = mpfi_mul (a, b, tmp);
   MPFI_CLEAR (tmp);
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if (mpfr_inf_p (&(a->left))  && MPFI_LEFT_IS_INEXACT (inexact_mul))   /* overflow */
-    inexact += 1;
-  if (mpfr_inf_p (&(a->right)) && MPFI_RIGHT_IS_INEXACT (inexact_mul))  /* overflow */
-    inexact += 2;
+  if (MPFI_LEFT_IS_INEXACT (inexact_mul))
+    inexact += 1; /* overflow if left endpoint is not bounded */
+  if (MPFI_RIGHT_IS_INEXACT (inexact_mul))
+    inexact += 2; /* overflow if right endpoint is not bounded */
   if (mpfi_bounded_p (a)) {
     if (inexact_set) /* if the conversion of c into a mpfi is inexact,
                         then so are both endpoints of the result.      */
