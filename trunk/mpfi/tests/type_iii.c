@@ -142,8 +142,7 @@ check_line_iii (mpfi_function_ptr function)
 }
 
 /* Check if the image of random points chosen in the given intervals is in the
-   image of these intervals.
-   It assumes that the operands have been set. */
+   image of these intervals. */
 void
 random_iii (mpfi_function_ptr this)
 {

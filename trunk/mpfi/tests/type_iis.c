@@ -103,8 +103,7 @@ check_line_iis (mpfi_function_ptr this)
 }
 
 /* Check if the image of a random point chosen in the given interval is in the
-   image of this interval.
-   It assumes that the operand has been set. */
+   image of this interval. */
 void
 random_iis (mpfi_function_ptr this)
 {
@@ -113,7 +112,7 @@ random_iis (mpfi_function_ptr this)
   RRS_fun f_RRS = MPFI_FUN_MPFR_FUNCTION (*this, IIS);
   mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
   mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
-  long si       = MPFI_FUN_ARG (*this, 4, si);
+  long si;
   /* reuse endpoint as mpfr_t */
   mpfi_ptr i    = MPFI_FUN_ARG (*this, 0, mpfi);
   mpfr_ptr x    = &(i->left);

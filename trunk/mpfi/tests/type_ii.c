@@ -190,8 +190,7 @@ check_line_ii (mpfi_function_ptr function)
 }
 
 /* Check if the image of a random point chosen in the given interval is in the
-   image of this interval.
-   It assumes that the operand has been set. */
+   image of this interval. */
 void
 random_ii (mpfi_function_ptr this)
 {

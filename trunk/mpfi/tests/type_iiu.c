@@ -103,8 +103,7 @@ check_line_iiu (mpfi_function_ptr this)
 }
 
 /* Check if the image of a random point chosen in the given interval is in the
-   image of this interval.
-   It assumes that the operand has been set. */
+   image of this interval. */
 void
 random_iiu (mpfi_function_ptr this)
 {
@@ -113,7 +112,7 @@ random_iiu (mpfi_function_ptr this)
   RRU_fun f_RRU = MPFI_FUN_MPFR_FUNCTION (*this, IIU);
   mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
   mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
-  unsigned long ui = MPFI_FUN_ARG (*this, 4, ui);
+  unsigned long ui;
   /* reuse endpoint as mpfr_t */
   mpfi_ptr i    = MPFI_FUN_ARG (*this, 0, mpfi);
   mpfr_ptr x    = &(i->left);
@@ -125,10 +124,10 @@ random_iiu (mpfi_function_ptr this)
   f_IIU (b, a, ui);
   f_RRU (y, x, ui, MPFI_RNDD);
   if (!mpfi_is_inside_fr (y, b)) {
-    printf ("Error:\nthe interval b, image of (a, ui), does not contain "
-            "the point y, image of (x, ui) where x is in a.\na = ");
+    printf ("Error:\nthe interval b, image of (a, n), does not contain "
+            "the point y, image of (x, n) where x is in a.\na = ");
     mpfi_out_str (stdout, 10, 0, a);
-    printf ("\nui = %lu\nb = ", ui);
+    printf ("\nn = %lu\nb = ", ui);
     mpfi_out_str (stdout, 10, 0, b);
     printf ("\nx = ");
     mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
