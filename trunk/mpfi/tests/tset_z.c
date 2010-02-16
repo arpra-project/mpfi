@@ -1,6 +1,6 @@
 /* tset_z.c -- Test mpfi_set_z.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t set_z;
+  struct mpfi_function_t i_set_z;
 
-  MPFI_FUN_SET (set_z, IZ, mpfi_set_z, NULL);
+  mpfi_fun_init_IZ (&i_set_z, mpfi_set_z, NULL);
 
-  check_data (&set_z, "set_z.dat");
+  check_data (&i_set_z, "set_z.dat");
+
+  mpfi_fun_clear (&i_set_z);
 
   return 0;
 }

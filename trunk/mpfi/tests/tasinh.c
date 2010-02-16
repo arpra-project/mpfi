@@ -1,6 +1,6 @@
 /* tasinh.c -- Test mpfi_asinh.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_asinh;
 
-  MPFI_FUN_SET (i_asinh, II, mpfi_asinh, mpfr_asinh);
-
+  mpfi_fun_init_II (&i_asinh, mpfi_asinh, mpfr_asinh);
   test_start ();
 
   check_data (&i_asinh, "asinh.dat");
   check_random (&i_asinh, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_asinh);
 
   return 0;
 }

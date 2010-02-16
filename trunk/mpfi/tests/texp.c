@@ -1,6 +1,6 @@
 /* texp.c -- Test mpfi_exp.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_exp;
 
-  MPFI_FUN_SET (i_exp, II, mpfi_exp, mpfr_exp);
-
+  mpfi_fun_init_II (&i_exp, mpfi_exp, mpfr_exp);
   test_start ();
 
-/*   check_data (i_exp, "exp.dat"); */
+/*   check_data (&i_exp, "exp.dat"); */
   check_random (&i_exp, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_exp);
 
   return 0;
 }

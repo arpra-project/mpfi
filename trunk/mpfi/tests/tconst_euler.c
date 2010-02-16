@@ -1,6 +1,6 @@
 /* tconst_euler.c -- Test mpfi_const_euler.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,8 +31,11 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_euler;
 
-  MPFI_FUN_SET (i_euler, I, mpfi_const_euler, mpfr_const_euler);
+  mpfi_fun_init_I (&i_euler, mpfi_const_euler, mpfr_const_euler);
+
   check_const (&i_euler, 2, 1000);
+
+  mpfi_fun_clear (&i_euler);
 
   return 0;
 }

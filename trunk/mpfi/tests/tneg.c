@@ -1,6 +1,6 @@
 /* tneg.c -- Test mpfi_neg.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,16 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t neg;
+  struct mpfi_function_t i_neg;
 
-  MPFI_FUN_SET (neg, II, mpfi_neg, mpfr_neg);
-
+  mpfi_fun_init_II (&i_neg, mpfi_neg, mpfr_neg);
   test_start ();
 
-  check_data (&neg, "neg.dat");
-  check_random (&neg, 2, 1000, 10);
+  check_data (&i_neg, "neg.dat");
+  check_random (&i_neg, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_neg);
 
   return 0;
 }

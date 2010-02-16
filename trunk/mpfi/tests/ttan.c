@@ -1,6 +1,6 @@
 /* ttan.c -- Test mpfi_tan.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_tan;
 
-  MPFI_FUN_SET (i_tan, II, mpfi_tan, mpfr_tan);
+  mpfi_fun_init_II (&i_tan, mpfi_tan, mpfr_tan);
 
   test_start ();
 
-/*   check_data (i_tan, "tan.dat"); */
+/*   check_data (&i_tan, "tan.dat"); */
   check_random (&i_tan, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_tan);
 
   return 0;
 }

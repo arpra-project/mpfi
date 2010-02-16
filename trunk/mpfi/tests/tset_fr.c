@@ -1,6 +1,6 @@
 /* tset_fr.c -- Test mpfi_set_fr.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t set_fr;
+  struct mpfi_function_t i_set_fr;
 
-  MPFI_FUN_SET (set_fr, IR, mpfi_set_fr, NULL);
+  mpfi_fun_init_IR (&i_set_fr, mpfi_set_fr, NULL);
 
-  check_data (&set_fr, "set_fr.dat");
+  check_data (&i_set_fr, "set_fr.dat");
+
+  mpfi_fun_clear (&i_set_fr);
 
   return 0;
 }

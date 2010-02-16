@@ -87,10 +87,12 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_fr;
 
-  MPFI_FUN_SET (i_add_fr, IIR, mpfi_add_fr, NULL);
+  mpfi_fun_init_IIR (&i_add_fr, mpfi_add_fr, NULL);
 
   check_data (&i_add_fr, "add_fr.dat");
   check_overflow ();
+
+  mpfi_fun_clear (&i_add_fr);
 
   return 0;
 }

@@ -1,6 +1,6 @@
 /* tadd.c -- Test mpfi_add.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,17 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t add;
+  struct mpfi_function_t i_add;
 
-  MPFI_FUN_SET (add, III, mpfi_add, mpfr_add);
+  mpfi_fun_init_III (&i_add, mpfi_add, mpfr_add);
 
   test_start ();
 
-  check_data (&add, "add.dat");
-  check_random (&add, 2, 1000, 10);
+  check_data (&i_add, "add.dat");
+  check_random (&i_add, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_add);
 
   return 0;
 }

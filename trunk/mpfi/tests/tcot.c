@@ -1,6 +1,6 @@
 /* tcot.c -- Test mpfi_cot.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_cot;
 
-  MPFI_FUN_SET (i_cot, II, mpfi_cot, mpfr_cot);
-
+  mpfi_fun_init_II (&i_cot, mpfi_cot, mpfr_cot);
   test_start ();
 
-/*   check_data (i_cot, "cot.dat"); */
+/*   check_data (&i_cot, "cot.dat"); */
   check_random (&i_cot, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_cot);
 
   return 0;
 }

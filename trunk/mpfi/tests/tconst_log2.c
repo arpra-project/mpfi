@@ -1,6 +1,6 @@
 /* tconst_log2.c -- Test mpfi_const_log2.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,8 +31,11 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_log2;
 
-  MPFI_FUN_SET (i_log2, I, mpfi_const_log2, mpfr_const_log2);
+  mpfi_fun_init_I (&i_log2, mpfi_const_log2, mpfr_const_log2);
+
   check_const (&i_log2, 2, 1000);
+
+  mpfi_fun_clear (&i_log2);
 
   return 0;
 }

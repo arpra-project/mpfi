@@ -1,6 +1,6 @@
 /* tasin.c -- Test mpfi_asin.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_asin;
 
-  MPFI_FUN_SET (i_asin, II, mpfi_asin, mpfr_asin);
-
+  mpfi_fun_init_II (&i_asin, mpfi_asin, mpfr_asin);
   test_start ();
 
   check_data (&i_asin, "asin.dat");
   check_random (&i_asin, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_asin);
 
   return 0;
 }

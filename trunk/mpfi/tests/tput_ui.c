@@ -1,6 +1,6 @@
 /* tput_ui.c -- Test mpfi_put_ui.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t put_ui;
+  struct mpfi_function_t i_put_ui;
 
-  MPFI_FUN_SET (put_ui, IU, mpfi_put_ui, NULL);
+  mpfi_fun_init_IU (&i_put_ui, mpfi_put_ui, NULL);
 
-  check_data (&put_ui, "put_ui.dat");
+  check_data (&i_put_ui, "put_ui.dat");
+
+  mpfi_fun_clear (&i_put_ui);
 
   return 0;
 }

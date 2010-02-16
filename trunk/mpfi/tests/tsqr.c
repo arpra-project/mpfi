@@ -1,6 +1,6 @@
 /* tsqr.c -- Test mpfi_sqr.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,16 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t sqr;
+  struct mpfi_function_t i_sqr;
 
-  MPFI_FUN_SET (sqr, II, mpfi_sqr, mpfr_sqr);
-
+  mpfi_fun_init_II (&i_sqr, mpfi_sqr, mpfr_sqr);
   test_start ();
 
-  check_data (&sqr, "sqr.dat");
-  check_random (&sqr, 2, 1000, 10);
+  check_data (&i_sqr, "sqr.dat");
+  check_random (&i_sqr, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_sqr);
 
   return 0;
 }

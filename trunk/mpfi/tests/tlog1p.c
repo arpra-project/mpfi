@@ -1,6 +1,6 @@
 /* tlog1p.c -- Test mpfi_log1p.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_log1p;
 
-  MPFI_FUN_SET (i_log1p, II, mpfi_log1p, mpfr_log1p);
-
+  mpfi_fun_init_II (&i_log1p, mpfi_log1p, mpfr_log1p);
   test_start ();
 
-/*   check_data (i_log1p, "log1p.dat"); */
+/*   check_data (&i_log1p, "log1p.dat"); */
   check_random (&i_log1p, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_log1p);
 
   return 0;
 }

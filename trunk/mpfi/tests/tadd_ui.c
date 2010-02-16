@@ -1,6 +1,6 @@
 /* tadd_ui.c -- Test mpfi_add_ui.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -62,10 +62,12 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_ui;
 
-  MPFI_FUN_SET (i_add_ui, IIU, mpfi_add_ui, NULL);
+  mpfi_fun_init_IIU (&i_add_ui, mpfi_add_ui, NULL);
 
   check_data (&i_add_ui, "add_ui.dat");
   check_overflow ();
+
+  mpfi_fun_clear (&i_add_ui);
 
   return 0;
 }

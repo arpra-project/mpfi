@@ -83,10 +83,12 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_q;
 
-  MPFI_FUN_SET (i_add_q, IIQ, mpfi_add_q, NULL);
+  mpfi_fun_init_IIQ (&i_add_q, mpfi_add_q, NULL);
 
   check_data (&i_add_q, "add_q.dat");
   check_overflow ();
+
+  mpfi_fun_clear (&i_add_q);
 
   return 0;
 }

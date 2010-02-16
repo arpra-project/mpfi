@@ -138,7 +138,6 @@ typedef struct mpfi_function_t* mpfi_function_ptr;
 struct mpfi_function_t
 {
   mpfi_fun_type       type;
-  char *              name;
   mpfi_fun_ptr        func;
   mpfi_fun_mpfr_ptr   mpfr_func; /* associated MPFR function */
   mpfi_fun_operand_t* operands;
@@ -161,24 +160,6 @@ struct mpfi_function_t
 #define MPFI_FUN_ARG(_mpfi_function, _arg_no, _arg_type)        \
   ((_mpfi_function).operands[(_arg_no)]._arg_type)
 
-/* MPFI_FUN_SET macro usage
-   _mpfi_function_t: mpfi_function_t variable to initialize
-   _type:            identifier in mpfi_fun_type enum corresponding to the
-                     prototype of the MPFI function under test
-   _func:            MPFI function under test
-   _mpfr_func:       corresponding MPFR function if any, else NULL */
-#define MPFI_FUN_SET(_mpfi_function, _type, _func, _mpfr_func)          \
-  do {                                                                  \
-    (_mpfi_function).type            = (_type);                         \
-    (_mpfi_function).name            = QUOTE (_func);                   \
-    (_mpfi_function).func._type      = (_func);                         \
-    (_mpfi_function).mpfr_func._type = (_mpfr_func);                    \
-    (_mpfi_function).operands        = NULL;                            \
-    (_mpfi_function).read_line       = NULL;                            \
-    (_mpfi_function).check_line      = NULL;                            \
-    (_mpfi_function).clear           = NULL;                            \
-  } while (0)
-
 
 /* Helper functions */
 
@@ -186,79 +167,55 @@ struct mpfi_function_t
 extern "C" {
 #endif
 
-  /* public functions.
-     when adding a generic test, use the following functions: */
-  void test_start      (void);
-  void test_end        (void);
-  void check_data      (mpfi_function_ptr, const char *);
-  void check_random    (mpfi_function_ptr, mp_prec_t, mp_prec_t, int);
-  void check_const     (mpfi_function_ptr, mp_prec_t, mp_prec_t);
+/* public functions.
+   when adding a generic test, use the following functions: */
+void test_start         (void);
+void test_end           (void);
+void check_data         (mpfi_function_ptr, const char *);
+void check_random       (mpfi_function_ptr, mp_prec_t, mp_prec_t, int);
+void check_const        (mpfi_function_ptr, mp_prec_t, mp_prec_t);
+
+void mpfi_fun_init_I    (mpfi_function_ptr, I_fun, R_fun);
+void mpfi_fun_init_II   (mpfi_function_ptr, II_fun, RR_fun);
+void mpfi_fun_init_IU   (mpfi_function_ptr, IU_fun, NULL_fun);
+void mpfi_fun_init_IS   (mpfi_function_ptr, IS_fun, NULL_fun);
+void mpfi_fun_init_ID   (mpfi_function_ptr, ID_fun, NULL_fun);
+void mpfi_fun_init_IZ   (mpfi_function_ptr, IZ_fun, NULL_fun);
+void mpfi_fun_init_IQ   (mpfi_function_ptr, IQ_fun, NULL_fun);
+void mpfi_fun_init_IR   (mpfi_function_ptr, IR_fun, NULL_fun);
+void mpfi_fun_init_III  (mpfi_function_ptr, III_fun, RRR_fun);
+void mpfi_fun_init_IIU  (mpfi_function_ptr, IIU_fun, NULL_fun);
+void mpfi_fun_init_IIS  (mpfi_function_ptr, IIS_fun, NULL_fun);
+void mpfi_fun_init_IID  (mpfi_function_ptr, IID_fun, NULL_fun);
+void mpfi_fun_init_IIZ  (mpfi_function_ptr, IIZ_fun, NULL_fun);
+void mpfi_fun_init_IIQ  (mpfi_function_ptr, IIQ_fun, NULL_fun);
+void mpfi_fun_init_IIR  (mpfi_function_ptr, IIR_fun, NULL_fun);
+void mpfi_fun_clear     (mpfi_function_ptr);
 
 
-  /* internal functions */
+/* internal functions */
 
-  extern gmp_randstate_t  rands;
-  extern char             rands_initialized;
-  void random_interval (mpfi_ptr);
+extern gmp_randstate_t  rands;
+extern char             rands_initialized;
+void random_interval    (mpfi_ptr);
 
-  int  same_mpfr_value (mpfr_srcptr, mpfr_srcptr);
-  int  same_value      (mpfi_srcptr, mpfi_srcptr); 
+int  same_mpfr_value    (mpfr_srcptr, mpfr_srcptr);
+int  same_value         (mpfi_srcptr, mpfi_srcptr); 
 
-  FILE* open_file      (const char *);
-  void init_reading    (FILE*);
-  void close_file      (FILE*);
-  void skip_whitespace_comments (FILE*);
-  void read_exactness  (FILE*, int*);
-  void read_ui         (FILE*, unsigned long*);
-  void read_si         (FILE*, long*);
-  int  read_double     (FILE*, double*);
-  void read_mpz        (FILE*, mpz_ptr);
-  void read_mpq        (FILE*, mpq_ptr);
-  void read_mpfr       (FILE*, mpfr_ptr);
-  void read_mpfi       (FILE*, mpfi_ptr);
+FILE* open_file         (const char *);
+void init_reading       (FILE*);
+void close_file         (FILE*);
+void skip_whitespace_comments (FILE*);
+void read_exactness     (FILE*, int*);
+void read_ui            (FILE*, unsigned long*);
+void read_si            (FILE*, long*);
+int  read_double        (FILE*, double*);
+void read_mpz           (FILE*, mpz_ptr);
+void read_mpq           (FILE*, mpq_ptr);
+void read_mpfr          (FILE*, mpfr_ptr);
+void read_mpfi          (FILE*, mpfi_ptr);
 
-  void init            (mpfi_function_ptr);
-  void clear_ii        (mpfi_function_ptr);
-  void clear_iu        (mpfi_function_ptr);
-  void clear_is        (mpfi_function_ptr);
-  void clear_id        (mpfi_function_ptr);
-  void clear_iz        (mpfi_function_ptr);
-  void clear_iq        (mpfi_function_ptr);
-  void clear_ir        (mpfi_function_ptr);
-  void clear_iii       (mpfi_function_ptr);
-  void clear_iil       (mpfi_function_ptr);
-  void clear_iid       (mpfi_function_ptr);
-  void clear_iiz       (mpfi_function_ptr);
-  void clear_iiq       (mpfi_function_ptr);
-  void clear_iir       (mpfi_function_ptr);
-  void read_line_ii    (mpfi_function_ptr, FILE*);
-  void read_line_iu    (mpfi_function_ptr, FILE*);
-  void read_line_is    (mpfi_function_ptr, FILE*);
-  void read_line_id    (mpfi_function_ptr, FILE*);
-  void read_line_iz    (mpfi_function_ptr, FILE*);
-  void read_line_iq    (mpfi_function_ptr, FILE*);
-  void read_line_ir    (mpfi_function_ptr, FILE*);
-  void read_line_iii   (mpfi_function_ptr, FILE*);
-  void read_line_iiu   (mpfi_function_ptr, FILE*);
-  void read_line_iis   (mpfi_function_ptr, FILE*);
-  void read_line_iid   (mpfi_function_ptr, FILE*);
-  void read_line_iiz   (mpfi_function_ptr, FILE*);
-  void read_line_iiq   (mpfi_function_ptr, FILE*);
-  void read_line_iir   (mpfi_function_ptr, FILE*);
-  void check_with_different_prec (mpfi_function_ptr, mp_prec_t);
-  void check_line_i    (mpfi_function_ptr);
-  void check_line_iu   (mpfi_function_ptr);
-  void check_line_is   (mpfi_function_ptr);
-  void check_line_id   (mpfi_function_ptr);
-  void check_line_iz   (mpfi_function_ptr);
-  void check_line_iq   (mpfi_function_ptr);
-  void check_line_ir   (mpfi_function_ptr);
-  void check_line_iiu  (mpfi_function_ptr);
-  void check_line_iis  (mpfi_function_ptr);
-  void check_line_iid  (mpfi_function_ptr);
-  void check_line_iiz  (mpfi_function_ptr);
-  void check_line_iiq  (mpfi_function_ptr);
-  void check_line_iir  (mpfi_function_ptr);
+void check_with_different_prec (mpfi_function_ptr, mp_prec_t);
 
 #ifdef __cplusplus
 }

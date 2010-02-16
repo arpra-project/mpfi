@@ -82,10 +82,12 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_si;
 
-  MPFI_FUN_SET (i_add_si, IIS, mpfi_add_si, NULL);
+  mpfi_fun_init_IIS (&i_add_si, mpfi_add_si, NULL);
 
   check_data (&i_add_si, "add_si.dat");
   check_overflow ();
+
+  mpfi_fun_clear (&i_add_si);
 
   return 0;
 }

@@ -1,6 +1,6 @@
 /* tlog.c -- Test mpfi_log.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,16 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t log;
+  struct mpfi_function_t i_log;
 
-  MPFI_FUN_SET (log, II, mpfi_log, mpfr_log);
-
+  mpfi_fun_init_II (&i_log, mpfi_log, mpfr_log);
   test_start ();
 
-  check_data (&log, "log.dat");
-  check_random (&log, 2, 1000, 10);
+  check_data (&i_log, "log.dat");
+  check_random (&i_log, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_log);
 
   return 0;
 }

@@ -139,11 +139,13 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_mul_d;
 
-  MPFI_FUN_SET (i_mul_d, IID, mpfi_mul_d, NULL);
+  mpfi_fun_init_IID (&i_mul_d, mpfi_mul_d, NULL);
 
   check_data (&i_mul_d, "mul_d.dat");
   check_overflow ();
   check_underflow ();
+
+  mpfi_fun_clear (&i_mul_d);
 
   return 0;
 }

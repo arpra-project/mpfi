@@ -1,6 +1,6 @@
 /* tset_ui.c -- Test mpfi_set_ui.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t set_ui;
+  struct mpfi_function_t i_set_ui;
 
-  MPFI_FUN_SET (set_ui, IU, mpfi_set_ui, NULL);
+  mpfi_fun_init_IU (&i_set_ui, mpfi_set_ui, NULL);
 
-  check_data (&set_ui, "set_ui.dat");
+  check_data (&i_set_ui, "set_ui.dat");
+
+  mpfi_fun_clear (&i_set_ui);
 
   return 0;
 }

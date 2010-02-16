@@ -1,6 +1,6 @@
 /* tset_q.c -- Test mpfi_set_q.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t set_q;
+  struct mpfi_function_t i_set_q;
 
-  MPFI_FUN_SET (set_q, IQ, mpfi_set_q, NULL);
+  mpfi_fun_init_IQ (&i_set_q, mpfi_set_q, NULL);
 
-  check_data (&set_q, "set_q.dat");
+  check_data (&i_set_q, "set_q.dat");
+
+  mpfi_fun_clear (&i_set_q);
 
   return 0;
 }

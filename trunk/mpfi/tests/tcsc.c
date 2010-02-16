@@ -1,6 +1,6 @@
 /* tcsc.c -- Test mpfi_csc.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_csc;
 
-  MPFI_FUN_SET (i_csc, II, mpfi_csc, mpfr_csc);
-
+  mpfi_fun_init_II (&i_csc, mpfi_csc, mpfr_csc);
   test_start ();
 
-/*   check_data (i_csc, "csc.dat"); */
+/*   check_data (&i_csc, "csc.dat"); */
   check_random (&i_csc, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_csc);
 
   return 0;
 }

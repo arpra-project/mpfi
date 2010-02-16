@@ -1,6 +1,6 @@
 /* tmul.c -- Test mpfi_mul.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,16 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t mul;
+  struct mpfi_function_t i_mul;
 
-  MPFI_FUN_SET (mul, III, mpfi_mul, mpfr_mul);
-
+  mpfi_fun_init_III (&i_mul, mpfi_mul, mpfr_mul);
   test_start ();
 
-  check_data (&mul, "mul.dat");
-  check_random (&mul, 2, 1000, 10);
+  check_data (&i_mul, "mul.dat");
+  check_random (&i_mul, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_mul);
 
   return 0;
 }

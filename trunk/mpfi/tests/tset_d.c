@@ -1,6 +1,6 @@
 /* tset_d.c -- Test mpfi_set_d.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t set_d;
+  struct mpfi_function_t i_set_d;
 
-  MPFI_FUN_SET (set_d, ID, mpfi_set_d, NULL);
+  mpfi_fun_init_ID (&i_set_d, mpfi_set_d, NULL);
 
-  check_data (&set_d, "set_d.dat");
+  check_data (&i_set_d, "set_d.dat");
+
+  mpfi_fun_clear (&i_set_d);
 
   return 0;
 }

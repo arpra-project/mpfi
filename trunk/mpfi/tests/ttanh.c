@@ -1,6 +1,6 @@
 /* ttanh.c -- Test mpfi_tanh.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_tanh;
 
-  MPFI_FUN_SET (i_tanh, II, mpfi_tanh, mpfr_tanh);
+  mpfi_fun_init_II (&i_tanh, mpfi_tanh, mpfr_tanh);
 
   test_start ();
 
-/*   check_data (i_tanh, "tanh.dat"); */
+/*   check_data (&i_tanh, "tanh.dat"); */
   check_random (&i_tanh, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_tanh);
 
   return 0;
 }

@@ -1,6 +1,6 @@
 /* tintersect.c -- Test mpfi_intersect.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t intersect;
+  struct mpfi_function_t i_intersect;
 
-  MPFI_FUN_SET (intersect, III, mpfi_intersect, NULL);
+  mpfi_fun_init_III (&i_intersect, mpfi_intersect, NULL);
 
-  check_data (&intersect, "intersect.dat");
+  check_data (&i_intersect, "intersect.dat");
+
+  mpfi_fun_clear (&i_intersect);
 
   return 0;
 }

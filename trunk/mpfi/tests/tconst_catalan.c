@@ -1,6 +1,6 @@
 /* tconst_catalan.c -- Test mpfi_const_catalan.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,8 +31,11 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_catalan;
 
-  MPFI_FUN_SET (i_catalan, I, mpfi_const_catalan, mpfr_const_catalan);
+  mpfi_fun_init_I (&i_catalan, mpfi_const_catalan, mpfr_const_catalan);
+
   check_const (&i_catalan, 2, 1000);
+
+  mpfi_fun_clear (&i_catalan);
 
   return 0;
 }

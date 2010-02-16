@@ -1,6 +1,6 @@
 /* tacosh.c -- Test mpfi_acosh.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_acosh;
 
-  MPFI_FUN_SET (i_acosh, II, mpfi_acosh, mpfr_acosh);
-
+  mpfi_fun_init_II (&i_acosh, mpfi_acosh, mpfr_acosh);
   test_start ();
 
   check_data (&i_acosh, "acosh.dat");
   check_random (&i_acosh, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_acosh);
 
   return 0;
 }

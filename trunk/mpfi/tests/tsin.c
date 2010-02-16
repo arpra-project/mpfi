@@ -1,6 +1,6 @@
 /* tsin.c -- Test mpfi_sin.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_sin;
 
-  MPFI_FUN_SET (i_sin, II, mpfi_sin, mpfr_sin);
+  mpfi_fun_init_II (&i_sin, mpfi_sin, mpfr_sin);
 
   test_start ();
 
-/*   check_data (i_sin, "sin.dat"); */
+/*   check_data (&i_sin, "sin.dat"); */
   check_random (&i_sin, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_sin);
 
   return 0;
 }

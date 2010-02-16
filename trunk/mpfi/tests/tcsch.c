@@ -1,6 +1,6 @@
 /* tcsch.c -- Test mpfi_csch.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_csch;
 
-  MPFI_FUN_SET (i_csch, II, mpfi_csch, mpfr_csch);
-
+  mpfi_fun_init_II (&i_csch, mpfi_csch, mpfr_csch);
   test_start ();
 
-/*   check_data (i_csch, "csch.dat"); */
+/*   check_data (&i_csch, "csch.dat"); */
   check_random (&i_csch, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_csch);
 
   return 0;
 }

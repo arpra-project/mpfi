@@ -1,6 +1,6 @@
 /* tsinh.c -- Test mpfi_sinh.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_sinh;
 
-  MPFI_FUN_SET (i_sinh, II, mpfi_sinh, mpfr_sinh);
+  mpfi_fun_init_II (&i_sinh, mpfi_sinh, mpfr_sinh);
 
   test_start ();
 
-/*   check_data (i_sinh, "sinh.dat"); */
+/*   check_data (&i_sinh, "sinh.dat"); */
   check_random (&i_sinh, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_sinh);
 
   return 0;
 }

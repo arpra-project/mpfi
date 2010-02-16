@@ -83,10 +83,12 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_z;
 
-  MPFI_FUN_SET (i_add_z, IIZ, mpfi_add_z, NULL);
+  mpfi_fun_init_IIZ (&i_add_z, mpfi_add_z, NULL);
 
   check_data (&i_add_z, "add_z.dat");
   check_overflow ();
+
+  mpfi_fun_clear (&i_add_z);
 
   return 0;
 }

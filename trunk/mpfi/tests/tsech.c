@@ -1,6 +1,6 @@
 /* tsech.c -- Test mpfi_sech.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_sech;
 
-  MPFI_FUN_SET (i_sech, II, mpfi_sech, mpfr_sech);
+  mpfi_fun_init_II (&i_sech, mpfi_sech, mpfr_sech);
 
   test_start ();
 
-/*   check_data (i_sech, "sech.dat"); */
+/*   check_data (&i_sech, "sech.dat"); */
   check_random (&i_sech, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_sech);
 
   return 0;
 }

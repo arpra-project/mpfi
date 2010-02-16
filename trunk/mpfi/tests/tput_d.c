@@ -1,6 +1,6 @@
 /* tput_d.c -- Test mpfi_put_d.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t put_d;
+  struct mpfi_function_t i_put_d;
 
-  MPFI_FUN_SET (put_d, ID, mpfi_put_d, NULL);
+  mpfi_fun_init_ID (&i_put_d, mpfi_put_d, NULL);
 
-  check_data (&put_d, "put_d.dat");
+  check_data (&i_put_d, "put_d.dat");
+
+  mpfi_fun_clear (&i_put_d);
 
   return 0;
 }

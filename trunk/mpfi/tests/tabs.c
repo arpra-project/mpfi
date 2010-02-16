@@ -1,6 +1,6 @@
 /* tabs.c -- Test mpfi_abs.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,16 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t abs;
+  struct mpfi_function_t i_abs;
 
-  MPFI_FUN_SET (abs, II, mpfi_abs, mpfr_abs);
-
+  mpfi_fun_init_II (&i_abs, mpfi_abs, mpfr_abs);
   test_start ();
 
-  check_data (&abs, "abs.dat");
-  check_random (&abs, 2, 1000, 10);
+  check_data (&i_abs, "abs.dat");
+  check_random (&i_abs, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_abs);
 
   return 0;
 }

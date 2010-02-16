@@ -1,6 +1,6 @@
 /* tcbrt.c -- Test mpfi_cbrt.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,16 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t cbrt;
+  struct mpfi_function_t i_cbrt;
 
-  MPFI_FUN_SET (cbrt, II, mpfi_cbrt, mpfr_cbrt);
-
+  mpfi_fun_init_II (&i_cbrt, mpfi_cbrt, mpfr_cbrt);
   test_start ();
 
-  check_data (&cbrt, "cbrt.dat");
-  check_random (&cbrt, 2, 1000, 10);
+  check_data (&i_cbrt, "cbrt.dat");
+  check_random (&i_cbrt, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_cbrt);
 
   return 0;
 }

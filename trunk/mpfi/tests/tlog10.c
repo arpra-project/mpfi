@@ -1,6 +1,6 @@
 /* tlog10.c -- Test mpfi_log10.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_log10;
 
-  MPFI_FUN_SET (i_log10, II, mpfi_log10, mpfr_log10);
+  mpfi_fun_init_II (&i_log10, mpfi_log10, mpfr_log10);
 
   test_start ();
 
-/*   check_data (i_log10, "log10.dat"); */
+/*   check_data (&i_log10, "log10.dat"); */
   check_random (&i_log10, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_log10);
 
   return 0;
 }

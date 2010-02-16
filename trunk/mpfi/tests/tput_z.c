@@ -1,6 +1,6 @@
 /* tput_z.c -- Test mpfi_put_z.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t put_z;
+  struct mpfi_function_t i_put_z;
 
-  MPFI_FUN_SET (put_z, IZ, mpfi_put_z, NULL);
+  mpfi_fun_init_IZ (&i_put_z, mpfi_put_z, NULL);
 
-  check_data (&put_z, "put_z.dat");
+  check_data (&i_put_z, "put_z.dat");
+
+  mpfi_fun_clear (&i_put_z);
 
   return 0;
 }

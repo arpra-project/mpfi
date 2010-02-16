@@ -1,6 +1,6 @@
 /* tsub.c -- Test mpfi_sub.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t sub;
 
-  MPFI_FUN_SET (sub, III, mpfi_sub, mpfr_sub);
+  mpfi_fun_init_III (&i_sub, mpfi_sub, mpfr_sub);
 
   test_start ();
 
-  check_data (&sub, "sub.dat");
-  check_random (&sub, 2, 1000, 10);
+  check_data (&i_sub, "sub.dat");
+  check_random (&i_sub, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_sub);
 
   return 0;
 }

@@ -1,6 +1,6 @@
 /* check_data.c -- Tests from data file.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -37,13 +37,11 @@ check_data (mpfi_function_ptr function, const char *file_name)
 
   fp = open_file (file_name);
   init_reading (fp);
-  init (function);
 
   while (nextchar != EOF) {
     function->read_line (function, fp);
     function->check_line (function);
   }
 
-  function->clear (function);
   close_file (fp);
 }

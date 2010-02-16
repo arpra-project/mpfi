@@ -1,6 +1,6 @@
 /* tdiv.c -- Test mpfi_div.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,16 +29,17 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t div;
+  struct mpfi_function_t i_div;
 
-  MPFI_FUN_SET (div, III, mpfi_div, mpfr_div);
+  mpfi_fun_init_III (&i_div, mpfi_div, mpfr_div);
 
   test_start ();
 
-  check_data (&div, "div.dat");
-  check_random (&div, 2, 1000, 10);
+  check_data (&i_div, "div.dat");
+  check_random (&i_div, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_div);
 
   return 0;
 }

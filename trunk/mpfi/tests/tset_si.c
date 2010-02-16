@@ -1,6 +1,6 @@
 /* tset_si.c -- Test mpfi_set_si.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t set_si;
+  struct mpfi_function_t i_set_si;
 
-  MPFI_FUN_SET (set_si, IS, mpfi_set_si, NULL);
+  mpfi_fun_init_IS (&i_set_si, mpfi_set_si, NULL);
 
-  check_data (&set_si, "set_si.dat");
+  check_data (&i_set_si, "set_si.dat");
+
+  mpfi_fun_clear (&i_set_si);
 
   return 0;
 }

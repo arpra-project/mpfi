@@ -1,6 +1,6 @@
 /* tunion.c -- Test mpfi_union.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -53,7 +53,7 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_union;
 
-  MPFI_FUN_SET(i_union, III, mpfi_union, middle);
+  mpfi_fun_init_III (&i_union, mpfi_union, middle);
 
   test_start ();
 
@@ -62,6 +62,7 @@ main (int argc, char **argv)
   check_random (&i_union, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_union);
 
   return 0;
 }

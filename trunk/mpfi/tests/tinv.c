@@ -1,6 +1,6 @@
 /* tinv.c -- Test mpfi_inv.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -35,16 +35,16 @@ fr_inv (mpfr_ptr y, mpfr_srcptr x, mp_rnd_t rnd)
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t inv;
+  struct mpfi_function_t i_inv;
 
-  MPFI_FUN_SET (inv, II, mpfi_inv, fr_inv);
-
+  mpfi_fun_init_II (&i_inv, mpfi_inv, fr_inv);
   test_start ();
 
-  check_data (&inv, "inv.dat");
-  check_random (&inv, 2, 1000, 10);
+  check_data (&i_inv, "inv.dat");
+  check_random (&i_inv, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_inv);
 
   return 0;
 }

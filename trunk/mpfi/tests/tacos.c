@@ -1,6 +1,6 @@
 /* tacos.c -- Test mpfi_acos.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_acos;
 
-  MPFI_FUN_SET (i_acos, II, mpfi_acos, mpfr_acos);
-
+  mpfi_fun_init_II (&i_acos, mpfi_acos, mpfr_acos);
   test_start ();
 
   check_data (&i_acos, "acos.dat");
   check_random (&i_acos, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_acos);
 
   return 0;
 }

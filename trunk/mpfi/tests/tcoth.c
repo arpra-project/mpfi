@@ -1,6 +1,6 @@
 /* tcoth.c -- Test mpfi_coth.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,11 +31,10 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_coth;
 
-  MPFI_FUN_SET (i_coth, II, mpfi_coth, mpfr_coth);
-
+  mpfi_fun_init_II (&i_coth, mpfi_coth, mpfr_coth);
   test_start ();
 
-/*   check_data (i_coth, "coth.dat"); */
+/*   check_data (&i_coth, "coth.dat"); */
 
 #if MPFR_VERSION < MPFR_VERSION_NUM(2, 4, 2)
   /* mpfr_coth is bugged: returns wrong value for +-0 */
@@ -45,6 +44,7 @@ main (int argc, char **argv)
 #endif
 
   test_end ();
+  mpfi_fun_clear (&i_coth);
 
   return 0;
 }

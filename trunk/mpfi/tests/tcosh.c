@@ -1,6 +1,6 @@
 /* tcosh.c -- Test mpfi_cosh.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -31,14 +31,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_cosh;
 
-  MPFI_FUN_SET (i_cosh, II, mpfi_cosh, mpfr_cosh);
-
+  mpfi_fun_init_II (&i_cosh, mpfi_cosh, mpfr_cosh);
   test_start ();
 
-/*   check_data (i_cosh, "cosh.dat"); */
+/*   check_data (&i_cosh, "cosh.dat"); */
   check_random (&i_cosh, 2, 1000, 10);
 
   test_end ();
+  mpfi_fun_clear (&i_cosh);
 
   return 0;
 }

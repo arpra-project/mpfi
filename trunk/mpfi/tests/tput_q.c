@@ -1,6 +1,6 @@
 /* tput_q.c -- Test mpfi_put_q.
 
-Copyright 2009
+Copyright 2009 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,11 +29,13 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t put_q;
+  struct mpfi_function_t i_put_q;
 
-  MPFI_FUN_SET (put_q, IQ, mpfi_put_q, NULL);
+  mpfi_fun_init_IQ (&i_put_q, mpfi_put_q, NULL);
 
-  check_data (&put_q, "put_q.dat");
+  check_data (&i_put_q, "put_q.dat");
+
+  mpfi_fun_clear (&i_put_q);
 
   return 0;
 }

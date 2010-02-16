@@ -31,8 +31,11 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_pi;
 
-  MPFI_FUN_SET (i_pi, I, mpfi_const_pi, mpfr_const_pi);
+  mpfi_fun_init_I (&i_pi, mpfi_const_pi, mpfr_const_pi);
+
   check_const (&i_pi, 2, 1000);
+
+  mpfi_fun_clear (&i_pi);
 
   return 0;
 }
