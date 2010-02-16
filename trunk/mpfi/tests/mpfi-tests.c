@@ -39,6 +39,14 @@ check_random (mpfi_function_ptr function,
   mp_prec_t prec;
   int i;
 
+  if (!rands_initialized)
+    {
+      printf ("Put test_start at the beginning of your test function.\n");
+      printf ("There is a bug in the test suite itself, "
+              "please report to the MPFI mailing list.\n");
+      exit (1);
+    }
+
   if (function->random == NULL) {
     printf ("Error: no random function for this type.\n");
     printf ("There is a bug in the test suite itself, "

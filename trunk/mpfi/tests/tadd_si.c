@@ -82,11 +82,15 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_si;
 
-  mpfi_fun_init_IIS (&i_add_si, mpfi_add_si, NULL);
+  mpfi_fun_init_IIS (&i_add_si, mpfi_add_si, mpfr_add_si);
+
+  test_start ();
 
   check_data (&i_add_si, "add_si.dat");
+  check_random (&i_add_si, 2, 1000, 10);
   check_overflow ();
 
+  test_end ();
   mpfi_fun_clear (&i_add_si);
 
   return 0;

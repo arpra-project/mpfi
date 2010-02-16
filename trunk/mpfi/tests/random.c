@@ -112,6 +112,12 @@ random_ui ()
   return gmp_urandomm_ui (rands, ULONG_MAX);
 }
 
+long
+random_si ()
+{
+  return (long)gmp_urandomm_ui (rands, ULONG_MAX);
+}
+
 /* random endpoint with non-uniform distribution:
    Prob(x == -oo)     = 1/8
    Prob(-oo < x < -1) = 1/4
