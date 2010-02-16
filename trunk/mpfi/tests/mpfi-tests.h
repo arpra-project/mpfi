@@ -173,7 +173,6 @@ void test_start         (void);
 void test_end           (void);
 void check_data         (mpfi_function_ptr, const char *);
 void check_random       (mpfi_function_ptr, mp_prec_t, mp_prec_t, int);
-void check_const        (mpfi_function_ptr, mp_prec_t, mp_prec_t);
 
 void mpfi_fun_init_I    (mpfi_function_ptr, I_fun, R_fun);
 void mpfi_fun_init_II   (mpfi_function_ptr, II_fun, RR_fun);

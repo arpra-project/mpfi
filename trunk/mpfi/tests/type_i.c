@@ -53,16 +53,15 @@ check_monotonicity (mpfi_function_ptr this)
 
   initial_precision = mpfi_get_prec (expected);
 
-  for (precision = initial_precision; precision > 1; precision <<= 2) {
+  for (precision = initial_precision; precision > 1; precision >>= 2) {
     mpfi_set_prec (got, precision);
 
     f_I (got);
     if (!mpfi_is_inside (expected, got)) {
-      printf ("Failed at precision %lu.", precision);
-      printf ("\ngot      = ");
-      mpfi_out_str (stdout, 16, 0, got);
-      printf ("\nnot included in ");
-      mpfi_out_str (stdout, 16, 0, expected);
+      printf ("Failed at precision %lu.\n", precision);
+      mpfi_out_str (stdout, 2, 0, got);
+      printf ("\ndoes not include ");
+      mpfi_out_str (stdout, 2, 0, expected);
       putchar ('\n');
 
       exit (1);

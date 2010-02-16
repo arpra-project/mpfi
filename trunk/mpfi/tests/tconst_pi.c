@@ -33,7 +33,7 @@ main (int argc, char **argv)
 
   mpfi_fun_init_I (&i_pi, mpfi_const_pi, mpfr_const_pi);
 
-  check_const (&i_pi, 2, 1000);
+  check_data (&i_pi, "const_pi.dat");
 
   mpfi_fun_clear (&i_pi);
 

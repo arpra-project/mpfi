@@ -33,7 +33,7 @@ main (int argc, char **argv)
 
   mpfi_fun_init_I (&i_log2, mpfi_const_log2, mpfr_const_log2);
 
-  check_const (&i_log2, 2, 1000);
+  check_data (&i_log2, "const_log2.dat");
 
   mpfi_fun_clear (&i_log2);
 

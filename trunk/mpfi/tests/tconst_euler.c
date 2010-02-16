@@ -33,7 +33,7 @@ main (int argc, char **argv)
 
   mpfi_fun_init_I (&i_euler, mpfi_const_euler, mpfr_const_euler);
 
-  check_const (&i_euler, 2, 1000);
+  check_data (&i_euler, "const_euler.dat");
 
   mpfi_fun_clear (&i_euler);
 

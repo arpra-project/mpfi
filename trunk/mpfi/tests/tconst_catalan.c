@@ -33,7 +33,7 @@ main (int argc, char **argv)
 
   mpfi_fun_init_I (&i_catalan, mpfi_const_catalan, mpfr_const_catalan);
 
-  check_const (&i_catalan, 2, 1000);
+  check_data (&i_catalan, "const_catalan.dat");
 
   mpfi_fun_clear (&i_catalan);
 
