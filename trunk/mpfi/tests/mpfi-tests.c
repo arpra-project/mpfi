@@ -37,111 +37,19 @@ check_random (mpfi_function_ptr function,
               mp_prec_t prec_min, mp_prec_t prec_max, int nb_tests)
 {
   mp_prec_t prec;
-  int i, dummy;
-  mpfi_t x, y, z;
-  mpfr_t e, f, g;
+  int i;
 
-  if (MPFI_FUN_TYPE (*function) != II && MPFI_FUN_TYPE (*function) != III) {
-    printf ("Wrong function type error.\n");
-    printf ("There is a bug in the test suite itself,"
-	    " you should not see this message.\n");
+  if (function->random == NULL) {
+    printf ("Error: no random function for this type.\n");
+    printf ("There is a bug in the test suite itself, "
+	    "please report to the MPFI mailing list.\n");
     exit (1);
-  }
-
-  if (MPFI_FUN_MPFR_FUNCTION (*function, II) == NULL)
-    return;
-
-  if (!rands_initialized) {
-    printf ("Put test_start at the beginning of your test function.\n");
-    exit (1);
-  }
-
-  mpfi_init2 (x, prec_max);
-  mpfi_init2 (z, prec_max);
-
-  mpfr_init2 (e, prec_max);
-  mpfr_init2 (f, prec_max);
-
-  if (MPFI_FUN_TYPE (*function) == III) {
-    mpfi_init2 (y, prec_max);
-    mpfr_init2 (g, prec_max);
   }
 
   for (prec = prec_min; prec <= prec_max; ++prec) {
-    mpfi_set_prec (x, prec);
-    mpfi_set_prec (z, prec);
-
-    mpfr_set_prec (e, prec);
-    mpfr_set_prec (f, prec);
-
-    if (MPFI_FUN_TYPE (*function) == III) {
-      mpfi_set_prec (y, prec);
-      mpfr_set_prec (g, prec);
-    }
-
+    function->set_prec (function, prec);
     for (i = 0; i < nb_tests; ++i) {
-      random_interval (x);
-
-      if (MPFI_FUN_TYPE (*function) == II) {
-        mpfi_alea (e, x); /* FIXME use random seed */
-
-        dummy = (MPFI_FUN_GET (*function, II)) (z, x);
-        dummy = (MPFI_FUN_MPFR_FUNCTION (*function, II)) (f, e, GMP_RNDN);
-
-        if (mpfr_cmp (f, &(z->left)) < 0 || mpfr_cmp (f, &(z->right)) > 0){
-          printf ("Error in op:\nthe result z of op(x) does not contain "
-                  "f = op(e) with e in x.\nx = ");
-          mpfi_out_str (stdout, 10, 0, x);
-          printf ("\nz = ");
-          mpfi_out_str (stdout, 10, 0, z);
-          printf ("\ne = ");
-          mpfr_out_str (stdout, 10, 0, e, MPFI_RNDU);
-          printf ("\nf = ");
-          mpfr_out_str (stdout, 10, 0, f, MPFI_RNDU);
-          putchar ('\n');
-
-          exit (1);
-        }
-      }
-      else {
-	random_interval (y);
-
-        mpfi_alea (e, x); /* FIXME use random seed */
-        mpfi_alea (f, y); /* FIXME */
-
-        dummy = (MPFI_FUN_GET (*function, III)) (z, x, y);
-        dummy = (MPFI_FUN_MPFR_FUNCTION (*function, III)) (g, e, f, GMP_RNDN);
-
-        if (mpfr_cmp (g, &(z->left)) < 0 || mpfr_cmp (g, &(z->right)) > 0){
-          printf ("Error in op:\nthe result z of x op y does not contain "
-                  "g = e op f with e in x and f in y.\nx = ");
-          mpfi_out_str (stdout, 10, 0, x);
-          printf ("\ny = ");
-          mpfi_out_str (stdout, 10, 0, y);
-          printf ("\nz = ");
-          mpfi_out_str (stdout, 10, 0, z);
-          printf ("\ne = ");
-          mpfr_out_str (stdout, 10, 0, e, MPFI_RNDU);
-          printf ("\nf = ");
-          mpfr_out_str (stdout, 10, 0, f, MPFI_RNDU);
-          printf ("\ng = ");
-          mpfr_out_str (stdout, 10, 0, g, MPFI_RNDU);
-          putchar ('\n');
-
-          exit (1);
-        }
-      }
+      function->random (function);
     }
-  }
-
-  mpfi_clear(x);
-  mpfi_clear(z);
-
-  mpfr_clear(e);
-  mpfr_clear(f);
-
-  if (MPFI_FUN_TYPE (*function) == III) {
-    mpfi_clear(y);
-    mpfr_clear(g);
   }
 }

@@ -104,6 +104,14 @@ check_line_iiq (mpfi_function_ptr this)
 }
 
 void
+set_prec_iiq (mpfi_function_ptr this, mp_prec_t prec)
+{
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 3, mpfi), prec);
+}
+
+void
 clear_iiq (mpfi_function_ptr this)
 {
   /* [0] initial value (mpfi_t) */
@@ -145,7 +153,9 @@ mpfi_fun_init_IIQ (mpfi_function_ptr this, IIQ_fun mpfi_function,
   mpq_init (MPFI_FUN_ARG (*this, 4, mpq));
 
   /* init methods */
+  this->set_prec   = set_prec_iiq;
   this->read_line  = read_line_iiq;
   this->check_line = check_line_iiq;
+  this->random     = NULL;
   this->clear      = clear_iiq;
 }

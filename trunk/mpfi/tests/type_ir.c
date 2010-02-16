@@ -84,6 +84,14 @@ check_line_ir (mpfi_function_ptr this)
 }
 
 void
+set_prec_ir (mpfi_function_ptr this, mp_prec_t prec)
+{
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
+  mpfr_set_prec (MPFI_FUN_ARG (*this, 3, mpfr), prec);
+}
+
+void
 clear_ir (mpfi_function_ptr this)
 {
   /* [0] initial value (mpfi_t) */
@@ -120,7 +128,9 @@ mpfi_fun_init_IR (mpfi_function_ptr this, IR_fun mpfi_function,
   mpfr_init2 (MPFI_FUN_ARG (*this, 3, mpfr), 1024);
 
   /* init methods */
+  this->set_prec   = set_prec_ir;
   this->read_line  = read_line_ir;
   this->check_line = check_line_ir;
+  this->random     = NULL;
   this->clear      = clear_ir;
 }

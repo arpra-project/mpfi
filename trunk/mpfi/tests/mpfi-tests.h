@@ -132,7 +132,7 @@ typedef union {
   mpfi_t        mpfi;
 } mpfi_fun_operand_t;
 
-struct mpfi_funtion_t;
+struct mpfi_function_t;
 typedef struct mpfi_function_t* mpfi_function_ptr;
 
 struct mpfi_function_t
@@ -142,8 +142,10 @@ struct mpfi_function_t
   mpfi_fun_mpfr_ptr   mpfr_func; /* associated MPFR function */
   mpfi_fun_operand_t* operands;
 
+  void (*set_prec)   (mpfi_function_ptr, mp_prec_t);
   void (*read_line)  (mpfi_function_ptr, FILE *);
   void (*check_line) (mpfi_function_ptr);
+  void (*random)     (mpfi_function_ptr);
   void (*clear)      (mpfi_function_ptr);
 };
 
@@ -151,7 +153,6 @@ struct mpfi_function_t
 /* helper macro to abstract (to mask) mpfi_function_t type */
 
 #define MPFI_FUN_TYPE(_mpfi_function)       (_mpfi_function).type
-#define MPFI_FUN_NAME(_mpfi_function)       (_mpfi_function).name
 #define MPFI_FUN_GET(_mpfi_function, _type) (_mpfi_function).func._type
 #define MPFI_FUN_MPFR_FUNCTION(_mpfi_function, _type)   \
   (_mpfi_function).mpfr_func._type

@@ -104,6 +104,15 @@ check_line_iir (mpfi_function_ptr this)
 }
 
 void
+set_prec_iir (mpfi_function_ptr this, mp_prec_t prec)
+{
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 3, mpfi), prec);
+  mpfr_set_prec (MPFI_FUN_ARG (*this, 4, mpfr), prec);
+}
+
+void
 clear_iir (mpfi_function_ptr this)
 {
   /* [0] initial value (mpfi_t) */
@@ -124,7 +133,7 @@ clear_iir (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IIR (mpfi_function_ptr this, IIR_fun mpfi_function,
-               NULL_fun mpfr_function)
+                   NULL_fun mpfr_function)
 {
   this->type = IIR;
   this->func.IIR = mpfi_function;
@@ -141,11 +150,13 @@ mpfi_fun_init_IIR (mpfi_function_ptr this, IIR_fun mpfi_function,
   mpfi_init2 (MPFI_FUN_ARG (*this, 2, mpfi), 1024);
   /* [3] first operand (mpfi_t) */
   mpfi_init2 (MPFI_FUN_ARG (*this, 3, mpfi), 1024);
-  /* [4] second operand (mpq_t) */
+  /* [4] second operand (mpfr_t) */
   mpfr_init2 (MPFI_FUN_ARG (*this, 4, mpfr), 1024);
 
   /* init methods */
+  this->set_prec   = set_prec_iir;
   this->read_line  = read_line_iir;
   this->check_line = check_line_iir;
+  this->random     = NULL;
   this->clear      = clear_iir;
 }

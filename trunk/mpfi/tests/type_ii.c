@@ -189,6 +189,50 @@ check_line_ii (mpfi_function_ptr function)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval.
+   It assumes that the operand has been set. */
+void
+random_ii (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  II_fun f_II = MPFI_FUN_GET (*this, II);
+  RR_fun f_RR = MPFI_FUN_MPFR_FUNCTION (*this, II);
+  mpfi_ptr b  = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr a  = MPFI_FUN_ARG (*this, 3, mpfi);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i  = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x  = &(i->left);
+  mpfr_ptr y  = &(i->right);
+
+  random_interval (a);
+  mpfi_alea (x, a);
+  f_II (b, a);
+  f_RR (y, x, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe image b of a does not contain the image y "
+            "of the point x of a.\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
+void
+set_prec_ii (mpfi_function_ptr this, mp_prec_t prec)
+{
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 3, mpfi), prec);
+}
+
 void
 clear_ii (mpfi_function_ptr this)
 {
@@ -227,7 +271,9 @@ mpfi_fun_init_II (mpfi_function_ptr this, II_fun mpfi_function,
   mpfi_init2 (MPFI_FUN_ARG (*this, 3, mpfi), 1024);
 
   /* init methods */
+  this->set_prec   = set_prec_ii;
   this->read_line  = read_line_ii;
   this->check_line = check_line_ii;
+  this->random     = random_ii;
   this->clear      = clear_ii;
 }

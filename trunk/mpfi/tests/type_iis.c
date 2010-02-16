@@ -103,6 +103,14 @@ check_line_iis (mpfi_function_ptr this)
 }
 
 void
+set_prec_iis (mpfi_function_ptr this, mp_prec_t prec)
+{
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 3, mpfi), prec);
+}
+
+void
 clear_iis (mpfi_function_ptr this)
 {
   /* [0] initial value (mpfi_t) */
@@ -142,7 +150,9 @@ mpfi_fun_init_IIS (mpfi_function_ptr this, IIS_fun mpfi_function,
   /* [4] second operand (signed long), needs no initialization */
 
   /* init methods */
+  this->set_prec   = set_prec_iis;
   this->read_line  = read_line_iis;
   this->check_line = check_line_iis;
+  this->random     = NULL;
   this->clear      = clear_iis;
 }

@@ -141,6 +141,63 @@ check_line_iii (mpfi_function_ptr function)
   }
 }
 
+/* Check if the image of random points chosen in the given intervals is in the
+   image of these intervals.
+   It assumes that the operands have been set. */
+void
+random_iii (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  III_fun f_III = MPFI_FUN_GET (*this, III);
+  RRR_fun f_RRR = MPFI_FUN_MPFR_FUNCTION (*this, III);
+  mpfi_ptr c    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 3, mpfi);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 4, mpfi);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i  = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x  = &(i->left);
+  mpfr_ptr y  = &(i->right);
+  mpfr_t z;
+
+  mpfr_init2 (z, mpfi_get_prec (c));
+
+  random_interval (a);
+  mpfi_alea (x, a);
+  random_interval (b);
+  mpfi_alea (y, b);
+  f_III (c, a, b);
+  f_RRR (z, x, y, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (z, c)) {
+    printf ("Error:\nthe image b of (a, b) does not contain the image z "
+            "of (x, y) where x (resp. y) is in a (resp. b).\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nc = ");
+    mpfi_out_str (stdout, 10, 0, c);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    printf ("\nz = ");
+    mpfr_out_str (stdout, 10, 0, z, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+
+  mpfr_clear (z);
+}
+
+void
+set_prec_iii (mpfi_function_ptr this, mp_prec_t prec)
+{
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 3, mpfi), prec);
+  mpfi_set_prec (MPFI_FUN_ARG (*this, 4, mpfi), prec);
+}
+
 void
 clear_iii (mpfi_function_ptr this)
 {
@@ -183,7 +240,9 @@ mpfi_fun_init_III (mpfi_function_ptr this, III_fun mpfi_function,
   mpfi_init2 (MPFI_FUN_ARG (*this, 4, mpfi), 1024);
 
   /* init methods */
+  this->set_prec   = set_prec_iii;
   this->read_line  = read_line_iii;
   this->check_line = check_line_iii;
+  this->random     = random_iii;
   this->clear      = clear_iii;
 }
