@@ -12,11 +12,12 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tadd_q tadd_si tadd_ui tadd_z tasin tasinh tatan tatan2	\
     tatanh tbisect tcbrt tconst_catalan tconst_euler		\
     tconst_log2 tconst_pi tcos tcosh tcot tcoth tcsc tcsch	\
-    tdiv texp texp2 texpm1 thypot tinit_set tintersect tinv	\
-    tlog tlog10 tlog1p tlog2 tmul tmul_d tneg tput_d tput_fr	\
-    tput_q tput_si tput_ui tput_z tsec tsech tset tset_d	\
-    tset_fr tset_q tset_si tset_str tset_ui tset_z tsin		\
-    tsinh tsqr tsqrt tsub ttan ttanh tunion
+    tdiv tdiv_ui texp texp2 texpm1 thypot tinit_set		\
+    tintersect tinv tlog tlog10 tlog1p tlog2 tmul tmul_d	\
+    tmul_ui tneg tput_d tput_fr tput_q tput_si tput_ui		\
+    tput_z tsec tsech tset tset_d tset_fr tset_q tset_si	\
+    tset_str tset_ui tset_z tsin tsinh tsqr tsqrt tsub		\
+    tsub_ui ttan ttanh tunion
 
 EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     add_fr.dat add_q.dat add_si.dat add_ui.dat add_z.dat	\

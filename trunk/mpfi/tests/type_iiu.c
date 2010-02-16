@@ -102,6 +102,44 @@ check_line_iiu (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval.
+   It assumes that the operand has been set. */
+void
+random_iiu (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IIU_fun f_IIU = MPFI_FUN_GET (*this, IIU);
+  RRU_fun f_RRU = MPFI_FUN_MPFR_FUNCTION (*this, IIU);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
+  unsigned long ui = MPFI_FUN_ARG (*this, 4, ui);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i    = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x    = &(i->left);
+  mpfr_ptr y    = &(i->right);
+
+  ui = random_ui ();
+  random_interval (a);
+  mpfi_alea (x, a);
+  f_IIU (b, a, ui);
+  f_RRU (y, x, ui, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe interval b, image of (a, ui), does not contain "
+            "the point y, image of (x, ui) where x is in a.\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nui = %lu\nb = ", ui);
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_iiu (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -130,7 +168,7 @@ clear_iiu (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IIU (mpfi_function_ptr this, IIU_fun mpfi_function,
-               NULL_fun mpfr_function)
+                   RRU_fun mpfr_function)
 {
   this->type = IIU;
   this->func.IIU = mpfi_function;
@@ -150,9 +188,9 @@ mpfi_fun_init_IIU (mpfi_function_ptr this, IIU_fun mpfi_function,
   /* [4] second operand (unsigned long), needs no initialization */
 
   /* init methods */
-  this->set_prec    = set_prec_iiu;
+  this->set_prec   = set_prec_iiu;
   this->read_line  = read_line_iiu;
   this->check_line = check_line_iiu;
-  this->random     = NULL;
+  this->random     = random_iiu;
   this->clear      = clear_iiu;
 }

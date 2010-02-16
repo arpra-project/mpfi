@@ -1,6 +1,6 @@
-/* tadd_ui.c -- Test mpfi_add_ui.
+/* tsub_ui.c -- Test mpfi_sub_ui.
 
-Copyright 2009 2010
+Copyright 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,52 +26,20 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
-check_overflow ()
-{
-  mpfr_t max;
-  mpfi_t a;
-  int inexact;
-
-  mpfi_init2 (a, 53);
-  mpfr_init2 (max, 53);
-  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
-  mpfr_set_inf (max, +1);
-  mpfr_nextbelow (max);
-  mpfr_set (&(a->right), max, MPFI_RNDU);
-
-  inexact = mpfi_add_ui (a, a, +1);
-
-  if (!mpfr_inf_p (&(a->right))) {
-    printf ("Error: mpfi_add_ui does not correctly handle overflow.\n");
-    exit (1);
-  }
-
-  if (!MPFI_RIGHT_IS_INEXACT (inexact)) {
-    printf ("Error: mpfi_add_ui does not return correct value "
-            "when overflow.\n");
-    exit (1);
-  }
-
-  mpfi_clear (a);
-  mpfr_clear (max);
-}
-
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t i_add_ui;
+  struct mpfi_function_t i_sub_ui;
 
-  mpfi_fun_init_IIU (&i_add_ui, mpfi_add_ui, mpfr_add_ui);
+  mpfi_fun_init_IIU (&i_sub_ui, mpfi_sub_ui, mpfr_sub_ui);
 
   test_start ();
 
-  check_data (&i_add_ui, "add_ui.dat");
-  check_random (&i_add_ui, 2, 1000, 10);
-  check_overflow ();
+/*   check_data (&i_sub_ui, "sub_ui.dat"); */
+  check_random (&i_sub_ui, 2, 1000, 10);
 
   test_end ();
-  mpfi_fun_clear (&i_add_ui);
+  mpfi_fun_clear (&i_sub_ui);
 
   return 0;
 }

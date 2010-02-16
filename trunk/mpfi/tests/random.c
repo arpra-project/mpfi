@@ -42,6 +42,11 @@ MA 02110-1301, USA. */
 # endif
 #endif
 
+#include <limits.h>
+#ifndef ULONG_MAX
+# define ULONG_MAX 4294967295
+#endif
+
 gmp_randstate_t  rands;
 char             rands_initialized;
 
@@ -101,6 +106,12 @@ test_end (void)
   mpfr_free_cache ();
 }
 
+unsigned long
+random_ui ()
+{
+  return gmp_urandomm_ui (rands, ULONG_MAX);
+}
+
 /* random endpoint with non-uniform distribution:
    Prob(x == -oo)     = 1/8
    Prob(-oo < x < -1) = 1/4
@@ -110,7 +121,7 @@ test_end (void)
    Prob(x == +oo)     = 1/8
  */
 static void
-random_endpoint (mpfr_ptr x)
+random_mpfr (mpfr_ptr x)
 {
   unsigned long r;
 
@@ -152,9 +163,9 @@ random_interval (mpfi_ptr i)
 
   mpfr_init2 (x, mpfi_get_prec (i));
 
-  random_endpoint (x);
+  random_mpfr (x);
   mpfi_set_fr (i, x);
-  random_endpoint (x);
+  random_mpfr (x);
   mpfi_put_fr (i, x);
 
   mpfr_clear (x);
