@@ -82,11 +82,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_d;
 
-  mpfi_fun_init_IID (&i_add_d, mpfi_add_d, NULL);
+  mpfi_fun_init_IID (&i_add_d, mpfi_add_d, mpfr_add_d);
+  test_start ();
 
   check_data (&i_add_d, "add_d.dat");
+  check_random (&i_add_d, 2, 1000, 10);
   check_overflow ();
 
+  test_end ();
   mpfi_fun_clear (&i_add_d);
 
   return 0;

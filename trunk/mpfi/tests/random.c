@@ -47,6 +47,14 @@ MA 02110-1301, USA. */
 # define ULONG_MAX 4294967295
 #endif
 
+#include <float.h>
+#ifndef DBL_MANT_DIG
+# define DBL_MANT_DIG 53
+#endif
+#ifndef DBL_MAX_EXP
+# define  DBL_MAX_EXP +1024
+#endif
+
 gmp_randstate_t  rands;
 char             rands_initialized;
 
@@ -116,6 +124,22 @@ long
 random_si ()
 {
   return (long)gmp_urandomm_ui (rands, ULONG_MAX);
+}
+
+double
+random_double ()
+{
+  double d;
+  mpfr_t x;
+
+  mpfr_init2 (x, DBL_MANT_DIG + 1);
+  mpfr_urandomb (x, rands);
+  mpfr_sub_d (x, x, 0.5, MPFI_RNDD);
+  mpfr_mul_2ui (x, x, DBL_MAX_EXP + 1, MPFI_RNDD);
+  d = mpfr_get_d (x, MPFI_RNDD);
+  mpfr_clear (x);
+
+  return d;
 }
 
 /* random endpoint with non-uniform distribution:

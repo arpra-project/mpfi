@@ -102,6 +102,43 @@ check_line_iid (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval. */
+void
+random_iid (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IID_fun f_IID = MPFI_FUN_GET (*this, IID);
+  RRD_fun f_RRD = MPFI_FUN_MPFR_FUNCTION (*this, IID);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
+  double d;
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i    = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x    = &(i->left);
+  mpfr_ptr y    = &(i->right);
+
+  d = random_double ();
+  random_interval (a);
+  mpfi_alea (x, a);
+  f_IID (b, a, d);
+  f_RRD (y, x, d, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe interval b, image of (a, d), does not contain "
+            "the point y, image of (x, d) where x is in a.\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nd = %g\nb = ", d);
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_iid (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -130,7 +167,7 @@ clear_iid (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IID (mpfi_function_ptr this, IID_fun mpfi_function,
-               NULL_fun mpfr_function)
+                   RRD_fun mpfr_function)
 {
   this->type = IID;
   this->func.IID = mpfi_function;
@@ -153,6 +190,6 @@ mpfi_fun_init_IID (mpfi_function_ptr this, IID_fun mpfi_function,
   this->set_prec   = set_prec_iid;
   this->read_line  = read_line_iid;
   this->check_line = check_line_iid;
-  this->random     = NULL;
+  this->random     = random_iid;
   this->clear      = clear_iid;
 }
