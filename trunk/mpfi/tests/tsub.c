@@ -29,7 +29,7 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t sub;
+  struct mpfi_function_t i_sub;
 
   mpfi_fun_init_III (&i_sub, mpfi_sub, mpfr_sub);
 
