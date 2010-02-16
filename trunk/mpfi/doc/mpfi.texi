@@ -1360,12 +1360,12 @@ the interior of @var{op1}, 0 otherwise.
 @end deftypefun
 
 @deftypefun int mpfi_is_inside (mpfi_t @var{op1}, mpfi_t @var{op2})
-@deftypefunx int mpfi_is_inside_d (mpfi_t @var{op1}, double @var{op2})
-@deftypefunx int mpfi_is_inside_ui (mpfi_t @var{op1}, unsigned long int @var{op2})
-@deftypefunx int mpfi_is_inside_si (mpfi_t @var{op1}, long int @var{op2})
-@deftypefunx int mpfi_is_inside_z (mpfi_t @var{op1}, mpz_t @var{op2})
-@deftypefunx int mpfi_is_inside_q (mpfi_t @var{op1}, mpq_t @var{op2})
-@deftypefunx int mpfi_is_inside_fr (mpfi_t @var{op1}, mpfr_t @var{op2})
+@deftypefunx int mpfi_is_inside_d (double @var{op1}, mpfi_t @var{op2})
+@deftypefunx int mpfi_is_inside_ui (unsigned long @var{op1}, mpfi_t @var{op2})
+@deftypefunx int mpfi_is_inside_si (long int @var{op1}, mpfi_t @var{op2})
+@deftypefunx int mpfi_is_inside_z (mpz_t @var{op1}, mpfi_t @var{op2})
+@deftypefunx int mpfi_is_inside_q (mpq_t @var{op1}, mpfi_t @var{op2})
+@deftypefunx int mpfi_is_inside_fr (mpfr_t @var{op1}, mpfi_t @var{op2})
 Returns a positive value if @var{op1} is contained in @var{op2},
 0 otherwise.
 @end deftypefun
