@@ -34,8 +34,7 @@ check (mpfi_ptr got, mpfi_srcptr a, double d, mpfi_srcptr expected,
 
   ret = mpfi_mul_d (got, a, d);
   if (ret != expected_retval) {
-    printf ("Error: mpfi_mul does not return expected value.\ninterval:",
-            ret);
+    printf ("Error: mpfi_mul does not return expected value.\ninterval: ");
     mpfi_out_str (stdout, 16, 0, a);
     printf ("\n  factor: %g\n     got: %d\nexpected: %d\n",
             d, ret, expected_retval);
@@ -58,7 +57,6 @@ static void
 check_overflow ()
 {
   mpfi_t a, b, c;
-  int inexact;
 
   mpfi_init2 (a, 53);
   mpfi_init2 (b, 53);
@@ -87,7 +85,6 @@ static void
 check_underflow ()
 {
   mpfi_t a, b, c;
-  int inexact;
 
   mpfi_init2 (a, 53);
   mpfi_init2 (b, 53);
@@ -140,7 +137,6 @@ main (int argc, char **argv)
   struct mpfi_function_t i_mul_d;
 
   mpfi_fun_init_IID (&i_mul_d, mpfi_mul_d, mpfr_mul_d);
-
   test_start ();
 
   check_data (&i_mul_d, "mul_d.dat");

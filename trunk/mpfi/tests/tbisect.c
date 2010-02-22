@@ -36,13 +36,14 @@ check (mpfi_ptr left, mpfi_ptr right, mpfi_srcptr interval,
   ret = mpfi_bisect (left, right, interval);
   if (ret != expected_retval)
     {
-      printf ("Error: mpfi_bisect does not return expected value.\ninterval:",
-              ret);
+      printf ("Error: mpfi_bisect does not return expected value."
+              "\ninterval: ");
       mpfi_out_str (stdout, 16, 0, interval);
       printf ("\n     got: %d\nexpected: %d\n", ret, expected_retval);
       exit (1);
     }
-  if (!same_value (left, expected_left) || !same_value (right, expected_right))
+  if (!same_value (left, expected_left)
+      || !same_value (right, expected_right))
     {
       printf ("Error: mpfi_bisect does not return expected subintervals.\n"
               "interval:");
@@ -69,7 +70,7 @@ check (mpfi_ptr left, mpfi_ptr right, mpfi_srcptr interval,
       if (ret != expected_retval)
         {
           printf ("Error: mpfi_bisect does not return expected value when "
-                  "reusing the first variable.\ninterval:", ret);
+                  "reusing the first variable.\ninterval: ");
           mpfi_out_str (stdout, 16, 0, interval);
           printf ("\n     got: %d\nexpected: %d\n", ret, expected_retval);
           exit (1);
@@ -100,7 +101,7 @@ check (mpfi_ptr left, mpfi_ptr right, mpfi_srcptr interval,
       if (ret != expected_retval)
         {
           printf ("Error: mpfi_bisect does not return expected value when "
-                  "reusing the second variable.\ninterval:", ret);
+                  "reusing the second variable.\ninterval: ");
           mpfi_out_str (stdout, 16, 0, interval);
           printf ("\n     got: %d\nexpected: %d\n", ret, expected_retval);
           exit (1);
