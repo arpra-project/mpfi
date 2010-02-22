@@ -22,7 +22,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tsec tsech tset tset_d tset_fr tset_q tset_si tset_str	\
     tset_ui tset_z tsi_div tsi_sub tsin tsinh tsqr tsqrt	\
     tsub tsub_d tsub_fr tsub_q tsub_ui tsub_si tsub_z ttan	\
-    ttanh tunion tui_div tui_sub
+    ttanh tunion tui_div tui_sub tget_version
 
 EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     add_fr.dat add_q.dat add_si.dat add_ui.dat add_z.dat	\
