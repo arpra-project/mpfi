@@ -103,6 +103,45 @@ check_line_iiq (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval. */
+void
+random_iiq (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IIQ_fun f_IIQ = MPFI_FUN_GET (*this, IIQ);
+  RRQ_fun f_RRQ = MPFI_FUN_MPFR_FUNCTION (*this, IIQ);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
+  mpq_ptr  q    = MPFI_FUN_ARG (*this, 4, mpq);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i    = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x    = &(i->left);
+  mpfr_ptr y    = &(i->right);
+
+  random_mpq (q);
+  random_interval (a);
+  mpfi_alea (x, a);
+  f_IIQ (b, a, q);
+  f_RRQ (y, x, q, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe interval b, image of (a, q), does not contain "
+            "the point y, image of (x, q) where x is in a.\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nq = ");
+    mpq_out_str (stdout, 10, q); 
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_iiq (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -132,7 +171,7 @@ clear_iiq (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IIQ (mpfi_function_ptr this, IIQ_fun mpfi_function,
-               NULL_fun mpfr_function)
+                   RRQ_fun mpfr_function)
 {
   this->type = IIQ;
   this->func.IIQ = mpfi_function;
@@ -156,6 +195,6 @@ mpfi_fun_init_IIQ (mpfi_function_ptr this, IIQ_fun mpfi_function,
   this->set_prec   = set_prec_iiq;
   this->read_line  = read_line_iiq;
   this->check_line = check_line_iiq;
-  this->random     = NULL;
+  this->random     = random_iiq;
   this->clear      = clear_iiq;
 }

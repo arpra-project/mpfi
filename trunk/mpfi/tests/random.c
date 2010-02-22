@@ -148,6 +148,12 @@ random_mpz (mpz_ptr z, unsigned long n)
   return mpz_urandomb (z, rands, n);
 }
 
+void
+random_mpq (mpq_ptr q)
+{
+  mpq_set_si (q, random_si (), random_ui ());
+}
+
 /* random endpoint with non-uniform distribution:
    Prob(x == -oo)     = 1/8
    Prob(-oo < x < -1) = 1/4
