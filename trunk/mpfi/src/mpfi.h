@@ -329,7 +329,7 @@ int mpfi_blow(mpfi_ptr, mpfi_srcptr, double);
 /* splits the interval into 2 halves */
 int mpfi_bisect(mpfi_ptr, mpfi_ptr, mpfi_srcptr);
 
-char * mpfi_get_version();
+const char * mpfi_get_version();
 
 /* Error handling */
 

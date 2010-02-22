@@ -114,17 +114,42 @@ Floating-Point Interval Library
 @end ifinfo
 
 @menu
-* Copying::                   GMP Copying Conditions (LGPL).
-* Introduction to MPFI::      Brief introduction to MPFI.
-* Installing MPFI::           How to configure and compile the MPFI library.
-* MPFI Basics::               What every MPFI user should know.
-* Reporting Bugs::            How to usefully report bugs.
-* Interval Functions::        Functions for arithmetic on intervals.
+* Copying::                     GMP Copying Conditions (LGPL).
+* Introduction to MPFI::        Brief introduction to MPFI.
+* Installing MPFI::             How to configure and compile the MPFI library.
+* Reporting Bugs::              How to usefully report bugs.
+* MPFI Basics::                 What every MPFI user should know.
+* Interval Functions::          Functions for arithmetic on intervals.
 
-* Contributors::
-* References::
-* Concept Index::
-* Function Index::
+* Contributors::                
+* References::                  
+* Concept Index::               
+* Function Index::              
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Interval Functions
+
+* Initializing and Assigning Intervals::  
+* Floating-point Quantities::   
+* Converting Intervals::        
+* Interval Arithmetic::         
+* Special Functions::           
+* Interval Comparison::         
+* I/O of Intervals::            
+* Operating on the Endpoints::  
+* Set Operations::              
+* Miscellaneous Interval Functions::  
+* Error Handling::              
+
+Initialization and Assignment Functions
+
+* Initializing Intervals::      
+* Assigning Intervals::         
+* Simultaneous Interval Init & Assign::  
+
+@end detailmenu
 @end menu
 
 @node Copying, Introduction to MPFI, Top, Top
@@ -453,22 +478,20 @@ precision of a calculation), see the MPFR documentation.
 
 
 @menu
-* Return Values::
-* Rounding Modes and Precision Handling::
-* Initializing and Assigning Intervals::
-* Floating-point Quantities::
-* Converting Intervals::
-* Interval Arithmetic::
-* Special Functions::
-* Interval Comparison::
-* I/O of Intervals::
-* Operating on the Endpoints::
-* Set Operations::
-* Miscellaneous Interval Functions::
-* Error Handling::
+* Initializing and Assigning Intervals::  
+* Floating-point Quantities::   
+* Converting Intervals::        
+* Interval Arithmetic::         
+* Special Functions::           
+* Interval Comparison::         
+* I/O of Intervals::            
+* Operating on the Endpoints::  
+* Set Operations::              
+* Miscellaneous Interval Functions::  
+* Error Handling::              
 @end menu
 
-@node Return Values, Rounding Modes and Precision Handling, , Interval Functions
+@node Return Values, Initializing and Assigning Intervals, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Return values 
 @section Return Values
@@ -496,7 +519,7 @@ To test the exactness of one endpoint, the following functions are available
 @end itemize
 
 
-@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
+@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Rounding modes
 @cindex Precision
@@ -568,17 +591,17 @@ It returns a value indicating whether the possibly rounded endpoints are exact o
 cf. @ref{Return Values}.
 @end deftypefun
 
-@node Initializing and Assigning Intervals, Floating-point Quantities, Rounding Modes and Precision Handling, Interval Functions
+@node Initializing and Assigning Intervals, Floating-point Quantities, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Initialization and Assignment Functions
 
 @menu
-* Initializing Intervals::
-* Assigning Intervals::
-* Simultaneous Interval Init & Assign::
+* Initializing Intervals::      
+* Assigning Intervals::         
+* Simultaneous Interval Init & Assign::  
 @end menu
 
-@node Initializing Intervals, Assigning Intervals, , Initializing and Assigning Intervals
+@node Initializing Intervals, Assigning Intervals, Initializing and Assigning Intervals, Initializing and Assigning Intervals
 @comment  node-name,  next,  previous,  up
 @subsection Initialization Functions
 @cindex Interval initialization functions
@@ -678,7 +701,7 @@ precisions are exchanged too; in case the precisions are different,
 using a third auxiliary variable.
 @end deftypefun
 
-@node Simultaneous Interval Init & Assign, , Assigning Intervals, Initializing and Assigning Intervals
+@node Simultaneous Interval Init & Assign,  , Assigning Intervals, Initializing and Assigning Intervals
 @comment  node-name,  next,  previous,  up
 @subsection Combined Initialization and Assignment Functions
 @cindex Initialization and assignment functions
@@ -1424,8 +1447,12 @@ It returns a value >0 if the splitting point is greater than the exact centre,
 <0 if it is smaller and 0 if it is the exact centre.
 @end deftypefun
 
+@deftypefun {const char *} mpfi_get_version ()
+Returns the MPFI version number as a NULL terminated string.
+@end deftypefun
 
-@node Error Handling, , Miscellaneous Interval Functions, Interval Functions
+
+@node Error Handling,  , Miscellaneous Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Error Handling
 @cindex Error handling

@@ -27,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
-char *
+const char *
 mpfi_get_version ()
 {
   return (VERSION);

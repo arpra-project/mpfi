@@ -40,7 +40,8 @@ Changes between MPFI 1.3.4-RC3 and 1.4
 Changes between MPFI version 1.4 and ?
 
 * new functions : Catalan's constant, cubic root, reciprocal square root,
-  secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot
+  secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot,
+  get_version
 * can now be compiled outside the source directory
 * each function is in its own file
 * fix documentation for functions mpfi_blow, mpfi_is_inside
