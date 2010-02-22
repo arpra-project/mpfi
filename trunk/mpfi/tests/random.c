@@ -64,53 +64,52 @@ test_start (void)
   char *environment_seed;
   unsigned long seed;
 
-  if (rands_initialized)
-    {
-      fprintf (stderr,
-               "Put test_start at the beginning of your test function.\n");
-      exit (1);
-    }
+  if (rands_initialized) {
+    printf ("Put test_start ONCE at the beginning of your test function.\n");
+    exit (1);
+  }
 
   gmp_randinit_default (rands);
   rands_initialized = 1;
 
   environment_seed = getenv ("MPFI_CHECK_RANDOMIZE");
   if (environment_seed == NULL)
-      gmp_randseed_ui (rands, 0xfac11e);
-  else
-    {
-      seed = atoi (environment_seed);
-      if (seed == 0 || seed == 1)
-        {
+    gmp_randseed_ui (rands, 0xfac11e);
+  else {
+    seed = atoi (environment_seed);
+    if (seed == 0 || seed == 1) {
 #if HAVE_GETTIMEOFDAY
-          struct timeval  tv;
-          gettimeofday (&tv, NULL);
-          seed = tv.tv_sec + tv.tv_usec;
+      struct timeval  tv;
+      gettimeofday (&tv, NULL);
+      seed = tv.tv_sec + tv.tv_usec;
 #else
-          time_t  tv;
-          time (&tv);
-          seed = tv;
+      time_t  tv;
+      time (&tv);
+      seed = tv;
 #endif
-          gmp_randseed_ui (rands, seed);
-          printf ("Seed MPFI_CHECK_RANDOMIZE=%lu "
-                  "(include this in bug reports)\n", seed);
-        }
-      else
-        {
-          printf ("Re-seeding with MPFI_CHECK_RANDOMIZE=%lu\n", seed);
-          gmp_randseed_ui (rands, seed);
-        }
+      gmp_randseed_ui (rands, seed);
+      printf ("Seed MPFI_CHECK_RANDOMIZE=%lu "
+              "(include this in bug reports)\n", seed);
     }
+    else {
+      printf ("Re-seeding with MPFI_CHECK_RANDOMIZE=%lu\n", seed);
+      gmp_randseed_ui (rands, seed);
+    }
+  }
 }
 
 void
 test_end (void)
 {
-  if (rands_initialized)
-    {
-      rands_initialized = 0;
-      gmp_randclear (rands);
-    }
+  if (rands_initialized) {
+    rands_initialized = 0;
+    gmp_randclear (rands);
+  }
+  else {
+    printf ("Put test_start at the beginning of your test function.\n");
+    exit (1);
+  }
+
   mpfr_free_cache ();
 }
 
