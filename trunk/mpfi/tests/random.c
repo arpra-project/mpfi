@@ -162,7 +162,7 @@ random_mpq (mpq_ptr q)
    Prob(+1 < x < +oo) = 1/4
    Prob(x == +oo)     = 1/8
  */
-static void
+void
 random_mpfr (mpfr_ptr x)
 {
   unsigned long r;

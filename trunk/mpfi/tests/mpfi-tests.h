@@ -104,7 +104,7 @@ typedef union
   RRD_fun  IID;    /* output: mpfr_t, inputs: mpfr_t, double */
   RRZ_fun  IIZ;    /* output: mpfr_t, inputs: mpfr_t, mpz_t */
   RRQ_fun  IIQ;    /* output: mpfr_t, inputs: mpfr_t, mpq_t */
-  NULL_fun IIR;    /* dummy, no corresponding mpfr function */
+  RRR_fun  IIR;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
 } mpfi_fun_mpfr_ptr;
 
 typedef enum
@@ -194,7 +194,7 @@ void mpfi_fun_init_IIS  (mpfi_function_ptr, IIS_fun, RRS_fun);
 void mpfi_fun_init_IID  (mpfi_function_ptr, IID_fun, RRD_fun);
 void mpfi_fun_init_IIZ  (mpfi_function_ptr, IIZ_fun, RRZ_fun);
 void mpfi_fun_init_IIQ  (mpfi_function_ptr, IIQ_fun, RRQ_fun);
-void mpfi_fun_init_IIR  (mpfi_function_ptr, IIR_fun, NULL_fun);
+void mpfi_fun_init_IIR  (mpfi_function_ptr, IIR_fun, RRR_fun);
 void mpfi_fun_clear     (mpfi_function_ptr);
 
 
@@ -208,6 +208,7 @@ long   random_si        ();
 double random_double    ();
 void   random_mpz       (mpz_ptr, unsigned long);
 void   random_mpq       (mpq_ptr);
+void   random_mpfr      (mpfr_ptr);
 
 int  same_mpfr_value    (mpfr_srcptr, mpfr_srcptr);
 int  same_value         (mpfi_srcptr, mpfi_srcptr); 

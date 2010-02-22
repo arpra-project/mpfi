@@ -103,6 +103,45 @@ check_line_iir (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of random points chosen in the given intervals is in the
+   image of these intervals. */
+void
+random_iir (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IIR_fun f_IIR = MPFI_FUN_GET (*this, IIR);
+  RRR_fun f_RRR = MPFI_FUN_MPFR_FUNCTION (*this, IIR);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
+  mpfr_ptr x    = MPFI_FUN_ARG (*this, 4, mpfr);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i  = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr y  = &(i->left);
+  mpfr_ptr z  = &(i->right);
+
+  random_interval (a);
+  random_mpfr (x);
+  mpfi_alea (y, a);
+  f_IIR (b, a, x);
+  f_RRR (z, y, x, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (z, b)) {
+    printf ("Error:\nthe image b of (a, x) does not contain the image z "
+            "of (y, x) where y is in a.\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    printf ("\nz = ");
+    mpfr_out_str (stdout, 10, 0, z, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_iir (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -133,7 +172,7 @@ clear_iir (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IIR (mpfi_function_ptr this, IIR_fun mpfi_function,
-                   NULL_fun mpfr_function)
+                   RRR_fun mpfr_function)
 {
   this->type = IIR;
   this->func.IIR = mpfi_function;
@@ -157,6 +196,6 @@ mpfi_fun_init_IIR (mpfi_function_ptr this, IIR_fun mpfi_function,
   this->set_prec   = set_prec_iir;
   this->read_line  = read_line_iir;
   this->check_line = check_line_iir;
-  this->random     = NULL;
+  this->random     = random_iir;
   this->clear      = clear_iir;
 }
