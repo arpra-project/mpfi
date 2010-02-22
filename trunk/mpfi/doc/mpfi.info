@@ -1,4 +1,4 @@
-This is /home/ptheveny/local/svn/mpfi-trunk/mpfi/doc/mpfi.info, produced by makeinfo version 4.11 from /home/ptheveny/local/svn/mpfi-trunk/mpfi/doc/mpfi.texi.
+This is ../../../svn/mpfi-trunk/mpfi/doc/mpfi.info, produced by makeinfo version 4.13 from ../../../svn/mpfi-trunk/mpfi/doc/mpfi.texi.
 
 START-INFO-DIR-ENTRY
 * mpfi: (mpfi.info).               Multiple Precision Floating-Point Interval Library.
@@ -1036,13 +1036,13 @@ File: mpfi.info,  Node: Set Operations,  Next: Miscellaneous Interval Functions,
      the interior of OP1, 0 otherwise.
 
  -- Function: int mpfi_is_inside (mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_d (mpfi_t OP1, double OP2)
- -- Function: int mpfi_is_inside_ui (mpfi_t OP1, unsigned long int OP2)
- -- Function: int mpfi_is_inside_si (mpfi_t OP1, long int OP2)
- -- Function: int mpfi_is_inside_z (mpfi_t OP1, mpz_t OP2)
- -- Function: int mpfi_is_inside_q (mpfi_t OP1, mpq_t OP2)
- -- Function: int mpfi_is_inside_fr (mpfi_t OP1, mpfr_t OP2)
-     Returns a positive value if OP2 is contained in OP1, 0 otherwise.
+ -- Function: int mpfi_is_inside_d (double OP1, mpfi_t OP2)
+ -- Function: int mpfi_is_inside_ui (unsigned long OP1, mpfi_t OP2)
+ -- Function: int mpfi_is_inside_si (long int OP1, mpfi_t OP2)
+ -- Function: int mpfi_is_inside_z (mpz_t OP1, mpfi_t OP2)
+ -- Function: int mpfi_is_inside_q (mpq_t OP1, mpfi_t OP2)
+ -- Function: int mpfi_is_inside_fr (mpfr_t OP1, mpfi_t OP2)
+     Returns a positive value if OP1 is contained in OP2, 0 otherwise.
 
  -- Function: int mpfi_is_empty (mpfi_t OP)
      Returns a positive value if OP is empty (its endpoints are in
@@ -1075,9 +1075,9 @@ File: mpfi.info,  Node: Miscellaneous Interval Functions,  Next: Error Handling,
 
  -- Function: int mpfi_blow (mpfi_t ROP, mpfi_t OP1, double OP2)
      Sets ROP to the interval whose center is the center of OP1 and
-     whose radius is the radius of OP1 multiplied by 2 times (1 +
-     abs(OP2)).  It returns a value indicating whether none, one or
-     both endpoints are inexact.
+     whose radius is the radius of OP1 multiplied by (1 + abs(OP2)).
+     It returns a value indicating whether none, one or both endpoints
+     are inexact.
 
  -- Function: int mpfi_bisect (mpfi_t ROP1, mpfi_t ROP2, mpfi_t OP)
      Splits OP into two halves and sets them to ROP1 and ROP2.  Due to
@@ -1428,32 +1428,32 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1314
-Node: Copying1977
-Node: Introduction to MPFI3745
-Node: Installing MPFI4870
-Node: Reporting Bugs7310
-Node: MPFI Basics8780
-Node: Interval Functions12277
-Node: Return Values13536
-Node: Rounding Modes and Precision Handling14495
-Node: Initializing and Assigning Intervals17582
-Node: Initializing Intervals17941
-Node: Assigning Intervals19714
-Node: Simultaneous Interval Init & Assign21749
-Node: Floating-point Quantities23012
-Node: Converting Intervals25424
-Node: Interval Arithmetic25899
-Node: Special Functions32258
-Node: Interval Comparison37415
-Node: I/O of Intervals40243
-Node: Operating on the Endpoints43257
-Node: Set Operations45659
-Node: Miscellaneous Interval Functions47502
-Node: Error Handling48631
-Node: Contributors49147
-Node: References49483
-Node: Concept Index50606
-Node: Function Index53539
+Node: Top1290
+Node: Copying1953
+Node: Introduction to MPFI3721
+Node: Installing MPFI4846
+Node: Reporting Bugs7286
+Node: MPFI Basics8756
+Node: Interval Functions12253
+Node: Return Values13512
+Node: Rounding Modes and Precision Handling14471
+Node: Initializing and Assigning Intervals17558
+Node: Initializing Intervals17917
+Node: Assigning Intervals19690
+Node: Simultaneous Interval Init & Assign21725
+Node: Floating-point Quantities22988
+Node: Converting Intervals25400
+Node: Interval Arithmetic25875
+Node: Special Functions32234
+Node: Interval Comparison37391
+Node: I/O of Intervals40219
+Node: Operating on the Endpoints43233
+Node: Set Operations45635
+Node: Miscellaneous Interval Functions47474
+Node: Error Handling48594
+Node: Contributors49110
+Node: References49446
+Node: Concept Index50569
+Node: Function Index53502
 
 End Tag Table
