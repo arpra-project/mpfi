@@ -142,6 +142,12 @@ random_double ()
   return d;
 }
 
+void
+random_mpz (mpz_ptr z, unsigned long n)
+{
+  return mpz_urandomb (z, rands, n);
+}
+
 /* random endpoint with non-uniform distribution:
    Prob(x == -oo)     = 1/8
    Prob(-oo < x < -1) = 1/4

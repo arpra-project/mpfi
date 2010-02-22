@@ -65,6 +65,7 @@ typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
 typedef int (*RRU_fun) (mpfr_t, mpfr_srcptr, unsigned long, mp_rnd_t);
 typedef int (*RRS_fun) (mpfr_t, mpfr_srcptr, long, mp_rnd_t);
 typedef int (*RRD_fun) (mpfr_t, mpfr_srcptr, double, mp_rnd_t);
+typedef int (*RRZ_fun) (mpfr_t, mpfr_srcptr, mpz_srcptr, mp_rnd_t);
 typedef void *NULL_fun;
 
 typedef union
@@ -100,7 +101,7 @@ typedef union
   RRU_fun  IIU;    /* output: mpfr_t, inputs: mpfr_t, unsigned long */
   RRS_fun  IIS;    /* output: mpfr_t, inputs: mpfr_t, signed long */
   RRD_fun  IID;    /* output: mpfr_t, inputs: mpfr_t, double */
-  NULL_fun IIZ;    /* dummy, no corresponding mpfr function */
+  RRZ_fun  IIZ;    /* output: mpfr_t, inputs: mpfr_t, mpz_t */
   NULL_fun IIQ;    /* dummy, no corresponding mpfr function */
   NULL_fun IIR;    /* dummy, no corresponding mpfr function */
 } mpfi_fun_mpfr_ptr;
@@ -190,7 +191,7 @@ void mpfi_fun_init_III  (mpfi_function_ptr, III_fun, RRR_fun);
 void mpfi_fun_init_IIU  (mpfi_function_ptr, IIU_fun, RRU_fun);
 void mpfi_fun_init_IIS  (mpfi_function_ptr, IIS_fun, RRS_fun);
 void mpfi_fun_init_IID  (mpfi_function_ptr, IID_fun, RRD_fun);
-void mpfi_fun_init_IIZ  (mpfi_function_ptr, IIZ_fun, NULL_fun);
+void mpfi_fun_init_IIZ  (mpfi_function_ptr, IIZ_fun, RRZ_fun);
 void mpfi_fun_init_IIQ  (mpfi_function_ptr, IIQ_fun, NULL_fun);
 void mpfi_fun_init_IIR  (mpfi_function_ptr, IIR_fun, NULL_fun);
 void mpfi_fun_clear     (mpfi_function_ptr);
@@ -200,10 +201,11 @@ void mpfi_fun_clear     (mpfi_function_ptr);
 
 extern gmp_randstate_t  rands;
 extern char             rands_initialized;
-void random_interval    (mpfi_ptr);
+void   random_interval  (mpfi_ptr);
 unsigned long random_ui ();
-long random_si          ();
+long   random_si        ();
 double random_double    ();
+void   random_mpz       (mpz_ptr, unsigned long);
 
 int  same_mpfr_value    (mpfr_srcptr, mpfr_srcptr);
 int  same_value         (mpfi_srcptr, mpfi_srcptr); 

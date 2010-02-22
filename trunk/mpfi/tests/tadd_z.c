@@ -83,11 +83,14 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_add_z;
 
-  mpfi_fun_init_IIZ (&i_add_z, mpfi_add_z, NULL);
+  mpfi_fun_init_IIZ (&i_add_z, mpfi_add_z, mpfr_add_z);
+  test_start ();
 
   check_data (&i_add_z, "add_z.dat");
   check_overflow ();
+  check_random (&i_add_z, 2, 1000, 10);
 
+  test_end ();
   mpfi_fun_clear (&i_add_z);
 
   return 0;

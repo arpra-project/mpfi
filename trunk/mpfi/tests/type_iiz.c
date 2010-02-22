@@ -27,8 +27,8 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-extern unsigned long line_number;
-unsigned long test_line_number;   /* start line of a test */
+extern unsigned long line_number; /* current line */
+unsigned long test_line_number;   /* start line of current test */
 
 void
 read_line_iiz (mpfi_function_ptr this, FILE* fp)
@@ -104,6 +104,46 @@ check_line_iiz (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval. */
+void
+random_iiz (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IIZ_fun f_IIZ = MPFI_FUN_GET (*this, IIZ);
+  RRZ_fun f_RRZ = MPFI_FUN_MPFR_FUNCTION (*this, IIZ);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 3, mpfi);
+  mpz_ptr  z    = MPFI_FUN_ARG (*this, 4, mpz);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i    = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x    = &(i->left);
+  mpfr_ptr y    = &(i->right);
+  unsigned long n = mpfi_get_prec (a) + 17;
+
+  random_mpz (z, n);
+  random_interval (a);
+  mpfi_alea (x, a);
+  f_IIZ (b, a, z);
+  f_RRZ (y, x, z, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe interval b, image of (a, n), does not contain "
+            "the point y, image of (x, n) where x is in a.\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nn = ");
+    mpz_out_str (stdout, 10, z); 
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_iiz (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -133,7 +173,7 @@ clear_iiz (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IIZ (mpfi_function_ptr this, IIZ_fun mpfi_function,
-               NULL_fun mpfr_function)
+                   RRZ_fun mpfr_function)
 {
   this->type = IIZ;
   this->func.IIZ = mpfi_function;
@@ -157,6 +197,6 @@ mpfi_fun_init_IIZ (mpfi_function_ptr this, IIZ_fun mpfi_function,
   this->set_prec    = set_prec_iiz;
   this->read_line  = read_line_iiz;
   this->check_line = check_line_iiz;
-  this->random     = NULL;
+  this->random     = random_iiz;
   this->clear      = clear_iiz;
 }
