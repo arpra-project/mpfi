@@ -40,7 +40,7 @@ read_line_iid (mpfi_function_ptr this, FILE* fp)
   read_mpfi (fp, MPFI_FUN_ARG (*this, 2, mpfi));
   /* [3] mpfi_t operand */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 3, mpfi));
-  /* [4] signed integral operand */
+  /* [4] double operand */
   read_double (fp, &(MPFI_FUN_ARG (*this, 4, d)));
 }
 
