@@ -58,6 +58,12 @@ typedef int (*IID_fun) (mpfi_t, mpfi_srcptr, double);
 typedef int (*IIZ_fun) (mpfi_t, mpfi_srcptr, mpz_srcptr);
 typedef int (*IIQ_fun) (mpfi_t, mpfi_srcptr, mpq_srcptr);
 typedef int (*IIR_fun) (mpfi_t, mpfi_srcptr, mpfr_srcptr);
+typedef int (*IUI_fun) (mpfi_t, unsigned long, mpfi_srcptr);
+typedef int (*ISI_fun) (mpfi_t, long, mpfi_srcptr);
+typedef int (*IDI_fun) (mpfi_t, double, mpfi_srcptr);
+typedef int (*IZI_fun) (mpfi_t, mpz_srcptr, mpfi_srcptr);
+typedef int (*IQI_fun) (mpfi_t, mpq_srcptr, mpfi_srcptr);
+typedef int (*IRI_fun) (mpfi_t, mpfr_srcptr, mpfi_srcptr);
 
 typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
@@ -67,6 +73,9 @@ typedef int (*RRD_fun) (mpfr_t, mpfr_srcptr, double, mp_rnd_t);
 typedef int (*RRZ_fun) (mpfr_t, mpfr_srcptr, mpz_srcptr, mp_rnd_t);
 typedef int (*RRQ_fun) (mpfr_t, mpfr_srcptr, mpq_srcptr, mp_rnd_t);
 typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
+typedef int (*RUR_fun) (mpfr_t, unsigned long, mpfr_srcptr, mp_rnd_t);
+typedef int (*RSR_fun) (mpfr_t, long, mpfr_srcptr, mp_rnd_t);
+typedef int (*RDR_fun) (mpfr_t, double, mpfr_srcptr, mp_rnd_t);
 typedef void *NULL_fun;
 
 typedef union
@@ -86,6 +95,12 @@ typedef union
   IIZ_fun IIZ;     /* output: mpfi_t, inputs: mpfi_t, mpz_t */
   IIQ_fun IIQ;     /* output: mpfi_t, inputs: mpfi_t, mpq_t */
   IIR_fun IIR;     /* output: mpfi_t, inputs: mpfi_t, mpfr_t */
+  IUI_fun IUI;     /* output: mpfi_t, inputs: unsigned long, mpfi_t */
+  ISI_fun ISI;     /* output: mpfi_t, inputs: signed long, mpfi_t */
+  IDI_fun IDI;     /* output: mpfi_t, inputs: double, mpfi_t */
+  IZI_fun IZI;     /* output: mpfi_t, inputs: mpz_t, mpfi_t */
+  IQI_fun IQI;     /* output: mpfi_t, inputs: mpq_t, mpfi_t */
+  IRI_fun IRI;     /* output: mpfi_t, inputs: mpfr_t, mpfi_t */
 } mpfi_fun_ptr;
 
 typedef union
@@ -105,6 +120,12 @@ typedef union
   RRZ_fun  IIZ;    /* output: mpfr_t, inputs: mpfr_t, mpz_t */
   RRQ_fun  IIQ;    /* output: mpfr_t, inputs: mpfr_t, mpq_t */
   RRR_fun  IIR;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
+  RUR_fun  IUI;    /* output: mpfr_t, inputs: unsigned long, mpfr_t */
+  RSR_fun  ISI;    /* output: mpfr_t, inputs: signed long, mpfr_t */
+  RDR_fun  IDI;    /* output: mpfr_t, inputs: double, mpfr_t */
+  NULL_fun IZI;    /* dummy, no corresponding mpfr function */
+  NULL_fun IQI;    /* dummy, no corresponding mpfr function */
+  RRR_fun  IRI;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
 } mpfi_fun_mpfr_ptr;
 
 typedef enum
@@ -124,6 +145,12 @@ typedef enum
     IIZ,   /* two inputs: interval, mpz_t */
     IIQ,   /* two inputs: interval, mpq_t */
     IIR,   /* two inputs: interval, mpfr_t */
+    IUI,   /* two inputs: unsigned long, interval */
+    ISI,   /* two inputs: signed long, interval */
+    IDI,   /* two inputs: double, interval */
+    IZI,   /* two inputs: mpz_t, interval */
+    IQI,   /* two inputs: mpq_t, interval */
+    IRI,   /* two inputs: mpfr_t, interval */
   } mpfi_fun_type;
 
 typedef union {
@@ -195,6 +222,12 @@ void mpfi_fun_init_IID  (mpfi_function_ptr, IID_fun, RRD_fun);
 void mpfi_fun_init_IIZ  (mpfi_function_ptr, IIZ_fun, RRZ_fun);
 void mpfi_fun_init_IIQ  (mpfi_function_ptr, IIQ_fun, RRQ_fun);
 void mpfi_fun_init_IIR  (mpfi_function_ptr, IIR_fun, RRR_fun);
+void mpfi_fun_init_IUI  (mpfi_function_ptr, IUI_fun, RUR_fun);
+void mpfi_fun_init_ISI  (mpfi_function_ptr, ISI_fun, RSR_fun);
+void mpfi_fun_init_IDI  (mpfi_function_ptr, IDI_fun, RDR_fun);
+void mpfi_fun_init_IZI  (mpfi_function_ptr, IZI_fun, NULL_fun);
+void mpfi_fun_init_IQI  (mpfi_function_ptr, IQI_fun, NULL_fun);
+void mpfi_fun_init_IRI  (mpfi_function_ptr, IRI_fun, RRR_fun);
 void mpfi_fun_clear     (mpfi_function_ptr);
 
 
