@@ -76,6 +76,8 @@ typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
 typedef int (*RUR_fun) (mpfr_t, unsigned long, mpfr_srcptr, mp_rnd_t);
 typedef int (*RSR_fun) (mpfr_t, long, mpfr_srcptr, mp_rnd_t);
 typedef int (*RDR_fun) (mpfr_t, double, mpfr_srcptr, mp_rnd_t);
+typedef int (*RZR_fun) (mpfr_t, mpz_srcptr, mpfr_srcptr, mp_rnd_t);
+typedef int (*RQR_fun) (mpfr_t, mpq_srcptr, mpfr_srcptr, mp_rnd_t);
 typedef void *NULL_fun;
 
 typedef union
@@ -123,8 +125,8 @@ typedef union
   RUR_fun  IUI;    /* output: mpfr_t, inputs: unsigned long, mpfr_t */
   RSR_fun  ISI;    /* output: mpfr_t, inputs: signed long, mpfr_t */
   RDR_fun  IDI;    /* output: mpfr_t, inputs: double, mpfr_t */
-  NULL_fun IZI;    /* dummy, no corresponding mpfr function */
-  NULL_fun IQI;    /* dummy, no corresponding mpfr function */
+  RZR_fun  IZI;    /* output: mpfr_t, inputs: mpz_t, mpfr_t */
+  RQR_fun  IQI;    /* output: mpfr_t, inputs: mpq_t, mpfr_t */
   RRR_fun  IRI;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
 } mpfi_fun_mpfr_ptr;
 
@@ -225,8 +227,8 @@ void mpfi_fun_init_IIR  (mpfi_function_ptr, IIR_fun, RRR_fun);
 void mpfi_fun_init_IUI  (mpfi_function_ptr, IUI_fun, RUR_fun);
 void mpfi_fun_init_ISI  (mpfi_function_ptr, ISI_fun, RSR_fun);
 void mpfi_fun_init_IDI  (mpfi_function_ptr, IDI_fun, RDR_fun);
-void mpfi_fun_init_IZI  (mpfi_function_ptr, IZI_fun, NULL_fun);
-void mpfi_fun_init_IQI  (mpfi_function_ptr, IQI_fun, NULL_fun);
+void mpfi_fun_init_IZI  (mpfi_function_ptr, IZI_fun, RZR_fun);
+void mpfi_fun_init_IQI  (mpfi_function_ptr, IQI_fun, RQR_fun);
 void mpfi_fun_init_IRI  (mpfi_function_ptr, IRI_fun, RRR_fun);
 void mpfi_fun_clear     (mpfi_function_ptr);
 
@@ -244,7 +246,7 @@ void   random_mpq       (mpq_ptr);
 void   random_mpfr      (mpfr_ptr);
 
 int  same_mpfr_value    (mpfr_srcptr, mpfr_srcptr);
-int  same_value         (mpfi_srcptr, mpfi_srcptr); 
+int  same_value         (mpfi_srcptr, mpfi_srcptr);
 
 FILE* open_file         (const char *);
 void init_reading       (FILE*);

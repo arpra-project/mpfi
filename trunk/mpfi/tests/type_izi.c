@@ -104,6 +104,46 @@ check_line_izi (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval. */
+void
+random_izi (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IZI_fun f_IZI = MPFI_FUN_GET (*this, IZI);
+  RZR_fun f_RZR = MPFI_FUN_MPFR_FUNCTION (*this, IZI);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpz_ptr  z    = MPFI_FUN_ARG (*this, 3, mpz);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 4, mpfi);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i  = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x  = &(i->left);
+  mpfr_ptr y  = &(i->right);
+  unsigned long n = mpfi_get_prec (a) + 17;
+
+  random_interval (a);
+  random_mpz (z, n);
+  mpfi_alea (x, a);
+  f_IZI (b, z, a);
+  f_RZR (y, z, x, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe image b of (n, a) does not contain the image y "
+            "of (n, x) where x is in a.\nn= ");
+    mpz_out_str (stdout, 10, z);
+    printf ("\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_izi (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -133,7 +173,7 @@ clear_izi (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IZI (mpfi_function_ptr this, IZI_fun mpfi_function,
-                   NULL_fun mpfr_function)
+                   RZR_fun mpfr_function)
 {
   this->type = IZI;
   this->func.IZI = mpfi_function;
@@ -154,9 +194,9 @@ mpfi_fun_init_IZI (mpfi_function_ptr this, IZI_fun mpfi_function,
   mpfi_init2 (MPFI_FUN_ARG (*this, 4, mpfi), 1024);
 
   /* init methods */
-  this->set_prec    = set_prec_izi;
+  this->set_prec   = set_prec_izi;
   this->read_line  = read_line_izi;
   this->check_line = check_line_izi;
-  this->random     = NULL;
+  this->random     = random_izi;
   this->clear      = clear_izi;
 }

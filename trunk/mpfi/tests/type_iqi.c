@@ -103,6 +103,46 @@ check_line_iqi (mpfi_function_ptr this)
   }
 }
 
+/* Check if the image of a random point chosen in the given interval is in the
+   image of this interval. */
+void
+random_iqi (mpfi_function_ptr this)
+{
+  /* rename operands for better readability */
+  IQI_fun f_IQI = MPFI_FUN_GET (*this, IQI);
+  RQR_fun f_RQR = MPFI_FUN_MPFR_FUNCTION (*this, IQI);
+  mpfi_ptr b    = MPFI_FUN_ARG (*this, 2, mpfi);
+  mpq_ptr  q    = MPFI_FUN_ARG (*this, 3, mpq);
+  mpfi_ptr a    = MPFI_FUN_ARG (*this, 4, mpfi);
+  /* reuse endpoint as mpfr_t */
+  mpfi_ptr i  = MPFI_FUN_ARG (*this, 0, mpfi);
+  mpfr_ptr x  = &(i->left);
+  mpfr_ptr y  = &(i->right);
+  unsigned long n = mpfi_get_prec (a) + 17;
+
+  random_interval (a);
+  random_mpq (q);
+  mpfi_alea (x, a);
+  f_IQI (b, q, a);
+  f_RQR (y, q, x, MPFI_RNDD);
+  if (!mpfi_is_inside_fr (y, b)) {
+    printf ("Error:\nthe image b of (q, a) does not contain the image y "
+            "of (q, x) where x is in a.\nq= ");
+    mpq_out_str (stdout, 10, q);
+    printf ("\na = ");
+    mpfi_out_str (stdout, 10, 0, a);
+    printf ("\nb = ");
+    mpfi_out_str (stdout, 10, 0, b);
+    printf ("\nx = ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDU);
+    printf ("\ny = ");
+    mpfr_out_str (stdout, 10, 0, y, MPFI_RNDU);
+    putchar ('\n');
+
+    exit (1);
+  }
+}
+
 void
 set_prec_iqi (mpfi_function_ptr this, mp_prec_t prec)
 {
@@ -119,7 +159,7 @@ clear_iqi (mpfi_function_ptr this)
   /* [1] return value (int), needs no deallocation */
   /* [2] expected value (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 2, mpfi));
-  /* [3] operand (mpz_t) */
+  /* [3] operand (mpq_t) */
   mpq_clear (MPFI_FUN_ARG (*this, 3, mpq));
   /* [4] operand (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 4, mpfi));
@@ -132,7 +172,7 @@ clear_iqi (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_IQI (mpfi_function_ptr this, IQI_fun mpfi_function,
-                   NULL_fun mpfr_function)
+                   RQR_fun mpfr_function)
 {
   this->type = IQI;
   this->func.IQI = mpfi_function;
@@ -156,6 +196,6 @@ mpfi_fun_init_IQI (mpfi_function_ptr this, IQI_fun mpfi_function,
   this->set_prec   = set_prec_iqi;
   this->read_line  = read_line_iqi;
   this->check_line = check_line_iqi;
-  this->random     = NULL;
+  this->random     = random_iqi;
   this->clear      = clear_iqi;
 }
