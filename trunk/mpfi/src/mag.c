@@ -49,6 +49,9 @@ mpfi_mag (mpfr_ptr m, mpfi_srcptr x)
         MPFR_RET_NAN;
     }
   }
+  if (mpfr_signbit (m))
+    /* fix sign of zero */
+    mpfr_neg (m, m, MPFI_RNDU);
 
   return inexact;
 }

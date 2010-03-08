@@ -33,6 +33,11 @@ mpfi_mig (mpfr_ptr m, mpfi_srcptr x)
 {
   int inexact;
 
+  if (MPFI_NAN_P (x)) {
+    mpfr_set_nan (m);
+    MPFR_RET_NAN;
+  }
+
   if (mpfi_is_nonneg_default (x))
     inexact = mpfr_set (m, &(x->left), GMP_RNDD);
   else if (mpfi_is_nonpos_default (x))
