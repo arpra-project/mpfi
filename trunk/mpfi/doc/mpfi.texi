@@ -475,6 +475,8 @@ precision of a calculation), see the MPFR documentation.
 
 
 @menu
+* Return Values::
+* Rounding Modes and Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
@@ -488,7 +490,7 @@ precision of a calculation), see the MPFR documentation.
 * Error Handling::              
 @end menu
 
-@node Return Values, Initializing and Assigning Intervals, Interval Functions, Interval Functions
+@node Return Values, Rounding Modes and Precision Handling, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Return values 
 @section Return Values
@@ -516,7 +518,7 @@ To test the exactness of one endpoint, the following functions are available
 @end itemize
 
 
-@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Interval Functions, Interval Functions
+@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Rounding modes
 @cindex Precision
@@ -588,7 +590,7 @@ It returns a value indicating whether the possibly rounded endpoints are exact o
 cf. @ref{Return Values}.
 @end deftypefun
 
-@node Initializing and Assigning Intervals, Floating-point Quantities, Interval Functions, Interval Functions
+@node Initializing and Assigning Intervals, Floating-point Quantities, Rounding Modes and Precision Handling, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Initialization and Assignment Functions
 
@@ -1455,7 +1457,9 @@ Returns the MPFI version number as a NULL terminated string.
 @cindex Error handling
 
 @deftypefn Macro void MPFI_ERROR ({char *} @var{msg})
-If there is no error, sets the error number to 1 and prints the message @var{msg}.
+If there is no previous error, sets the error number to 1 and prints
+the message @var{msg} to the standard error stream. If the error
+number is already set, do nothing.
 @end deftypefn
 
 @deftypefun int mpfi_is_error ()

@@ -333,6 +333,7 @@ const char * mpfi_get_version();
 
 /* Error handling */
 
+extern int mpfi_error;
 void    mpfi_reset_error (void);
 void    mpfi_set_error   (const int);
 int     mpfi_is_error    (void);
@@ -340,9 +341,12 @@ int     mpfi_is_error    (void);
 }
 #endif
 
-#define MPFI_ERROR(s)						\
-  do {								\
-    if(!mpfi_error) mpfi_error=1;fprintf(stderr, "\n%s\n", s);	\
+#define MPFI_ERROR(s)                           \
+  do {                                          \
+    if(!mpfi_error) {                           \
+      mpfi_error = 1;                           \
+      fprintf(stderr, "\n%s\n", s);             \
+    }                                           \
   } while (0)
 
 #define MPFI_FLAGS_BOTH_ENDPOINTS_EXACT       0

@@ -27,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
-static int mpfi_error = 0;
+int mpfi_error = 0;
 
 void
 mpfi_set_error (const int i)

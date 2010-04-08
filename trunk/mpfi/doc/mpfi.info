@@ -1,5 +1,8 @@
-This is ../../../svn/mpfi-trunk/mpfi/doc/mpfi.info, produced by makeinfo version 4.13 from ../../../svn/mpfi-trunk/mpfi/doc/mpfi.texi.
+This is /home/ptheveny/svn/mpfi-trunk/mpfi/doc/mpfi.info, produced by
+makeinfo version 4.13 from
+/home/ptheveny/svn/mpfi-trunk/mpfi/doc/mpfi.texi.
 
+INFO-DIR-SECTION Software libraries
 START-INFO-DIR-ENTRY
 * mpfi: (mpfi.info).               Multiple Precision Floating-Point Interval Library.
 END-INFO-DIR-ENTRY
@@ -36,17 +39,39 @@ Floating-Point Interval Library
 
 * Menu:
 
-* Copying::                   GMP Copying Conditions (LGPL).
-* Introduction to MPFI::      Brief introduction to MPFI.
-* Installing MPFI::           How to configure and compile the MPFI library.
-* MPFI Basics::               What every MPFI user should know.
-* Reporting Bugs::            How to usefully report bugs.
-* Interval Functions::        Functions for arithmetic on intervals.
+* Copying::                     GMP Copying Conditions (LGPL).
+* Introduction to MPFI::        Brief introduction to MPFI.
+* Installing MPFI::             How to configure and compile the MPFI library.
+* Reporting Bugs::              How to usefully report bugs.
+* MPFI Basics::                 What every MPFI user should know.
+* Interval Functions::          Functions for arithmetic on intervals.
 
 * Contributors::
 * References::
 * Concept Index::
 * Function Index::
+
+ --- The Detailed Node Listing ---
+
+Interval Functions
+
+* Initializing and Assigning Intervals::
+* Floating-point Quantities::
+* Converting Intervals::
+* Interval Arithmetic::
+* Special Functions::
+* Interval Comparison::
+* I/O of Intervals::
+* Operating on the Endpoints::
+* Set Operations::
+* Miscellaneous Interval Functions::
+* Error Handling::
+
+Initialization and Assignment Functions
+
+* Initializing Intervals::
+* Assigning Intervals::
+* Simultaneous Interval Init & Assign::
 
 
 File: mpfi.info,  Node: Copying,  Next: Introduction to MPFI,  Prev: Top,  Up: Top
@@ -332,7 +357,7 @@ variable, precision of a calculation), see the MPFR documentation.
 * Error Handling::
 
 
-File: mpfi.info,  Node: Return Values,  Next: Rounding Modes and Precision Handling,  Up: Interval Functions
+File: mpfi.info,  Node: Return Values,  Next: Rounding Modes and Precision Handling,  Prev: Interval Functions,  Up: Interval Functions
 
 5.1 Return Values
 =================
@@ -437,7 +462,7 @@ File: mpfi.info,  Node: Initializing and Assigning Intervals,  Next: Floating-po
 * Simultaneous Interval Init & Assign::
 
 
-File: mpfi.info,  Node: Initializing Intervals,  Next: Assigning Intervals,  Up: Initializing and Assigning Intervals
+File: mpfi.info,  Node: Initializing Intervals,  Next: Assigning Intervals,  Prev: Initializing and Assigning Intervals,  Up: Initializing and Assigning Intervals
 
 5.3.1 Initialization Functions
 ------------------------------
@@ -1085,6 +1110,9 @@ File: mpfi.info,  Node: Miscellaneous Interval Functions,  Next: Error Handling,
      returns a value >0 if the splitting point is greater than the
      exact centre, <0 if it is smaller and 0 if it is the exact centre.
 
+ -- Function: const char * mpfi_get_version ()
+     Returns the MPFI version number as a NULL terminated string.
+
 
 File: mpfi.info,  Node: Error Handling,  Prev: Miscellaneous Interval Functions,  Up: Interval Functions
 
@@ -1092,8 +1120,9 @@ File: mpfi.info,  Node: Error Handling,  Prev: Miscellaneous Interval Functions,
 ===================
 
  -- Macro: void MPFI_ERROR (char * MSG)
-     If there is no error, sets the error number to 1 and prints the
-     message MSG.
+     If there is no previous error, sets the error number to 1 and
+     prints the message MSG to the standard error stream. If the error
+     number is already set, do nothing.
 
  -- Function: int mpfi_is_error ()
      Returns 1 if the error number is set (to 1).
@@ -1282,6 +1311,8 @@ Function and Type Index
                                                               (line  50)
 * mpfi_get_right:                        Operating on the Endpoints.
                                                               (line  12)
+* mpfi_get_version:                      Miscellaneous Interval Functions.
+                                                              (line  24)
 * mpfi_has_zero:                         Interval Comparison. (line  51)
 * mpfi_hypot:                            Special Functions.   (line  91)
 * mpfi_increase:                         Miscellaneous Interval Functions.
@@ -1323,7 +1354,7 @@ Function and Type Index
                                                               (line  42)
 * mpfi_inv:                              Interval Arithmetic. (line  87)
 * mpfi_is_empty:                         Set Operations.      (line  20)
-* mpfi_is_error:                         Error Handling.      (line  11)
+* mpfi_is_error:                         Error Handling.      (line  12)
 * mpfi_is_inside:                        Set Operations.      (line  11)
 * mpfi_is_inside_d:                      Set Operations.      (line  12)
 * mpfi_is_inside_fr:                     Set Operations.      (line  17)
@@ -1379,7 +1410,7 @@ Function and Type Index
                                                               (line  29)
 * mpfi_q_div:                            Interval Arithmetic. (line  70)
 * mpfi_q_sub:                            Interval Arithmetic. (line  30)
-* mpfi_reset_error:                      Error Handling.      (line  17)
+* mpfi_reset_error:                      Error Handling.      (line  18)
 * mpfi_revert_if_needed:                 Operating on the Endpoints.
                                                               (line  20)
 * mpfi_round_prec:                       Rounding Modes and Precision Handling.
@@ -1388,7 +1419,7 @@ Function and Type Index
 * mpfi_sech:                             Special Functions.   (line  59)
 * mpfi_set:                              Assigning Intervals. (line  10)
 * mpfi_set_d:                            Assigning Intervals. (line  13)
-* mpfi_set_error:                        Error Handling.      (line  14)
+* mpfi_set_error:                        Error Handling.      (line  15)
 * mpfi_set_fr:                           Assigning Intervals. (line  16)
 * mpfi_set_prec:                         Rounding Modes and Precision Handling.
                                                               (line  39)
@@ -1428,32 +1459,32 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1290
-Node: Copying1953
-Node: Introduction to MPFI3721
-Node: Installing MPFI4846
-Node: Reporting Bugs7286
-Node: MPFI Basics8756
-Node: Interval Functions12253
-Node: Return Values13512
-Node: Rounding Modes and Precision Handling14471
-Node: Initializing and Assigning Intervals17558
-Node: Initializing Intervals17917
-Node: Assigning Intervals19690
-Node: Simultaneous Interval Init & Assign21725
-Node: Floating-point Quantities22988
-Node: Converting Intervals25400
-Node: Interval Arithmetic25875
-Node: Special Functions32234
-Node: Interval Comparison37391
-Node: I/O of Intervals40219
-Node: Operating on the Endpoints43233
-Node: Set Operations45635
-Node: Miscellaneous Interval Functions47474
-Node: Error Handling48594
-Node: Contributors49110
-Node: References49446
-Node: Concept Index50569
-Node: Function Index53502
+Node: Top1338
+Node: Copying2496
+Node: Introduction to MPFI4264
+Node: Installing MPFI5389
+Node: Reporting Bugs7829
+Node: MPFI Basics9299
+Node: Interval Functions12796
+Node: Return Values14055
+Node: Rounding Modes and Precision Handling15041
+Node: Initializing and Assigning Intervals18128
+Node: Initializing Intervals18487
+Node: Assigning Intervals20305
+Node: Simultaneous Interval Init & Assign22340
+Node: Floating-point Quantities23603
+Node: Converting Intervals26015
+Node: Interval Arithmetic26490
+Node: Special Functions32849
+Node: Interval Comparison38006
+Node: I/O of Intervals40834
+Node: Operating on the Endpoints43848
+Node: Set Operations46250
+Node: Miscellaneous Interval Functions48089
+Node: Error Handling49323
+Node: Contributors49930
+Node: References50266
+Node: Concept Index51389
+Node: Function Index54322
 
 End Tag Table
