@@ -1365,7 +1365,9 @@ It returns a value indicating whether none, one or both endpoints are inexact
 @deftypefunx int mpfi_interv_q (mpfi_t @var{rop}, mpq_t @var{op1}, mpq_t @var{op2})
 @deftypefunx int mpfi_interv_fr (mpfi_t @var{rop}, mpfr_t @var{op1}, mpfr_t @var{op2})
 Sets @var{rop} to the interval having as endpoints @var{op1} and @var{op2}.
-The values of @var{op1} and @var{op2} are given in any order.
+The values of @var{op1} and @var{op2} are given in any order, the left
+endpoints of @var{rop} is always the minimum of @var{op1} and
+@var{rop2}.
 It returns a value indicating whether none, one or both endpoints are inexact
 (due to possible roundings).
 @end deftypefun

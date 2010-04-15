@@ -1046,7 +1046,8 @@ return correct intervals when there is a bug.
  -- Function: int mpfi_interv_q (mpfi_t ROP, mpq_t OP1, mpq_t OP2)
  -- Function: int mpfi_interv_fr (mpfi_t ROP, mpfr_t OP1, mpfr_t OP2)
      Sets ROP to the interval having as endpoints OP1 and OP2.  The
-     values of OP1 and OP2 are given in any order.  It returns a value
+     values of OP1 and OP2 are given in any order, the left endpoints
+     of ROP is always the minimum of OP1 and ROP2.  It returns a value
      indicating whether none, one or both endpoints are inexact (due to
      possible roundings).
 
@@ -1479,12 +1480,12 @@ Node: Special Functions32849
 Node: Interval Comparison38006
 Node: I/O of Intervals40834
 Node: Operating on the Endpoints43848
-Node: Set Operations46250
-Node: Miscellaneous Interval Functions48089
-Node: Error Handling49323
-Node: Contributors49930
-Node: References50266
-Node: Concept Index51389
-Node: Function Index54322
+Node: Set Operations46320
+Node: Miscellaneous Interval Functions48159
+Node: Error Handling49393
+Node: Contributors50000
+Node: References50336
+Node: Concept Index51459
+Node: Function Index54392
 
 End Tag Table
