@@ -34,8 +34,8 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     const_catalan.dat const_euler.dat const_log2.dat		\
     const_pi.dat div.dat increase.dat intersect.dat inv.dat	\
     log.dat mul.dat mul_d.dat neg.dat put_d.dat put_fr.dat	\
-    put_q.dat put_si.dat put_ui.dat put_z.dat set_d.dat		\
-    set_fr.dat set_q.dat set_si.dat set_ui.dat set_z.dat	\
-    sqr.dat sqrt.dat sub.dat union.dat
+    put_q.dat put_si.dat put_ui.dat put_z.dat q_div.dat		\
+    set_d.dat set_fr.dat set_q.dat set_si.dat set_ui.dat	\
+    set_z.dat sqr.dat sqrt.dat sub.dat union.dat
 
 TESTS = $(check_PROGRAMS)
