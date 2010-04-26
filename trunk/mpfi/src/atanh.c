@@ -32,20 +32,8 @@ mpfi_atanh (mpfi_ptr a, mpfi_srcptr b)
 {
   int inexact_left, inexact_right, inexact=0;
 
-  if (mpfr_cmp_si (&(b->left), -1) <= 0) {
-    inexact_left = 0;
-    mpfr_set_inf (&(a->left), -1);
-  }
-  else {
-    inexact_left = mpfr_atanh (&(a->left), &(b->left), MPFI_RNDD);
-  }
-  if (mpfr_cmp_si (&(b->right), +1) >= 0) {
-    inexact_right = 0;
-    mpfr_set_inf (&(a->right), +1);
-  }
-  else {
-    inexact_right = mpfr_atanh (&(a->right), &(b->right), MPFI_RNDU);
-  }
+  inexact_left = mpfr_atanh (&(a->left), &(b->left), MPFI_RNDD);
+  inexact_right = mpfr_atanh (&(a->right), &(b->right), MPFI_RNDU);
 
   if ( MPFI_NAN_P (a) )
     MPFR_RET_NAN;

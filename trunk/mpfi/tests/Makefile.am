@@ -30,7 +30,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
 
 EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     add_fr.dat add_q.dat add_si.dat add_ui.dat add_z.dat	\
-    asin.dat asinh.dat atan.dat atan2.dat cbrt.dat		\
+    asin.dat asinh.dat atan.dat atan2.dat atanh.dat cbrt.dat	\
     const_catalan.dat const_euler.dat const_log2.dat		\
     const_pi.dat div.dat intersect.dat inv.dat log.dat		\
     mul.dat mul_d.dat neg.dat put_d.dat put_fr.dat put_q.dat	\
