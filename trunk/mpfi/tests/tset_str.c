@@ -121,6 +121,7 @@ main (int argc, char **argv)
   check_invalid_string (fi, "7[1,1]",   10);
   check_invalid_string (fi, "[8 8]",    10);
   check_invalid_string (fi, "[-0x9,9]", 10);
+  check_invalid_string (fi, "17 invalid-string", 10);
 
   check_invalid_string (fi, "[1, 2]", 2);
   check_invalid_string (fi, "[1, 3]", 3);
@@ -162,7 +163,6 @@ main (int argc, char **argv)
   check_str (fi, "0", "0", "0");
   check_str (fi, "-1", "-1", "-1");
   check_str (fi, "2e-1", "2e-1", "2e-1");
-  check_str (fi, "17 ignored-string", "17", "17");
 
   /* special values */
   ret = mpfi_set_str (fi, "   [@nan@,@nan@]", 0);

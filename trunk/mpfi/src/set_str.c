@@ -30,145 +30,92 @@ MA 02110-1301, USA. */
 int
 mpfi_set_str (mpfi_ptr x, const char *s, int base)
 {
-  int start1, start2;
-  int invalid_left = 0;
-  int invalid_right = 0;
-  size_t i, slen;
-  char tmp[1000];
+  char *cur;
+  char *end;
 
-  /* bzero (tmp, 1000); */
-  memset (tmp, 0, 1000);
-
-  slen = strlen (s);
-  if (slen >= 1000) return -1;
-
-  i = 0;
+  cur = s;
   /* read the blanks */
-  while ( (i < slen) && MPFI_ISSPACE (s[i]) ) i++;
-  /* Now s[i] is the first non blank character if any or '\0' otherwise */
-  if ( i == slen ) {
+  while (*cur && MPFI_ISSPACE (*cur)) ++cur;
+  if (*cur == '\0') {
     fprintf (stderr, "Error: blank string in mpfi_set_str: %s\n", s);
     return (1);
   }
 
-  if (s[i] == '[') {
-    i++;
+  /* Now *cur is the first non blank character */
+  if (*cur == '[') {
+    ++cur;
 
     /* read the blanks between '[' and the number itself */
-    while ( (i < slen) && MPFI_ISSPACE (s[i]) ) i++;
-    if ( i == slen ) {
+    while (*cur && MPFI_ISSPACE (*cur)) ++cur;
+    if (*cur == '\0') {
       fprintf (stderr, "Error: no number in string in mpfi_set_str: %s\n", s);
       return (1);
     }
 
-    /* Copy the first number in the string tmp and then in x->left */
-    start1 = i; /* s[start1] is the first digit of the first number */
-    i++;
-
-    /* determine the end of the first number in s */
-    while ( (i < slen) && !MPFI_ISSPACE (s[i]) && ((s[i])!=',') ) i++;
-    if ( i == slen ) {
-      fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
+    mpfr_strtofr (&(x->left), cur, &end, base, MPFI_RNDD);
+    if (end == cur) {
+      fprintf (stderr, "Error: no number in string in mpfi_set_str: %s\n", s);
       return (1);
     }
-
-    /* Now s[i] is the first character after the first number */
-    /* Note that, for now, in a string such as " [ 123foo321 , bar ] */
-    /* 123foo321 is considered as the first number: */
-    /* the error will be handled by mpfr_set_str */
-
-    strncpy (tmp, &(s[start1]), i-start1);  /* s[start1]...s[i-1] */
-    tmp[i-start1] = '\0';
-    invalid_left = mpfr_set_str (&(x->left), tmp, base, MPFI_RNDD);
+    cur = end;
 
     /* Read (possibly) blank characters between the first number and the comma */
-    while ( (i < slen) && MPFI_ISSPACE (s[i]) ) i++;
-    if ( i == slen ) {
+    while (*cur && MPFI_ISSPACE (*cur) ) ++cur;
+    if (*cur == '\0') {
       fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
       return (1);
     }
 
-    if ( s[i] != ',' ) {
+    if (*cur != ',') {
       fprintf (stderr, "Error: missing comma in mpfi_set_str:: %s\n", s);
       return (1);
     }
-    /* Now s[i]==',' */
-    i++;
+    ++cur;
+
+    /* From now on, we are reading the second number */
 
     /* read (possibly) blank characters between the comma and the 2nd number */
-    while ( (i < slen) && MPFI_ISSPACE (s[i]) ) i++;
-    if ( i == slen ) {
+    while (*cur && MPFI_ISSPACE (*cur)) ++cur;
+    if (*cur == '\0') {
       fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
       return (1);
     }
 
-    /* Now s[i] is the first character of the 2nd number */
-    /* Note that in the previous example, "bar" will be considered as */
-    /* this number. Once again, the error will be handled by mpfr_set_str */
-    start2 = i;
-    i++;
-
-    /* determine the end of the second number in s */
-    while ( (i < slen) && !MPFI_ISSPACE (s[i]) && ((s[i])!=']') ) i++;
-    if ( i == slen ) {
-      fprintf (stderr, "Error: missing closing square bracket in mpfi_set_str:: %s\n", s);
+    /* Now *cur is the first character of the 2nd number */
+    mpfr_strtofr (&(x->right), cur, &end, base, MPFI_RNDU);
+    if (end == cur) {
+      fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
       return (1);
     }
-
-    /* Now s[i] is the first character after the second number */
-    strncpy (tmp, &(s[start2]), i-start2);  /* s[start2]...s[i-1] */
-    tmp[i-start2] = '\0';
-    invalid_right = mpfr_set_str (&(x->right), tmp, base, MPFI_RNDU);
+    cur = end;
 
     /* Read (possibly) blank characters between the 2nd number and */
     /* closing square bracket */
-    while ( (i < slen) && MPFI_ISSPACE (s[i]) ) i++;
-    if ( i == slen ) {
+    while (*cur && MPFI_ISSPACE (*cur)) ++cur;
+    if (*cur == '\0') {
       fprintf (stderr, "Error: missing closing square bracket in mpfi_set_str: %s\n", s);
       return (1);
     }
 
-    if (s[i] != ']') { /* The closing square bracket is missing */
+    if (*cur != ']') { /* The closing square bracket is missing */
       fprintf (stderr, "Missing closing square bracket in mpfi_set_str: %s \n", s);
       return (1);
     }
 
     /* Note that the string may contain any character after the */
     /* closing square bracket: they will be ignored */
-    if (invalid_left || invalid_right)
-      return (1);
-    else
-      return (0);
   }
-
   else {
     /* Only one number to store as an interval */
     /* s[i] is the first non blank character and is not an */
     /* opening square bracket */
 
-    /* Copy the number in the string tmp and then in x->left */
-    start1 = i; /* s[start1] is the first digit of the number */
-    i++;
-
-    /* determine the end of the number in s */
-    while ( (i < slen) && !MPFI_ISSPACE (s[i]) ) i++;
-
-    /* Now s[i] is the first character after the number */
-    /* Note that, for now, in a string such as " 123foo321 bar" */
-    /* 123foo321 is considered as the number: */
-    /* the error will be handled by mpfr_set_str */
-    /* "bar" will be ignored */
-
-    strncpy (tmp, &(s[start1]), i-start1);
-    tmp[i-start1] = '\0';
-    invalid_left = mpfr_set_str (&(x->left), tmp, base, MPFI_RNDD);
-    invalid_right = mpfr_set_str (&(x->right), tmp, base, MPFI_RNDU);
-
-    if (invalid_left || invalid_right)
+    /* Note that the whole string must be a valid number */
+    if (mpfr_set_str (&(x->left), cur,  base, MPFI_RNDD))
       return (1);
-    else
-      return (0);
+    mpfr_set_str (&(x->right), cur, base, MPFI_RNDU);
   }
+
   return (0);
 }
 

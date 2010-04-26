@@ -475,8 +475,6 @@ precision of a calculation), see the MPFR documentation.
 
 
 @menu
-* Return Values::
-* Rounding Modes and Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
@@ -490,7 +488,7 @@ precision of a calculation), see the MPFR documentation.
 * Error Handling::              
 @end menu
 
-@node Return Values, Rounding Modes and Precision Handling, Interval Functions, Interval Functions
+@node Return Values, Initializing and Assigning Intervals, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Return values 
 @section Return Values
@@ -518,7 +516,7 @@ To test the exactness of one endpoint, the following functions are available
 @end itemize
 
 
-@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
+@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Rounding modes
 @cindex Precision
@@ -590,7 +588,7 @@ It returns a value indicating whether the possibly rounded endpoints are exact o
 cf. @ref{Return Values}.
 @end deftypefun
 
-@node Initializing and Assigning Intervals, Floating-point Quantities, Rounding Modes and Precision Handling, Interval Functions
+@node Initializing and Assigning Intervals, Floating-point Quantities, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Initialization and Assignment Functions
 
@@ -688,9 +686,7 @@ exponent is
 in decimal.
 The argument @var{base} may be in the ranges 2 to 36.
 
-This function
-returns 1 if the input is incorrect, -1 if an internal overflow occurred
-and 0 otherwise.
+This function returns 1 if the input is incorrect, and 0 otherwise.
 @end deftypefun
 
 @deftypefun void mpfi_swap (mpfi_t @var{x}, mpfi_t @var{y})
