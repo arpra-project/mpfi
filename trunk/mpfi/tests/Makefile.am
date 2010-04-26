@@ -32,10 +32,10 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     add_fr.dat add_q.dat add_si.dat add_ui.dat add_z.dat	\
     asin.dat asinh.dat atan.dat atan2.dat atanh.dat cbrt.dat	\
     const_catalan.dat const_euler.dat const_log2.dat		\
-    const_pi.dat div.dat intersect.dat inv.dat log.dat		\
-    mul.dat mul_d.dat neg.dat put_d.dat put_fr.dat put_q.dat	\
-    put_si.dat put_ui.dat put_z.dat set_d.dat set_fr.dat	\
-    set_q.dat set_si.dat set_ui.dat set_z.dat sqr.dat		\
-    sqrt.dat sub.dat union.dat
+    const_pi.dat div.dat increase.dat intersect.dat inv.dat	\
+    log.dat mul.dat mul_d.dat neg.dat put_d.dat put_fr.dat	\
+    put_q.dat put_si.dat put_ui.dat put_z.dat set_d.dat		\
+    set_fr.dat set_q.dat set_si.dat set_ui.dat set_z.dat	\
+    sqr.dat sqrt.dat sub.dat union.dat
 
 TESTS = $(check_PROGRAMS)
