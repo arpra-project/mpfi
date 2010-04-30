@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_II (&i_cosh, mpfi_cosh, mpfr_cosh);
   test_start ();
 
-/*   check_data (&i_cosh, "cosh.dat"); */
+  check_data (&i_cosh, "cosh.dat");
   check_random (&i_cosh, 2, 1000, 10);
 
   test_end ();
