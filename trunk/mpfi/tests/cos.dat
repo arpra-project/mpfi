@@ -16,7 +16,7 @@
 0 53  nan                   nan                     53   -7  nan
 0 53  nan                   nan                     53  nan   -0
 0 53  nan                   nan                     53   +0  nan
-0 53  nan                   nan                     53 +inf  nan
+0 53  nan                   nan                     53 -inf  nan
 0 53  nan                   nan                     53 -inf -inf
 0 53  nan                   nan                     53 -inf   -7
 0 53  nan                   nan                     53 -inf   -0
@@ -35,7 +35,7 @@
 3 53  0x114a280fb5068bp-53  0xf80aa4fbef751p-52     53 -1     -0.25
 1 53  0x1c1528065b7d4fp-53  1                       53 -0.5    0.5
 0 53 -1                     1                       53 -4.5    0.625
-3 53 -0xfffffffffc21p-48    0x4528a03ed41a3p-51     53  1      3.14159
+3 53 -1                     0x4528a03ed41a3p-51     53  1      0x3243f6a8885a3p-48
 0 53 -1                     1                       53  0.125  17
 0 53 -1                     1                       53  17     42
 
