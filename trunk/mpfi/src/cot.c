@@ -41,7 +41,7 @@ mpfi_cot (mpfi_ptr a, mpfi_srcptr b)
 
   if (MPFI_INF_P (b)) {
     /* the two endpoints are the same infinite */
-    if ( mpfr_cmp (&(b->left), &(b->right)) == 0) {
+    if (mpfr_cmp (&(b->left), &(b->right)) == 0) {
       mpfr_set_nan (&(a->left));
       mpfr_set_nan (&(a->right));
       MPFR_RET_NAN;
@@ -57,25 +57,52 @@ mpfi_cot (mpfi_ptr a, mpfi_srcptr b)
 
   mpfi_quadrant (z_left, &(b->left));
   mpfi_quadrant (z_right, &(b->right));
-
-  /* if there is at least one period in b or if b contains a k*Pi, */
-  /* then a = ]-oo, +oo[ */
   mpz_sub (z, z_right, z_left);
-  if ( (mpz_cmp_ui (z, 2) >= 0) ||
-       (mpz_odd_p (z_left) && mpz_even_p (z_right)) ) {
+
+  if (mpfr_zero_p (&(b->left)) || mpfr_zero_p (&(b->right))) {
+    /* one end point is zero, this is the only multiple of Pi to be exact */
+    if (mpfr_zero_p (&(b->left)) && mpfr_zero_p (&(b->right))) {
+      /* cot([+0, -0] = [NaN, NaN] */
+      mpfr_set_nan (&(a->left));
+      mpfr_set_nan (&(a->right));
+      MPFR_RET_NAN;
+    }
+
+    if ((mpfr_zero_p (&(b->left)) && mpz_cmp_ui (z_right, 1) > 0)
+        || (mpfr_zero_p (&(b->right)) && mpz_cmp_si (z_left, -2) < 0)) {
+      /* b contains more than one period */
+      mpfr_set_inf (&(a->left), -1);
+      mpfr_set_inf (&(a->right), 1);
+      inexact = 0;
+    }
+    else if (mpfr_zero_p (&(b->left))) {
+      /* cot([+0, x]) = [cot(x), +oo] */
+      inexact_left = mpfr_cot (&(a->left), &(b->right), MPFI_RNDD);
+      inexact = inexact_left ? MPFI_FLAGS_LEFT_ENDPOINT_INEXACT : 0;
+      mpfr_set_inf (&(a->right), 1);
+    }
+    else {
+      /* cot([x, -0]) = [-oo, cot(x)] */
+      inexact_right = mpfr_cot (&(a->right), &(b->left), MPFI_RNDU);
+      inexact = inexact_right ? MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT : 0;
+      mpfr_set_inf (&(a->left), -1);
+    }
+  }
+  else if ((mpz_cmp_ui (z, 2) >= 0)
+           || (mpz_odd_p (z_left) && mpz_even_p (z_right))) {
+    /* there is at least one period in b or if b contains a k*Pi, */
+    /* then a = ]-oo, +oo[ */
     mpfr_set_inf (&(a->left), -1);
     mpfr_set_inf (&(a->right), 1);
     inexact = 0;
   }
   else { /* within one period, cot is decreasing */
-    mp_prec_t prec;
     mpfr_t tmp;
 
-    prec = mpfi_get_prec (a);
-    mpfr_init2 (tmp, prec);
+    mpfr_init2 (tmp, mpfi_get_prec (a));
     inexact_left = mpfr_cot (tmp, &(b->right), GMP_RNDD);
     inexact_right = mpfr_cot (&(a->right), &(b->left), GMP_RNDU);
-    inexact_left |= mpfr_set (&(a->left), tmp, GMP_RNDN);
+    mpfr_set (&(a->left), tmp, GMP_RNDN);
     mpfr_clear (tmp);
 
     if (inexact_left) inexact += 1;
