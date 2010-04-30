@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_II (&i_cot, mpfi_cot, mpfr_cot);
   test_start ();
 
-/*   check_data (&i_cot, "cot.dat"); */
+  check_data (&i_cot, "cot.dat");
   check_random (&i_cot, 2, 1000, 10);
 
   test_end ();
