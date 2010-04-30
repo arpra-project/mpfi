@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_II (&i_cos, mpfi_cos, mpfr_cos);
   test_start ();
 
-/*   check_data (&i_cos, "cos.dat"); */
+  check_data (&i_cos, "cos.dat");
   check_random (&i_cos, 2, 1000, 10);
 
   test_end ();
