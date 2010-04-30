@@ -61,9 +61,6 @@ mpfi_cosh (mpfi_ptr a, mpfi_srcptr b)
     mpfr_clear (tmp);
   }
 
-  if ( MPFI_NAN_P (a) )
-    MPFR_RET_NAN;
-
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
