@@ -111,13 +111,12 @@ Floating-Point Interval Library
 @end ifinfo
 
 @menu
-* Copying::                     GMP Copying Conditions (LGPL).
-* Introduction to MPFI::        Brief introduction to MPFI.
-* Installing MPFI::             How to configure and compile the MPFI library.
-* Reporting Bugs::              How to usefully report bugs.
-* MPFI Basics::                 What every MPFI user should know.
-* Interval Functions::          Functions for arithmetic on intervals.
-
+* Copying::                     
+* Introduction to MPFI::        
+* Installing MPFI::             
+* Reporting Bugs::              
+* MPFI Basics::                 
+* Interval Functions::          
 * Contributors::                
 * References::                  
 * Concept Index::               
@@ -475,6 +474,8 @@ precision of a calculation), see the MPFR documentation.
 
 
 @menu
+* Return Values::
+* Rounding Modes and Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
@@ -488,9 +489,9 @@ precision of a calculation), see the MPFR documentation.
 * Error Handling::              
 @end menu
 
-@node Return Values, Initializing and Assigning Intervals, Interval Functions, Interval Functions
+@node Return Values, Rounding Modes and Precision Handling, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
-@cindex Return values 
+@cindex Return values
 @section Return Values
 
 Four integer values (of C type @code{int})
@@ -516,7 +517,7 @@ To test the exactness of one endpoint, the following functions are available
 @end itemize
 
 
-@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Interval Functions, Interval Functions
+@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Rounding modes
 @cindex Precision
@@ -588,7 +589,7 @@ It returns a value indicating whether the possibly rounded endpoints are exact o
 cf. @ref{Return Values}.
 @end deftypefun
 
-@node Initializing and Assigning Intervals, Floating-point Quantities, Interval Functions, Interval Functions
+@node Initializing and Assigning Intervals, Floating-point Quantities, Rounding Modes and Precision Handling, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Initialization and Assignment Functions
 
@@ -779,6 +780,22 @@ middle of @var{op} and a negative value if @var{rop} < the middle of @var{op}.
 @deftypefun void mpfi_alea (mpfr_t rop, mpfi_t op)
 Sets @var{rop} to a floating-point number
 picked up at random in @var{op}, according to a uniform distribution.
+
+This function is deprecated; @code{mpfi_urandom} should be used instead.
+@end deftypefun
+
+@deftypefun void mpfi_urandom (mpfr_t rop, mpfi_t op, gmp_randstate_t state)
+Sets @var{rop} to a floating-point number picked up at random in
+@var{op}, according to a uniform distribution.
+
+The argument @var{state} should be initialized with one of the GMP
+random state initialization functions
+@ifinfo
+(@pxref{Random State Initialization,,, gmp.info,GNU MP}).
+@end ifinfo
+@ifnotinfo
+(see Section ``Random State Initialization'' in @cite{GNU MP}).
+@end ifnotinfo
 @end deftypefun
 
 

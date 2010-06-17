@@ -41,7 +41,7 @@ Changes between MPFI version 1.4 and ?
 
 * new functions : Catalan's constant, cubic root, reciprocal square root,
   secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot,
-  get_version
+  get_version, urandom
 * can now be compiled outside the source directory
 * each function is in its own file (compile_time *= 8;)
 * remove limitation to 1000 characters in mpfi_set_str.

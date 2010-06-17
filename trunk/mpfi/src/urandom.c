@@ -1,6 +1,6 @@
-/* alea.c -- Random element in the interval.
+/* urandom.c -- Random element in the interval.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,15 +29,35 @@ MA 02110-1301, USA. */
 
 /* Picks randomly a point m in y */
 void
-mpfi_alea (mpfr_ptr m, mpfi_srcptr y)
+mpfi_urandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
 {
-  static gmp_randstate_t state;
-  static int init = 0;
+  mp_prec_t prec;
+  mpfr_t diam, fact;
+  prec = mpfr_get_prec (m);
 
-  if (!init) {
-    gmp_randinit_default (state);
-    init = -1;
+  if ( MPFI_NAN_P(y) ) {
+    mpfr_set_nan (m);
   }
 
-  mpfi_urandom (m, y, state);
+  mpfr_init2 (diam, prec);
+  mpfr_init2 (fact, prec);
+
+  mpfi_diam_abs (diam, y);
+  mpfr_urandomb (fact, state);
+
+  /* fact lies between 0 and 1, the picked point lies at a relative
+     distance "fact" of the left endpoint:  m = inf + (sup - inf)*fact  */
+  mpfr_mul (diam, diam, fact, MPFI_RNDD);
+
+  mpfr_add (m, &(y->left), diam, MPFI_RNDD);
+  if (!mpfr_nan_p (m)) {  /* Ensure that m belongs to y */
+    if (mpfr_cmp (m, &(y->left)) < 0)
+      mpfr_set (m, &(y->left), MPFI_RNDU);
+
+    if (mpfr_cmp (&(y->right), m) < 0)
+      mpfr_set (m, &(y->right), MPFI_RNDD);
+  }
+
+  mpfr_clear (diam);
+  mpfr_clear (fact);
 }

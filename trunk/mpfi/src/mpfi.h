@@ -108,7 +108,7 @@ int     mpfi_mig        (mpfr_ptr, mpfi_srcptr);
 int     mpfi_mid        (mpfr_ptr, mpfi_srcptr);
 /* picks randomly a point m in y */
 void    mpfi_alea       (mpfr_ptr, mpfi_srcptr);
-
+void    mpfi_urandom    (mpfr_ptr, mpfi_srcptr, gmp_randstate_t);
 
 
 /* Conversions                                  */
