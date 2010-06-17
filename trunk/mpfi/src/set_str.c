@@ -30,7 +30,7 @@ MA 02110-1301, USA. */
 int
 mpfi_set_str (mpfi_ptr x, const char *s, int base)
 {
-  char *cur;
+  const char *cur;
   char *end;
 
   cur = s;
