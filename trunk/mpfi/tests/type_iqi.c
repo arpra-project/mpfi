@@ -122,7 +122,6 @@ random_iqi (mpfi_function_ptr this)
   mpfi_ptr i  = MPFI_FUN_ARG (*this, 0, mpfi);
   mpfr_ptr x  = &(i->left);
   mpfr_ptr y  = &(i->right);
-  unsigned long n = mpfi_get_prec (a) + 17;
 
   random_interval (a);
   random_mpq (q);

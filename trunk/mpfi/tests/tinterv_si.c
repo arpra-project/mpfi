@@ -60,7 +60,6 @@ int
 main (int argc, char **argv)
 {
   mpfr_t x, y;
-  int inex;
 
   long a, b;
   mpfi_t i;

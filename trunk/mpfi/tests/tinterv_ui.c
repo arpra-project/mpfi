@@ -59,7 +59,6 @@ int
 main (int argc, char **argv)
 {
   mpfr_t x, y;
-  int inex;
 
   unsigned long a, b;
   mpfi_t i;

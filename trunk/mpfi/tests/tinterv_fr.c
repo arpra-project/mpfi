@@ -71,7 +71,6 @@ main (int argc, char **argv)
   mpfr_t x, y;
   mpfr_t xx, yy;
 
-  double a, b;
   mpfi_t i;
 
   mpfi_init2 (i, 53);

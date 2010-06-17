@@ -147,7 +147,7 @@ static void
 test_regular ()
 {
   mpfi_t i;
-  mpfr_t got, expected, x;
+  mpfr_t got, expected;
 
   mpfi_init2 (i, 53);
   mpfr_init2 (got, 500);
