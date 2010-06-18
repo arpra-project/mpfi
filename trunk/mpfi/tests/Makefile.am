@@ -11,7 +11,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 
 check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tadd_q tadd_si tadd_ui tadd_z tasin tasinh tatan tatan2	\
-    tatanh tbisect tcbrt tconst_catalan tconst_euler		\
+    tatanh tbisect tblow tcbrt tconst_catalan tconst_euler	\
     tconst_log2 tconst_pi tcos tcosh tcot tcoth tcsc tcsch	\
     td_div td_sub tdiv tdiv_2exp tdiv_2si tdiv_2ui tdiv_d	\
     tdiv_fr tdiv_q tdiv_ui tdiv_si tdiv_z terror texp texp2	\
@@ -30,11 +30,11 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
 
 EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     add_fr.dat add_q.dat add_si.dat add_ui.dat add_z.dat	\
-    asin.dat asinh.dat atan.dat atan2.dat atanh.dat cbrt.dat	\
-    const_catalan.dat const_euler.dat const_log2.dat		\
-    const_pi.dat cos.dat cosh.dat cot.dat div.dat		\
-    increase.dat intersect.dat inv.dat log.dat mul.dat		\
-    mul_d.dat neg.dat put_d.dat put_fr.dat put_q.dat		\
+    asin.dat asinh.dat atan.dat atan2.dat atanh.dat blow.dat	\
+    cbrt.dat const_catalan.dat const_euler.dat			\
+    const_log2.dat const_pi.dat cos.dat cosh.dat cot.dat	\
+    div.dat increase.dat intersect.dat inv.dat log.dat		\
+    mul.dat mul_d.dat neg.dat put_d.dat put_fr.dat put_q.dat	\
     put_si.dat put_ui.dat put_z.dat q_div.dat set_d.dat		\
     set_fr.dat set_q.dat set_si.dat set_ui.dat set_z.dat	\
     sqr.dat sqrt.dat sub.dat union.dat
