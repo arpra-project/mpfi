@@ -28,7 +28,8 @@ MA 02110-1301, USA. */
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
-/* keeps the same center and multiplies the radius by (1+fact) */
+/* keeps the same center and multiplies the radius by (1+fact), the result may
+   be grossly overestimated */
 
 int
 mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
@@ -37,30 +38,39 @@ mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
   mp_prec_t prec;
   mpfr_t radius, factor;
   mpfr_t centre;
-  int inexact_diam, inexact_div, inexact_factor, inexact_rad, inexact_centre;
-  int inexact_left, inexact_right, inexact=0;
+  int inex_diam, inex_div, inex_conv, inex_factor, inex_rad;
+  int inex_centre, inex_left, inex_right;
+  int inexact = 0;
 
-  if ( MPFI_NAN_P (x) ) {
+  if (MPFI_NAN_P (x)) {
     mpfr_set_nan (&(y->left));
     mpfr_set_nan (&(y->right));
     MPFR_RET_NAN;
   }
 
-  prec=mpfi_get_prec (x);
+  prec = mpfi_get_prec (x);
   mpfr_init2 (radius, prec);
   mpfr_init2 (factor, prec);
   mpfr_init2 (centre, prec);
 
-  inexact_diam = mpfi_diam_abs (radius, x);
-  inexact_div = mpfr_div_2exp (radius, radius, 1, GMP_RNDU);
-  if (fact > 0.0)
-    inexact_factor = mpfr_set_d (factor, (1.0+fact), GMP_RNDU);
-  else
-    inexact_factor = mpfr_set_d (factor, (1.0-fact), GMP_RNDU);
-  inexact_rad = mpfr_mul (radius, radius, factor, GMP_RNDU);
-  inexact_centre = mpfi_mid (centre, x);
-  inexact_left = mpfr_sub (&(y->left), centre, radius, GMP_RNDD);
-  inexact_right = mpfr_add (&(y->right), centre, radius, GMP_RNDU);
+  inex_diam = mpfi_diam_abs (radius, x);
+  if (mpfr_zero_p (radius)) {
+    /* x is a singleton */
+    return mpfi_set (y, x);
+  }
+  inex_div = mpfr_div_2exp (radius, radius, 1, GMP_RNDU); /* either underflow
+                                                             or exact*/
+
+  /* factor must be greater than 1 + |fact|, so it is not possible to perform
+     this addition directly in C with the double precision since the usual
+     rouding mode is rounding to nearest. */
+  inex_conv = mpfr_set_d (factor, fact < 0.0 ? -fact : fact, GMP_RNDU);
+  inex_factor = mpfr_add_ui (factor, factor, 1, MPFI_RNDU);
+
+  inex_rad = mpfr_mul (radius, radius, factor, GMP_RNDU);
+  inex_centre = mpfi_mid (centre, x);
+  inex_left = mpfr_sub (&(y->left), centre, radius, GMP_RNDD);
+  inex_right = mpfr_add (&(y->right), centre, radius, GMP_RNDU);
 
   mpfr_clear (radius);
   mpfr_clear (factor);
@@ -69,13 +79,20 @@ mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
   if ( MPFI_NAN_P (y) )
     MPFR_RET_NAN;
 
-  if ( MPFI_LEFT_IS_INEXACT (inexact_diam)   || MPFI_LEFT_IS_INEXACT (inexact_div) ||
-       MPFI_LEFT_IS_INEXACT (inexact_factor) || MPFI_LEFT_IS_INEXACT (inexact_rad) ||
-       MPFI_LEFT_IS_INEXACT (inexact_centre) || inexact_left  )
+  /* do not allow -0 as lower bound */
+  if (mpfr_zero_p (&(y->left)) && mpfr_signbit (&(y->left))) {
+    mpfr_neg (&(y->left), &(y->left), MPFI_RNDU);
+  }
+  /* do not allow +0 as upper bound */
+  if (mpfr_zero_p (&(y->right)) && !mpfr_signbit (&(y->right))) {
+    mpfr_neg (&(y->right), &(y->right), MPFI_RNDD);
+  }
+
+  if (inex_diam || inex_div || inex_conv || inex_factor || inex_rad
+      || inex_centre || inex_left)
     inexact += 1;
-  if ( MPFI_RIGHT_IS_INEXACT (inexact_diam)   || MPFI_RIGHT_IS_INEXACT (inexact_div) ||
-       MPFI_RIGHT_IS_INEXACT (inexact_factor) || MPFI_RIGHT_IS_INEXACT (inexact_rad) ||
-       MPFI_RIGHT_IS_INEXACT (inexact_centre) || inexact_right  )
+  if (inex_diam || inex_div || inex_conv || inex_factor || inex_rad
+      || inex_centre || inex_right)
     inexact += 2;
 
   if (mpfi_revert_if_needed (y)) {
