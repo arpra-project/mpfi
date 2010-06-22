@@ -31,7 +31,7 @@ MA 02110-1301, USA. */
 int
 mpfi_diam_abs (mpfr_ptr diam, mpfi_srcptr interv)
 {
-  return (mpfr_sub (diam, &(interv->right), &(interv->left), GMP_RNDU));
+  return (mpfr_sub (diam, &(interv->right), &(interv->left), MPFI_RNDU));
 }
 
 /* Relative diameter                                     */
@@ -40,35 +40,36 @@ mpfi_diam_abs (mpfr_ptr diam, mpfi_srcptr interv)
 int
 mpfi_diam_rel (mpfr_ptr diam, mpfi_srcptr interv)
 {
-  mpfr_t centre, tmp_diam;
-  int inexact_sub, inexact_mid, inexact_neg, inexact_sub2=0, inexact=0;
+  mpfr_t center;
+  int inexact_mid, inexact_sub = 0, inexact = 0;
 
-  mpfr_init2 (tmp_diam, mpfr_get_prec (diam));
+  mpfr_init2 (center, mpfr_get_prec (diam));
 
-  inexact_sub = mpfr_sub (tmp_diam, &(interv->right), &(interv->left), GMP_RNDU);
+  /* if interv is bounded, compute d/|c| where d is the absolute diameter of
+     interv and c is its midpoint
+     if interv is not bounded, d and c are infinite, their quotient does not
+     exist */
+  inexact_sub = mpfr_sub (diam, &(interv->right), &(interv->left), MPFI_RNDU);
 
-  if (mpfi_bounded_p (interv)) {
-    mpfr_init2 (centre, mpfr_get_prec (diam));
-    inexact_mid = mpfi_mid (centre, interv);
+  inexact_mid = mpfi_mid (center, interv);
+  if (mpfr_sgn (center) * inexact_mid > 0 && !mpfr_inf_p (center)) {
+    /* the absolute value of center have to be underestimated for an
+       overestimated quotient, except for the infinite cases where the
+       division below should return NaN.
+       Note that in case of underflow, mpfr_sgn(center)==0 and the
+       if-condition fails, preventing the next operation to actually increase
+       the absolute value of center */
+    mpfr_sub_one_ulp (center, MPFI_RNDD);
+  }
+  mpfr_abs (center, center, MPFI_RNDD); /* always exact */
 
-    if (mpfr_cmp_ui (centre, 0) <0) {
-      inexact_neg = mpfr_neg (centre, centre, GMP_RNDD);
-      if ( (!inexact_neg) || (inexact_mid<0) )
-        mpfr_sub_one_ulp (centre, GMP_RNDD);
-    }
+  inexact = mpfr_div (diam, diam, center, MPFI_RNDU);
+  mpfr_clear (center);
 
-    if (mpfr_cmp_ui (centre,0))
-      inexact = mpfr_div (diam, tmp_diam, centre, GMP_RNDU);
-
-    mpfr_clear (centre);
-  } /* if interv is bounded, then a relative diameter can be computed */
-
-  mpfr_clear (tmp_diam);
-
-  if ( mpfr_nan_p (diam) )
+  if (mpfr_nan_p (diam))
     MPFR_RET_NAN;
 
-  if ( inexact || inexact_sub || inexact_sub2 )
+  if (inexact || inexact_sub)
     return 1;
   else
     return 0;
