@@ -33,25 +33,25 @@ mpfi_mag (mpfr_ptr m, mpfi_srcptr x)
 {
   int inexact;
 
-  if (mpfi_is_nonneg_default (x))
-    inexact = mpfr_set (m, &(x->right), GMP_RNDU);
-  else if (mpfi_is_nonpos_default (x))
-    inexact = mpfr_neg (m, &(x->left), GMP_RNDU);
-  else { /* x contains 0 */
-    inexact = mpfr_neg (m, &(x->left), GMP_RNDU);
-    if (mpfr_nan_p (m)) {
-      MPFR_RET_NAN;
-    }
-    else {
-      if (mpfr_cmp (m, &(x->right)) < 0)
-        inexact = mpfr_set (m, &(x->right), GMP_RNDU);
-      if (mpfr_nan_p (m))
-        MPFR_RET_NAN;
-    }
+  if (MPFI_NAN_P (x)) {
+    mpfr_set_nan (m);
+    MPFR_RET_NAN;
   }
-  if (mpfr_signbit (m))
-    /* fix sign of zero */
-    mpfr_neg (m, m, MPFI_RNDU);
+
+  if (mpfi_is_nonneg_default (x)) {
+    inexact = mpfr_set (m, &(x->right), MPFI_RNDU);
+    if (mpfr_zero_p (m) && mpfr_signbit (m))
+      /* fix sign of zero */
+      mpfr_neg (m, m, MPFI_RNDU);
+  }
+  else if (mpfi_is_nonpos_default (x)) {
+    inexact = mpfr_neg (m, &(x->left), MPFI_RNDU);
+  }
+  else { /* x contains 0 */
+    inexact = mpfr_neg (m, &(x->left), MPFI_RNDU);
+    if (mpfr_cmp (m, &(x->right)) < 0)
+      inexact = mpfr_set (m, &(x->right), MPFI_RNDU);
+  }
 
   return inexact;
 }
