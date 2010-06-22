@@ -24,91 +24,7 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-#include <float.h>
 #include "mpfi-tests.h"
-
-static void
-error_message (mpfi_srcptr i, mpfr_ptr got, mpfr_ptr expected)
-{
-  printf ("Error: mpfi_mag(I) returns wrong value.\nI = ");
-  mpfi_out_str (stdout, 10, 0, i);
-  printf ("\ngot     : ");
-  mpfr_out_str (stdout, 10, 0, got, MPFI_RNDD);
-  printf ("\nexpected: ");
-  mpfr_out_str (stdout, 10, 0, expected, MPFI_RNDD);
-  printf ("\n");
-  exit (1);
-}
-
-static void
-test_special ()
-{
-  mpfr_t expected, got;
-  mpfi_t i;
-
-  mpfr_init2 (expected, 53);
-  mpfr_init2 (got, 53);
-  mpfi_init2 (i, 53);
-
-  /* [nan, nan] */
-  mpfr_set_nan (expected);
-  mpfi_set_fr (i, expected);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [-17, nan] */
-  mpfr_set_si (&(i->left), -17, MPFI_RNDD);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [-inf, -inf] */
-  mpfr_set_inf (expected, -1);
-  mpfi_set_fr (i, expected);
-  mpfr_abs (expected, expected, MPFI_RNDD);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [-inf, 17] */
-  mpfr_set_ui (&(i->right), 17, MPFI_RNDU);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [+0, +inf] */
-  mpfr_set_ui (&(i->left), 0, MPFI_RNDD);
-  mpfr_set_inf (expected, +1);
-  mpfr_set (&(i->right), expected, MPFI_RNDU);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [-inf, +inf] */
-  mpfr_set_inf (&(i->left), -1);
-  mpfr_set_inf (&(i->right), +1);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [+inf, +inf] */
-  mpfi_set_fr (i, expected);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  /* [+0, -0] */
-  mpfr_set_ui (expected, 0, MPFI_RNDU);
-  mpfi_set_fr (i, expected);
-  mpfi_mag (got, i);
-  if (!same_mpfr_value (expected, got))
-    error_message (i, got, expected);
-
-  mpfr_clear (expected);
-  mpfr_clear (got);
-  mpfi_clear (i);
-}
 
 static void
 test_random (mp_prec_t prec_min, mp_prec_t prec_max)
@@ -175,10 +91,17 @@ test_random (mp_prec_t prec_min, mp_prec_t prec_max)
 int
 main (int argc, char **argv)
 {
+  struct mpfi_function_t i_mag;
+
+  mpfi_fun_init_RI (&i_mag, mpfi_mag, NULL);
+
   test_start ();
-  test_special ();
+
+  check_data (&i_mag, "mag.dat");
   test_random (2, 1023);
+
   test_end ();
+  mpfi_fun_clear (&i_mag);
 
   return 0;
 }
