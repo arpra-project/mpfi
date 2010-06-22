@@ -12,6 +12,9 @@ AC_CONFIG_HEADERS([mpfi_config.h])
 AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
+#pb autoconf version > 1.6
+AC_CONFIG_MACRO_DIR([m4])
+
 # traitement des sous-repertoires
 MPFI_SUBDIRS="src tests doc"
 AC_SUBST(MPFI_SUBDIRS)
