@@ -99,7 +99,7 @@ clear_ir (mpfi_function_ptr this)
   /* [1] return value (int), needs no deallocation */
   /* [2] expected value (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 2, mpfi));
-  /* [3] operand (mpq_t) */
+  /* [3] operand (mpfr_t) */
   mpfr_clear (MPFI_FUN_ARG (*this, 3, mpfr));
 
   free (MPFI_FUN_ARGS (*this));
@@ -124,7 +124,7 @@ mpfi_fun_init_IR (mpfi_function_ptr this, IR_fun mpfi_function,
   /* [1] return value (int), needs no initialization */
   /* [2] expected value (mpfi_t) */
   mpfi_init2 (MPFI_FUN_ARG (*this, 2, mpfi), 1024);
-  /* [3] operand (mpq_t) */
+  /* [3] operand (mpfr_t) */
   mpfr_init2 (MPFI_FUN_ARG (*this, 3, mpfr), 1024);
 
   /* init methods */
