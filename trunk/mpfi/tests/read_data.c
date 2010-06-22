@@ -139,6 +139,35 @@ skip_whitespace_comments (FILE *f)
 /* Read operand in file, and sometimes check its validity */
 
 void
+read_sign (FILE *f, int *sign)
+{
+  switch (nextchar) {
+  case '-':
+    *sign = -1;
+    break;
+  case '0':
+    *sign = 0;
+    break;
+  case '+':
+    *sign = +1;
+    break;
+  default:
+    printf ("Error: unexpected signedness '%c' in file '%s' line %lu\n",
+            nextchar, pathname, line_number);
+    exit (1);
+  }
+
+  nextchar = getc (f);
+  if (!isspace(nextchar)) {
+    printf ("Error: unexpected character '%c' after exactness flag"
+            " in file '%s' line %lu\n", nextchar, pathname, line_number);
+    exit (1);
+  }
+
+  skip_whitespace_comments (f);
+}
+
+void
 read_exactness (FILE *f, int *exactness)
 {
   if (!isdigit (nextchar) || nextchar < '0' || nextchar > '4') {

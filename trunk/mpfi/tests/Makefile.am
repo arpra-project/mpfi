@@ -7,7 +7,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
     type_id.c type_iz.c type_iq.c type_ir.c type_iiu.c		\
     type_iis.c type_iid.c type_iiz.c type_iiq.c type_iir.c	\
     type_iui.c type_isi.c type_idi.c type_izi.c type_iqi.c	\
-    type_iri.c check_data.c mpfi-tests.c
+    type_iri.c type_ri.c check_data.c mpfi-tests.c
 
 check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tadd_q tadd_si tadd_ui tadd_z tasin tasinh tatan tatan2	\

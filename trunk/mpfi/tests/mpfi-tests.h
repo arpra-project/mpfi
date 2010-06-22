@@ -64,6 +64,7 @@ typedef int (*IDI_fun) (mpfi_t, double, mpfi_srcptr);
 typedef int (*IZI_fun) (mpfi_t, mpz_srcptr, mpfi_srcptr);
 typedef int (*IQI_fun) (mpfi_t, mpq_srcptr, mpfi_srcptr);
 typedef int (*IRI_fun) (mpfi_t, mpfr_srcptr, mpfi_srcptr);
+typedef int (*RI_fun)  (mpfr_t, mpfi_srcptr);
 
 typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
 typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
@@ -103,6 +104,7 @@ typedef union
   IZI_fun IZI;     /* output: mpfi_t, inputs: mpz_t, mpfi_t */
   IQI_fun IQI;     /* output: mpfi_t, inputs: mpq_t, mpfi_t */
   IRI_fun IRI;     /* output: mpfi_t, inputs: mpfr_t, mpfi_t */
+  RI_fun  RI;      /* output: mpfr_t, input: mpfi_t */
 } mpfi_fun_ptr;
 
 typedef union
@@ -128,6 +130,7 @@ typedef union
   RZR_fun  IZI;    /* output: mpfr_t, inputs: mpz_t, mpfr_t */
   RQR_fun  IQI;    /* output: mpfr_t, inputs: mpq_t, mpfr_t */
   RRR_fun  IRI;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
+  NULL_fun RI;     /* dummy, no corresponding mpfr function */
 } mpfi_fun_mpfr_ptr;
 
 typedef enum
@@ -153,6 +156,7 @@ typedef enum
     IZI,   /* two inputs: mpz_t, interval */
     IQI,   /* two inputs: mpq_t, interval */
     IRI,   /* two inputs: mpfr_t, interval */
+    RI,    /* one input: interval */
   } mpfi_fun_type;
 
 typedef union {
@@ -230,6 +234,7 @@ void mpfi_fun_init_IDI  (mpfi_function_ptr, IDI_fun, RDR_fun);
 void mpfi_fun_init_IZI  (mpfi_function_ptr, IZI_fun, RZR_fun);
 void mpfi_fun_init_IQI  (mpfi_function_ptr, IQI_fun, RQR_fun);
 void mpfi_fun_init_IRI  (mpfi_function_ptr, IRI_fun, RRR_fun);
+void mpfi_fun_init_RI   (mpfi_function_ptr, RI_fun, NULL_fun);
 void mpfi_fun_clear     (mpfi_function_ptr);
 
 
@@ -252,6 +257,7 @@ FILE* open_file         (const char *);
 void init_reading       (FILE*);
 void close_file         (FILE*);
 void skip_whitespace_comments (FILE*);
+void read_sign          (FILE*, int*);
 void read_exactness     (FILE*, int*);
 void read_ui            (FILE*, unsigned long*);
 void read_si            (FILE*, long*);
