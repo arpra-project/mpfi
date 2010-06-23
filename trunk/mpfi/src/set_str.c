@@ -23,7 +23,6 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-
 #include "mpfi_io.h"
 #include "mpfi-impl.h"
 
@@ -37,8 +36,8 @@ mpfi_set_str (mpfi_ptr x, const char *s, int base)
   /* read the blanks */
   while (*cur && MPFI_ISSPACE (*cur)) ++cur;
   if (*cur == '\0') {
-    fprintf (stderr, "Error: blank string in mpfi_set_str: %s\n", s);
-    return (1);
+    /* Error: blank string */
+    return 1;
   }
 
   /* Now *cur is the first non blank character */
@@ -48,27 +47,27 @@ mpfi_set_str (mpfi_ptr x, const char *s, int base)
     /* read the blanks between '[' and the number itself */
     while (*cur && MPFI_ISSPACE (*cur)) ++cur;
     if (*cur == '\0') {
-      fprintf (stderr, "Error: no number in string in mpfi_set_str: %s\n", s);
-      return (1);
+      /* Error: no number in string */
+      return 1;
     }
 
     mpfr_strtofr (&(x->left), cur, &end, base, MPFI_RNDD);
     if (end == cur) {
-      fprintf (stderr, "Error: no number in string in mpfi_set_str: %s\n", s);
-      return (1);
+      /* Error: no number in string */
+      return 1;
     }
     cur = end;
 
     /* Read (possibly) blank characters between the first number and the comma */
     while (*cur && MPFI_ISSPACE (*cur) ) ++cur;
     if (*cur == '\0') {
-      fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
-      return (1);
+      /* Error: only one number in string */
+      return 1;
     }
 
     if (*cur != ',') {
-      fprintf (stderr, "Error: missing comma in mpfi_set_str:: %s\n", s);
-      return (1);
+      /* Error: missing comma */
+      return 1;
     }
     ++cur;
 
@@ -77,15 +76,15 @@ mpfi_set_str (mpfi_ptr x, const char *s, int base)
     /* read (possibly) blank characters between the comma and the 2nd number */
     while (*cur && MPFI_ISSPACE (*cur)) ++cur;
     if (*cur == '\0') {
-      fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
-      return (1);
+      /* Error: only one number in string */
+      return 1;
     }
 
     /* Now *cur is the first character of the 2nd number */
     mpfr_strtofr (&(x->right), cur, &end, base, MPFI_RNDU);
     if (end == cur) {
-      fprintf (stderr, "Error: only one number in string in mpfi_set_str: %s\n", s);
-      return (1);
+      /* Error: only one number in string */
+      return 1;
     }
     cur = end;
 
@@ -93,13 +92,13 @@ mpfi_set_str (mpfi_ptr x, const char *s, int base)
     /* closing square bracket */
     while (*cur && MPFI_ISSPACE (*cur)) ++cur;
     if (*cur == '\0') {
-      fprintf (stderr, "Error: missing closing square bracket in mpfi_set_str: %s\n", s);
-      return (1);
+      /* Error: missing closing square bracket */
+      return 1;
     }
 
-    if (*cur != ']') { /* The closing square bracket is missing */
-      fprintf (stderr, "Missing closing square bracket in mpfi_set_str: %s \n", s);
-      return (1);
+    if (*cur != ']') {
+      /* Missing closing square bracket */
+      return 1;
     }
 
     /* Note that the string may contain any character after the */
@@ -112,11 +111,11 @@ mpfi_set_str (mpfi_ptr x, const char *s, int base)
 
     /* Note that the whole string must be a valid number */
     if (mpfr_set_str (&(x->left), cur,  base, MPFI_RNDD))
-      return (1);
+      return 1;
     mpfr_set_str (&(x->right), cur, base, MPFI_RNDU);
   }
 
-  return (0);
+  return 0;
 }
 
 int
