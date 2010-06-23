@@ -23,67 +23,64 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-
 #include "mpfi_io.h"
 #include "mpfi-impl.h"
-
-#ifdef mp_get_memory_functions
-/* putting 0 as initial values forces those symbols to be fully defined,
-   and always resolved, otherwise they are only tentatively defined, which
-   leads to problems on e.g. MacOS. */
-void * (*mpfi_allocate_func) (size_t) = 0;
-void * (*mpfi_reallocate_func) (void *,size_t, size_t) = 0;
-void   (*mpfi_free_func) (void *, size_t) = 0;
-#endif
 
 size_t
 mpfi_inp_str (mpfi_ptr x, FILE *s, int base)
 {
+  size_t blank = 0;
   size_t t;
-  int size_s = 100, left = 0, right = 0, i;
+  size_t pos;
+  size_t size = 256;
   char *str;
-  mpfr_t tmp;
-  int c = fgetc (s);
+  int c;
 
-  while (MPFI_ISSPACE (c)) c=fgetc (s);
+  void * (*mpfi_allocate_func) (size_t);
+  void * (*mpfi_reallocate_func) (void *,size_t, size_t);
+  void   (*mpfi_free_func) (void *, size_t);
 
-  if (c!='[') {  /* one single number defining an interval */
-    fputc (c, s);
-    mpfr_init2 (tmp, mpfi_get_prec (x));
-    t = mpfr_inp_str (tmp, s, base, GMP_RNDD);
-    left = mpfr_set (&(x->left), tmp, MPFI_RNDD);
-    right = mpfr_set (&(x->right), tmp, MPFI_RNDD);
-    if (mpfr_cmp_ui (&(x->right), 0) >= 0)
-      mpfr_add_one_ulp (&(x->right), MPFI_RNDU);
-    else
-      mpfr_sub_one_ulp (&(x->right), MPFI_RNDU);
-    mpfr_clear (tmp);
+  mp_get_memory_functions (&mpfi_allocate_func, &mpfi_reallocate_func,
+                           &mpfi_free_func);
 
-    return t;
-  }
-  else { /* interval given by two endpoints between square brackets */
-    /* The interval is copied into a string and handled by mpfi_set_str */
-    str = (char *)(*__gmp_allocate_func)(size_s * sizeof(char));
+  c = fgetc (s);
+  while (MPFI_ISSPACE (c)) {
     c = fgetc (s);
-    while (MPFI_ISSPACE (c)) c = fgetc (s);
-    str[0] = '[';
-    str[1] = c;
-    i = 2;
+    ++blank;
+  }
+
+  if (c != '[') {
+    /* one single number defining an interval */
+    ungetc (c, s);
+    t = mpfr_inp_str (&(x->left), s, base, MPFI_RNDD);
+    mpfr_set (&(x->right), &(x->left), MPFI_RNDD);
+    mpfr_nextabove (&(x->right));
+
+    return t != 0 ? blank + t : 0;
+  }
+  else {
+    /* interval given by two endpoints between square brackets */
+    /* the interval is copied into a string and handled by mpfi_set_str */
+    str = (char *)(*__gmp_allocate_func)(size);
+
+    pos = 0;
+    str[pos++] = '[';
+
     while (c != ']') {
       c = fgetc (s);
-      str[i] = c;
-      i++;
-      if (i == size_s) {
-        /* size_s *= 2;
-	   str = (char *) realloc (str, size_s * sizeof (char));*/
-	str = (char *)(*__gmp_reallocate_func)(str, size_s * sizeof(char), 2 * size_s * sizeof(char));
-        size_s *= 2;
+      if (c == EOF)
+        break;
+      str[pos++] = c;
+      if (pos == size) {
+        str = (char *)(*__gmp_reallocate_func)(str, size, 2 * size);
+        size *= 2;
       }
-      str[i]='\0';
     }
+    str[pos]='\0';
+
     t = mpfi_set_str (x, str, base);
-    /* free (str);*/
-    (*__gmp_free_func)(str, size_s * sizeof(char));
-    return t;
+    (*__gmp_free_func)(str, size);
+
+    return t == 0 ? blank + pos : 0;
   }
 }
