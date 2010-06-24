@@ -42,7 +42,7 @@ int
 mpfi_is_pos_default (mpfi_srcptr a)
 {
   if ( mpfi_nan_p (a) )
-    return 1;
+    return 0;
 
   return (MPFI_IS_POS (a));
 }
@@ -51,7 +51,7 @@ int
 mpfi_is_strictly_pos_default (mpfi_srcptr a)
 {
   if ( mpfi_nan_p (a) )
-    return 1;
+    return 0;
 
   return (MPFI_IS_STRICTLY_POS (a));
 }
@@ -60,7 +60,7 @@ int
 mpfi_is_nonneg_default (mpfi_srcptr a)
 {
   if ( mpfi_nan_p (a) )
-    return 1;
+    return 0;
 
   return (MPFI_IS_NONNEG (a));
 }
@@ -69,7 +69,7 @@ int
 mpfi_is_neg_default (mpfi_srcptr a)
 {
   if ( mpfi_nan_p (a) )
-    return 1;
+    return 0;
 
   return (MPFI_IS_NEG (a));
 }
@@ -78,7 +78,7 @@ int
 mpfi_is_strictly_neg_default (mpfi_srcptr a)
 {
   if ( mpfi_nan_p (a) )
-    return 1;
+    return 0;
 
   return (MPFI_IS_STRICTLY_NEG (a));
 }
@@ -87,7 +87,7 @@ int
 mpfi_is_nonpos_default (mpfi_srcptr a)
 {
   if ( mpfi_nan_p (a) )
-    return 1;
+    return 0;
 
   return (MPFI_IS_NONPOS (a));
 }
