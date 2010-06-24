@@ -1405,6 +1405,7 @@ the interior of @var{op1}, 0 otherwise.
 @deftypefunx int mpfi_is_inside_fr (mpfr_t @var{op1}, mpfi_t @var{op2})
 Returns a positive value if @var{op1} is contained in @var{op2},
 0 otherwise.
+Return 0 if at least one argument is NaN or an invalid interval.
 @end deftypefun
 
 @deftypefun int mpfi_is_empty (mpfi_t @var{op})

@@ -30,21 +30,19 @@ MA 02110-1301, USA. */
 int
 mpfi_is_strictly_inside (mpfi_srcptr a, mpfi_srcptr b)
 {
-  /* Returns 1 if one of the operands is a NaN */
-  if ( MPFI_NAN_P (a) || MPFI_NAN_P (b) )
-    return 1;
-  return ( ((mpfr_cmp (&(b->left), &(a->left)) < 0) &&
-	   (mpfr_cmp (&(a->right), &(b->right)) < 0)) );
+  return mpfr_cmp (&(b->left), &(a->left)) < 0
+    && mpfr_cmp (&(a->right), &(b->right)) < 0;
 }
 
 int
 mpfi_is_inside (mpfi_srcptr a, mpfi_srcptr b)
 {
-  /* Returns 1 if one of the operands is a NaN */
-  if ( MPFI_NAN_P (a) || MPFI_NAN_P (b) )
-    return 1;
-  return ( (mpfr_cmp (&(b->left), &(a->left)) <=0 ) &&
-	   (mpfr_cmp (&(a->right), &(b->right))<=0) );
+  /* Returns 0 if one of the operands is a NaN */
+  if (MPFI_NAN_P (a) || MPFI_NAN_P (b))
+    return 0;
+
+  return mpfr_cmp (&(b->left), &(a->left)) <= 0
+    && mpfr_cmp (&(a->right), &(b->right)) <= 0;
 }
 
 int
@@ -52,31 +50,35 @@ mpfi_is_inside_d (const double a, mpfi_srcptr b)
 {
   int dummy, res;
   mpfi_t tmp;
+
   mpfi_init2 (tmp, mpfi_get_prec (b));
   dummy = mpfi_set_d (tmp, a);
   res = mpfi_is_inside (tmp, b);
   MPFI_CLEAR (tmp);
-  return (res);
+
+  return res;
 }
 
 int
 mpfi_is_inside_ui (const unsigned long a, mpfi_srcptr b)
 {
-  /* Returns 1 if one of the operands is a NaN */
-  if ( MPFI_NAN_P (b) )
-    return 1;
-  return ( (mpfr_cmp_ui (&(b->left), a) <= 0) &&
-           (mpfr_cmp_ui (&(b->right), a) >= 0) );
+  /* Returns 0 if one of the operands is a NaN */
+  if (MPFI_NAN_P (b))
+    return 0;
+
+  return mpfr_cmp_ui (&(b->left), a) <= 0
+    &&  mpfr_cmp_ui (&(b->right), a) >= 0;
 }
 
 int
 mpfi_is_inside_si (const long a, mpfi_srcptr b)
 {
-  /* Returns 1 if one of the operands is a NaN */
-  if ( MPFI_NAN_P (b) )
-    return 1;
-  return ( (mpfr_cmp_si (&(b->left), a) <= 0) &&
-           (mpfr_cmp_si (&(b->right), a) >= 0) );
+  /* Returns 0 if one of the operands is a NaN */
+  if (MPFI_NAN_P (b))
+    return 0;
+
+  return mpfr_cmp_si (&(b->left), a) <= 0
+    &&  mpfr_cmp_si (&(b->right), a) >= 0;
 }
 
 int
@@ -84,14 +86,13 @@ mpfi_is_inside_z (mpz_srcptr a, mpfi_srcptr b)
 {
   int dummy, res;
   mpfi_t tmp;
-  /* Returns 1 if one of the operands is a NaN */
-  if ( MPFI_NAN_P (b) )
-    return 1;
+
   mpfi_init2 (tmp, mpfi_get_prec (b));
   dummy = mpfi_set_z (tmp, a);
   res = mpfi_is_inside (tmp, b);
   MPFI_CLEAR (tmp);
-  return (res);
+
+  return res;
 }
 
 int
@@ -99,22 +100,25 @@ mpfi_is_inside_q (mpq_srcptr a, mpfi_srcptr b)
 {
   int dummy, res;
   mpfi_t tmp;
-  /* Returns 1 if one of the operands is a NaN */
-  if ( MPFI_NAN_P (b) )
-    return 1;
+  /* Returns 0 if one of the operands is a NaN */
+  if (MPFI_NAN_P (b))
+    return 0;
+
   mpfi_init2 (tmp, mpfi_get_prec (b));
   dummy = mpfi_set_q (tmp, a);
   res = mpfi_is_inside (tmp, b);
   MPFI_CLEAR (tmp);
-  return (res);
+
+  return res;
 }
 
 int
 mpfi_is_inside_fr (mpfr_srcptr a, mpfi_srcptr b)
 {
-  /* Returns 1 if one of the operands is a NaN */
-  if ( mpfr_nan_p (a) || MPFI_NAN_P (b) )
-    return 1;
-  return ( (mpfr_cmp (a, &(b->left)) >= 0) &&
-           (mpfr_cmp (a, &(b->right)) <= 0) );
+  /* Returns 0 if one of the operands is a NaN */
+  if (mpfr_nan_p (a) || MPFI_NAN_P (b))
+    return 0;
+
+  return mpfr_cmp (a, &(b->left)) >= 0
+    &&  mpfr_cmp (a, &(b->right)) <= 0;
 }

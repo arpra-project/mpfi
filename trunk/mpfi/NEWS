@@ -50,3 +50,5 @@ Changes between MPFI version 1.4 and ?
   Sisyphus 2010-01-19).
 * fix bug in mpfi_blow: the result could be underestimated when the factor was
   small compared to 1.
+* fix bug in mpfi_is_inside_x functions: they now return 0 (false) if one or
+  more of their operands is NaN.
