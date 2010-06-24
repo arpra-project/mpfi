@@ -51,7 +51,7 @@ main (int argc, char **argv)
   test_start ();
 
 /*   check_data (&i_q_sub, "q_sub.dat"); */
-  check_random (&i_q_sub, 2, 1000, 10);
+  check_random (&i_q_sub, 53, 53, 3);
 
   test_end ();
   mpfi_fun_clear (&i_q_sub);

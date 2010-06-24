@@ -35,7 +35,7 @@ main (int argc, char **argv)
   test_start ();
 
 /*   check_data (&i_log1p, "log1p.dat"); */
-  check_random (&i_log1p, 2, 1000, 10);
+  check_random (&i_log1p, 2, 512, 10);
 
   test_end ();
   mpfi_fun_clear (&i_log1p);

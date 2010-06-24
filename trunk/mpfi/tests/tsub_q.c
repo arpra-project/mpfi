@@ -35,7 +35,7 @@ main (int argc, char **argv)
   test_start ();
 
 /*   check_data (&i_sub_q, "sub_q.dat"); */
-  check_random (&i_sub_q, 2, 1000, 10);
+  check_random (&i_sub_q, 53, 53, 3); /* very slow */
 
   test_end ();
   mpfi_fun_clear (&i_sub_q);
