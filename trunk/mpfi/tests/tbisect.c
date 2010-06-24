@@ -151,14 +151,14 @@ check_special (void)
   mpfi_set_ui (left, 0);
   mpfi_set_ui (right, 0);
   check (left, right, interval, expected_left, expected_right, 0);
-  
+
   mpfr_set_ui (&(interval->left), 0, MPFI_RNDD);
   mpfr_set_nan (&(interval->right));
   mpfi_set_ui (left, 0);
   mpfi_set_ui (right, 0);
   check (left, right, interval, expected_left, expected_right, 0);
 
-  
+
   /* Infinities */
 
   mpfi_set_ui (left, 0);
@@ -174,21 +174,21 @@ check_special (void)
   mpfr_set_ui (&(interval->right), 0, MPFI_RNDD);
   mpfi_set (expected_left, interval);
   check (left, right, interval, expected_left, expected_right, 0);
-  
+
   mpfi_set_ui (left, 0);
   mpfi_set_ui (right, 0);
   mpfr_set_inf (&(interval->left), +1);
   mpfr_set_inf (&(interval->right), -1);
   mpfi_set (expected_left, interval);
   check (left, right, interval, expected_left, expected_right, 0);
-  
+
   mpfi_set_ui (left, 0);
   mpfi_set_ui (right, 0);
   mpfr_set_ui (&(interval->left), 0, MPFI_RNDD);
   mpfr_set_inf (&(interval->right), -1);
   mpfi_set (expected_left, interval);
   check (left, right, interval, expected_left, expected_right, 0);
-  
+
 
   /* Signed zeros */
 
