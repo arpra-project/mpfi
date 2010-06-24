@@ -65,7 +65,7 @@ check_monotonicity (mpfi_function_ptr this)
       putchar ('\n');
 
       exit (1);
-    }    
+    }
   }
 }
 
@@ -80,7 +80,7 @@ check_line_i (mpfi_function_ptr this)
   int expected_inex = MPFI_FUN_ARG (*this, 1, i);
   mpfi_ptr expected = MPFI_FUN_ARG (*this, 2, mpfi);
 
-  mpfi_set_prec (got, mpfi_get_prec (expected)); 
+  mpfi_set_prec (got, mpfi_get_prec (expected));
 
   inex = f_I (got);
   if (inex != expected_inex || !same_value (got, expected)) {
