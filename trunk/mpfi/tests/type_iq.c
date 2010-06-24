@@ -114,6 +114,7 @@ mpfi_fun_init_IQ (mpfi_function_ptr this, IQ_fun mpfi_function,
   this->type = IQ;
   this->func.IQ = mpfi_function;
   this->mpfr_func.IQ = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

@@ -124,6 +124,10 @@ random_iqi (mpfi_function_ptr this)
   mpfr_ptr y  = &(i->right);
 
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   random_mpq (q);
   mpfi_alea (x, a);
   f_IQI (b, q, a);
@@ -180,6 +184,7 @@ mpfi_fun_init_IQI (mpfi_function_ptr this, IQI_fun mpfi_function,
   this->type = IQI;
   this->func.IQI = mpfi_function;
   this->mpfr_func.IQI = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

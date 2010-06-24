@@ -161,8 +161,16 @@ random_iii (mpfi_function_ptr this)
   mpfr_init2 (z, mpfi_get_prec (c));
 
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   random_interval (b);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (b);
+  }
   mpfi_alea (y, b);
   f_III (c, a, b);
   f_RRR (z, x, y, MPFI_RNDD);
@@ -223,6 +231,7 @@ mpfi_fun_init_III (mpfi_function_ptr this, III_fun mpfi_function,
   this->type = III;
   this->func.III = mpfi_function;
   this->mpfr_func.III = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

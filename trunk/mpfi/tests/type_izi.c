@@ -122,6 +122,10 @@ random_izi (mpfi_function_ptr this)
   unsigned long n = mpfi_get_prec (a) + 17;
 
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   random_mpz (z, n);
   mpfi_alea (x, a);
   f_IZI (b, z, a);
@@ -178,6 +182,7 @@ mpfi_fun_init_IZI (mpfi_function_ptr this, IZI_fun mpfi_function,
   this->type = IZI;
   this->func.IZI = mpfi_function;
   this->mpfr_func.IZI = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

@@ -112,6 +112,7 @@ mpfi_fun_init_IS (mpfi_function_ptr this, IS_fun mpfi_function,
   this->type = IS;
   this->func.IS = mpfi_function;
   this->mpfr_func.IS = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

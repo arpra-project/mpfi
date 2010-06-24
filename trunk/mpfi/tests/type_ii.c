@@ -205,6 +205,10 @@ random_ii (mpfi_function_ptr this)
   mpfr_ptr y  = &(i->right);
 
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   f_II (b, a);
   f_RR (y, x, MPFI_RNDD);
@@ -251,11 +255,12 @@ clear_ii (mpfi_function_ptr this)
    '.dat' files plus one additional variable before them. */
 void
 mpfi_fun_init_II (mpfi_function_ptr this, II_fun mpfi_function,
-              RR_fun mpfr_function)
+                  RR_fun mpfr_function)
 {
   this->type = II;
   this->func.II = mpfi_function;
   this->mpfr_func.II = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

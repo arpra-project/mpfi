@@ -123,6 +123,10 @@ random_iiz (mpfi_function_ptr this)
 
   random_mpz (z, n);
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   f_IIZ (b, a, z);
   f_RRZ (y, x, z, MPFI_RNDD);
@@ -131,7 +135,7 @@ random_iiz (mpfi_function_ptr this)
             "the point y, image of (x, n) where x is in a.\na = ");
     mpfi_out_str (stdout, 10, 0, a);
     printf ("\nn = ");
-    mpz_out_str (stdout, 10, z); 
+    mpz_out_str (stdout, 10, z);
     printf ("\nb = ");
     mpfi_out_str (stdout, 10, 0, b);
     printf ("\nx = ");
@@ -178,6 +182,7 @@ mpfi_fun_init_IIZ (mpfi_function_ptr this, IIZ_fun mpfi_function,
   this->type = IIZ;
   this->func.IIZ = mpfi_function;
   this->mpfr_func.IIZ = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

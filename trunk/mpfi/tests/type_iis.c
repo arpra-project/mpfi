@@ -120,6 +120,10 @@ random_iis (mpfi_function_ptr this)
 
   si = random_si ();
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   f_IIS (b, a, si);
   f_RRS (y, x, si, MPFI_RNDD);
@@ -172,6 +176,7 @@ mpfi_fun_init_IIS (mpfi_function_ptr this, IIS_fun mpfi_function,
   this->type = IIS;
   this->func.IIS = mpfi_function;
   this->mpfr_func.IIS = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

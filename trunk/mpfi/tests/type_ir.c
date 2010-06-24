@@ -115,6 +115,7 @@ mpfi_fun_init_IR (mpfi_function_ptr this, IR_fun mpfi_function,
   this->type = IR;
   this->func.IR = mpfi_function;
   this->mpfr_func.IR = mpfr_function;
+  this->random_domain = NULL;
 
   MPFI_FUN_ARGS (*this) =
     (mpfi_fun_operand_t*) malloc (4 * sizeof (mpfi_fun_operand_t));

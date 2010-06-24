@@ -128,6 +128,7 @@ mpfi_fun_init_I (mpfi_function_ptr this, I_fun mpfi_function,
   this->type = I;
   this->func.I = mpfi_function;
   this->mpfr_func.I = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

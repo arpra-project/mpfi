@@ -120,6 +120,10 @@ random_iid (mpfi_function_ptr this)
 
   d = random_double ();
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   f_IID (b, a, d);
   f_RRD (y, x, d, MPFI_RNDD);
@@ -172,6 +176,7 @@ mpfi_fun_init_IID (mpfi_function_ptr this, IID_fun mpfi_function,
   this->type = IID;
   this->func.IID = mpfi_function;
   this->mpfr_func.IID = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

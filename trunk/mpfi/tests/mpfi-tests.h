@@ -179,6 +179,7 @@ struct mpfi_function_t
   mpfi_fun_ptr        func;
   mpfi_fun_mpfr_ptr   mpfr_func; /* associated MPFR function */
   mpfi_fun_operand_t* operands;
+  I_fun               random_domain;
 
   void (*set_prec)   (mpfi_function_ptr, mp_prec_t);
   void (*read_line)  (mpfi_function_ptr, FILE *);
@@ -237,6 +238,7 @@ void mpfi_fun_init_IRI  (mpfi_function_ptr, IRI_fun, RRR_fun);
 void mpfi_fun_init_RI   (mpfi_function_ptr, RI_fun, NULL_fun);
 void mpfi_fun_clear     (mpfi_function_ptr);
 
+void mpfi_restrict_random (mpfi_function_ptr, I_fun);
 
 /* internal functions */
 

@@ -118,6 +118,10 @@ random_isi (mpfi_function_ptr this)
 
   si = random_si ();
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   f_ISI (b, si, a);
   f_RSR (y, si, x, MPFI_RNDD);
@@ -170,6 +174,7 @@ mpfi_fun_init_ISI (mpfi_function_ptr this, ISI_fun mpfi_function,
   this->type = ISI;
   this->func.ISI = mpfi_function;
   this->mpfr_func.ISI = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =

@@ -121,6 +121,10 @@ random_iiq (mpfi_function_ptr this)
 
   random_mpq (q);
   random_interval (a);
+  if (this->random_domain != NULL) {
+    /* restrict the range of random interval to speed up tests */
+    this->random_domain (a);
+  }
   mpfi_alea (x, a);
   f_IIQ (b, a, q);
   f_RRQ (y, x, q, MPFI_RNDD);
@@ -129,7 +133,7 @@ random_iiq (mpfi_function_ptr this)
             "the point y, image of (x, q) where x is in a.\na = ");
     mpfi_out_str (stdout, 10, 0, a);
     printf ("\nq = ");
-    mpq_out_str (stdout, 10, q); 
+    mpq_out_str (stdout, 10, q);
     printf ("\nb = ");
     mpfi_out_str (stdout, 10, 0, b);
     printf ("\nx = ");
@@ -176,6 +180,7 @@ mpfi_fun_init_IIQ (mpfi_function_ptr this, IIQ_fun mpfi_function,
   this->type = IIQ;
   this->func.IIQ = mpfi_function;
   this->mpfr_func.IIQ = mpfr_function;
+  this->random_domain = NULL;
 
   /* init operands */
   MPFI_FUN_ARGS (*this) =
