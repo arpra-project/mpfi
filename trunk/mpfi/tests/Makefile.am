@@ -21,12 +21,13 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tinit_set tintersect tinterv_d tinterv_fr tinterv_q		\
     tinterv_si tinterv_ui tinterv_z tinv tio_str tis_empty	\
     tis_inside tis_inside_d tis_inside_fr tis_inside_q		\
-    tis_inside_si tis_inside_ui tis_inside_z tis_nonneg		\
-    tis_pos tis_strictly_inside tis_strictly_pos tlog tlog10	\
-    tlog1p tlog2 tmag tmid tmig tmul tmul_2exp tmul_2si		\
-    tmul_2ui tmul_d tmul_fr tmul_q tmul_si tmul_ui tmul_z	\
-    tneg tput_d tput_fr tput_q tput_si tput_ui tput_z tq_div	\
-    tq_sub tround_prec tsec tsech tset tset_d tset_fr tset_q	\
+    tis_inside_si tis_inside_ui tis_inside_z tis_neg		\
+    tis_nonneg tis_nonpos tis_pos tis_strictly_inside		\
+    tis_strictly_neg tis_strictly_pos tlog tlog10 tlog1p	\
+    tlog2 tmag tmid tmig tmul tmul_2exp tmul_2si tmul_2ui	\
+    tmul_d tmul_fr tmul_q tmul_si tmul_ui tmul_z tneg tput_d	\
+    tput_fr tput_q tput_si tput_ui tput_z tq_div tq_sub		\
+    tround_prec tsec tsech tset tset_d tset_fr tset_q		\
     tset_si tset_str tset_ui tset_z tsi_div tsi_sub tsin	\
     tsinh tsqr tsqrt tsub tsub_d tsub_fr tsub_q tsub_si		\
     tsub_ui tsub_z tswap ttan ttanh tui_div tui_sub tunion	\
@@ -38,12 +39,13 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     cbrt.dat const_catalan.dat const_euler.dat			\
     const_log2.dat const_pi.dat cos.dat cosh.dat cot.dat	\
     diam.dat diam_abs.dat diam_rel.dat div.dat increase.dat	\
-    inp_str.dat intersect.dat inv.dat is_nonneg.dat		\
-    is_pos.dat is_strictly_pos.dat log.dat mag.dat mid.dat	\
-    mig.dat mul.dat mul_d.dat neg.dat put_d.dat put_fr.dat	\
-    put_q.dat put_si.dat put_ui.dat put_z.dat q_div.dat		\
-    set_d.dat set_fr.dat set_q.dat set_si.dat set_ui.dat	\
-    set_z.dat sqr.dat sqrt.dat sub.dat union.dat
+    inp_str.dat intersect.dat inv.dat is_neg.dat		\
+    is_nonneg.dat is_nonpos.dat is_pos.dat			\
+    is_strictly_neg.dat is_strictly_pos.dat log.dat mag.dat	\
+    mid.dat mig.dat mul.dat mul_d.dat neg.dat put_d.dat		\
+    put_fr.dat put_q.dat put_si.dat put_ui.dat put_z.dat	\
+    q_div.dat set_d.dat set_fr.dat set_q.dat set_si.dat		\
+    set_ui.dat set_z.dat sqr.dat sqrt.dat sub.dat union.dat
 
 TESTS = $(check_PROGRAMS)
 CLEANFILES = io_str.tmp
