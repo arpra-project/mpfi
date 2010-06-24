@@ -1,4 +1,4 @@
-/* tadd_d.c -- Test mpfi_add_d.
+/* tis_strictly_inside.c -- Test mpfi_is_strictly_inside.
 
 Copyright 2010
                      Spaces project, Inria Lorraine
@@ -26,71 +26,109 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+#define ORDER(min, max)              \
+  do {                               \
+    if (mpfr_cmp ((min), (max)) > 0) \
+      mpfr_swap ((min), (max));      \
+  } while (0)
+
 static void
-check_overflow ()
+print_error (mpfi_srcptr a, mpfi_srcptr b)
 {
-  mpfr_t max;
-  mpfi_t a;
-  int inexact;
+  printf ("Error: mpfi_is_strictly_inside (A, B) returns %d\nA = ",
+          mpfi_is_strictly_inside (a, b));
+  mpfi_out_str (stdout, 10, 0, a);
+  printf ("\nB = ");
+  mpfi_out_str (stdout, 10, 0, b);
+  printf ("\n");
 
-  mpfi_init2 (a, 53);
-  mpfr_init2 (max, 53);
-  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
-  mpfr_set_inf (max, +1);
-  mpfr_nextbelow (max);
-  mpfr_set (&(a->right), max, MPFI_RNDU);
+  exit (1);
+}
 
-  inexact = mpfi_add_d (a, a, +1.1);
+static void
+check ()
+{
+  mpfi_t i1, i2;
+  mpfr_t a, b, c, d;
+  int i;
 
-  if (!mpfr_inf_p (&(a->right))) {
-    printf ("Error: mpfi_add_d does not correctly handle positive "
-            "overflow.\n");
-    exit (1);
+  mpfr_init2 (a, 53);
+  mpfr_init2 (b, 53);
+  mpfr_init2 (c, 53);
+  mpfr_init2 (d, 53);
+  mpfi_init2 (i1, 53);
+  mpfi_init2 (i2, 53);
+
+  for (i = 0; i <= 1000; ++i) {
+    /* random numbers a < b < c */
+    random_mpfr (a);
+    random_mpfr (b);
+    random_mpfr (c);
+    random_mpfr (d);
+    ORDER (a, b);
+    ORDER (a, c);
+    ORDER (a, d);
+    ORDER (b, c);
+    ORDER (b, d);
+    ORDER (c, d);
+
+    mpfi_interv_fr (i1, a, b);
+    mpfi_interv_fr (i2, c, d);
+    if (mpfi_is_strictly_inside (i1, i2)) {
+      print_error (i1, i2);
+    }
+    if (mpfi_is_strictly_inside (i2, i1)) {
+      print_error (i2, i1);
+    }
+    mpfr_set_nan (&(i1->right));
+    if (mpfi_is_strictly_inside (i1, i2)) {
+      print_error (i1, i2);
+    }
+
+    mpfi_interv_fr (i1, a, c);
+    mpfi_interv_fr (i2, b, d);
+    if (mpfi_is_strictly_inside (i1, i2)) {
+      print_error (i1, i2);
+    }
+    if (mpfi_is_strictly_inside (i2, i1)) {
+      print_error (i2, i1);
+    }
+    mpfr_set_nan (&(i1->right));
+    if (mpfi_is_strictly_inside (i1, i2)) {
+      print_error (i1, i2);
+    }
+
+    mpfi_interv_fr (i1, a, d);
+    mpfi_interv_fr (i2, b, c);
+    if (mpfi_is_strictly_inside (i1, i2)) {
+      print_error (i1, i2);
+    }
+    if (!mpfi_is_strictly_inside (i2, i1) && !mpfr_equal_p (a, b)
+        && !mpfr_equal_p (b, c) && !mpfr_equal_p (c, d)) {
+      print_error (i2, i1);
+    }
+    mpfr_set_nan (&(i1->right));
+    if (mpfi_is_strictly_inside (i2, i1)) {
+      print_error (i2, i1);
+    }
   }
 
-  if (!MPFI_RIGHT_IS_INEXACT (inexact)) {
-    printf ("Error: mpfi_add_d does not return correct value when positive "
-            "overflow.\n");
-    exit (1);
-  }
-
-  mpfr_set_inf (max, -1);
-  mpfr_nextabove (max);
-  mpfr_set (&(a->left), max, MPFI_RNDD);
-  mpfr_set_ui (&(a->right), 1, MPFI_RNDU);
-
-  inexact = mpfi_add_d (a, a, -1.1);
-
-  if (!mpfr_inf_p (&(a->left))) {
-    printf ("Error: mpfi_add_d does not correctly handle negative "
-            "overflow.\n");
-    exit (1);
-  }
-
-  if (!MPFI_LEFT_IS_INEXACT (inexact)) {
-    printf ("Error: mpfi_add_d does not return correct value when negative "
-            "overflow.\n");
-    exit (1);
-  }
-
-  mpfi_clear (a);
-  mpfr_clear (max);
+  mpfr_clear (a);
+  mpfr_clear (b);
+  mpfr_clear (c);
+  mpfr_clear (d);
+  mpfi_clear (i1);
+  mpfi_clear (i2);
 }
 
 int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t i_add_d;
-
-  mpfi_fun_init_IID (&i_add_d, mpfi_add_d, mpfr_add_d);
   test_start ();
 
-  check_data (&i_add_d, "add_d.dat");
-  check_random (&i_add_d, 2, 1000, 10);
-  check_overflow ();
+  check ();
 
   test_end ();
-  mpfi_fun_clear (&i_add_d);
 
   return 0;
 }
