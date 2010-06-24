@@ -12,7 +12,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tadd_q tadd_si tadd_ui tadd_z tasin tasinh tatan tatan2	\
     tatanh tbisect tblow tcbrt tcmp tcmp_d tcmp_q tcmp_si	\
-    tcmp_ui tconst_catalan tconst_euler tconst_log2		\
+    tcmp_ui tcmp_z tconst_catalan tconst_euler tconst_log2	\
     tconst_pi tcos tcosh tcot tcoth tcsc tcsch td_div td_sub	\
     tdiam tdiam_abs tdiam_rel tdiv tdiv_2exp tdiv_2si		\
     tdiv_2ui tdiv_d tdiv_fr tdiv_q tdiv_si tdiv_ui tdiv_z	\
