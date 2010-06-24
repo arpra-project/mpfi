@@ -123,7 +123,9 @@ test_random (mp_prec_t prec_min, mp_prec_t prec_max)
   for (prec = prec_min; prec < prec_max; prec++) {
     mpfi_set_prec (i, prec);
     mpfr_set_prec (x, prec);
-    random_interval (i);
+    do {
+      random_interval (i);
+    } while (MPFI_INF_P (i));
     mpfi_get_fr (x, i);
     if (mpfi_is_inside_fr (x, i) == 0) {
       pi = mpfi_get_prec (i);
