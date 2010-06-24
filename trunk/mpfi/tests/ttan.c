@@ -26,12 +26,26 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+static int
+restrict_domain (mpfi_ptr a)
+{
+  /* speedup some tests restricting the possible random values */
+  if (mpfr_cmp_si (&(a->left), -7) < 0 || mpfr_cmp_si (&(a->left), +7) > 0) {
+    mpfr_set_si (&(a->left), -7, MPFI_RNDD);
+  }
+  if (mpfr_cmp_si (&(a->right), -7) < 0
+      || mpfr_cmp_si (&(a->right), +7) > 0) {
+    mpfr_set_si (&(a->right), 7, MPFI_RNDU);
+  }
+}
+
 int
 main (int argc, char **argv)
 {
   struct mpfi_function_t i_tan;
 
   mpfi_fun_init_II (&i_tan, mpfi_tan, mpfr_tan);
+  mpfi_restrict_random (&i_tan, restrict_domain);
 
   test_start ();
 

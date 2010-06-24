@@ -26,17 +26,32 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+static int
+restrict_domain (mpfi_ptr a)
+{
+  /* speedup some tests restricting the possible random values */
+  if (mpfr_cmp_si (&(a->left), -100) < 0
+      || mpfr_cmp_si (&(a->left), +100) > 0) {
+    mpfr_set_si (&(a->left), -100, MPFI_RNDD);
+  }
+  if (mpfr_cmp_si (&(a->right), -100) < 0
+      || mpfr_cmp_si (&(a->right), +100) > 0) {
+    mpfr_set_si (&(a->right), 100, MPFI_RNDU);
+  }
+}
+
 int
 main (int argc, char **argv)
 {
   struct mpfi_function_t i_log10;
 
   mpfi_fun_init_II (&i_log10, mpfi_log10, mpfr_log10);
+  mpfi_restrict_random (&i_log10, restrict_domain);
 
   test_start ();
 
 /*   check_data (&i_log10, "log10.dat"); */
-  check_random (&i_log10, 2, 1000, 10);
+  check_random (&i_log10, 2, 512, 10);
 
   test_end ();
   mpfi_fun_clear (&i_log10);
