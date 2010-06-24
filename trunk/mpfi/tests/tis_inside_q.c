@@ -77,7 +77,7 @@ check ()
     }
 
     mpfi_interv_q (interval, b, c);
-    if (!mpfr_equal_p (a, b) && mpfi_is_inside_q (a, interval)) {
+    if (!mpq_cmp (a, b) != 0 && mpfi_is_inside_q (a, interval)) {
       print_error (a, interval);
     }
 
@@ -87,7 +87,7 @@ check ()
     }
 
     mpfi_interv_q (interval, a, b);
-    if (!mpfr_equal_p (c, b) && mpfi_is_inside_q (c, interval)) {
+    if (mpq_cmp (c, b) != 0 && mpfi_is_inside_q (c, interval)) {
       print_error (c, interval);
     }
   }
