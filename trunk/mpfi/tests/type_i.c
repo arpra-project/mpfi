@@ -57,6 +57,7 @@ check_monotonicity (mpfi_function_ptr this)
     mpfi_set_prec (got, precision);
 
     f_I (got);
+
     if (!mpfi_is_inside (expected, got)) {
       printf ("Failed at precision %lu.\n", precision);
       mpfi_out_str (stdout, 2, 0, got);
@@ -98,7 +99,9 @@ check_line_i (mpfi_function_ptr this)
   }
 
   /* monotonic? */
-  check_monotonicity (this);
+  if (!MPFI_NAN_P (expected)) {
+    check_monotonicity (this);
+  }
 }
 
 void

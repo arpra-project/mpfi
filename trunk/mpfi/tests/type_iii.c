@@ -174,8 +174,8 @@ random_iii (mpfi_function_ptr this)
   mpfi_alea (y, b);
   f_III (c, a, b);
   f_RRR (z, x, y, MPFI_RNDD);
-  if (!mpfi_is_inside_fr (z, c)) {
-    printf ("Error:\nthe image c of (a, b) does not contain the image z "
+  if (!mpfr_nan_p (z) && !MPFI_NAN_P (c) && !mpfi_is_inside_fr (z, c)) {
+    printf ("Error: the image c of (a, b) does not contain the image z "
             "of (x, y) where x (resp. y) is in a (resp. b).\na = ");
     mpfi_out_str (stdout, 10, 0, a);
     printf ("\nb = ");

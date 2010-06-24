@@ -132,8 +132,8 @@ random_iqi (mpfi_function_ptr this)
   mpfi_alea (x, a);
   f_IQI (b, q, a);
   f_RQR (y, q, x, MPFI_RNDD);
-  if (!mpfi_is_inside_fr (y, b)) {
-    printf ("Error:\nthe image b of (q, a) does not contain the image y "
+  if (!mpfr_nan_p (y) && !MPFI_NAN_P (b) && !mpfi_is_inside_fr (y, b)) {
+    printf ("Error: the image b of (q, a) does not contain the image y "
             "of (q, x) where x is in a.\nq= ");
     mpq_out_str (stdout, 10, q);
     printf ("\na = ");

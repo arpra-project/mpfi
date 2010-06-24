@@ -125,8 +125,8 @@ random_iui (mpfi_function_ptr this)
   mpfi_alea (x, a);
   f_IUI (b, ui, a);
   f_RUR (y, ui, x, MPFI_RNDD);
-  if (!mpfi_is_inside_fr (y, b)) {
-    printf ("Error:\nthe interval b, image of (n, a), does not contain the "
+  if (!mpfr_nan_p (y) && !MPFI_NAN_P (b) && !mpfi_is_inside_fr (y, b)) {
+    printf ("Error: the interval b, image of (n, a), does not contain the "
             "point y, image of (n, x) where x is in a.\nn = %lu\na = ", ui);
     mpfi_out_str (stdout, 10, 0, a);
     printf ("\nb = ");

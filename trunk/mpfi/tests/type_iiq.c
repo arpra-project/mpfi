@@ -83,7 +83,6 @@ check_line_iiq (mpfi_function_ptr this)
   mpfi_set (got, op1);
 
   inex = f_IIQ (got, got, op2);
-
   if (inex != expected_inex || !same_value (got, expected)) {
     printf ("Error when reusing first input argument as output (line %lu)."
             "\nop1 = ", test_line_number);
@@ -128,8 +127,9 @@ random_iiq (mpfi_function_ptr this)
   mpfi_alea (x, a);
   f_IIQ (b, a, q);
   f_RRQ (y, x, q, MPFI_RNDD);
-  if (!mpfi_is_inside_fr (y, b)) {
-    printf ("Error:\nthe interval b, image of (a, q), does not contain "
+
+  if (!mpfr_nan_p (y) && !MPFI_NAN_P (b) && !mpfi_is_inside_fr (y, b)) {
+    printf ("Error: the interval b, image of (a, q), does not contain "
             "the point y, image of (x, q) where x is in a.\na = ");
     mpfi_out_str (stdout, 10, 0, a);
     printf ("\nq = ");

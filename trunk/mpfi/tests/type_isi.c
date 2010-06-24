@@ -125,8 +125,8 @@ random_isi (mpfi_function_ptr this)
   mpfi_alea (x, a);
   f_ISI (b, si, a);
   f_RSR (y, si, x, MPFI_RNDD);
-  if (!mpfi_is_inside_fr (y, b)) {
-    printf ("Error:\nthe interval b, image of (n, a), does not contain the "
+  if (!mpfr_nan_p (y) && !MPFI_NAN_P (b) && !mpfi_is_inside_fr (y, b)) {
+    printf ("Error: the interval b, image of (n, a), does not contain the "
             "point y, image of (n, x) where x is in a.\nn = %ld\na = ", si);
     mpfi_out_str (stdout, 10, 0, a);
     printf ("\nb = ");
