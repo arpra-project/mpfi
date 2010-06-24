@@ -79,7 +79,7 @@ check ()
     }
 
     mpfr_set_nan (&(interval->left));
-    if (mpfi_is_inside_si (a, interval)) {
+    if (mpfi_is_inside_ui (a, interval)) {
       print_error (a, interval);
     }
 
@@ -89,7 +89,7 @@ check ()
     }
 
     mpfr_set_nan (&(interval->right));
-    if (mpfi_is_inside_si (b, interval)) {
+    if (mpfi_is_inside_ui (b, interval)) {
       print_error (b, interval);
     }
 
