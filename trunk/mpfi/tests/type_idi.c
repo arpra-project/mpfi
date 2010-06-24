@@ -38,7 +38,7 @@ read_line_idi (mpfi_function_ptr this, FILE* fp)
   read_exactness (fp, &(MPFI_FUN_ARG (*this, 1, i)));
   /* [2] expected value */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 2, mpfi));
-  /* [3] signed double operand */
+  /* [3] double operand */
   read_double (fp, &(MPFI_FUN_ARG (*this, 3, d)));
   /* [4] mpfi_t operand */
   read_mpfi (fp, MPFI_FUN_ARG (*this, 4, mpfi));
