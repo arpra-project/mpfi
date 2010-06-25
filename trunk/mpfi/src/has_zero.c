@@ -30,7 +30,7 @@ MA 02110-1301, USA. */
 int
 mpfi_has_zero (mpfi_srcptr a)
 {
-  return (!MPFI_NAN_P (a)
-	  && (mpfr_cmp_ui (&(a->left), 0) <= 0)
-	  && (mpfr_cmp_ui (&(a->right), 0) >= 0) );
+  return (mpfr_cmp_ui (&(a->left), 0) <= 0
+	  && mpfr_cmp_ui (&(a->right), 0) >= 0
+          && !MPFI_NAN_P (a));
 }
