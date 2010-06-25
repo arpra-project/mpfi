@@ -23,11 +23,11 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tis_inside tis_inside_d tis_inside_fr tis_inside_q		\
     tis_inside_si tis_inside_ui tis_inside_z tis_neg		\
     tis_nonneg tis_nonpos tis_pos tis_strictly_inside		\
-    tis_strictly_neg tis_strictly_pos tlog tlog10 tlog1p	\
-    tlog2 tmag tmid tmig tmul tmul_2exp tmul_2si tmul_2ui	\
-    tmul_d tmul_fr tmul_q tmul_si tmul_ui tmul_z tneg tput_d	\
-    tput_fr tput_q tput_si tput_ui tput_z tq_div tq_sub		\
-    tround_prec tsec tsech tset tset_d tset_fr tset_q		\
+    tis_strictly_neg tis_strictly_pos tis_zero tlog tlog10	\
+    tlog1p tlog2 tmag tmid tmig tmul tmul_2exp tmul_2si		\
+    tmul_2ui tmul_d tmul_fr tmul_q tmul_si tmul_ui tmul_z	\
+    tneg tput_d tput_fr tput_q tput_si tput_ui tput_z tq_div	\
+    tq_sub tround_prec tsec tsech tset tset_d tset_fr tset_q	\
     tset_si tset_str tset_ui tset_z tsi_div tsi_sub tsin	\
     tsinh tsqr tsqrt tsub tsub_d tsub_fr tsub_q tsub_si		\
     tsub_ui tsub_z tswap ttan ttanh tui_div tui_sub tunion	\
