@@ -30,17 +30,19 @@ MA 02110-1301, USA. */
 int
 mpfi_nan_p (mpfi_srcptr a)
 {
-  return ( mpfr_nan_p (&(a->left)) || mpfr_nan_p (&(a->right)) );
+  return (mpfr_nan_p (&(a->left)) || mpfr_nan_p (&(a->right)));
 }
 
 int
 mpfi_inf_p (mpfi_srcptr a)
 {
-  return ( mpfr_inf_p (&(a->left)) || mpfr_inf_p (&(a->right)) );
+  return (mpfr_inf_p (&(a->left)) || mpfr_inf_p (&(a->right)))
+    && !MPFI_NAN_P (a);
 }
 
 int
 mpfi_bounded_p (mpfi_srcptr a)
 {
-  return ( mpfr_number_p (&(a->left)) && mpfr_number_p (&(a->right)) );
+  return (mpfr_number_p (&(a->left)) && mpfr_number_p (&(a->right))
+          && !MPFI_NAN_P (a));
 }

@@ -50,8 +50,9 @@ Changes between MPFI version 1.4 and ?
   Sisyphus 2010-01-19).
 * fix bug in mpfi_blow: the result could be underestimated when the factor was
   small compared to 1.
-* fix bug in mpfi_is_inside_x functions: they now return 0 (false) if one or
-  more of their operands is NaN.
-* fix bug in mpfi_is_pos, mpfi_is_strictly_pos, mpfi_is_nonneg, mpfi_is_neg,
-  mpfi_is_strictly_neg, and mpfi_is_nonpos: they now return 0 (false) if the
-  operand has a NaN as an endpoint.
+* the following functions now return 0 (false) if one or more of their
+  operands is NaN or has a NaN as an endpoint : mpfi_is_inside,
+  mpfi_is_inside_d, mpfi_is_inside_ui, mpfi_is_inside_si, mpfi_is_inside_z,
+  mpfi_is_inside_q, mpfi_is_inside_fr, mpfi_is_pos, mpfi_is_strictly_pos,
+  mpfi_is_nonneg, mpfi_is_neg, mpfi_is_strictly_neg, mpfi_is_nonpos,
+  mpfi_inf_p, mpfi_bounded_p
