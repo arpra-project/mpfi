@@ -18,7 +18,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_fr tdiv_q		\
     tdiv_si tdiv_ui tdiv_z terror texp texp2 texpm1 tfr_div	\
     tfr_sub tget_d tget_endpoints tget_fr thas_zero thypot	\
-    tincrease tinf_p tinit_set tintersect tinterv_d		\
+    tincrease tinf_p tinit tinit_set tintersect tinterv_d	\
     tinterv_fr tinterv_q tinterv_si tinterv_ui tinterv_z	\
     tinv tio_str tis_empty tis_inside tis_inside_d		\
     tis_inside_fr tis_inside_q tis_inside_si tis_inside_ui	\
