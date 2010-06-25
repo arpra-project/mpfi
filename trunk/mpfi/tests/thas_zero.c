@@ -26,8 +26,10 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+extern nextchar;
+
 static void
-error_message (mpfi_srcptr i)
+print_error (mpfi_srcptr i)
 {
   printf ("Error: mpfi_has_zero(I) returns wrong value.\nI = ");
   mpfi_out_str (stdout, 10, 0, i);
@@ -35,102 +37,31 @@ error_message (mpfi_srcptr i)
   exit (1);
 }
 
-static void
-test_special ()
-{
-  mpfi_t i;
-
-  mpfi_init2 (i, 53);
-
-  /* [nan, nan] */
-  mpfr_set_nan (&(i->left));
-  mpfr_set_nan (&(i->right));
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  /* [-17, nan] */
-  mpfr_set_si (&(i->left), -17, MPFI_RNDD);
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  /* [-inf, -inf] */
-  mpfr_set_inf (&(i->left), -1);
-  mpfr_set_inf (&(i->right), -1);
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  /* [-inf, 17] */
-  mpfr_set_ui (&(i->right), 17, MPFI_RNDD);
-  if (!mpfi_has_zero (i))
-    error_message (i);
-
-  /* [+0, +inf] */
-  mpfr_set_ui (&(i->left), 0, MPFI_RNDD);
-  mpfr_set_inf (&(i->right), +1);
-  if (!mpfi_has_zero (i))
-    error_message (i);
-
-  /* [+inf, +inf] */
-  mpfr_set_inf (&(i->left), +1);
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  /* [-inf, +inf] */
-  mpfr_set_inf (&(i->left), -1);
-  if (!mpfi_has_zero (i))
-    error_message (i);
-
-  /* [+0, -0] */
-  mpfi_set_ui (i, 0);
-  if (!mpfi_has_zero (i))
-    error_message (i);
-
-  mpfi_clear (i);
-}
-
-static void
-test_regular ()
-{
-  mpfi_t i;
-  mpfr_t x;
-
-  mpfr_init2 (x, 1024);
-  mpfi_init2 (i, 64);
-
-  mpfr_set_si_2exp (x, -0x7FFFFFFF, +654, MPFI_RNDD);
-  mpfi_set_fr (i, x);
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  mpfr_ui_div (x, 1, x, MPFI_RNDD);
-  mpfi_put_fr (i, x);
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  mpfr_neg (x, x, MPFI_RNDU);
-  mpfi_put_fr (i, x);
-  if (!mpfi_has_zero (i))
-    error_message (i);
-
-  mpfi_neg (i, i);
-  if (!mpfi_has_zero (i))
-    error_message (i);
-
-  mpfi_add_ui (i, i, 1);
-  if (mpfi_has_zero (i))
-    error_message (i);
-
-  mpfr_clear (x);
-  mpfi_clear (i);
-}
-
 int
 main (int argc, char **argv)
 {
-  test_start ();
-  test_special ();
-  test_regular ();
-  test_end ();
+  FILE *stream;
+  mpfi_t interval;
+  int expected;
+  int got;
+
+  mpfi_init2 (interval, 1024);
+
+  stream = open_file ("bounded_p.dat");
+
+  init_reading (stream);
+
+  while (nextchar != EOF) {
+    read_sign (stream, &expected);
+    read_mpfi (stream, interval);
+
+    got = mpfi_bounded_p (interval);
+    if (got != expected || got * expected < 0)
+      print_error (interval);
+  }
+
+  close_file (stream);
+  mpfi_clear (interval);
 
   return 0;
 }
