@@ -33,27 +33,32 @@ mpfi_csch (mpfi_ptr a, mpfi_srcptr b)
   mpfr_t tmp;
   int inexact_left, inexact_right, inexact=0;
 
-  if ( MPFI_NAN_P (b) ) {
+  if (MPFI_NAN_P (b)) {
     mpfr_set_nan (&(a->left));
     mpfr_set_nan (&(a->right));
     MPFR_RET_NAN;
   }
 
-  if ( MPFI_HAS_ZERO (b) ) {
+  if (MPFI_HAS_ZERO (b)) {
     mpfr_set_inf (&(a->left), -1);
     mpfr_set_inf (&(a->right), 1);
     return 0;
   }
-  else {
-    mpfr_init2 (tmp, mpfi_get_prec (a));
-    inexact_left = mpfr_csch (tmp, &(b->right), MPFI_RNDD);
-    inexact_right = mpfr_csch (&(a->right), &(b->left), MPFI_RNDU);
-    inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
-    mpfr_clear (tmp);
-  }
 
-  if ( MPFI_NAN_P (a) )
-    MPFR_RET_NAN;
+  mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
+  inexact_left = mpfr_csch (tmp, &(b->right), MPFI_RNDD);
+  inexact_right = mpfr_csch (&(a->right), &(b->left), MPFI_RNDU);
+  mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
+  mpfr_clear (tmp);
+
+  /* do not allow -0 as lower bound */
+  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+    mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+  }
+  /* do not allow +0 as upper bound */
+  if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+    mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+  }
 
   if (inexact_left)
     inexact += 1;
