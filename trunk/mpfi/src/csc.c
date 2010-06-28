@@ -30,7 +30,7 @@ MA 02110-1301, USA. */
 int
 mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
 {
-  int inexact_left, inexact_right, inexact;
+  int inexact_left, inexact_right, inexact = 0;
   mp_prec_t prec, prec_left, prec_right;
   mpfr_t tmp;
   mpz_t quad_left, quad_right;
@@ -61,15 +61,19 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
 
   prec_left = mpfi_quadrant (quad_left, &(b->left));
   prec_right = mpfi_quadrant (quad_right, &(b->right));
+  if (mpfr_zero_p (&(b->right))) {
+    /* -0 is in quadrant -1 */
+    mpz_sub_ui (quad_right, quad_right, 1);
+  }
 
   /* if there is at least one period in b or if b contains a k*Pi, */
   /* then a = ]-oo, +oo[ */
   mpz_sub (z, quad_right, quad_left);
-  if ( (mpz_cmp_ui (z, 2) >= 0) ||
-       (mpz_odd_p (quad_left) && mpz_even_p (quad_right)) ) {
+  if (mpz_cmp_ui (z, 2) >= 0
+      || (mpz_odd_p (quad_left) && mpz_even_p (quad_right))
+      || MPFI_IS_ZERO (b)) {
     mpfr_set_inf (&(a->left), -1);
     mpfr_set_inf (&(a->right), 1);
-    inexact = 0;
   }
   else {
     /* computing precision = maximal precision required to determine the          */
@@ -87,8 +91,8 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
     mpz_mod_ui (zmod4, quad_right, 4);
     qr_mod4 = mpz_get_ui (zmod4);
 
-    /* quad_left gives the quadrant where the left endpoint of b is */
-    /* quad_left = floor (2 b->left / pi) mod 4 */
+    /* ql_mod4 gives the quadrant where the left endpoint of b is */
+    /* ql_mod4 = floor (2 b->left / pi) mod 4 */
     mpz_mod_ui (zmod4, quad_left, 4);
     ql_mod4 = mpz_get_ui (zmod4);
 
