@@ -33,7 +33,7 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
   int inexact_left, inexact_right, inexact;
   mp_prec_t prec, prec_left, prec_right;
   mpfr_t tmp;
-  mpz_t z_left, z_right;
+  mpz_t quad_left, quad_right;
   mpz_t z, zmod4;
   int ql_mod4, qr_mod4;
 
@@ -55,18 +55,18 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
     return 0;
   }
 
-  mpz_init (z_left);
-  mpz_init (z_right);
+  mpz_init (quad_left);
+  mpz_init (quad_right);
   mpz_init (z);
 
-  prec_left = mpfi_quadrant (z_left, &(b->left));
-  prec_right = mpfi_quadrant (z_right, &(b->right));
+  prec_left = mpfi_quadrant (quad_left, &(b->left));
+  prec_right = mpfi_quadrant (quad_right, &(b->right));
 
   /* if there is at least one period in b or if b contains a k*Pi, */
   /* then a = ]-oo, +oo[ */
-  mpz_sub (z, z_right, z_left);
+  mpz_sub (z, quad_right, quad_left);
   if ( (mpz_cmp_ui (z, 2) >= 0) ||
-       (mpz_odd_p (z_left) && mpz_even_p (z_right)) ) {
+       (mpz_odd_p (quad_left) && mpz_even_p (quad_right)) ) {
     mpfr_set_inf (&(a->left), -1);
     mpfr_set_inf (&(a->right), 1);
     inexact = 0;
@@ -84,12 +84,12 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
 
     /* qr_mod4 gives the quadrant where the right endpoint of b is */
     /* qr_mod4 = floor (2 b->right / pi) mod 4 */
-    mpz_mod_ui (zmod4, z_right, 4);
+    mpz_mod_ui (zmod4, quad_right, 4);
     qr_mod4 = mpz_get_ui (zmod4);
 
-    /* z_left gives the quadrant where the left endpoint of b is */
-    /* z_left = floor (2 b->left / pi) mod 4 */
-    mpz_mod_ui (zmod4, z_left, 4);
+    /* quad_left gives the quadrant where the left endpoint of b is */
+    /* quad_left = floor (2 b->left / pi) mod 4 */
+    mpz_mod_ui (zmod4, quad_left, 4);
     ql_mod4 = mpz_get_ui (zmod4);
 
 
@@ -107,7 +107,7 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
       }
     }
     else if (ql_mod4 == 2) {
-      mpz_add (z, z_left, z_right);
+      mpz_add (z, quad_left, quad_right);
       mpz_add_ui (z, z, 1);
       if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
 	inexact_left = mpfr_csc (&(a->left), &(b->left), GMP_RNDD);
@@ -116,7 +116,7 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
       inexact_right = mpfr_set_si (&(a->right), -1, GMP_RNDU);
     }
     else {
-      mpz_add (z, z_left, z_right);
+      mpz_add (z, quad_left, quad_right);
       mpz_add_ui (z, z, 1);
       if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
 	inexact_right = mpfr_csc (&(a->right), &(b->left), GMP_RNDU);
@@ -132,8 +132,8 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
     mpfr_clear (tmp);
   }
 
-  mpz_clear (z_left);
-  mpz_clear (z_right);
+  mpz_clear (quad_left);
+  mpz_clear (quad_right);
 
   return inexact;
 }
