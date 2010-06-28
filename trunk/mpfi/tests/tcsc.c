@@ -49,7 +49,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_csc, "csc.dat"); */
+  check_data (&i_csc, "csc.dat");
   check_random (&i_csc, 2, 1000, 10);
 
   test_end ();
