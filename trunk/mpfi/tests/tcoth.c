@@ -26,16 +26,6 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static int
-restrict_domain (mpfi_ptr a)
-{
-  if (MPFI_HAS_ZERO_NONSTRICT (a)) {
-    /* translate a <- a - left + 1 */
-    mpfi_sub_fr (a, a, &(a->left));
-    mpfi_add_ui (a, a, +1);
-  }
-}
-
 int
 main (int argc, char **argv)
 {
@@ -44,13 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_II (&i_coth, mpfi_coth, mpfr_coth);
   test_start ();
 
-/*   check_data (&i_coth, "coth.dat"); */
-
-#if MPFR_VERSION < MPFR_VERSION_NUM(2, 4, 2)
-  /* mpfr_coth is bugged: returns wrong value for +-0 */
-    mpfi_restrict_random (&i_coth, restrict_domain);
-#endif
-
+  check_data (&i_coth, "coth.dat");
   check_random (&i_coth, 2, 1000, 10);
 
   test_end ();
