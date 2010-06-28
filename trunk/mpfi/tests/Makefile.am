@@ -36,10 +36,11 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
 
 EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     add_fr.dat add_q.dat add_si.dat add_ui.dat add_z.dat	\
-    asin.dat asinh.dat atan.dat atan2.dat atanh.dat blow.dat	\
-    bounded_p.dat cbrt.dat const_catalan.dat const_euler.dat	\
-    const_log2.dat const_pi.dat cos.dat cosh.dat cot.dat	\
-    diam.dat diam_abs.dat diam_rel.dat div.dat has_zero.dat	\
+    asin.dat asinh.dat atan.dat atan2.dat atanh.dat		\
+    bisect.dat blow.dat bounded_p.dat cbrt.dat			\
+    const_catalan.dat const_euler.dat const_log2.dat		\
+    const_pi.dat cos.dat cosh.dat cot.dat diam.dat		\
+    diam_abs.dat diam_rel.dat div.dat has_zero.dat		\
     increase.dat inf_p.dat inp_str.dat intersect.dat inv.dat	\
     is_neg.dat is_nonneg.dat is_nonpos.dat is_pos.dat		\
     is_strictly_neg.dat is_strictly_pos.dat log.dat mag.dat	\
