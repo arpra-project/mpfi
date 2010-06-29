@@ -42,16 +42,19 @@ mpfi_d_div (mpfi_ptr a, const double b, mpfi_srcptr c)
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if (mpfr_inf_p (&(a->left))  && MPFI_LEFT_IS_INEXACT (inexact_div))   /* overflow */
-    inexact += 1;
-  if (mpfr_inf_p (&(a->right)) && MPFI_RIGHT_IS_INEXACT (inexact_div))  /* overflow */
-    inexact += 2;
   if (mpfi_bounded_p (a)) {
     if (inexact_set) /* if the conversion of b into a mpfi is inexact,
                         then so are both endpoints of the result.      */
       inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
     else
       inexact = inexact_div;
+  }
+  else {
+    /* this also treats overflow cases */
+    if (MPFI_LEFT_IS_INEXACT (inexact_div))
+      inexact += 1;
+    if (MPFI_RIGHT_IS_INEXACT (inexact_div))
+      inexact += 2;
   }
 
   if (mpfi_revert_if_needed (a)) {
