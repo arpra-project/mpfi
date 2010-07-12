@@ -30,7 +30,7 @@ MA 02110-1301, USA. */
 int
 mpfi_sec (mpfi_ptr a, mpfi_srcptr b)
 {
-  int inexact_left, inexact_right, inexact;
+  int inexact_left, inexact_right, inexact = 0;
   mp_prec_t prec, prec_left, prec_right;
   mpfr_t tmp;
   mpz_t z_left, z_right;
