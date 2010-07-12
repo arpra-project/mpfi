@@ -49,7 +49,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_sec, "sec.dat"); */
+  check_data (&i_sec, "sec.dat");
   check_random (&i_sec, 2, 1000, 10);
 
   test_end ();
