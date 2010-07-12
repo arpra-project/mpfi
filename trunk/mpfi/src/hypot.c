@@ -34,6 +34,26 @@ mpfi_hypot (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
   mpfi_t tmp;
   int bmax_left_p, cmax_left_p;
 
+  if (MPFI_NAN_P (b) || MPFI_NAN_P (c)) {
+    /* hypot (y, +-inf) = hypot (+-inf, y) = +inf even if y is NaN */
+    if (MPFI_NAN_P (b)
+        && mpfr_inf_p (&(c->left)) && mpfr_inf_p (&(c->right))
+        && mpfr_equal_p (&(c->left), &(c->right))) {
+      mpfi_abs (a, c);
+      return inexact;
+    }
+    else if (MPFI_NAN_P (c)
+             && mpfr_inf_p (&(b->left)) && mpfr_inf_p (&(b->right))
+             && mpfr_equal_p (&(b->left), &(b->right))) {
+      mpfi_abs (a, b);
+      return inexact;
+    }
+
+    mpfr_set_nan (&(a->left));
+    mpfr_set_nan (&(a->right));
+    MPFR_RET_NAN;
+  }
+
   mpfi_init2 (tmp, mpfi_get_prec (a));
 
   bmax_left_p = mpfr_cmp_abs (&(b->left), &(b->right)) > 0;
