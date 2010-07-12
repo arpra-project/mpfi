@@ -50,7 +50,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_log10, "log10.dat"); */
+  check_data (&i_log10, "log10.dat");
   check_random (&i_log10, 2, 512, 10);
 
   test_end ();
