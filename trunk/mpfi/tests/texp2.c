@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_II (&i_exp2, mpfi_exp2, mpfr_exp2);
   test_start ();
 
-/*   check_data (&i_exp2, "exp2.dat"); */
+  check_data (&i_exp2, "exp2.dat");
   check_random (&i_exp2, 2, 512, 10);
 
   test_end ();
