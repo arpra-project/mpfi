@@ -33,10 +33,10 @@ mpfi_acos (mpfi_ptr a, mpfi_srcptr b)
   mpfr_t tmp;
   int inexact_left, inexact_right, inexact=0;
 
-  mpfr_init2 (tmp, mpfi_get_prec (a));
+  mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
   inexact_left = mpfr_acos (tmp, &(b->right), MPFI_RNDD);
   inexact_right = mpfr_acos (&(a->right), &(b->left), MPFI_RNDU);
-  inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
+  mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
   mpfr_clear (tmp);
 
   if ( MPFI_NAN_P (a) )
