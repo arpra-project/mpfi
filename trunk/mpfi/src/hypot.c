@@ -82,9 +82,6 @@ mpfi_hypot (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
   mpfi_set (a, tmp);
   mpfi_clear (tmp);
 
-  if ( MPFI_NAN_P (a) )
-    MPFR_RET_NAN;
-
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
