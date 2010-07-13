@@ -54,11 +54,6 @@ mpfi_sub (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     if (inexact_right)
       inexact += 2;
 
-    if (mpfi_revert_if_needed (a)) { 
-      WARNING_REVERTED_ENDPOINTS (a, "mpfi_sub");
-      inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-    }
-
     return inexact;
   }
 }

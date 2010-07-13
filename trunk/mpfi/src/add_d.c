@@ -54,10 +54,5 @@ mpfi_add_d (mpfi_ptr a, mpfi_srcptr b, const double c)
   else if (MPFI_RIGHT_IS_INEXACT (inexact_set) || MPFI_RIGHT_IS_INEXACT (inexact_add))
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_add_d");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

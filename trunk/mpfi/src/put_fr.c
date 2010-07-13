@@ -65,10 +65,5 @@ mpfi_put_fr (mpfi_ptr a, mpfr_srcptr b)
   if (inexact_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_put_fr");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

@@ -54,10 +54,5 @@ mpfi_mul_z (mpfi_ptr a, mpfi_srcptr b, mpz_srcptr c)
       inexact = inexact_mul;
   }
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_mul_z");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

@@ -57,10 +57,5 @@ mpfi_d_div (mpfi_ptr a, const double b, mpfi_srcptr c)
       inexact += 2;
   }
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_d_div");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

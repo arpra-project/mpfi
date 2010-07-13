@@ -44,10 +44,5 @@ mpfi_mul_2si (mpfi_ptr a, mpfi_srcptr b, long c)
   if (inexact_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_mul_2si");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

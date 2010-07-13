@@ -58,10 +58,5 @@ mpfi_add_si (mpfi_ptr a, mpfi_srcptr b, const long c)
   else if (MPFI_RIGHT_IS_INEXACT (inexact_add))
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_add_si");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

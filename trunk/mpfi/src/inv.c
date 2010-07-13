@@ -56,11 +56,6 @@ mpfi_inv (mpfi_ptr a, mpfi_srcptr b)
         inexact += 1;
       if (inexact_right)
         inexact += 2;
-      if (mpfi_revert_if_needed (a)) {
-        /* Not an error, but due to lazy programming */
-	WARNING_REVERTED_ENDPOINTS (a, "mpfi_inv");
-        inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-      }
       mpfr_clear (tmp);
   }
 

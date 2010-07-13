@@ -47,10 +47,5 @@ mpfi_interv_z (mpfi_ptr a, mpz_srcptr b, mpz_srcptr c)
   if (inexact_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_interv_z");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

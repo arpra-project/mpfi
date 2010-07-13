@@ -52,10 +52,5 @@ mpfi_q_div (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
     /* note that inexact_div is correct even in case of overflow */
     inexact = inexact_div;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_q_div");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

@@ -50,11 +50,6 @@ mpfi_set_q (mpfi_ptr a, mpq_srcptr b)
   if (inexact_right)
     inexact += 2;
 
-  if ( mpfi_revert_if_needed (a) ) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_set_q");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }
 
@@ -81,11 +76,6 @@ mpfi_init_set_q (mpfi_ptr a, mpq_srcptr b)
     inexact += 1;
   if (inexact_right)
     inexact += 2;
-
-  if ( mpfi_revert_if_needed (a) ) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_init_set_q");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
 
   return inexact;
 }

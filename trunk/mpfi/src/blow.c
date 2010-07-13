@@ -95,10 +95,5 @@ mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
       || inex_centre || inex_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (y)) {
-    WARNING_REVERTED_ENDPOINTS (y, "mpfi_blow");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

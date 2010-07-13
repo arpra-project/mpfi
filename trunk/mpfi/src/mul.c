@@ -161,10 +161,5 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
   if (inexact_right || inexact_set_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_mul");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

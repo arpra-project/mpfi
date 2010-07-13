@@ -48,10 +48,5 @@ mpfi_neg (mpfi_ptr a, mpfi_srcptr b)
   if (inexact_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_neg");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }

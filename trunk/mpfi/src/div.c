@@ -113,11 +113,6 @@ mpfi_div (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
   if (inexact_right)
     inexact += 2;
 
-  if (mpfi_revert_if_needed (a)) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_div");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   /* do not allow -0 as lower bound */
   if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
     mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);

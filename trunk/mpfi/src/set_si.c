@@ -47,11 +47,6 @@ mpfi_set_si (mpfi_ptr a, const long b)
   if (inexact_right)
     inexact += 2;
 
-  if ( mpfi_revert_if_needed (a) ) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_set_si");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
-
   return inexact;
 }
 
@@ -75,11 +70,6 @@ mpfi_init_set_si (mpfi_ptr a, const long b)
     inexact += 1;
   if (inexact_right)
     inexact += 2;
-
-  if ( mpfi_revert_if_needed (a) ) {
-    WARNING_REVERTED_ENDPOINTS (a, "mpfi_init_set_si");
-    inexact = MPFI_REVERT_INEXACT_FLAGS (inexact);
-  }
 
   return inexact;
 }
