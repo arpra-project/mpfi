@@ -31,7 +31,6 @@ int
 mpfi_abs (mpfi_ptr a, mpfi_srcptr b)
 {
   /* the result a contains the absolute values of every element of b */
-  mpfr_t tmp;
   int inexact_right, inexact = 0;
 
   if (MPFI_NAN_P (b)) {
@@ -45,16 +44,13 @@ mpfi_abs (mpfi_ptr a, mpfi_srcptr b)
   else if (MPFI_IS_NONPOS (b))
     inexact = mpfi_neg (a, b);
   else { /* b contains 0 */
-    mpfr_init2 (tmp, mpfi_get_prec (a));
-    inexact_right = mpfr_neg (tmp, &(b->left), MPFI_RNDU);
-    if (mpfr_cmp (tmp, &(b->right)) < 0) {
+    if (mpfr_cmpabs (&(b->left), &(b->right)) < 0) {
       inexact_right = mpfr_set (&(a->right), &(b->right), MPFI_RNDU);
     }
     else {
-      inexact_right |= mpfr_set (&(a->right), tmp, MPFI_RNDU);
+      inexact_right = mpfr_neg (&(a->right), &(b->left), MPFI_RNDU);
     }
     mpfr_set_si (&(a->left), 0, MPFI_RNDD);
-    mpfr_clear (tmp);
 
     if (inexact_right)
       inexact += 2;
