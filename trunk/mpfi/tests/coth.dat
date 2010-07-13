@@ -17,7 +17,7 @@
 0 53  nan                     nan                     53  nan   -0
 0 53  nan                     nan                     53   +0  nan
 0 53  nan                     nan                     53 -inf  nan
-0 53  nan                     nan                     53 -inf -inf
+0 53 -1                      -1                       53 -inf -inf
 1 53 -0x100001be6c882fp-52   -1                       53 -inf   -7
 # Note: mpfr_coth(+/- 0) returned a wrong value up to mpfr-2.4.2
 0 53 -inf                    -1                       53 -inf   -0
