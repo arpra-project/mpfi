@@ -44,20 +44,18 @@ mpfi_cosh (mpfi_ptr a, mpfi_srcptr b)
     inexact_right = mpfr_cosh (&(a->right), &(b->right), MPFI_RNDU);
   }
   else if ( MPFI_HAS_ZERO (b) ) {
-    mpfr_init2 (tmp, mpfi_get_prec (a));
-    inexact_right = mpfr_neg (tmp, &(b->left), MPFI_RNDU);
-    if (mpfr_cmp (tmp, &(b->right)) > 0)
-      inexact_right |= mpfr_cosh ( &(a->right), tmp, MPFI_RNDU);
+    if (mpfr_cmpabs (&(b->left), &(b->right)) > 0)
+      inexact_right = mpfr_cosh (&(a->right), &(b->left), MPFI_RNDU);
     else
       inexact_right = mpfr_cosh ( &(a->right), &(b->right), MPFI_RNDU);
     inexact_left = mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
-    mpfr_clear (tmp);
+
   }
   else { /* b <= 0 */
-    mpfr_init2 (tmp, mpfi_get_prec (a));
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
     inexact_left = mpfr_cosh (tmp, &(b->right), MPFI_RNDD);
     inexact_right = mpfr_cosh (&(a->right), &(b->left), MPFI_RNDU);
-    inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear (tmp);
   }
 
