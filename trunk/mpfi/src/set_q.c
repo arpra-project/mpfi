@@ -36,10 +36,6 @@ mpfi_set_q (mpfi_ptr a, mpq_srcptr b)
   inexact_left = mpfr_set_q (&(a->left), b, MPFI_RNDD);
   inexact_right = mpfr_set_q (&(a->right), b, MPFI_RNDU);
 
-  /* do not allow -0 as lower bound */
-  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
-    mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
-  }
   /* do not allow +0 as upper bound */
   if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
     mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
@@ -63,10 +59,6 @@ mpfi_init_set_q (mpfi_ptr a, mpq_srcptr b)
   inexact_left = mpfr_init_set_q (&(a->left), b, MPFI_RNDD);
   inexact_right = mpfr_init_set_q (&(a->right), b, MPFI_RNDU);
 
-  /* do not allow -0 as lower bound */
-  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
-    mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
-  }
   /* do not allow +0 as upper bound */
   if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
     mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);

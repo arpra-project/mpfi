@@ -40,11 +40,6 @@ mpfi_put_q (mpfi_ptr a, mpq_srcptr b)
 
   if (mpfr_cmp_q (&(a->left), b) > 0 ) {
     inexact_left = mpfr_set_q (&(a->left), b, MPFI_RNDD);
-
-    /* do not allow -0 as lower bound */
-    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
-      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
-    }
   }
   else if (mpfr_cmp_q (&(a->right), b) < 0 ) {
     inexact_right = mpfr_set_q (&(a->right), b, MPFI_RNDU);
