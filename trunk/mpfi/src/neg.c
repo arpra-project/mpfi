@@ -34,10 +34,10 @@ mpfi_neg (mpfi_ptr a, mpfi_srcptr b)
   mpfr_t tmp;
   int inexact_left, inexact_right, inexact=0;
 
-  mpfr_init2 (tmp, mpfi_get_prec (a));
+  mpfr_init2 (tmp, mpfr_get_prec (&(a->right)));
   inexact_right = mpfr_set (tmp, &(b->left), MPFI_RNDD);
   inexact_left = mpfr_neg (&(a->left), &(b->right), MPFI_RNDD);
-  inexact_right |= mpfr_neg (&(a->right), tmp, MPFI_RNDU);
+  mpfr_neg (&(a->right), tmp, MPFI_RNDU); /* exact */
   mpfr_clear (tmp);
 
   if (MPFI_NAN_P (a))

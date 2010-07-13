@@ -48,15 +48,16 @@ mpfi_inv (mpfi_ptr a, mpfi_srcptr b)
     mpfr_set_inf (&(a->right), 1);
   }
   else { /* signed zeroes and Infinity are properly handled by MPFR */
-      mpfr_init2 (tmp, mpfi_get_prec (a));
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->right)));
       inexact_right = mpfr_ui_div (tmp, 1, &(b->left), MPFI_RNDU);
       inexact_left = mpfr_ui_div (&(a->left), 1, &(b->right), MPFI_RNDD);
-      inexact_right |= mpfr_set (&(a->right), tmp, MPFI_RNDU);
+      mpfr_set (&(a->right), tmp, MPFI_RNDU); /* exact */
+      mpfr_clear (tmp);
+
       if (inexact_left)
         inexact += 1;
       if (inexact_right)
         inexact += 2;
-      mpfr_clear (tmp);
   }
 
   /* do not allow -0 as lower bound */
