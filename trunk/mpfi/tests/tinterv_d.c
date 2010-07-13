@@ -107,8 +107,8 @@ main (int argc, char **argv)
 
   mpfr_set_nan (x);
   a = mpfr_get_d (x, MPFI_RNDD); /* a = NaN, if supported */
-  check (i, a, b, x, x, MPFI_FLAGS_BOTH_ENDPOINTS_EXACT);
-  check (i, b, a, x, x, MPFI_FLAGS_BOTH_ENDPOINTS_EXACT);
+  check (i, a, b, y, x, MPFI_FLAGS_BOTH_ENDPOINTS_EXACT);
+  check (i, b, a, x, y, MPFI_FLAGS_BOTH_ENDPOINTS_EXACT);
   check (i, a, a, x, x, MPFI_FLAGS_BOTH_ENDPOINTS_EXACT);
 
   mpfr_set_ui (x, 0, MPFI_RNDD);
