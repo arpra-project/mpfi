@@ -35,7 +35,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_tanh, "tanh.dat"); */
+  check_data (&i_tanh, "tanh.dat");
   check_random (&i_tanh, 2, 1000, 10);
 
   test_end ();
