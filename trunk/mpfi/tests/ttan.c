@@ -49,7 +49,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_tan, "tan.dat"); */
+  check_data (&i_tan, "tan.dat");
   check_random (&i_tan, 2, 1000, 10);
 
   test_end ();
