@@ -49,7 +49,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_sin, "sin.dat"); */
+  check_data (&i_sin, "sin.dat");
   check_random (&i_sin, 2, 1000, 10);
 
   test_end ();
