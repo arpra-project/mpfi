@@ -80,8 +80,8 @@ init_reading (FILE* f)
 int
 same_mpfr_value (mpfr_srcptr got, mpfr_srcptr ref)
 {
-  if (mpfr_nan_p (got))
-    return mpfr_nan_p (ref);
+  if (mpfr_nan_p (got) || mpfr_nan_p (ref))
+    return mpfr_nan_p (ref) && mpfr_nan_p (got);
   if (mpfr_inf_p (got))
     return mpfr_inf_p (ref) && mpfr_signbit (got) == mpfr_signbit (ref);
   if (mpfr_zero_p (got))
