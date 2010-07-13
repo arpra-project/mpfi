@@ -61,7 +61,7 @@ mpfi_inp_str (mpfi_ptr x, FILE *s, int base)
   else {
     /* interval given by two endpoints between square brackets */
     /* the interval is copied into a string and handled by mpfi_set_str */
-    str = (char *)(*__gmp_allocate_func)(size);
+    str = (char *)(*mpfi_allocate_func)(size);
 
     pos = 0;
     str[pos++] = '[';
@@ -72,14 +72,14 @@ mpfi_inp_str (mpfi_ptr x, FILE *s, int base)
         break;
       str[pos++] = c;
       if (pos == size) {
-        str = (char *)(*__gmp_reallocate_func)(str, size, 2 * size);
+        str = (char *)(*mpfi_reallocate_func)(str, size, 2 * size);
         size *= 2;
       }
     }
     str[pos]='\0';
 
     t = mpfi_set_str (x, str, base);
-    (*__gmp_free_func)(str, size);
+    (*mpfi_free_func)(str, size);
 
     return t == 0 ? blank + pos : 0;
   }
