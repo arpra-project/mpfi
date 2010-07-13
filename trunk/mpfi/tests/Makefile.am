@@ -50,7 +50,8 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     neg.dat put_d.dat put_fr.dat put_q.dat put_si.dat		\
     put_ui.dat put_z.dat q_div.dat sec.dat sech.dat		\
     set_d.dat set_fr.dat set_q.dat set_si.dat set_ui.dat	\
-    set_z.dat sin.dat sqr.dat sqrt.dat sub.dat union.dat
+    set_z.dat sin.dat sinh.dat sqr.dat sqrt.dat sub.dat		\
+    union.dat
 
 TESTS = $(check_PROGRAMS)
 CLEANFILES = io_str.tmp
