@@ -31,33 +31,6 @@ MA 02110-1301, USA. */
 #define MPFI_RNDD GMP_RNDD
 #define MPFI_RNDU GMP_RNDU
 
-/* Return values for MPFI:
-   case where the two endpoints are exact, where only the left one is exact,
-   where only the right one is exact, where both are inexact.
-   Not very proud of that: it depends explicitely on the representation by endpoints...
-*/
-
-/* move in mpfi.h
-#define MPFI_FLAGS_BOTH_ENDPOINTS_EXACT       0
-#define MPFI_FLAGS_LEFT_ENDPOINT_INEXACT      1
-#define MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT     2
-#define MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT     3
-
-#define MPFI_BOTH_ARE_EXACT(x) ( (int)(x) == 0 )
-#define MPFI_LEFT_IS_INEXACT(x) ( (int)(x)%2 )
-#define MPFI_RIGHT_IS_INEXACT(x) ( (int)(x)/2 )
-#define MPFI_BOTH_ARE_INEXACT(x) ( (int)(x) == 3 )
-
-#define MPFI_REVERT_INEXACT_FLAGS(x) \
-  ( ((x)==1) ? 2 : ((x)==2) ? 1 : x )
-
-#define MPFI_NAN_P(a) ( MPFR_IS_NAN(&(a->left)) || MPFR_IS_NAN (&(a->right)) )
-#define MPFI_INF_P(a) ( MPFR_IS_INF(&(a->left)) || MPFR_IS_INF (&(a->right)) )
-#define MPFI_IS_ZERO(a)  (MPFI_NAN_P(a) ? 0 : ((mpfr_sgn(&(a->right))==0) && (mpfr_sgn(&(a->left))==0)))
-
-#define MPFI_CLEAR(m) {mpfr_clear(&(m->right)); mpfr_clear(&(m->left));}
-*/
-
 #define MPFI_IS_POS(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>0))
 #define MPFI_IS_STRICTLY_POS(x) ((mpfr_sgn((&(x->left)))>0) && (mpfr_sgn((&(x->right)))>0))
 #define MPFI_IS_NONNEG(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>=0))
