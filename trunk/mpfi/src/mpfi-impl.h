@@ -63,22 +63,6 @@ MA 02110-1301, USA. */
 #define MPFR_IS_ZERO(x) (mpfr_sgn(x) == 0)
 #define MPFR_IS_INF(x)  (mpfr_inf_p(x))
 
-#ifdef mp_get_memory_functions
-
-#undef __gmp_allocate_func
-#undef __gmp_reallocate_func
-#undef __gmp_free_func
-#define MPFR_GET_MEMFUNC mp_get_memory_functions(&mpfi_allocate_func, &mpfi_reallocate_func, &mpfi_free_func)
-#define __gmp_allocate_func   (MPFR_GET_MEMFUNC, mpfi_allocate_func)
-#define __gmp_reallocate_func (MPFR_GET_MEMFUNC, mpfi_reallocate_func)
-#define __gmp_free_func       (MPFR_GET_MEMFUNC, mpfi_free_func)
-
-extern void * (*mpfi_allocate_func)   (size_t);
-extern void * (*mpfi_reallocate_func) (void *, size_t, size_t);
-extern void   (*mpfi_free_func)       (void *, size_t);
-
-#endif
-
 /* Internal functions */
 
 #if defined (__cplusplus)
