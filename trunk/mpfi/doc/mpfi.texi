@@ -1,7 +1,7 @@
 \input texinfo    @c -*-texinfo-*-
 @c %**start of header
 @setfilename mpfi.info
-@settitle MPFI 1.4.
+@settitle MPFI 1.5.
 @synindex tp fn
 @iftex
 @afourpaper
@@ -31,7 +31,7 @@ This file documents MPFI, a library for interval arithmetic,
 which is part of the MPFR multiple precision floating-point
 arithmetic library
 
-Copyright (C) 2002-2009, Spaces team, INRIA Lorraine and LORIA, France,
+Copyright (C) 2002-2010, Spaces team, INRIA Lorraine and LORIA, France,
 Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France,
 and Lab. ANO, University of Sciences and Technologies of Lille, France.
 
@@ -61,11 +61,11 @@ by the Free Software Foundation.
 @titlepage
 @c  use the new format for titles
 
-@title MPFI 1.4.
+@title MPFI 1.5.
 @subtitle Multiple Precision Floating-Point Interval Library
-@subtitle April 2009
+@subtitle July 2010
 
-@author Spaces, INRIA Lorraine, 
+@author Spaces, INRIA Lorraine,
 @author Arenaire, INRIA Rhone-Alpes,
 @author Lab. ANO, USTL (Univ. of Lille)
 
@@ -103,7 +103,7 @@ by the Free Software Foundation.
 @ifinfo
 @node Top, Copying, (dir), (dir)
 
-@top MPFI 1.4.
+@top MPFI 1.5.
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
