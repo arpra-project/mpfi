@@ -27,9 +27,9 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 void
-mpfi_restrict_random (mpfi_function_ptr func, I_fun restrict)
+mpfi_restrict_random (mpfi_function_ptr func, I_fun restriction)
 {
-  func->random_domain = restrict;
+  func->random_domain = restriction;
 }
 
 void
