@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 #ifndef __MPFI_IMPL_H__
 #define __MPFI_IMPL_H__
 
-#include <mpfi_config.h>
+#include "mpfi_config.h"
 
 #define MPFI_RNDD GMP_RNDD
 #define MPFI_RNDU GMP_RNDU
