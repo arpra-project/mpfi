@@ -239,7 +239,7 @@ In the MPFI source directory, type the following commands.
 
 @enumerate
 @item
-@samp {./configure}
+@samp{./configure}
 
 This will prepare the build and setup the options according to your system.
 

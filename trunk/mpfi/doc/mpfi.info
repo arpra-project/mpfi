@@ -10,7 +10,7 @@ END-INFO-DIR-ENTRY
    This file documents MPFI, a library for interval arithmetic, which
 is part of the MPFR multiple precision floating-point arithmetic library
 
-   Copyright (C) 2002-2009, Spaces team, INRIA Lorraine and LORIA,
+   Copyright (C) 2002-2010, Spaces team, INRIA Lorraine and LORIA,
 France, Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France, and
 Lab. ANO, University of Sciences and Technologies of Lille, France.
 
@@ -31,7 +31,7 @@ translation approved by the Free Software Foundation.
 
 File: mpfi.info,  Node: Top,  Next: Copying,  Prev: (dir),  Up: (dir)
 
-MPFI 1.4.
+MPFI 1.5.
 *********
 
 This manual documents how to install and use the Multiple Precision
@@ -136,54 +136,82 @@ File: mpfi.info,  Node: Installing MPFI,  Next: Reporting Bugs,  Prev: Introduct
 2 Installing MPFI
 *****************
 
-To build MPFI, you first have to install MPFR (version 2.0 or above) on
-your computer.  You need a C compiler, preferably GCC, but any
+To build MPFI, you first have to install MPFR (version 3.2.0 or above)
+on your computer.  You need a C compiler, preferably GCC, but any
 reasonable compiler should work.  And you need a standard Unix `make'
 program, plus some other standard Unix utility programs.
 
    Here are the steps needed to install the MPFI library on Unix
-systems:
+systems.  In the MPFI source directory, type the following commands.
 
-  1. Edit the file `Makefile' and set the various variables: set `CC'
-     to your C compiler, `COPT' to the optimization options for the
-     compiler, `C_EXTRA_FLAGS' to some other useful options (`-static'
-     may reveal useful) and `AR', `LD' to the proper  utilities.  Also
-     set `GMP_INCLUDE' to the directory containing the GNU MP header
-     files and `GMP_LIB' to the GNU MP library directory. Similarly,
-     set `MPFR_INCLUDE' to the directory containing the MPFR header
-     files and `MPFR_LIB'  to the directory containing the MPFR library
-     files.
+  1. `./configure'
 
-  2. `make all'
+     This will prepare the build and setup the options according to
+     your system.
+
+     You can specify the path to GMP and MPFR libraries with configure
+     options: `--with-gmp=DIR' assumes that GMP is installed in the
+     `DIR' directory.  Alternatively, you can use the
+     `--with-gmp-lib=DIR' and `--with-gmp-include=DIR' to specify
+     respectively the GMP lib and GMP include directories.  Options
+     `--with-mpfr=DIR', `--with-mpfr-include', and
+     `--with-mpfr-lib=DIR' have the same usage for the MPFR library.
+
+     See the `INSTALL' file and the output of `./configure --help' for
+     a description of standard options.
+
+  2. `make'
 
      This will compile MPFI, and create a library archive file
-     `libmpfi.a' in the working directory.
+     `libmpfi.a'.  On most platforms, a dynamic library will be
+     produced too.
 
-  3. `make tests'
+  3. `make check'
 
-     This will make some random tests in order to check whether MPFI
-     was built correctly.  If you get error messages from the test
-     program, please report this to `Nathalie.Revol@ens-lyon.fr,
-     Fabrice.Rouillier@loria.fr, sylvain.chevillard@ens-lyon.org,
-     christoph.lauter@ens-lyon.org, hong.diep.nguyen@ens-lyon.fr'.
-     (*Note Reporting Bugs::, for information on what to include in
-     useful bug reports.)
+     This will make sure MPFI was built correctly.  If you get error
+     messages from the test program, please report this to
+     `Nathalie.Revol@ens-lyon.fr,  Fabrice.Rouillier@loria.fr,
+     sylvain.chevillard@ens-lyon.org,  christoph.lauter@ens-lyon.org,
+     hong.diep.nguyen@ens-lyon.fr'.  (*Note Reporting Bugs::, for
+     information on what to include in useful bug reports.)
+
+  4. `make install'
+
+     This will copy the file `mpfi.h' to the directory
+     `/usr/local/include', the library files (`libmpfi.a' and possibly
+     others) to the directory `/usr/local/lib', the file `mpfi.info' to
+     the directory `/usr/local/share/info', and some other
+     documentation files to the directory `/usr/local/share/doc/mpfi'
+     (or if you passed the `--prefix' option to `configure', using the
+     prefix directory given as argument to `--prefix' instead of
+     `/usr/local').
 
    There are some other useful make targets:
+
+   * `mpfi.info' or `info'
+
+     Create an info version of the manual, in `mpfi.info'.
+
+   * `mpfi.pdf'
+
+     Create a Postscript version of the manual, in `mpfi.ps'.
 
    * `mpfi.dvi' or `dvi'
 
      Create a DVI version of the manual, in `mpfi.dvi'.
 
-   * `mpfi.info' or `info'
+   * `mpfi.ps'
 
-     Create an info version of the manual, in `mpfi.info'.
+     Create a Postscript version of the manual, in `mpfi.ps'.
+
+   * `html' Create a HTML version of the manual, in `mpfi.html'.
 
    * `clean'
 
      Delete all object files and archive files, but not the
      configuration files.
 
+   * `uninstall' Delete all files copied by `make install'.
 
 2.1 Known Build Problems
 ========================
@@ -1476,28 +1504,28 @@ Node: Top1338
 Node: Copying2210
 Node: Introduction to MPFI3978
 Node: Installing MPFI5103
-Node: Reporting Bugs7543
-Node: MPFI Basics9013
-Node: Interval Functions12510
-Node: Return Values13769
-Node: Rounding Modes and Precision Handling14755
-Node: Initializing and Assigning Intervals17842
-Node: Initializing Intervals18201
-Node: Assigning Intervals20019
-Node: Simultaneous Interval Init & Assign22013
-Node: Floating-point Quantities23276
-Node: Converting Intervals26154
-Node: Interval Arithmetic26629
-Node: Special Functions32988
-Node: Interval Comparison38145
-Node: I/O of Intervals40973
-Node: Operating on the Endpoints43987
-Node: Set Operations46459
-Node: Miscellaneous Interval Functions48368
-Node: Error Handling49602
-Node: Contributors50209
-Node: References50545
-Node: Concept Index51668
-Node: Function Index54601
+Node: Reporting Bugs8486
+Node: MPFI Basics9956
+Node: Interval Functions13453
+Node: Return Values14712
+Node: Rounding Modes and Precision Handling15698
+Node: Initializing and Assigning Intervals18785
+Node: Initializing Intervals19144
+Node: Assigning Intervals20962
+Node: Simultaneous Interval Init & Assign22956
+Node: Floating-point Quantities24219
+Node: Converting Intervals27097
+Node: Interval Arithmetic27572
+Node: Special Functions33931
+Node: Interval Comparison39088
+Node: I/O of Intervals41916
+Node: Operating on the Endpoints44930
+Node: Set Operations47402
+Node: Miscellaneous Interval Functions49311
+Node: Error Handling50545
+Node: Contributors51152
+Node: References51488
+Node: Concept Index52611
+Node: Function Index55544
 
 End Tag Table
