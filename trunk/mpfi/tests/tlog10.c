@@ -38,6 +38,7 @@ restrict_domain (mpfi_ptr a)
       || mpfr_cmp_si (&(a->right), +100) > 0) {
     mpfr_set_si (&(a->right), 100, MPFI_RNDU);
   }
+  return 0;
 }
 
 int
