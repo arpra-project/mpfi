@@ -227,80 +227,105 @@ modified MPFR/MPFI is provided.
 @chapter Installing MPFI
 @cindex Installation
 
-To build MPFI, you first have to install MPFR (version 2.0 or above)
+To build MPFI, you first have to install MPFR (version 3.2.0 or above)
 on your computer.
-You need a C compiler, preferably GCC, but any reasonable compiler should
-work.  And you need a standard Unix @samp{make} program, plus some other
+You need a C compiler, preferably GCC, but any reasonable compiler
+should work.
+And you need a standard Unix @samp{make} program, plus some other
 standard Unix utility programs.
 
-Here are the steps needed to install the MPFI library on Unix systems:
+Here are the steps needed to install the MPFI library on Unix systems.
+In the MPFI source directory, type the following commands.
 
 @enumerate
 @item
-Edit the file @samp{Makefile} and set the various variables:
-set @samp{CC} to your C compiler, @samp{COPT} to the optimization
-options for the compiler, @samp{C_EXTRA_FLAGS}
-to some other useful options (@samp{-static} may reveal useful)
-and @samp{AR}, @samp{LD} to the proper  utilities.
-Also set @samp{GMP_INCLUDE} to the directory containing
-the GNU MP header files and @samp{GMP_LIB} to the GNU MP library
-directory. Similarly, set @samp{MPFR_INCLUDE} to the directory containing
-the MPFR header files and @samp{MPFR_LIB}  to the directory
-containing the MPFR library files.
-@c If you get error messages, your machine might not be supported.
+@samp {./configure}
+
+This will prepare the build and setup the options according to your system.
+
+You can specify the path to GMP and MPFR libraries with configure
+options: @samp{--with-gmp=DIR} assumes that GMP is installed in the
+@samp{DIR} directory.
+Alternatively, you can use the @samp{--with-gmp-lib=DIR} and
+@samp{--with-gmp-include=DIR} to specify respectively the GMP lib and GMP
+include directories.
+Options @samp{--with-mpfr=DIR}, @samp{--with-mpfr-include}, and
+@samp{--with-mpfr-lib=DIR} have the same usage for the MPFR library.
+
+See the @file{INSTALL} file and the output of @samp{./configure
+--help} for a description of standard options.
 
 @item
-@samp{make all}
+@samp{make}
 
-This will compile MPFI, and create a library archive file @file{libmpfi.a} 
-in the working directory.
+This will compile MPFI, and create a library archive file @file{libmpfi.a}.
+On most platforms, a dynamic library will be produced too.
 
 @item
-@samp{make tests}
+@samp{make check}
 
-This will make some random tests in order to check
-whether MPFI was built correctly.  
+This will make sure MPFI was built correctly.
 If you get error messages from the test program, please
-report this to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr, sylvain.chevillard@@ens-lyon.org, christoph.lauter@@ens-lyon.org, hong.diep.nguyen@@ens-lyon.fr}.  (@xref{Reporting Bugs}, for
-information on what to include in useful bug reports.)
+report this to
+@c FIXME: update this list of email
+@samp{Nathalie.Revol@@ens-lyon.fr,
+ Fabrice.Rouillier@@loria.fr,
+ sylvain.chevillard@@ens-lyon.org,
+ christoph.lauter@@ens-lyon.org,
+ hong.diep.nguyen@@ens-lyon.fr}.
+(@xref{Reporting Bugs}, for information on what to include in useful
+bug reports.)
+
+@item
+@samp{make install}
+
+This will copy
+the file @file{mpfi.h} to the directory @file{/usr/local/include},
+the library files (@file{libmpfi.a} and possibly others) to the directory
+@file{/usr/local/lib},
+the file @file{mpfi.info} to the directory @file{/usr/local/share/info},
+and some other documentation files to the directory
+@file{/usr/local/share/doc/mpfi}
+(or if you passed the @samp{--prefix} option to @file{configure},
+using the prefix directory given as argument to @samp{--prefix}
+instead of @file{/usr/local}).
 @end enumerate
 
 There are some other useful make targets:
 
 @itemize @bullet
 @item
-@samp{mpfi.dvi} or @samp{dvi}
-
-Create a DVI version of the manual, in @file{mpfi.dvi}.
-@c and a set of info files, in @file{mpfr.info}, @file{mpfr.info-1}, @file{mpfr.info-2}, etc.
-
-@item
 @samp{mpfi.info} or @samp{info}
 
 Create an info version of the manual, in @file{mpfi.info}.
 
-@c @item
-@c @samp{mpfr.ps}
-@c 
-@c Create a Postscript version of the manual, in @file{mpfr.ps}.
-@c 
-@c @item
-@c @samp{html}
-@c Create a HTML version of the manual, in @file{mpfr.html}.
+@item
+@samp{mpfi.pdf}
+
+Create a Postscript version of the manual, in @file{mpfi.ps}.
+
+@item
+@samp{mpfi.dvi} or @samp{dvi}
+
+Create a DVI version of the manual, in @file{mpfi.dvi}.
+
+@item
+@samp{mpfi.ps}
+
+Create a Postscript version of the manual, in @file{mpfi.ps}.
+
+@item
+@samp{html}
+Create a HTML version of the manual, in @file{mpfi.html}.
 
 @item
 @samp{clean}
 
 Delete all object files and archive files, but not the configuration files.
 
-@c @item
-@c @samp{distclean}
-@c 
-@c Delete all files not included in the distribution.
-
-@c @item
-@c @samp{uninstall}
-@c Delete all files copied by @samp{make install}.
+@item
+@samp{uninstall}
+Delete all files copied by @samp{make install}.
 @end itemize
 
 
