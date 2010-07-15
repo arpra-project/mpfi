@@ -23,4 +23,4 @@ libmpfi_la_SOURCES = mpfi-impl.h abs.c acos.c acosh.c add.c	\
    sub_si.c sub_ui.c sub_z.c swap.c tan.c tanh.c ui_div.c	\
    ui_sub.c union.c urandom.c z_div.c z_sub.c
 
-INCLUDES =-I$(top_srcdir) @INCLUDES@
+AM_CPPFLAGS =-I$(top_srcdir)

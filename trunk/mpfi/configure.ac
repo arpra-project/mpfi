@@ -1,77 +1,60 @@
-# initialisation autoconf
-AC_INIT(mpfi,1.5-dev,[Nathalie.Revol@ens-lyon.fr,Fabrice.Rouillier@inria.fr])
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
 
-# initialisation automake
-AM_INIT_AUTOMAKE(mpfi,1.5-dev)
-
-# fichier contenant les definitions de toutes
-# les macros definies par Autoconf
+AC_PREREQ(2.65)
+AC_INIT([mpfi],[1.5-dev],[Nathalie.Revol@ens-lyon.fr,Fabrice.Rouillier@inria.fr])
+AC_CONFIG_SRCDIR([src/mpfi.h])
 AC_CONFIG_HEADERS([mpfi_config.h])
 
-# pour la construction d'une librairie dynamique
-AC_PROG_LIBTOOL
-AC_SUBST(LIBTOOL_DEPS)
-
-#pb autoconf version > 1.6
 AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([1.9 -Wall -Werror])
 
-# traitement des sous-repertoires
-MPFI_SUBDIRS="src tests doc"
-AC_SUBST(MPFI_SUBDIRS)
-
-# ajout des options sur la ligne de commande du configure
-# Initialisation des repertoires GMP
-AC_ARG_WITH(gmp-dir,
-	    AC_HELP_STRING([--with-gmp-dir=DIR : GMP installation directory]),
-            with_gmp_include=$withval/include
-	    with_gmp_lib=$withval/lib
-            with_mpfr_include=$withval/include
-	    with_mpfr_lib=$withval/lib)
-AC_ARG_WITH(gmp-libpath,
-	    AC_HELP_STRING([--with-gmp-libpath=DIR : GMP libraries directory]),
-            with_gmp_lib=$withval)
-AC_ARG_WITH(gmp-incpath,
-	    AC_HELP_STRING([--with-gmp-incpath=DIR : GMP include directory]),
-	    with_gmp_include=$withval)
-# Initialisation des repertoires de MPFR
-AC_ARG_WITH(mpfr-dir,
-	    AC_HELP_STRING([--with-mpfr-dir=DIR : MPFR installation directory]),
-            with_mpfr_include=$withval/include
-	    with_mpfr_lib=$withval/lib)
-AC_ARG_WITH(mpfr-libpath,
-            AC_HELP_STRING([--with-mpfr-libpath=DIR : MPFR library directory]),
-            with_mpfr_lib=$withval)
-AC_ARG_WITH(mpfr-incpath,
-            AC_HELP_STRING([--with-mpfr-incpath=DIR : MPFR include directory]),
-            with_mpfr_include=$withval)
+dnl Extra arguments to configure
+AC_ARG_WITH([mpfr_include],
+            [AS_HELP_STRING([--with-mpfr-include=DIR],[MPFR include directory])],
+            [CPPFLAGS="-I$withval $CPPFLAGS"])
+AC_ARG_WITH([mpfr_lib],
+            [AS_HELP_STRING([--with-mpfr-lib=DIR],[MPFR lib directory])],
+            [LDFLAGS="-L$withval $LDFLAGS"])
+AC_ARG_WITH([mpfr],
+            [AS_HELP_STRING([--with-mpfr=DIR],[MPFR install directory])],
+            [
+            if test -z "$with_mpfr_include" -a -z "$with_mpfr_lib" ; then
+               CPPFLAGS="-I$withval/include $CPPFLAGS"
+               LDFLAGS="-L$withval/lib $LDFLAGS"
+            else
+               AC_MSG_FAILURE([Do not use --with-mpfr and --with-mpfr-include/--with-mpfr-lib options simultaneously.])
+            fi
+            ])
+AC_ARG_WITH([gmp_include],
+            [AS_HELP_STRING([--with-gmp-include=DIR],[GMP include directory])],
+            [CPPFLAGS="-I$withval $CPPFLAGS"])
+AC_ARG_WITH([gmp_lib],
+            [AS_HELP_STRING([--with-gmp-lib=DIR],[GMP lib directory])],
+            [LDFLAGS="-L$withval $LDFLAGS"])
+AC_ARG_WITH([gmp],
+            [AS_HELP_STRING([--with-gmp=DIR],[GMP install directory])],
+            [
+            if test -z "$with_gmp_lib" -a -z "$with_gmp_include" ; then
+               CPPFLAGS="-I$withval/include $CPPFLAGS"
+               LDFLAGS="-L$withval/lib $LDFLAGS"
+            else
+               AC_MSG_FAILURE([Do not use --with-gmp and --with-gmp-include/--with-gmp-lib options simultaneously.])
+            fi
+            ])
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+LT_INIT
 
 # Checks for libraries.
-
-# Checks for header files.
-AC_CHECK_HEADERS([string.h])
-
-# Add include directory for GMP and MPFR
-if test -d "$with_gmp_include"; then
-  CPPFLAGS="$CPPFLAGS -I$with_gmp_include"
-else
-  gmp_include=
-fi
-if test -d "$with_mpfr_include"; then
-  CPPFLAGS="$CPPFLAGS -I$with_mpfr_include"
-else
-  mpfr_include=
-fi
-
-# Checks for GMP
-AC_MSG_CHECKING(for gmp.h)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include "gmp.h"
-]], [[]])],[AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
-     AC_MSG_ERROR([gmp.h may be missing ${with_gmp_include:+in $with_gmp_include}])
-])
+AC_CHECK_LIB([gmp], [__gmpz_init],
+             [LIBS="-lgmp $LIBS"],
+             [AC_MSG_ERROR([libgmp not found.])])
 
 AC_MSG_CHECKING(for valid GMP)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
@@ -79,75 +62,37 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #if (__GNU_MP_VERSION < 4)
 # error "min: GMP 4.0.0"
 #endif
-]], [[]])],[AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
-     AC_MSG_ERROR([GMP 4.0.0 min required])
+]], [[]])],[AC_MSG_RESULT(yes)],[
+ AC_MSG_RESULT(no)
+ AC_MSG_ERROR([GMP 4.0.0 min required])
 ])
 
-# Checks for MPFR
-AC_MSG_CHECKING(for mpfr.h)
+AC_CHECK_LIB([mpfr], [mpfr_init],
+             [LIBS="-lmpfr $LIBS"],
+             [AC_MSG_ERROR([libmpfr not found.])])
+
+AC_MSG_CHECKING(for valid MPFR)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include "gmp.h"
 #include "mpfr.h"
-]], [[]])],[AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)
-     AC_MSG_ERROR([mpfr.h may be missing ${with_mpfr_include:+in $with_mpfr_include}])
+#if (MPFR_VERSION < MPFR_VERSION_NUM(2,3,0))
+# error "min: MPFR 2.3.0"
+#endif
+]], [[]])],[AC_MSG_RESULT(yes)],[
+ AC_MSG_RESULT(no)
+ AC_MSG_ERROR([MPFR 2.3.0 min required])
 ])
 
-# Checks for MPFR lib (Before GMP!)
-if ` test "$with_mpfr_lib" `
-then
-  AC_MSG_CHECKING(MPFR library)
-        if  test -r "$with_mpfr_lib/libmpfr.a"
-        then
-          LDADD="$LDADD $with_mpfr_lib/libmpfr.a"
-        else
-           AC_MSG_ERROR([$with_mpfr_lib/libmpfr.a not found])
-        fi
-  AC_MSG_RESULT(yes)
-else
-  AC_CHECK_LIB(mpfr, main, , AC_MSG_ERROR([Library MPFR not found]))
-fi
-
-# Checks for GMP lib
-if ` test "$with_gmp_lib" `
-then
-  AC_MSG_CHECKING(GMP library)
-        if  test -r "$with_gmp_lib/libgmp.a"
-        then
-          LDADD="$LDADD $with_gmp_lib/libgmp.a"
-        else
-           AC_MSG_ERROR([$with_gmp_lib/libgmp.a not found])
-        fi
-  AC_MSG_RESULT(yes)
-else
-  AC_CHECK_LIB(gmp, main, , AC_MSG_ERROR([Library GMP not found]))
-fi
+# Checks for header files.
+AC_CHECK_HEADERS([float.h limits.h stdlib.h string.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([memset])
-AC_CANONICAL_HOST
+AC_CHECK_FUNCS([dup2 gettimeofday])
 
-AC_SUBST(INCLUDES)
-AC_SUBST(LDADD)
-AC_SUBST(LDFLAGS)
-AC_SUBST(CFLAGS)
-
-# generation des fichiers suivants par autoconf
-AC_OUTPUT([Makefile src/Makefile tests/Makefile doc/Makefile])
-
-# pour la configurer la distrib
-# configure --with-gmp-dir=/users/rouillie/DEVELOP/i686_Linux_libc6/GMP --prefix=/tmp/mpfi
-
-# pour fabriquer la distrib 
-# aclocal
-# autoconf
-# autoheader
-# automake -a
-
-# pour faire un tar de la distrib (apres l'avoir fabriquee et configuree)
-# make dist
-
-# pour ajouter des fichiers source : voir les Makefile.am
-# dans les sous-repertoires
+AC_CONFIG_FILES([Makefile
+                 doc/Makefile
+                 src/Makefile
+                 tests/Makefile])
+AC_OUTPUT
