@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-extern nextchar;
+extern int nextchar;
 
 static void
 print_error (mpfi_srcptr i)
