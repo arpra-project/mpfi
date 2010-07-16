@@ -35,7 +35,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_sub_ui, "sub_ui.dat"); */
+  check_data (&i_sub_ui, "sub_ui.dat");
   check_random (&i_sub_ui, 2, 1000, 10);
 
   test_end ();
