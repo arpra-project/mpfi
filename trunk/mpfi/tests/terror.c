@@ -44,8 +44,15 @@ main (int argc, char **argv)
 {
   FILE *stream;
 
-  freopen ("error.tmp", "w", stderr);
+  if (freopen ("error.tmp", "w", stderr) == NULL) {
+    printf ("Internal error: cannot redirect stderr to a file.\n");
+    exit (1);
+  }
   stream = fopen ("error.tmp", "r");
+  if (stream == NULL) {
+    printf ("Internal error: cannot open the file \"error.tmp\".\n");
+    exit (1);
+  }
 
   mpfi_reset_error ();
   if (mpfi_is_error () == 1) {
