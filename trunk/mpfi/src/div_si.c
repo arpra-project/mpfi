@@ -24,7 +24,6 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -32,26 +31,18 @@ int
 mpfi_div_si (mpfi_ptr a, mpfi_srcptr b, const long c)
 {
   mpfi_t tmp;
-  int inexact_div, inexact = 0;
+  int inexact = 0;
   mp_prec_t tmpprec;
 
   tmpprec = mpfi_get_prec (a);
   if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
   mpfi_init2 (tmp,tmpprec);
   mpfi_set_si (tmp,c); /* Exact */
-  inexact_div = mpfi_div (a, b, tmp);
+  inexact = mpfi_div (a, b, tmp);
   MPFI_CLEAR (tmp);
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
-
-  if (mpfr_inf_p (&(a->left))  && MPFI_LEFT_IS_INEXACT (inexact_div))   /* overflow */
-    inexact += 1;
-  if (mpfr_inf_p (&(a->right)) && MPFI_RIGHT_IS_INEXACT (inexact_div))  /* overflow */
-    inexact += 2;
-  if (mpfi_bounded_p (a)) {
-    inexact = inexact_div;
-  }
 
   return inexact;
 }
