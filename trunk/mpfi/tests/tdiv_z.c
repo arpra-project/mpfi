@@ -26,6 +26,50 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+void
+check_underflow (void)
+{
+  mpfi_t got, expected;
+  mpz_t z;
+  int inex;
+
+  mpz_init (z);
+  mpfi_init2 (got, 128);
+  mpfi_init2 (expected, 128);
+
+  mpz_set_ui (z, 1024);
+  mpfi_set_ui (expected, 0);
+  mpfr_nextbelow (&(expected->left));
+  mpfr_nextabove (&(expected->right));
+
+  inex = mpfi_div_z (got, expected, z);
+  if (!MPFI_BOTH_ARE_INEXACT(inex)
+      || !same_mpfr_value (&(got->left), &(expected->left))
+      || !same_mpfr_value (&(got->right), &(expected->right))) {
+    printf ("Error: mpfi_div_z (rop, op, z) does not return correct value\n"
+            "op = ");
+    mpfi_out_str (stdout, 16, 0, expected);
+    printf ("\nz = ");
+    mpz_out_str (stdout, 16, z);
+    printf ("\ngot      = ");
+    mpfi_out_str (stdout, 16, 0, got);
+    printf ("\nexpected = ");
+    mpfi_out_str (stdout, 16, 0, expected);
+    printf ("\n");
+
+    if (!MPFI_BOTH_ARE_INEXACT(inex)) {
+      printf ("return value = %d\nexpected     = %d\n", inex,
+              MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT);
+    }
+
+    exit (1);
+  }
+
+  mpz_clear (z);
+  mpfi_clear (got);
+  mpfi_clear (expected);
+}
+
 int
 main (int argc, char **argv)
 {
