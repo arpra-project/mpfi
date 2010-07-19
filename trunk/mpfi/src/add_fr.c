@@ -1,6 +1,6 @@
 /* add_fr.c -- Add an interval and a floating-point number.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -24,7 +24,6 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -32,28 +31,15 @@ int
 mpfi_add_fr (mpfi_ptr a, mpfi_srcptr b, mpfr_srcptr c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_add, inexact=0;
+  int inexact;
 
-  mpfi_init2 (tmp, mpfi_get_prec (a));
-  inexact_set = mpfi_set_fr (tmp, c);
-  inexact_add = mpfi_add (a, b, tmp);
+  mpfi_init2 (tmp, mpfr_get_prec (c));
+  mpfi_set_fr (tmp, c); /* exact */
+  inexact = mpfi_add (a, b, tmp);
   MPFI_CLEAR (tmp);
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
-
-  if ( mpfr_inf_p (&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT (inexact_add)) /* overflow */
-      inexact += 1;
-  }
-  else if (MPFI_LEFT_IS_INEXACT (inexact_set) || MPFI_LEFT_IS_INEXACT (inexact_add))
-    inexact += 1;
-  if ( mpfr_inf_p (&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT (inexact_add) )  /* overflow */
-      inexact += 2;
-  }
-  else if (MPFI_RIGHT_IS_INEXACT (inexact_set) || MPFI_RIGHT_IS_INEXACT (inexact_add))
-    inexact += 2;
 
   return inexact;
 }
