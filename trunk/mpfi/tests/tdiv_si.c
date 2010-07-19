@@ -35,7 +35,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_div_si, "div_si.dat"); */
+  check_data (&i_div_si, "div_si.dat");
   check_random (&i_div_si, 2, 1000, 10);
 
   test_end ();
