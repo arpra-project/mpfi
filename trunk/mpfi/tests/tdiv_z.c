@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_IIZ (&i_div_z, mpfi_div_z, mpfr_div_z);
   test_start ();
 
-/*   check_data (&i_div_z, "div_z.dat"); */
+  check_data (&i_div_z, "div_z.dat");
   check_random (&i_div_z, 2, 1000, 10);
 
   test_end ();
