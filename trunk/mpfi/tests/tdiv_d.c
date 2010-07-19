@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_IID (&i_div_d, mpfi_div_d, mpfr_div_d);
   test_start ();
 
-/*   check_data (&i_div_d, "div_d.dat"); */
+  check_data (&i_div_d, "div_d.dat");
   check_random (&i_div_d, 2, 1000, 10);
 
   test_end ();
