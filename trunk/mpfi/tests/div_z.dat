@@ -33,9 +33,13 @@
 0 53 +inf +inf    53 -inf -inf -2
 0 53 -inf +inf    53 -inf -inf  0
 0 53 -inf -inf    53 -inf -inf  2
-0 53  .25 +inf    53 -inf -1   -4
-0 53 -inf +inf    53 -inf -1    0
-0 53 -inf -.25    53 -inf -1    4
+
+1 53  0x12492492492492p-53  +inf
+  53 -inf                   -4                    -7
+0 53 -inf +inf    53 -inf -7    0
+2 53 -inf                   -0x12492492492492p-53
+  53 -inf                   -4                     7
+
 0 53 +0   +inf    53 -inf -0   -8
 0 53 -inf  nan    53 -inf -0    0
 0 53 -inf -0      53 -inf -0    8
@@ -51,9 +55,14 @@
 0 53 +0   -0      53 +0   -0   -1
 0 53  nan +inf    53 +0   -0    0
 0 53 +0   -0      53 +0   -0    1
-0 53 -2   -0      53 +0   +8   -4
-0 53  nan +inf    53 +0   +8    0
-0 53 +0    2      53 +0   +8    4
+
+# the precision of the result is to small for the mpz value
+1  4 -0x10p-11              -0
+  53 +0                      8                   -1025
+0 53  nan +inf    53 +0    8    0
+2  4 +0                      0x10p-11
+  53 +0                      8                    1025
+
 0 53 -inf -0      53 +0   +inf -7
 0 53  nan +inf    53 +0   +inf  0
 0 53 +0   +inf    53 +0   +inf  7
