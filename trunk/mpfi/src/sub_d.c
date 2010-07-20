@@ -24,7 +24,6 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -35,25 +34,21 @@ mpfi_sub_d (mpfi_ptr a, mpfi_srcptr b, const double c)
   int inexact_set, inexact_sub, inexact = 0;
 
   mpfi_init2 (tmp, 64); /* 64 for IA86-FPU87 issues */
-  inexact_set = mpfi_set_d (tmp,c);
-  inexact_sub = mpfi_sub (a,b,tmp);
+  inexact_set = mpfi_set_d (tmp, c);
+  inexact_sub = mpfi_sub (a, b, tmp);
   MPFI_CLEAR (tmp);
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if ( mpfr_inf_p (&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT (inexact_sub)) /* overflow */
-      inexact += 1;
-  }
-  else if (MPFI_RIGHT_IS_INEXACT (inexact_set) || MPFI_LEFT_IS_INEXACT (inexact_sub))
+  if (MPFI_LEFT_IS_INEXACT (inexact_sub)
+      || (inexact_set && !mpfr_inf_p (&a->left))) {
     inexact += 1;
-  if ( mpfr_inf_p (&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT (inexact_sub) )  /* overflow */
-      inexact += 2;
   }
-  else if (MPFI_LEFT_IS_INEXACT (inexact_set) || MPFI_RIGHT_IS_INEXACT (inexact_sub))
+  if (MPFI_RIGHT_IS_INEXACT (inexact_sub)
+      || (inexact_set && !mpfr_inf_p (&a->right))) {
     inexact += 2;
+  }
 
   return inexact;
 }
