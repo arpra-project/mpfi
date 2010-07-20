@@ -26,6 +26,39 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+void
+check_overflow ()
+{
+  mpfr_t max;
+  mpfi_t a;
+  int inexact;
+
+  mpfi_init2 (a, 53);
+  mpfr_init2 (max, 53);
+
+  mpfr_set_inf (max, -1);
+  mpfr_nextabove (max);
+  mpfr_set (&(a->left), max, MPFI_RNDD);
+  mpfr_set_ui (&(a->right), 1, MPFI_RNDU);
+
+  inexact = mpfi_sub_si (a, a, 1024);
+
+  if (!mpfr_inf_p (&(a->left))) {
+    printf ("Error: mpfi_sub_si does not correctly handle negative "
+            "overflow.\n");
+    exit (1);
+  }
+
+  if (!MPFI_LEFT_IS_INEXACT (inexact) || MPFI_RIGHT_IS_INEXACT (inexact)) {
+    printf ("Error: mpfi_sub_si does not return correct value when negative "
+            "overflow.\n");
+    exit (1);
+  }
+
+  mpfi_clear (a);
+  mpfr_clear (max);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -37,6 +70,7 @@ main (int argc, char **argv)
 
   check_data (&i_sub_ui, "sub_ui.dat");
   check_random (&i_sub_ui, 2, 1000, 10);
+  check_overflow ();
 
   test_end ();
   mpfi_fun_clear (&i_sub_ui);
