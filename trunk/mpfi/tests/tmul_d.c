@@ -76,6 +76,13 @@ check_overflow ()
   mpfr_set_ui (&(c->right), 15, MPFI_RNDD);
   check (b, a, 1.5, c, MPFI_FLAGS_LEFT_ENDPOINT_INEXACT);
 
+  mpfr_set_inf (&(a->left), -1);
+  mpfr_nextabove (&(a->left));
+  mpfr_set_str (&(a->right), "0x123456789abcdfp-53", 0, MPFI_RNDU);
+  mpfr_set_inf (&(c->left), -1);
+  mpfr_set_str (&(c->right), "0x1b4e81b4e81b4fp-53", 0, MPFI_RNDU);
+  check (b, a, 1.5, c, MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT);
+
   mpfi_clear (a);
   mpfi_clear (b);
   mpfi_clear (c);
