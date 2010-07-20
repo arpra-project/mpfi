@@ -26,6 +26,61 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+void
+check_overflow ()
+{
+  mpfr_t max;
+  mpfi_t a;
+  mpz_t z;
+  int inexact;
+
+  mpz_init (z);
+  mpfi_init2 (a, 53);
+  mpfr_init2 (max, 53);
+  mpz_set_ui (z, 4096);
+  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
+  mpfr_set_inf (max, +1);
+  mpfr_nextbelow (max);
+  mpfr_set (&(a->right), max, MPFI_RNDU);
+
+  inexact = mpfi_mul_z (a, a, z);
+
+  if (!mpfr_inf_p (&(a->right))) {
+    printf ("Error: mpfi_mul_z does not correctly handle positive "
+            "overflow.\n");
+    exit (1);
+  }
+
+  if (!MPFI_RIGHT_IS_INEXACT (inexact)) {
+    printf ("Error: mpfi_mul_z does not return correct value when positive "
+            "overflow.\n");
+    exit (1);
+  }
+
+  mpfr_set_inf (max, -1);
+  mpfr_nextabove (max);
+  mpfr_set (&(a->left), max, MPFI_RNDD);
+  mpfr_set_ui (&(a->right), 1, MPFI_RNDU);
+
+  inexact = mpfi_mul_z (a, a, z);
+
+  if (!mpfr_inf_p (&(a->left))) {
+    printf ("Error: mpfi_mul_z does not correctly handle negative "
+            "overflow.\n");
+    exit (1);
+  }
+
+  if (!MPFI_LEFT_IS_INEXACT (inexact)) {
+    printf ("Error: mpfi_mul_z does not return correct value when negative "
+            "overflow.\n");
+    exit (1);
+  }
+
+  mpz_clear (z);
+  mpfi_clear (a);
+  mpfr_clear (max);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -34,8 +89,9 @@ main (int argc, char **argv)
   mpfi_fun_init_IIZ (&i_mul_z, mpfi_mul_z, mpfr_mul_z);
   test_start ();
 
-/*   check_data (&i_mul_z, "mul_z.dat"); */
+  check_data (&i_mul_z, "mul_z.dat");
   check_random (&i_mul_z, 2, 1000, 10);
+  check_overflow ();
 
   test_end ();
   mpfi_fun_clear (&i_mul_z);
