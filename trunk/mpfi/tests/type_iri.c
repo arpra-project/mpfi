@@ -80,26 +80,28 @@ check_line_iri (mpfi_function_ptr this)
   }
 
   /* reuse input variable as output */
-  mpfi_set (got, op2);
+  if (mpfi_get_prec (got) == mpfi_get_prec (op2)) {
+    mpfi_set (got, op2);
 
-  inex = f_IRI (got, op1, got);
+    inex = f_IRI (got, op1, got);
 
-  if (inex != expected_inex || !same_value (got, expected)) {
-    printf ("Error when reusing first input argument as output (line %lu)."
-            "\nop1 = ", test_line_number);
-    mpfr_out_str (stdout, 16, 0, op1, MPFI_RNDD);
-    printf ("\nop2 = ");
-    mpfi_out_str (stdout, 16, 0, op2);
-    printf ("\ngot      = ");
-    mpfi_out_str (stdout, 16, 0, got);
-    printf ("\nexpected = ");
-    mpfi_out_str (stdout, 16, 0, expected);
-    putchar ('\n');
-    if (inex != expected_inex)
-      printf ("inexact flag: got = %u, expected = %u\n",
-              inex, expected_inex);
+    if (inex != expected_inex || !same_value (got, expected)) {
+      printf ("Error when reusing first input argument as output (line %lu)."
+              "\nop1 = ", test_line_number);
+      mpfr_out_str (stdout, 16, 0, op1, MPFI_RNDD);
+      printf ("\nop2 = ");
+      mpfi_out_str (stdout, 16, 0, op2);
+      printf ("\ngot      = ");
+      mpfi_out_str (stdout, 16, 0, got);
+      printf ("\nexpected = ");
+      mpfi_out_str (stdout, 16, 0, expected);
+      putchar ('\n');
+      if (inex != expected_inex)
+        printf ("inexact flag: got = %u, expected = %u\n",
+                inex, expected_inex);
 
-    exit (1);
+      exit (1);
+    }
   }
 }
 
