@@ -24,7 +24,6 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -35,10 +34,10 @@ mpfi_sub (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
   int inexact_left, inexact_right, inexact = 0;
 
   if (MPFI_IS_ZERO (c)) {
-    return (mpfi_set (a,b));
+    return mpfi_set (a, b);
   }
   else if (MPFI_IS_ZERO (b)) {
-    return (mpfi_neg (a,c));
+    return mpfi_neg (a, c);
   }
   else {
     mpfr_init2 (tmp, mpfi_get_prec (a));
@@ -46,6 +45,15 @@ mpfi_sub (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     inexact_right = mpfr_sub (&(a->right), &(b->right), &(c->left), MPFI_RNDU);
     inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
     mpfr_clear (tmp);
+
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
 
     if (MPFI_NAN_P (a))
       MPFR_RET_NAN;
