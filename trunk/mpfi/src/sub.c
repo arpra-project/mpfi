@@ -40,10 +40,10 @@ mpfi_sub (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     return mpfi_neg (a, c);
   }
   else {
-    mpfr_init2 (tmp, mpfi_get_prec (a));
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
     inexact_left = mpfr_sub (tmp, &(b->left), &(c->right), MPFI_RNDD);
     inexact_right = mpfr_sub (&(a->right), &(b->right), &(c->left), MPFI_RNDU);
-    inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear (tmp);
 
     /* do not allow -0 as lower bound */
