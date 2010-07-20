@@ -54,8 +54,8 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     put_ui.dat put_z.dat q_div.dat sec.dat sech.dat		\
     set_d.dat set_fr.dat set_q.dat set_si.dat set_ui.dat	\
     set_z.dat sin.dat sinh.dat sqr.dat sqrt.dat sub.dat		\
-    sub_d.dat sub_fr.dat sub_ui.dat tan.dat tanh.dat		\
-    union.dat
+    sub_d.dat sub_fr.dat sub_q.dat sub_ui.dat tan.dat		\
+    tanh.dat union.dat
 
 TESTS = $(check_PROGRAMS)
 CLEANFILES = io_str.tmp

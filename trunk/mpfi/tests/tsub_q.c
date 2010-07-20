@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_IIQ (&i_sub_q, mpfi_sub_q, mpfr_sub_q);
   test_start ();
 
-/*   check_data (&i_sub_q, "sub_q.dat"); */
+  check_data (&i_sub_q, "sub_q.dat");
   check_random (&i_sub_q, 53, 53, 3); /* very slow */
 
   test_end ();
