@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_IIR (&i_sub_fr, mpfi_sub_fr, mpfr_sub);
   test_start ();
 
-/*   check_data (&i_sub_fr, "sub_fr.dat"); */
+  check_data (&i_sub_fr, "sub_fr.dat");
   check_random (&i_sub_fr, 2, 1000, 10);
 
   test_end ();
