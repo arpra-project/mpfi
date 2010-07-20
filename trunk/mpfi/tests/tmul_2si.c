@@ -35,7 +35,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_mul_2si, "mul_2si.dat"); */
+  check_data (&i_mul_2si, "mul_2si.dat");
   check_random (&i_mul_2si, 2, 1000, 10);
 
   test_end ();
