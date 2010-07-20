@@ -48,13 +48,13 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     is_nonneg.dat is_nonpos.dat is_pos.dat			\
     is_strictly_neg.dat is_strictly_pos.dat log.dat		\
     log10.dat log1p.dat log2.dat mag.dat mid.dat mig.dat	\
-    mul.dat mul_d.dat mul_fr.dat mul_q.dat mul_si.dat		\
-    mul_ui.dat mul_z.dat nan_p.dat neg.dat put_d.dat		\
-    put_fr.dat put_q.dat put_si.dat put_ui.dat put_z.dat	\
-    q_div.dat sec.dat sech.dat set_d.dat set_fr.dat		\
-    set_q.dat set_si.dat set_ui.dat set_z.dat sin.dat		\
-    sinh.dat sqr.dat sqrt.dat sub.dat sub_ui.dat tan.dat	\
-    tanh.dat union.dat
+    mul.dat mul_2ui.dat mul_d.dat mul_fr.dat mul_q.dat		\
+    mul_si.dat mul_ui.dat mul_z.dat nan_p.dat neg.dat		\
+    put_d.dat put_fr.dat put_q.dat put_si.dat put_ui.dat	\
+    put_z.dat q_div.dat sec.dat sech.dat set_d.dat		\
+    set_fr.dat set_q.dat set_si.dat set_ui.dat set_z.dat	\
+    sin.dat sinh.dat sqr.dat sqrt.dat sub.dat sub_ui.dat	\
+    tan.dat tanh.dat union.dat
 
 TESTS = $(check_PROGRAMS)
 CLEANFILES = io_str.tmp

@@ -35,7 +35,7 @@ main (int argc, char **argv)
 
   test_start ();
 
-/*   check_data (&i_mul_2exp, "mul_2exp.dat"); */
+  check_data (&i_mul_2exp, "mul_2ui.dat");
   check_random (&i_mul_2exp, 2, 1000, 10);
 
   test_end ();
