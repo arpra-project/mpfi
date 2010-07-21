@@ -1,7 +1,7 @@
 /* type_i.c -- Test functions associated with functions of the type
                mpfi_f (mpfi_t).
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -40,7 +40,7 @@ read_line_i (mpfi_function_ptr this, FILE* fp)
   read_mpfi (fp, MPFI_FUN_ARG (*this, 2, mpfi));
 }
 
-static void
+void
 check_monotonicity (mpfi_function_ptr this)
 {
   mp_prec_t precision;

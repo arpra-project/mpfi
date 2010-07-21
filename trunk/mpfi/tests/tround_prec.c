@@ -1,6 +1,6 @@
 /* tround_prec.c -- Test mpfi_round_prec.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 check (mpfi_ptr i, mp_prec_t new_prec,
        mpfr_srcptr expected_left, mpfr_srcptr expected_right,
        int expected_inex)
@@ -57,7 +57,7 @@ check (mpfi_ptr i, mp_prec_t new_prec,
   }
 }
 
-static void
+void
 special (void)
 {
   mpfr_t minf, pinf;
@@ -130,7 +130,7 @@ special (void)
   mpfr_clear (nan);
 }
 
-static void
+void
 swing (void)
 {
   mp_prec_t p;

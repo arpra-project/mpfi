@@ -1,6 +1,6 @@
 /* tget_endpoints.c -- Test mpfi_get_left and mpfi_get_right.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 error_message (int side, mpfi_srcptr i, mpfr_ptr got)
 {
   unsigned long pi, pgot;
@@ -42,7 +42,7 @@ error_message (int side, mpfi_srcptr i, mpfr_ptr got)
   exit (1);
 }
 
-static void
+void
 test_special ()
 {
   mpfi_t i;
@@ -143,7 +143,7 @@ test_special ()
   mpfr_clear (expected);
 }
 
-static void
+void
 test_regular ()
 {
   mpfi_t i;

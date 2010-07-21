@@ -1,7 +1,7 @@
 /* type_iqi.c -- Test functions associated with functions of the type
                  mpfi_f (mpfi_t, mpq_t, mpfi_t).
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

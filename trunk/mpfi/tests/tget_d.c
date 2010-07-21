@@ -1,6 +1,6 @@
 /* tget_d.c -- Test mpfi_get_d.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -24,12 +24,11 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-
 #include <math.h>
 #include <float.h>
 #include "mpfi-tests.h"
 
-static void
+void
 error_message (mpfi_srcptr i, double got, const char *expected)
 {
   printf ("Error: mpfi_get_d(x, I) returns wrong value.\nI = ");
@@ -38,7 +37,7 @@ error_message (mpfi_srcptr i, double got, const char *expected)
   exit (1);
 }
 
-static void
+void
 test_special ()
 {
   double got;
@@ -102,7 +101,7 @@ test_special ()
   mpfi_clear (i);
 }
 
-static void
+void
 test_regular ()
 {
   double x;

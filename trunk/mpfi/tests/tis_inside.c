@@ -1,6 +1,6 @@
 /* tis_inside.c -- Test mpfi_is_inside.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -32,7 +32,7 @@ MA 02110-1301, USA. */
       mpfr_swap ((min), (max));      \
   } while (0)
 
-static void
+void
 print_error (mpfi_srcptr a, mpfi_srcptr b)
 {
   printf ("Error: mpfi_is_inside (A, B) returns %d\nA = ",
@@ -45,7 +45,7 @@ print_error (mpfi_srcptr a, mpfi_srcptr b)
   exit (1);
 }
 
-static void
+void
 check ()
 {
   mpfi_t i1, i2;

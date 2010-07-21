@@ -1,6 +1,6 @@
 /* tcmp_d.c -- Test mpfi_cmp_d.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -41,7 +41,7 @@ MA 02110-1301, USA. */
       max = tmp;}       \
   } while (0)
 
-static void
+void
 print_error (double x, mpfi_srcptr i)
 {
   printf ("Error: mpfi_cmp_d (x, I) returns %d\nx = %g\nI = ",
@@ -52,7 +52,7 @@ print_error (double x, mpfi_srcptr i)
   exit (1);
 }
 
-static void
+void
 check ()
 {
   mpfi_t interval;

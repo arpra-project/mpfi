@@ -1,6 +1,6 @@
 /* tmul_d.c -- Test mpfi_mul_d.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 check (mpfi_ptr got, mpfi_srcptr a, double d, mpfi_srcptr expected,
        int expected_retval)
 {
@@ -53,7 +53,7 @@ check (mpfi_ptr got, mpfi_srcptr a, double d, mpfi_srcptr expected,
   }
 }
 
-static void
+void
 check_overflow ()
 {
   mpfi_t a, b, c;
@@ -88,7 +88,7 @@ check_overflow ()
   mpfi_clear (c);
 }
 
-static void
+void
 check_underflow ()
 {
   mpfi_t a, b, c;
@@ -136,7 +136,6 @@ check_underflow ()
   mpfi_clear (b);
   mpfi_clear (c);
 }
-
 
 int
 main (int argc, char **argv)

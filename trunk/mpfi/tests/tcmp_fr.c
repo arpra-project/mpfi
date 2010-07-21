@@ -1,6 +1,6 @@
 /* tcmp_fr.c -- Test mpfi_cmp_fr.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 print_error (mpfr_ptr x, mpfi_srcptr i)
 {
   printf ("Error: mpfi_cmp_fr (x, I) returns %d\nx = ",
@@ -39,7 +39,7 @@ print_error (mpfr_ptr x, mpfi_srcptr i)
   exit (1);
 }
 
-static void
+void
 check ()
 {
   mpfi_t interval;

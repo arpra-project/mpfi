@@ -1,6 +1,6 @@
 /* td_sub.c -- Test mpfi_d_sub.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

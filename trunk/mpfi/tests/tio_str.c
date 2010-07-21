@@ -1,6 +1,6 @@
 /* tio_str.c -- Test mpfi_inp_str and mpfi_out_str.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,7 +29,7 @@ MA 02110-1301, USA. */
 
 #define TMP_FILENAME "io_str.tmp"
 
-static void
+void
 check_random_interval (mp_prec_t prec_min, mp_prec_t prec_max, mp_prec_t step)
 {
   FILE *tmp_file;
@@ -109,7 +109,7 @@ check_random_interval (mp_prec_t prec_min, mp_prec_t prec_max, mp_prec_t step)
   mpfi_clear (read);
 }
 
-static void
+void
 check_file (const char *datafile)
 {
   FILE *stream_mpfr;

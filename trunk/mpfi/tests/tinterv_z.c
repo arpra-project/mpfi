@@ -1,6 +1,6 @@
 /* tinterv_z.c -- Test mpfi_interv_z.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 check (mpfi_ptr i, mpz_srcptr a, mpz_srcptr b,
        mpfr_srcptr expected_left, mpfr_srcptr expected_right,
        int expected_inex)

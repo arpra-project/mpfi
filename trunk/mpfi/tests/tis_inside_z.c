@@ -1,6 +1,6 @@
 /* tis_inside_z.c -- Test mpfi_is_inside_z.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -32,7 +32,7 @@ MA 02110-1301, USA. */
       mpz_swap ((min), (max));      \
   } while (0)
 
-static void
+void
 print_error (mpz_ptr x, mpfi_srcptr i)
 {
   printf ("Error: mpfi_is_inside_z (x, I) returns %d\nx = ",
@@ -45,7 +45,7 @@ print_error (mpz_ptr x, mpfi_srcptr i)
   exit (1);
 }
 
-static void
+void
 check ()
 {
   mpfi_t interval;

@@ -1,6 +1,6 @@
 /* tui_div.c -- Test mpfi_ui_div.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -25,6 +25,7 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
+
 void
 check_overflow (void)
 {

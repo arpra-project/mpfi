@@ -1,6 +1,6 @@
 /* tlog.c -- Test mpfi_log.
 
-Copyright 2009 2010
+Copyright 2009, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

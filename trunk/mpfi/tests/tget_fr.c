@@ -1,6 +1,6 @@
 /* tget_fr.c -- Test mpfi_get_fr.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 error_message (mpfi_srcptr i, mpfr_ptr got, mpfr_ptr expected)
 {
   printf ("Error: mpfi_get_fr(x, I) returns wrong value.\nI = ");
@@ -39,7 +39,7 @@ error_message (mpfi_srcptr i, mpfr_ptr got, mpfr_ptr expected)
   exit (1);
 }
 
-static void
+void
 test_special ()
 {
   mpfr_t expected, got;
@@ -109,7 +109,7 @@ test_special ()
   mpfi_clear (i);
 }
 
-static void
+void
 test_random (mp_prec_t prec_min, mp_prec_t prec_max)
 {
   mpfr_t x;

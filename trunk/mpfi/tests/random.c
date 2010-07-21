@@ -1,6 +1,6 @@
 /* random.c -- Handle random seed in tests.
 
-Copyright (C) 2009
+Copyright (C) 2009, 2010,
                      Spaces project, Inria Lorraine
                      Arenaire project, Inria Rhone-Alpes, France
                      and Lab. ANO, USTL (Univ. of Lille),  France
@@ -26,8 +26,6 @@ MA 02110-1301, USA. */
 /* Put test_start at the beginning of your test function and
    test_end at the end.
    These are an adaptation of those of MPFR. */
-
-#include <stdlib.h>
 
 #include "mpfi-tests.h"
 

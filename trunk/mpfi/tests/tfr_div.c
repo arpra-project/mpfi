@@ -1,6 +1,6 @@
 /* tfr_div.c -- Test mpfi_fr_div.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

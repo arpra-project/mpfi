@@ -1,6 +1,6 @@
 /* tis_strictly_pos.c -- Test mpfi_is_strictly_pos.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 
 extern int nextchar;
 
-static void
+void
 print_error (mpfi_srcptr a)
 {
   printf ("Error: mpfi_is_strictly_pos (A) returns %d\nA = ",

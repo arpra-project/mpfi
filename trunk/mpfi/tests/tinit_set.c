@@ -1,6 +1,6 @@
 /* tinit_set.c -- Test file for mpfi_init_set functions.
 
-Copyright 2009
+Copyright 2009,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

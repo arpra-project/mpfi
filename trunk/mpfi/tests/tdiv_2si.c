@@ -1,6 +1,6 @@
 /* tdiv_2si.c -- Test mpfi_div_2si.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

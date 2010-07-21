@@ -1,7 +1,7 @@
 /* mpfi_tests.c -- Test constant functions
                    and test non-constant functions with random values.
 
-Copyright (C) 2001, 2002, 2009
+Copyright (C) 2001, 2002, 2009, 2010,
                      Spaces project, Inria Lorraine
                      Arenaire project, Inria Rhone-Alpes, France
                      and Lab. ANO, USTL (Univ. of Lille),  France

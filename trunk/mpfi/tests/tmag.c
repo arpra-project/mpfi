@@ -1,6 +1,6 @@
 /* tmag.c -- Test mpfi_mag.
 
-Copyright 2010
+Copyright 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -26,7 +26,7 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
-static void
+void
 test_random (mp_prec_t prec_min, mp_prec_t prec_max)
 {
   mpfr_t x;

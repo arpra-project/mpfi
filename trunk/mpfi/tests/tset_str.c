@@ -1,6 +1,6 @@
 /* tset_str.c -- Test file for mpfi_set_str.
 
-Copyright 2009
+Copyright 2009, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -24,7 +24,6 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-#include <stdio.h>
 #include "mpfi-tests.h"
 
 void
