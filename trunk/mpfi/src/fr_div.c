@@ -31,24 +31,15 @@ int
 mpfi_fr_div (mpfi_ptr a, mpfr_srcptr b, mpfi_srcptr c)
 {
   mpfi_t tmp;
-  int inexact_set, inexact_div, inexact=0;
+  int inexact;
 
-  mpfi_init2 (tmp, mpfi_get_prec (a));
-  inexact_set = mpfi_set_fr (tmp, b);
-  inexact_div = mpfi_div (a, tmp, c);
+  mpfi_init2 (tmp, mpfr_get_prec (b));
+  mpfi_set_fr (tmp, b); /* exact */
+  inexact = mpfi_div (a, tmp, c);
   MPFI_CLEAR (tmp);
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
-
-  if (MPFI_LEFT_IS_INEXACT (inexact_div)
-      || (inexact_set && !mpfr_inf_p (&a->left))) {
-    inexact += 1;
-  }
-  if (MPFI_RIGHT_IS_INEXACT (inexact_div)
-      || (inexact_set && !mpfr_inf_p (&a->right))) {
-    inexact += 2;
-  }
 
   return inexact;
 }
