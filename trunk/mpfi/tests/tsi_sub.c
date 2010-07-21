@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_ISI (&i_si_sub, mpfi_si_sub, mpfr_si_sub);
   test_start ();
 
-/*   check_data (&i_si_sub, "si_sub.dat"); */
+  check_data (&i_si_sub, "si_sub.dat");
   check_random (&i_si_sub, 2, 1000, 10);
 
   test_end ();
