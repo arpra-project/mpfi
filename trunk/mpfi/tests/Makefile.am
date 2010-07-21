@@ -54,7 +54,7 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     neg.dat put_d.dat put_fr.dat put_q.dat put_si.dat		\
     put_ui.dat put_z.dat q_div.dat q_sub.dat sec.dat		\
     sech.dat set_d.dat set_fr.dat set_q.dat set_si.dat		\
-    set_ui.dat set_z.dat si_div.c sin.dat sinh.dat sqr.dat	\
+    set_ui.dat set_z.dat si_div.dat sin.dat sinh.dat sqr.dat	\
     sqrt.dat sub.dat sub_d.dat sub_fr.dat sub_q.dat		\
     sub_si.dat sub_ui.dat sub_z.dat tan.dat tanh.dat		\
     union.dat
