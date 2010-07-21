@@ -1,6 +1,6 @@
 /* mpfi-tests.h -- Include file for mpfi's tests.
 
-Copyright 2009, 2010
+Copyright 2009, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -29,9 +29,9 @@ MA 02110-1301, USA. */
 
 #include <stdlib.h>
 
+#include "mpfi_io.h"
 #include "mpfi.h"
 #include "mpfi-impl.h"
-#include "mpfi_io.h"
 
 #define STR(a) # a
 #define QUOTE(a) STR(a)
