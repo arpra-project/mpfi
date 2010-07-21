@@ -1,6 +1,6 @@
 /* fr_div.c -- Divide a floating-point number by an interval.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -24,7 +24,6 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -42,16 +41,13 @@ mpfi_fr_div (mpfi_ptr a, mpfr_srcptr b, mpfi_srcptr c)
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if (mpfr_inf_p (&(a->left))  && MPFI_LEFT_IS_INEXACT (inexact_div))   /* overflow */
+  if (MPFI_LEFT_IS_INEXACT (inexact_div)
+      || (inexact_set && !mpfr_inf_p (&a->left))) {
     inexact += 1;
-  if (mpfr_inf_p (&(a->right)) && MPFI_RIGHT_IS_INEXACT (inexact_div))  /* overflow */
+  }
+  if (MPFI_RIGHT_IS_INEXACT (inexact_div)
+      || (inexact_set && !mpfr_inf_p (&a->right))) {
     inexact += 2;
-  if (mpfi_bounded_p (a)) {
-    if (inexact_set) /* if the conversion of b into a mpfi is inexact,
-                        then so are both endpoints of the result.      */
-      inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-    else
-      inexact = inexact_div;
   }
 
   return inexact;
