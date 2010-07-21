@@ -26,6 +26,59 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+void
+check_overflow ()
+{
+  mpfi_t got;
+  mpfi_t op;
+  double d;
+  int inexact;
+
+  mpfi_init2 (got, 53);
+  mpfi_init2 (op, 53);
+
+  d = -1024.0;
+  mpfr_set_ui (&(op->left), 1, MPFI_RNDD);
+  mpfr_set_inf (&(op->right), +1);
+  mpfr_nextbelow (&(op->right));
+
+  inexact = mpfi_d_sub (got, d, op);
+
+  if (!MPFI_LEFT_IS_INEXACT (inexact)
+      || !mpfr_inf_p (&(got->left))
+      || MPFI_RIGHT_IS_INEXACT (inexact)
+      || mpfr_cmp_d (&(got->right), d - 1) != 0) {
+    printf ("Error: mpfi_d_div (rop, %g, op) does not correctly handle "
+            "overflow.\n op = ", d);
+    mpfi_out_str (stdout, 10, 0, op);
+    printf ("\nrop = ");
+    mpfi_out_str (stdout, 10, 0, got);
+    printf ("\nreturn value = %d\n", inexact);
+    exit (1);
+  }
+
+  d = +1024.0;
+  mpfi_neg (op, op);
+
+  inexact = mpfi_d_sub (got, d, op);
+
+  if (MPFI_LEFT_IS_INEXACT (inexact)
+      || mpfr_cmp_d (&(got->left), d + 1) != 0
+      || !MPFI_RIGHT_IS_INEXACT (inexact)
+      || !mpfr_inf_p (&(got->right))) {
+    printf ("Error: mpfi_d_div (rop, %g, op) does not correctly handle "
+            "overflow.\n op = ", d);
+    mpfi_out_str (stdout, 10, 0, op);
+    printf ("\nrop = ");
+    mpfi_out_str (stdout, 10, 0, got);
+    printf ("\nreturn value = %d\n", inexact);
+    exit (1);
+  }
+
+  mpfi_clear (op);
+  mpfi_clear (got);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -34,8 +87,9 @@ main (int argc, char **argv)
   mpfi_fun_init_IDI (&i_d_sub, mpfi_d_sub, mpfr_d_sub);
   test_start ();
 
-/*   check_data (&i_d_sub, "d_sub.dat"); */
+  check_data (&i_d_sub, "d_sub.dat");
   check_random (&i_d_sub, 2, 1000, 10);
+  check_overflow ();
 
   test_end ();
   mpfi_fun_clear (&i_d_sub);

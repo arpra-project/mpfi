@@ -40,12 +40,12 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     bisect.dat blow.dat bounded_p.dat cbrt.dat			\
     const_catalan.dat const_euler.dat const_log2.dat		\
     const_pi.dat cos.dat cosh.dat cot.dat coth.dat csc.dat	\
-    csch.dat d_div.dat diam.dat diam_abs.dat diam_rel.dat	\
-    div.dat div_2si.dat div_2ui.dat div_d.dat div_fr.dat	\
-    div_q.dat div_si.dat div_ui.dat div_z.dat exp.dat		\
-    exp2.dat expm1.dat has_zero.dat hypot.dat increase.dat	\
-    inf_p.dat inp_str.dat intersect.dat inv.dat is_neg.dat	\
-    is_nonneg.dat is_nonpos.dat is_pos.dat			\
+    csch.dat d_div.dat d_sub.dat diam.dat diam_abs.dat		\
+    diam_rel.dat div.dat div_2si.dat div_2ui.dat div_d.dat	\
+    div_fr.dat div_q.dat div_si.dat div_ui.dat div_z.dat	\
+    exp.dat exp2.dat expm1.dat has_zero.dat hypot.dat		\
+    increase.dat inf_p.dat inp_str.dat intersect.dat inv.dat	\
+    is_neg.dat is_nonneg.dat is_nonpos.dat is_pos.dat		\
     is_strictly_neg.dat is_strictly_pos.dat log.dat		\
     log10.dat log1p.dat log2.dat mag.dat mid.dat mig.dat	\
     mul.dat mul_2si.dat mul_2ui.dat mul_d.dat mul_fr.dat	\
