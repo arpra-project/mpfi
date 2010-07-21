@@ -111,4 +111,4 @@ int    	mpfi_is_strictly_pos_default (mpfi_srcptr);
 # define WARNING_REVERTED_ENDPOINTS(a, fname)
 #endif
 
-#endif
+#endif /* __MPFI_IMPL_H__ */

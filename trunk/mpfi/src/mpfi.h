@@ -25,8 +25,8 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#ifndef _mpfi_h
-#define _mpfi_h
+#ifndef __MPFI_H__
+#define __MPFI_H__
 
 /* Machine independent implementations */
 
@@ -366,4 +366,4 @@ int     mpfi_is_error    (void);
 
 #define MPFI_CLEAR(m) {mpfr_clear(&(m->right)); mpfr_clear(&(m->left));}
 
-#endif
+#endif /* __MPFI_H__ */

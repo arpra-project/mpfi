@@ -25,8 +25,8 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#ifndef _mpfi_io_h
-#define _mpfi_io_h
+#ifndef __MPFI_IO_H__
+#define __MPFI_IO_H__
 
 #include <stdio.h>
 #include <string.h>
@@ -47,4 +47,4 @@ void mpfi_print_binary(mpfi_srcptr);
 }
 #endif
 
-#endif
+#endif /* __MPFI_IO_H__ */
