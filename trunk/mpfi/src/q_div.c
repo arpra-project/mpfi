@@ -1,6 +1,6 @@
 /* q_div.c -- Divide a rational number by an interval.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -24,7 +24,6 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 
-#include <stdio.h>
 #include "mpfi.h"
 #include "mpfi-impl.h"
 
@@ -42,15 +41,21 @@ mpfi_q_div (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if (inexact_set)
-    /* if the conversion of b into a mpfi is inexact, then so are both
-       endpoints of the result.  */
-    /* FIXME: we should increase the precision so as to return the best
-       approximation in all cases. */
-    inexact = MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT;
-  else
-    /* note that inexact_div is correct even in case of overflow */
-    inexact = inexact_div;
+  if (MPFI_LEFT_IS_INEXACT (inexact_div)
+      || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
+    /* the first condition MPFI_LEFT_IS_INEXACT (inexact_div) handles, among
+       others, overflow and underflow cases.
+       if a->left = infinity in non-overflow case, then a->left is the
+       quotient of an infinite endpoint of b with c, thus it is exact even if
+       tmp is not exact.
+       if a->left = 0 in non-underflow case, then a->left is the quotient of a
+       zero endpoint of b with c, thus it is exact. */
+    inexact += 1;
+  }
+  if (MPFI_RIGHT_IS_INEXACT (inexact_div)
+      ||(inexact_set && !mpfr_inf_p (&a->right) && !mpfr_zero_p (&a->right))){
+    inexact += 2;
+  }
 
   return inexact;
 }
