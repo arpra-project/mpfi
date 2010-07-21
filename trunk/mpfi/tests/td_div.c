@@ -24,31 +24,44 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-#include <float.h>
 #include "mpfi-tests.h"
 
-#ifdef DBL_MAX_EXP
 void
 check_overflow (void)
 {
   mpfi_t interval;
   mpfi_t got;
-  double d = 2.0;
+  double d = 1024.0;
   int inex;
-
-  if (DBL_MAX_EXP >= MPFR_EMAX_DEFAULT)
-    return;
 
   mpfi_init2 (interval, 53);
   mpfi_init2 (got, 53);
 
-  mpfi_set_ui (interval, 0);
-  mpfr_nextabove (&(interval->right));
+  /* right overflow: 1024.0 / [epsilon, 1] = [1024, +oo] */
+  mpfr_set_ui (&(interval->left), 0, MPFI_RNDD);
   mpfr_nextabove (&(interval->left)); /* tiny left endpoint x0 */
-  mpfr_nextabove (&(interval->right)); /* interval = [x0, x0 + 1 ulp] */
+  mpfr_set_ui (&(interval->right), 1, MPFI_RNDU);
 
   inex = mpfi_d_div (got, d, interval);
-  if (!MPFI_BOTH_ARE_INEXACT (inex) || mpfi_bounded_p (got)) {
+  if (MPFI_LEFT_IS_INEXACT (inex) || mpfr_cmp_ui (&(got->left), 1024) != 0
+      || !MPFI_RIGHT_IS_INEXACT (inex) || !mpfr_inf_p (&(got->right))) {
+    printf ("Error: mpfi_d_div (rop, %g, op) does not correctly handle "
+            "overflow.\nop = ", d);
+    mpfi_out_str (stdout, 10, 0, interval);
+    printf ("\nrop = ");
+    mpfi_out_str (stdout, 10, 0, got);
+    printf ("\nreturn value = %d\n", inex);
+    exit (1);
+  }
+
+  /* left overflow: 1024.0 / [-1, -epsilon] = [-oo, -1024] */
+  mpfi_neg (interval, interval);
+
+  inex = mpfi_d_div (got, d, interval);
+  if (!MPFI_LEFT_IS_INEXACT (inex)
+      || !mpfr_inf_p (&(got->left))
+      || MPFI_RIGHT_IS_INEXACT (inex)
+      || mpfr_cmp_si (&(got->right), -1024) != 0) {
     printf ("Error: mpfi_d_div (rop, %g, op) does not correctly handle "
             "overflow.\nop = ", d);
     mpfi_out_str (stdout, 10, 0, interval);
@@ -61,7 +74,6 @@ check_overflow (void)
   mpfi_clear (interval);
   mpfi_clear (got);
 }
-#endif
 
 int
 main (int argc, char **argv)
@@ -73,10 +85,7 @@ main (int argc, char **argv)
 
   check_data (&i_d_div, "d_div.dat");
   check_random (&i_d_div, 2, 1000, 10);
-
-#ifdef DBL_MAX_EXP
   check_overflow ();
-#endif
 
   test_end ();
   mpfi_fun_clear (&i_d_div);
