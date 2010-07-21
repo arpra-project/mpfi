@@ -45,7 +45,7 @@ check_overflow (void)
   inex = mpfi_si_div (got, si, interval);
   if (MPFI_LEFT_IS_INEXACT (inex) || mpfr_cmp_si (&(got->left), si) != 0
       || !MPFI_RIGHT_IS_INEXACT (inex) || !mpfr_inf_p (&(got->right))) {
-    printf ("Error: mpfi_d_div (rop, %ld, op) does not correctly handle "
+    printf ("Error: mpfi_si_div (rop, %ld, op) does not correctly handle "
             "overflow.\nop = ", si);
     mpfi_out_str (stdout, 10, 0, interval);
     printf ("\nrop = ");
@@ -62,7 +62,7 @@ check_overflow (void)
       || !mpfr_inf_p (&(got->left))
       || MPFI_RIGHT_IS_INEXACT (inex)
       || mpfr_cmp_si (&(got->right), -si) != 0) {
-    printf ("Error: mpfi_d_div (rop, %ld, op) does not correctly handle "
+    printf ("Error: mpfi_si_div (rop, %ld, op) does not correctly handle "
             "overflow.\nop = ", si);
     mpfi_out_str (stdout, 10, 0, interval);
     printf ("\nrop = ");
