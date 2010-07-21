@@ -48,7 +48,7 @@ check_overflow ()
 
   if (MPFI_LEFT_IS_INEXACT (inex) || mpfr_cmp_q (&(got->left), q) != 0
       || !MPFI_RIGHT_IS_INEXACT (inex) || !mpfr_inf_p (&(got->right))) {
-    printf ("Error: mpfi_fr_sub (rop, q, op) does not correctly handle "
+    printf ("Error: mpfi_q_sub (rop, q, op) does not correctly handle "
             "overflow.\n  q = ");
     mpq_out_str (stdout, 16, q);
     printf ("\nop = ");
@@ -69,7 +69,7 @@ check_overflow ()
       || !mpfr_inf_p (&(got->left))
       || MPFI_RIGHT_IS_INEXACT (inex)
       || mpfr_cmp_si (&(got->right), -1023) != 0) {
-    printf ("Error: mpfi_fr_sub (rop, q, op) does not correctly handle "
+    printf ("Error: mpfi_q_sub (rop, q, op) does not correctly handle "
             "overflow.\n  q = ");
     mpq_out_str (stdout, 16, q);
     printf ("\nop = ");
