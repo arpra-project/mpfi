@@ -59,7 +59,7 @@ check_overflow (void)
     exit (1);
   }
 
-  /* left overflow: 1023 / [-1, -epsilon] = [-oo, -1023 */
+  /* left overflow: 1023 / [-1, -epsilon] = [-oo, -1023] */
   mpfi_neg (interval, interval);
 
   inex = mpfi_fr_div (got, x, interval);
