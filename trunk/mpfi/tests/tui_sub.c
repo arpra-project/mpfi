@@ -34,7 +34,7 @@ main (int argc, char **argv)
   mpfi_fun_init_IUI (&i_ui_sub, mpfi_ui_sub, mpfr_ui_sub);
   test_start ();
 
-/*   check_data (&i_ui_sub, "ui_sub.dat"); */
+  check_data (&i_ui_sub, "ui_sub.dat");
   check_random (&i_ui_sub, 2, 1000, 10);
 
   test_end ();
