@@ -26,8 +26,67 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+void
+check_overflow ()
+{
+  mpfi_t interval;
+  mpfi_t got;
+  mpq_t q;
+  int inex;
+
+  mpfi_init2 (interval, 53);
+  mpfi_init2 (got, 53);
+  mpq_init (q);
+
+  /* right overflow: 1023 - [-Max, 0] = [1023, +oo] */
+  mpq_set_ui (q, 1023, 1);
+  mpfr_set_inf (&(interval->left), -1);
+  mpfr_nextabove (&(interval->left));
+  mpfr_set_ui (&(interval->right), 0, MPFI_RNDU);
+
+  inex = mpfi_q_sub (got, q, interval);
+
+  if (MPFI_LEFT_IS_INEXACT (inex) || mpfr_cmp_q (&(got->left), q) != 0
+      || !MPFI_RIGHT_IS_INEXACT (inex) || !mpfr_inf_p (&(got->right))) {
+    printf ("Error: mpfi_fr_sub (rop, q, op) does not correctly handle "
+            "overflow.\n  q = ");
+    mpq_out_str (stdout, 16, q);
+    printf ("\nop = ");
+    mpfi_out_str (stdout, 16, 0, interval);
+    printf ("\nrop = ");
+    mpfi_out_str (stdout, 16, 0, got);
+    printf ("\nreturn value = %d\n", inex);
+    exit (1);
+  }
+
+  /* left overflow: -1023 - [0, Max] = [-oo, -1023] */
+  mpq_neg (q, q);
+  mpfi_neg (interval, interval);
+
+  inex = mpfi_q_sub (got, q, interval);
+
+  if (!MPFI_LEFT_IS_INEXACT (inex)
+      || !mpfr_inf_p (&(got->left))
+      || MPFI_RIGHT_IS_INEXACT (inex)
+      || mpfr_cmp_si (&(got->right), -1023) != 0) {
+    printf ("Error: mpfi_fr_sub (rop, q, op) does not correctly handle "
+            "overflow.\n  q = ");
+    mpq_out_str (stdout, 16, q);
+    printf ("\nop = ");
+    mpfi_out_str (stdout, 16, 0, interval);
+    printf ("\nrop = ");
+    mpfi_out_str (stdout, 16, 0, got);
+    printf ("\nreturn value = %d\n", inex);
+    exit (1);
+  }
+
+  mpq_clear (q);
+  mpfi_clear (interval);
+  mpfi_clear (got);
+}
+
 /* fake non-existing function */
-static int
+int
 mpfr_q_sub (mpfr_ptr x, mpq_srcptr q, mpfr_srcptr y, mp_rnd_t rnd)
 {
   int ret;
@@ -50,8 +109,9 @@ main (int argc, char **argv)
   mpfi_fun_init_IQI (&i_q_sub, mpfi_q_sub, mpfr_q_sub);
   test_start ();
 
-/*   check_data (&i_q_sub, "q_sub.dat"); */
+  check_data (&i_q_sub, "q_sub.dat");
   check_random (&i_q_sub, 53, 53, 3);
+  check_overflow ();
 
   test_end ();
   mpfi_fun_clear (&i_q_sub);

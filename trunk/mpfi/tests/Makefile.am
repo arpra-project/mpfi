@@ -52,10 +52,10 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     mul.dat mul_2si.dat mul_2ui.dat mul_d.dat mul_fr.dat	\
     mul_q.dat mul_si.dat mul_ui.dat mul_z.dat nan_p.dat		\
     neg.dat put_d.dat put_fr.dat put_q.dat put_si.dat		\
-    put_ui.dat put_z.dat q_div.dat sec.dat sech.dat		\
-    set_d.dat set_fr.dat set_q.dat set_si.dat set_ui.dat	\
-    set_z.dat sin.dat sinh.dat sqr.dat sqrt.dat sub.dat		\
-    sub_d.dat sub_fr.dat sub_q.dat sub_si sub_ui.dat		\
+    put_ui.dat put_z.dat q_div.dat q_sub.dat sec.dat		\
+    sech.dat set_d.dat set_fr.dat set_q.dat set_si.dat		\
+    set_ui.dat set_z.dat sin.dat sinh.dat sqr.dat sqrt.dat	\
+    sub.dat sub_d.dat sub_fr.dat sub_q.dat sub_si sub_ui.dat	\
     sub_z.dat tan.dat tanh.dat union.dat
 
 TESTS = $(check_PROGRAMS)
