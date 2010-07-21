@@ -1,6 +1,6 @@
 /* ui_sub.c -- Subtract an interval from an unsigned long int.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -45,8 +45,18 @@ mpfi_ui_sub (mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
     mpfr_set (tmp, &(a->left), MPFI_RNDD);
     inexact_left  = mpfr_ui_sub (tmp, b, &(c->right), MPFI_RNDD);
     inexact_right = mpfr_ui_sub (&(a->right), b, &(c->left), MPFI_RNDU);
-    inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD);
     mpfr_clear (tmp);
+
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
+
     if (MPFI_NAN_P (a))
       MPFR_RET_NAN;
     if (inexact_left)
