@@ -1,6 +1,6 @@
 /* mpfi_io.h -- Header for mpfi_io.c.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -28,10 +28,10 @@ MA 02110-1301, USA. */
 #ifndef _mpfi_io_h
 #define _mpfi_io_h
 
-#include "mpfi.h"
 #include <stdio.h>
-#include <string.h> 
-#include <ctype.h> 
+#include <string.h>
+#include <ctype.h>
+#include "mpfi.h"
 
 /*#define isblank isspace*/
 #define MPFI_ISSPACE isspace

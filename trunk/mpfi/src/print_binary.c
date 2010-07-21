@@ -1,6 +1,6 @@
 /* print_binary.c -- Print binary representation of an interval in stdout.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

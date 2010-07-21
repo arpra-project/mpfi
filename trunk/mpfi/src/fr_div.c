@@ -1,6 +1,6 @@
 /* fr_div.c -- Divide a floating-point number by an interval.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
