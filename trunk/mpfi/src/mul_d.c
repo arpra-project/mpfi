@@ -42,11 +42,11 @@ mpfi_mul_d (mpfi_ptr a, mpfi_srcptr b, const double c)
     MPFR_RET_NAN;
 
   if (MPFI_LEFT_IS_INEXACT (inexact_mul)
-      || (inexact_set && !mpfr_inf_p (&a->left))) {
+      || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
     inexact += 1;
   }
   if (MPFI_RIGHT_IS_INEXACT (inexact_mul)
-      || (inexact_set && !mpfr_inf_p (&a->right))) {
+      ||(inexact_set && !mpfr_inf_p (&a->right) && !mpfr_zero_p (&a->right))){
     inexact += 2;
   }
 

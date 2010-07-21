@@ -1,6 +1,6 @@
 /* div_d.c -- Divide an interval by a double.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -42,11 +42,11 @@ mpfi_div_d (mpfi_ptr a, mpfi_srcptr b, const double c)
     MPFR_RET_NAN;
 
   if (MPFI_LEFT_IS_INEXACT (inexact_div)
-      || (inexact_set && !mpfr_inf_p (&a->left))) {
+      || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
     inexact += 1;
   }
   if (MPFI_RIGHT_IS_INEXACT (inexact_div)
-      || (inexact_set && !mpfr_inf_p (&a->right))) {
+      ||(inexact_set && !mpfr_inf_p (&a->right) && !mpfr_zero_p (&a->right))){
     inexact += 2;
   }
 
