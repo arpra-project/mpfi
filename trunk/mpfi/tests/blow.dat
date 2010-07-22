@@ -20,74 +20,74 @@
 # a double in the test suite.
 
 # special values
-0 53  nan  nan                      53  nan  nan   -0x170EF54646D497p-109
+0 53  nan  nan                      53  nan  nan   -0x170ef54646d497p-109
 0 53  nan  nan                      53  nan  nan    0.0
-0 53  nan  nan                      53  nan  nan    0x170EF54646D497p-109
-0 53  nan  nan                      53  nan -inf   -0x114B37F4B51F71p-107
+0 53  nan  nan                      53  nan  nan    0x170ef54646d497p-109
+0 53  nan  nan                      53  nan -inf   -0x114b37f4b51f71p-107
 0 53  nan  nan                      53  nan -inf    0.0
-0 53  nan  nan                      53  nan -inf    0x114B37F4B51F71p-107
-0 53  nan  nan                      53  nan -7     -0xFC339AB0A6B53p-99
+0 53  nan  nan                      53  nan -inf    0x114b37f4b51f71p-107
+0 53  nan  nan                      53  nan -7     -0xfc339ab0a6b53p-99
 0 53  nan  nan                      53  nan -7      0.0
 0 53  nan  nan                      53  nan -7      7.0
 0 53  nan  nan                      53  nan -0     -15.0
 0 53  nan  nan                      53  nan -0      0.0
 0 53  nan  nan                      53  nan -0      15.0
-0 53  nan  nan                      53  nan +1     -0xB2B3ECE0A4EF9p-103
+0 53  nan  nan                      53  nan +1     -0xb2b3ece0a4ef9p-103
 0 53  nan  nan                      53  nan +1      0.0
-0 53  nan  nan                      53  nan +1      0xB2B3ECE0A4EF9p-103
-0 53  nan  nan                      53  nan +inf   -0x5ACAE5C4B6E51p-101
+0 53  nan  nan                      53  nan +1      0xb2b3ece0a4ef9p-103
+0 53  nan  nan                      53  nan +inf   -0x5acae5c4b6e51p-101
 0 53  nan  nan                      53  nan +inf    0.0
-0 53  nan  nan                      53  nan +inf    0x5ACAE5C4B6E51p-101
+0 53  nan  nan                      53  nan +inf    0x5acae5c4b6e51p-101
 
 #no definite center in infinite intervals
-0 53  nan  nan                      53 -inf -inf   -0x170EF54646D497p-108
+0 53  nan  nan                      53 -inf -inf   -0x170ef54646d497p-108
 0 53  nan  nan                      53 -inf -inf    0.0
-0 53  nan  nan                      53 -inf -inf    0x170EF54646D497p-108
-0 53 -inf  nan                      53 -inf -7     -0x170EF54646D497p-107
+0 53  nan  nan                      53 -inf -inf    0x170ef54646d497p-108
+0 53 -inf  nan                      53 -inf -7     -0x170ef54646d497p-107
 0 53 -inf  nan                      53 -inf -7      0.0
-0 53 -inf  nan                      53 -inf -7      0x170EF54646D497p-107
-0 53 -inf  nan                      53 -inf -0     -0x170EF54646D497p-106
+0 53 -inf  nan                      53 -inf -7      0x170ef54646d497p-107
+0 53 -inf  nan                      53 -inf -0     -0x170ef54646d497p-106
 0 53 -inf  nan                      53 -inf -0      0.0
-0 53 -inf  nan                      53 -inf -0      0x170EF54646D497p-106
-0 53 -inf  nan                      53 -inf 8      -0x16345785D8A00000
+0 53 -inf  nan                      53 -inf -0      0x170ef54646d497p-106
+0 53 -inf  nan                      53 -inf 8      -0x16345785d8a00000
 0 53 -inf  nan                      53 -inf 8       0.0
-0 53 -inf  nan                      53 -inf 8       0x16345785D8A00000
-0 53  nan  nan                      53 -inf +inf   -0x170EF54646D497p-105
+0 53 -inf  nan                      53 -inf 8       0x16345785d8a00000
+0 53  nan  nan                      53 -inf +inf   -0x170ef54646d497p-105
 0 53  nan  nan                      53 -inf +inf    0.0e-17
-0 53  nan  nan                      53 -inf +inf   +0x170EF54646D497p-105
-0 53  nan  nan                      53 -inf  nan   -0x170EF54646D497p-104
+0 53  nan  nan                      53 -inf +inf   +0x170ef54646d497p-105
+0 53  nan  nan                      53 -inf  nan   -0x170ef54646d497p-104
 0 53  nan  nan                      53 -inf  nan    0.0e-17
-0 53  nan  nan                      53 -inf  nan   +0x170EF54646D497p-104
+0 53  nan  nan                      53 -inf  nan   +0x170ef54646d497p-104
 
 0 53 +0                     -0
-  53 +0                     -0                     -0x170EF54646D497p-109
+  53 +0                     -0                     -0x170ef54646d497p-109
 0 53 +0                     -0
   53 +0                     -0                      0.0
 0 53 +0                     -0
-  53 +0                     -0                      0x170EF54646D497p-109
+  53 +0                     -0                      0x170ef54646d497p-109
 3 53 -0x1p-49                0x10000000000001p-49
   53 +0                      8                     -0x3p-53
 3 53 -0x1p-50                0x10000000000001p-49
   53 +0                      8                     -0x1p-53
 3 53 -0x1p-50                0x10000000000001p-49
-  53 +0                      8                     -0x114B37F4B51F71p-107
+  53 +0                      8                     -0x114b37f4b51f71p-107
 0 53 +0                      8
   53 +0                      8                      0.0
 0 53 -1                      9
   53 +0                      8                      0.25
 3 53 -0x1p-50                0x10000000000001p-49
-  53 +0                      8                      0x114B37F4B51F7p-103
+  53 +0                      8                      0x114b37f4b51f7p-103
 
 #no definite center in infinite intervals
-0 53  nan +inf                      53 +0   +inf   -0x50B45A75F7E81p-104
+0 53  nan +inf                      53 +0   +inf   -0x50b45a75f7e81p-104
 0 53  nan +inf                      53 +0   +inf    0.0
-0 53  nan +inf                      53 +0   +inf    0x142D169D7DFA03p-106
-0 53  nan  nan                      53 +inf +inf   -0x170EF54646D497p-109
+0 53  nan +inf                      53 +0   +inf    0x142d169d7dfa03p-106
+0 53  nan  nan                      53 +inf +inf   -0x170ef54646d497p-109
 0 53  nan  nan                      53 +inf +inf    0.0
-0 53  nan  nan                      53 +inf +inf    0x170EF54646D497p-109
-0 53  nan  nan                      53 +inf  nan   -0x170EF54646D497p-109
+0 53  nan  nan                      53 +inf +inf    0x170ef54646d497p-109
+0 53  nan  nan                      53 +inf  nan   -0x170ef54646d497p-109
 0 53  nan  nan                      53 +inf  nan    0.0
-0 53  nan  nan                      53 +inf  nan    0x170EF54646D497p-109
+0 53  nan  nan                      53 +inf  nan    0x170ef54646d497p-109
 
 # regular values
 0 53 -48                    -0

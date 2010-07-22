@@ -11,14 +11,6 @@
 # 7: right endpoint value of first parameter
 # 8: second parameter value
 
-#WARNING:
-# double values are read by the test suite with rounding towards minus
-# infinity to a machine-dependant precision (whereas the mpfi data are read
-# at the given precision with rounding to the nearest).
-# So as to ensure portability, use test values that are representable with a
-# 53 bit-significand which corresponds to the minimum default precision for
-# a double in the test suite.
-
 # special values
 0 53  nan  nan                      53  nan  nan   53 -0x170ef54646d497p-109
 0 53  nan  nan                      53  nan  nan   53 +0
