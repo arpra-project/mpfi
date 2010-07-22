@@ -71,13 +71,13 @@ mpfi_cos (mpfi_ptr a, mpfi_srcptr b)
   }
   else {
     /* there is less than one period in b */
-    /* let us discuss according to the position (quadrant) of the endpoints of b    */
+    /* let us discuss according to the position (quadrant) of the endpoints of
+       b  */
 
-    /* computing precision = maximal precision required to determine the          */
-    /* relative position of the endpoints of b and of integer multiples of Pi / 2 */
+    /* computing precision = maximal precision required to determine the
+       relative position of the endpoints of b and of integer multiples of
+       Pi / 2 */
     prec = mpfi_get_prec (a);
-    mpfr_init2 (tmp, prec);
-
     if (prec_left > prec) prec = prec_left;
     if (prec_right > prec) prec = prec_right;
 
@@ -101,9 +101,11 @@ mpfi_cos (mpfi_ptr a, mpfi_srcptr b)
     case 0:
       switch (ql_mod4) {
       case 0:
+        mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
 	inexact_left = mpfr_cos (tmp, &(b->right), GMP_RNDD);
 	inexact_right = mpfr_cos (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->left), tmp, GMP_RNDD);
+	mpfr_set (&(a->left), tmp, GMP_RNDD); /* exact */
+        mpfr_clear (tmp);
 	break;
       case 1:
 	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
@@ -127,9 +129,11 @@ mpfi_cos (mpfi_ptr a, mpfi_srcptr b)
       switch (ql_mod4) {
       case 0:
       case 1:
+        mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
 	inexact_left = mpfr_cos (tmp, &(b->right), GMP_RNDD);
 	inexact_right = mpfr_cos (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->left), tmp, GMP_RNDD);
+	mpfr_set (&(a->left), tmp, GMP_RNDD); /* exact */
+        mpfr_clear (tmp);
 	break;
       case 2:
 	mpz_add_ui (z, z, 1);
@@ -196,7 +200,6 @@ mpfi_cos (mpfi_ptr a, mpfi_srcptr b)
     if (inexact_right) inexact += 2;
 
     mpz_clear (zmod4);
-    mpfr_clear (tmp);
   }
 
   mpz_clear (quad_left);
