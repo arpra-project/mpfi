@@ -45,10 +45,11 @@ mpfi_z_div (mpfi_ptr a, mpz_srcptr b, mpfi_srcptr c)
     /* the first condition MPFI_LEFT_IS_INEXACT (inexact_div) handles, among
        others, overflow and underflow cases.
        if a->left = infinity in non-overflow case, then a->left is the
-       quotient of c with a zero endpoint of b, thus it is exact even if tmp
+       quotient of b with a zero endpoint of c, thus it is exact even if tmp
        is not exact.
-       if a->left = 0 in non-underflow case, then a->left is the quotient of c
-       with an infinite endpoint of b, thus it is exact. */
+       if a->left = 0 in non-underflow case, then either a->left is the
+       quotient of b with an infinite endpoint of c, or b is zero, thus
+       a->left is exact. */
     inexact += 1;
   }
   if (MPFI_RIGHT_IS_INEXACT (inexact_div)
