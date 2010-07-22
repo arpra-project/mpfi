@@ -26,7 +26,11 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+#include "mpfi_config.h"
+
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif
 #ifndef LONG_MAX
 # define LONG_MAX +2147483647
 #endif

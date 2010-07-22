@@ -25,8 +25,15 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 #include <math.h>
-#include <float.h>
 #include "mpfi-tests.h"
+
+#ifndef isnan
+# define isnan(x) ((x) != (x))
+#endif
+
+#ifndef isinf
+# define isinf(x) (!isnan (x) && isnan ((x) - (x)))
+#endif
 
 void
 error_message (mpfi_srcptr i, double got, const char *expected)

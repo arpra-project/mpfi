@@ -24,8 +24,13 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-#include <float.h>
 #include "mpfi-tests.h"
+
+#include "mpfi_config.h"
+
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
 
 /* Warning: DBL_MANT_DIG is not necessary a number of bits */
 #ifndef DBL_MANT_DIG

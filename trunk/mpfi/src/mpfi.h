@@ -30,8 +30,8 @@ MA 02110-1301, USA. */
 
 /* Machine independent implementations */
 
-#include "gmp.h"
-#include "mpfr.h"
+#include <gmp.h>
+#include <mpfr.h>
 
 
 

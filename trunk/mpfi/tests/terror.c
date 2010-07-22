@@ -24,8 +24,13 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-#include <unistd.h>
 #include "mpfi-tests.h"
+
+#include "mpfi_config.h"
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 int
 read_stderr (FILE *stream)

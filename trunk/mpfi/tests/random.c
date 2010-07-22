@@ -29,6 +29,8 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+#include "mpfi_config.h"
+
 #ifdef TIME_WITH_SYS_TIME
 # include <sys/time.h>
 # include <time.h>
@@ -40,12 +42,16 @@ MA 02110-1301, USA. */
 # endif
 #endif
 
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif
 #ifndef ULONG_MAX
 # define ULONG_MAX 4294967295
 #endif
 
+#ifdef HAVE_FLOAT_H
 #include <float.h>
+#endif
 #ifndef DBL_MANT_DIG
 # define DBL_MANT_DIG 53
 #endif

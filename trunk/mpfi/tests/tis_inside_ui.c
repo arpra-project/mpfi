@@ -26,7 +26,11 @@ MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
 
+#include "mpfi_config.h"
+
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif
 #ifndef ULONG_MAX
 # define ULONG_MAX 4294967295
 #endif
