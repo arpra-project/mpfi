@@ -7,7 +7,7 @@ AC_CONFIG_SRCDIR([src/mpfi.h])
 AC_CONFIG_HEADERS([mpfi_config.h])
 
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.9 -Wall -Werror])
+AM_INIT_AUTOMAKE([1.9 -Wall -Werror dist-bzip2 dist-zip])
 
 dnl Extra arguments to configure
 AC_ARG_WITH([mpfr_include],
