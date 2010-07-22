@@ -29,8 +29,14 @@ MA 02110-1301, USA. */
 #include "mpfi.h"
 #include "mpfi_config.h"
 
+#if MPFR_VERSION < MPFR_VERSION_NUM(3,0,0)
 #define MPFI_RNDD GMP_RNDD
 #define MPFI_RNDU GMP_RNDU
+#else
+#define MPFI_RNDD MPFR_RNDD
+#define MPFI_RNDU MPFR_RNDU
+#define GMP_RNDN  MPFR_RNDN
+#endif
 
 #define MPFI_IS_POS(x) ((mpfr_sgn((&(x->left)))>=0) && (mpfr_sgn((&(x->right)))>0))
 #define MPFI_IS_STRICTLY_POS(x) ((mpfr_sgn((&(x->left)))>0) && (mpfr_sgn((&(x->right)))>0))
