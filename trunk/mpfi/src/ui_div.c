@@ -25,17 +25,21 @@ MA 02110-1301, USA. */
 
 #include "mpfi-impl.h"
 
+#ifdef HAVE_LIMITS_H
+#include <limits.h>
+#endif
+#ifndef CHAR_BIT
+# define CHAR_BIT 8
+#endif
+
 int
 mpfi_ui_div (mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 {
   mpfi_t tmp;
   int inexact;
-  mp_prec_t tmpprec;
 
-  tmpprec = mpfi_get_prec (a);
-  if (sizeof(b) * 8 > tmpprec) tmpprec = sizeof(b) * 8;
-  mpfi_init2 (tmp, tmpprec);
-  mpfi_set_ui (tmp, b); /* Exact */
+  mpfi_init2 (tmp, sizeof(b) * CHAR_BIT);
+  mpfi_set_ui (tmp, b); /* exact */
   inexact = mpfi_div (a, tmp, c);
   MPFI_CLEAR (tmp);
 
