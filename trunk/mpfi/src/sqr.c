@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 int
 mpfi_sqr (mpfi_ptr a, mpfi_srcptr u)
 {
-  mpfr_t t1;
+  mpfr_t tmp;
   int inexact_left, inexact_right, inexact=0;
 
   if ( MPFI_NAN_P (u) ) {
@@ -44,23 +44,22 @@ mpfi_sqr (mpfi_ptr a, mpfi_srcptr u)
   else {
     if (mpfr_sgn (&(u->right)) <= 0) {
       /* u non-positive -> beware the case where a = u */
-      mpfr_init2 (t1, mpfi_get_prec (a));
-      inexact_right = mpfr_mul (t1, &(u->left), &(u->left), MPFI_RNDU);
+      mpfr_init2 (tmp, mpfr_get_prec (&(a->right)));
+      inexact_right = mpfr_mul (tmp, &(u->left), &(u->left), MPFI_RNDU);
       inexact_left = mpfr_mul (&(a->left), &(u->right), &(u->right), MPFI_RNDD);
-      inexact_right |= mpfr_set (&(a->right), t1, MPFI_RNDU);
-      mpfr_clear (t1);
+      mpfr_set (&(a->right), tmp, MPFI_RNDU); /* exact */
+      mpfr_clear (tmp);
     }
     else {
       /* inf = 0, sup = max of the squares of the endpoints of u */
-      mpfr_init2 (t1, mpfi_get_prec (u));
-      inexact_right = mpfr_abs (t1, &(u->left), MPFI_RNDU);
-      if (mpfr_cmp (t1, &(u->right)) <= 0) {
-        inexact_right = mpfr_mul (&(a->right), &(u->right), &(u->right), MPFI_RNDU);
+      if (mpfr_cmp_abs (&(u->left), &(u->right)) <= 0) {
+        inexact_right =
+          mpfr_mul (&(a->right), &(u->right), &(u->right), MPFI_RNDU);
       }
       else {
-        inexact_right = mpfr_mul (&(a->right), &(u->left), &(u->left), MPFI_RNDU);
+        inexact_right =
+          mpfr_mul (&(a->right), &(u->left), &(u->left), MPFI_RNDU);
       }
-      mpfr_clear (t1);
       inexact_left = mpfr_set_si (&(a->left), (long)0, GMP_RNDZ);
     }
   }

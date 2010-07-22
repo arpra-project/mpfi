@@ -64,40 +64,40 @@ mpfi_div (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     }
   }
   else if (MPFI_IS_POS (c)) {
-    mpfr_init2 (tmp, mpfi_get_prec (a));
     if (MPFI_IS_NONNEG (b)) {                       /* a = [ bl/cr, br/cl ] */
+      mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
       inexact_left  = mpfr_div (tmp, &(b->left), &(c->right), MPFI_RNDD);
       inexact_right = mpfr_div (&(a->right), &(b->right), &(c->left), MPFI_RNDU);
-      inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
+      mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
+      mpfr_clear (tmp);
     }
     else if (MPFI_IS_NONPOS (b)) {                 /* a = [ bl/cl, br/cr ] */
       inexact_left  = mpfr_div (&(a->left), &(b->left), &(c->left), MPFI_RNDD);
       inexact_right = mpfr_div (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
     }
     else { /* b contains 0 in its interior */     /* a = [ bl/cl, br/cl ] */
+      mpfr_init2 (tmp, mpfr_get_prec (&(a->right)));
       inexact_right = mpfr_div (tmp, &(b->right), &(c->left), MPFI_RNDU);
       inexact_left  = mpfr_div (&(a->left), &(b->left), &(c->left), MPFI_RNDD);
-      inexact_right|= mpfr_set (&(a->right), tmp, MPFI_RNDU);
+      mpfr_set (&(a->right), tmp, MPFI_RNDU); /* exact */
+      mpfr_clear (tmp);
     }
-    mpfr_clear (tmp);
   }
   else { /* c < 0 */
-    mpfr_init2 (tmp, mpfi_get_prec (a));
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
     if (MPFI_IS_NONNEG (b)) {                       /* a = [ br/cr, bl/cl ] */
       inexact_left  = mpfr_div (tmp, &(b->right), &(c->right), MPFI_RNDD);
       inexact_right = mpfr_div (&(a->right), &(b->left), &(c->left), MPFI_RNDU);
-      inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
     }
     else if (MPFI_IS_NONPOS (b)) {                 /* a = [ br/cl, bl/cr ] */
       inexact_left  = mpfr_div (tmp, &(b->right), &(c->left), MPFI_RNDD);
       inexact_right = mpfr_div (&(a->right), &(b->left), &(c->right), MPFI_RNDU);
-      inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
     }
     else { /* b contains 0 in its interior */     /* a = [ br/cr, bl/cr ] */
       inexact_left  = mpfr_div (tmp, &(b->right), &(c->right), MPFI_RNDD);
       inexact_right = mpfr_div (&(a->right), &(b->left), &(c->right), MPFI_RNDU);
-      inexact_left |= mpfr_set (&(a->left), tmp, MPFI_RNDD);
     }
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear (tmp);
   }
 

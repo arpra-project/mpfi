@@ -74,11 +74,10 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
     mpfr_set_inf (&(a->right), 1);
   }
   else {
-    /* computing precision = maximal precision required to determine the          */
-    /* relative position of the endpoints of b and of integer multiples of Pi / 2 */
+    /* computing precision = maximal precision required to determine the
+       relative position of the endpoints of b and of integer multiples of
+       Pi / 2 */
     prec = mpfi_get_prec (a);
-    mpfr_init2 (tmp, prec);
-
     if (prec_left > prec) prec = prec_left;
     if (prec_right > prec) prec = prec_right;
 
@@ -103,9 +102,11 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
       }
       else {
 	/* csc is decreasing on b */
+        mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
 	inexact_left = mpfr_csc (tmp, &(b->right), GMP_RNDD);
 	inexact_right = mpfr_csc (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->left), tmp, GMP_RNDN);
+	mpfr_set (&(a->left), tmp, GMP_RNDD); /* exact */
+        mpfr_clear (tmp);
       }
     }
     else if (ql_mod4 == 2) {
@@ -131,7 +132,6 @@ mpfi_csc (mpfi_ptr a, mpfi_srcptr b)
     if (inexact_right) inexact += 2;
 
     mpz_clear (zmod4);
-    mpfr_clear (tmp);
   }
 
   mpz_clear (quad_left);

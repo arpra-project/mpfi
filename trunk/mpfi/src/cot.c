@@ -97,10 +97,10 @@ mpfi_cot (mpfi_ptr a, mpfi_srcptr b)
   else { /* within one period, cot is decreasing */
     mpfr_t tmp;
 
-    mpfr_init2 (tmp, mpfi_get_prec (a));
-    inexact_left = mpfr_cot (tmp, &(b->right), GMP_RNDD);
-    inexact_right = mpfr_cot (&(a->right), &(b->left), GMP_RNDU);
-    mpfr_set (&(a->left), tmp, GMP_RNDN);
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
+    inexact_left = mpfr_cot (tmp, &(b->right), MPFI_RNDD);
+    inexact_right = mpfr_cot (&(a->right), &(b->left), MPFI_RNDU);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear (tmp);
 
     if (inexact_left) inexact += 1;

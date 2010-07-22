@@ -31,7 +31,7 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
   mpfr_t t1;
   mpfr_t t2;
   int inexact_left, inexact_right;
-  int inexact_set_left = 0, inexact_set_right = 0, inexact = 0;
+  int inexact = 0;
 
   /* Handling the NaN cases */
   if ( MPFI_NAN_P (u) || MPFI_NAN_P (c) )
@@ -44,15 +44,12 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
   /* Handling the case where one operand is 0, in order */
   /* to avoid problems with 0 * an infinite interval    */
   if (MPFI_IS_ZERO (u)) {
-    return (mpfi_set (a,u));
+    return (mpfi_set (a, u));
   }
   if (MPFI_IS_ZERO (c)) {
-    return (mpfi_set (a,c));
+    return (mpfi_set (a, c));
   }
 
-  /* In the following, double rounding can occur: in order to cope with a result equal
-     to one argument, a multiplication is performed and stored in a temporary variable
-     and then assigned to the corresponding endpoint.                                  */
   if (mpfr_sgn (&(u->left)) >= 0) {
     if (mpfr_sgn (&(c->left)) >=0) {
       /* u nonnegative and c nonnegative */
@@ -60,92 +57,90 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
       inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
     }
     else {
+      mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
       if (mpfr_sgn (&(c->right)) <= 0) {
 	/* u nonnegative and c non-positive */
-        mpfr_init2 (t1, mpfi_get_prec (a));
         inexact_left = mpfr_mul (t1, &(u->right), &(c->left), MPFI_RNDD);
         inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->right), MPFI_RNDU);
-        inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
-        mpfr_clear (t1);
       }
       else {
 	/* u nonnegative and c overlapping 0 */
-        mpfr_init2 (t1, mpfi_get_prec (a));
 	inexact_left = mpfr_mul (t1, &(u->right), &(c->left), MPFI_RNDD);
 	inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
-        inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
-        mpfr_clear (t1);
       }
+      mpfr_set (&(a->left), t1, MPFI_RNDD); /* exact */
+      mpfr_clear (t1);
     }
   }
   else {
     if (mpfr_sgn (&(u->right)) <= 0) {
       /* u non-positive */
+      mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
       if (mpfr_sgn (&(c->left)) >= 0) {
         /* u non-positive and c nonnegative */
-	mpfr_init2 (t1, mpfi_get_prec (a));
         inexact_left = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
         inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->left), MPFI_RNDU);
-        inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
-	mpfr_clear (t1);
       }
       else {
         if (mpfr_sgn (&(c->right)) <= 0) {
 	  /* u non-positive and c non-positive */
-          mpfr_init2 (t1, mpfi_get_prec (a));
           inexact_left = mpfr_mul (t1, &(u->right), &(c->right), MPFI_RNDD);
           inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->left), MPFI_RNDU);
-          inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
-          mpfr_clear (t1);
         }
         else {
 	  /* u non-positive and c overlapping 0 */
-          mpfr_init2 (t1, mpfi_get_prec (a));
 	  inexact_left = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
 	  inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->left), MPFI_RNDU);
-          inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
-          mpfr_clear (t1);
         }
       }
+      mpfr_set (&(a->left), t1, MPFI_RNDD); /* exact */
+      mpfr_clear (t1);
     }
     else {
       /* u contains 0 */
       if (mpfr_sgn (&(c->left)) >= 0) {
 	/* u overlapping 0 and c nonnegative  */
-        mpfr_init2 (t1, mpfi_get_prec (a));
+        mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
+
 	inexact_left = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
 	inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
-        inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
+
+        mpfr_set (&(a->left), t1, MPFI_RNDD);
         mpfr_clear (t1);
       }
       else {
 	if (mpfr_sgn (&(c->right)) <= 0) {
 	  /* u overlapping 0 and c non-positive */
-          mpfr_init2 (t1, mpfi_get_prec (a));
+          mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
+
 	  inexact_left = mpfr_mul (t1, &(u->right), &(c->left), MPFI_RNDD);
 	  inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->left), MPFI_RNDU);
-          inexact_set_left = mpfr_set (&(a->left), t1, MPFI_RNDD);
+
+          mpfr_set (&(a->left), t1, MPFI_RNDD);
           mpfr_clear (t1);
 	}
 	else {
 	  /* u overlapping 0 and c overlapping 0
 	     Beware the case where the result is one of the operands! */
-	  mpfr_init2 (t1, mpfi_get_prec (a));
-	  mpfr_init2 (t2, mpfi_get_prec (a));
+          int inexact_tmp;
+
+	  mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
+	  mpfr_init2 (t2, mpfr_get_prec (&(a->left)));
 	  inexact_right = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
 	  inexact_left = mpfr_mul (t2, &(u->right), &(c->left), MPFI_RNDD);
-	  if (mpfr_cmp (t1,t2) < 0) {
-	    mpfr_swap (t2, t1);
+	  if (mpfr_cmp (t1, t2) < 0) {
+	    mpfr_swap (t2, t1); /* same precision */
             inexact_left = inexact_right;
 	  }
-	  inexact_right = mpfr_mul (t1, &(u->left), &(c->left), MPFI_RNDU);
-	  inexact_set_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
+
+          mpfr_set_prec (t1, mpfr_get_prec (&(a->right)));
+	  inexact_tmp = mpfr_mul (t1, &(u->left), &(c->left), MPFI_RNDU);
+	  inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
 	  if (mpfr_cmp (t1, &(a->right)) > 0) {
-	    inexact_set_right = mpfr_set (&(a->right), t1, MPFI_RNDU);
+            mpfr_set (&(a->right), t1, MPFI_RNDU); /* exact */
+	    inexact_right = inexact_tmp;
 	  }
-          else
-            inexact_right = 0;
-	  inexact_set_left = mpfr_set (&(a->left), t2, MPFI_RNDD);
+	  mpfr_set (&(a->left), t2, MPFI_RNDD); /* exact */
 	  mpfr_clear (t1);
 	  mpfr_clear (t2);
 	}
@@ -153,9 +148,9 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
     }
   }
 
-  if (inexact_left || inexact_set_left)
+  if (inexact_left)
     inexact += 1;
-  if (inexact_right || inexact_set_right)
+  if (inexact_right)
     inexact += 2;
 
   return inexact;
