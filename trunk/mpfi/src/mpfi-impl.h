@@ -48,7 +48,7 @@ MA 02110-1301, USA. */
 #elif defined (__GMP_BITS_PER_MP_LIMB) /* Older versions 4.x.x */
 #define BITS_PER_MP_LIMB  __GMP_BITS_PER_MP_LIMB
 #else
-# error "Could not detect BITS_PER_MP_LIMB. Get GMP 4.0.0 at least."
+# error "Could not detect BITS_PER_MP_LIMB. Get GMP 4.1.0 at least."
 #endif
 
 #define MPFR_RET_NAN do {mpfr_set_nanflag(); return 0;} while (0)
