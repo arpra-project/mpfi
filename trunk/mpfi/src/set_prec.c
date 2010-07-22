@@ -23,8 +23,6 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
-
-#include "mpfi.h"
 #include "mpfi-impl.h"
 
 /* The precision of the interval x is set to prec,  */

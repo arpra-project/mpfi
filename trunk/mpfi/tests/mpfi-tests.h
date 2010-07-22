@@ -30,7 +30,6 @@ MA 02110-1301, USA. */
 #include <stdlib.h>
 
 #include "mpfi_io.h"
-#include "mpfi.h"
 #include "mpfi-impl.h"
 
 #define STR(a) # a
