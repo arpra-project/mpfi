@@ -29,31 +29,18 @@ int
 mpfi_add_si (mpfi_ptr a, mpfi_srcptr b, const long c)
 {
   mpfi_t tmp;
-  int inexact_add, inexact = 0;
+  int inexact;
   mp_prec_t tmpprec;
 
   tmpprec = mpfi_get_prec (a);
   if (sizeof(c) * 8 > tmpprec) tmpprec = sizeof(c) * 8;
   mpfi_init2 (tmp, tmpprec);
   mpfi_set_si (tmp, c); /* Exact */
-  inexact_add = mpfi_add (a, b, tmp);
+  inexact = mpfi_add (a, b, tmp);
   MPFI_CLEAR (tmp);
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
-
-  if ( mpfr_inf_p (&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT (inexact_add)) /* overflow */
-      inexact += 1;
-  }
-  else if (MPFI_LEFT_IS_INEXACT (inexact_add))
-    inexact += 1;
-  if ( mpfr_inf_p (&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT (inexact_add) )  /* overflow */
-      inexact += 2;
-  }
-  else if (MPFI_RIGHT_IS_INEXACT (inexact_add))
-    inexact += 2;
 
   return inexact;
 }
