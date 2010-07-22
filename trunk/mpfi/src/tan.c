@@ -67,8 +67,8 @@ mpfi_tan (mpfi_ptr a, mpfi_srcptr b)
   }
 
   else { /* within one period, tan is increasing */
-    inexact_left = mpfr_tan (&(a->left), &(b->left), GMP_RNDD);
-    inexact_right = mpfr_tan (&(a->right), &(b->right), GMP_RNDU);
+    inexact_left = mpfr_tan (&(a->left), &(b->left), MPFI_RNDD);
+    inexact_right = mpfr_tan (&(a->right), &(b->right), MPFI_RNDU);
     if (inexact_left) inexact += 1;
     if (inexact_right) inexact += 2;
   }

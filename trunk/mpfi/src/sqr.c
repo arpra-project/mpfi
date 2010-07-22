@@ -60,7 +60,7 @@ mpfi_sqr (mpfi_ptr a, mpfi_srcptr u)
         inexact_right =
           mpfr_mul (&(a->right), &(u->left), &(u->left), MPFI_RNDU);
       }
-      inexact_left = mpfr_set_si (&(a->left), (long)0, GMP_RNDZ);
+      inexact_left = mpfr_set_si (&(a->left), (long)0, MPFI_RNDD);
     }
   }
 

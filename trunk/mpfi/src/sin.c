@@ -48,8 +48,8 @@ mpfi_sin (mpfi_ptr a, mpfi_srcptr b)
       mpfr_set_nan (&(a->right));
       MPFR_RET_NAN;
     }
-    mpfr_set_si (&(a->left), -1, GMP_RNDD);
-    mpfr_set_si (&(a->right), 1, GMP_RNDU);
+    mpfr_set_si (&(a->left), -1, MPFI_RNDD);
+    mpfr_set_si (&(a->right), 1, MPFI_RNDU);
     return 0;
   }
 
@@ -66,8 +66,8 @@ mpfi_sin (mpfi_ptr a, mpfi_srcptr b)
   /* if there is at least one period in b, then a = [-1, 1] */
   mpz_sub (z, quad_right, quad_left);
   if (mpz_cmp_ui (z, 4) >= 0) {
-    mpfr_set_si (&(a->left), -1, GMP_RNDD);
-    mpfr_set_si (&(a->right), 1, GMP_RNDU);
+    mpfr_set_si (&(a->left), -1, MPFI_RNDD);
+    mpfr_set_si (&(a->right), 1, MPFI_RNDU);
     inexact = 0;
   }
   else {
@@ -101,20 +101,20 @@ mpfi_sin (mpfi_ptr a, mpfi_srcptr b)
       switch (ql_mod4) {
       case 0:
       case 3:
-	inexact_left = mpfr_sin (&(a->left), &(b->left), GMP_RNDD);
-	inexact_right = mpfr_sin (&(a->right), &(b->right), GMP_RNDU);
+	inexact_left = mpfr_sin (&(a->left), &(b->left), MPFI_RNDD);
+	inexact_right = mpfr_sin (&(a->right), &(b->right), MPFI_RNDU);
 	break;
       case 1:
 	mpz_add_ui (z, z, 1);
 	if (mpfi_cmp_sym_pi (z, &(b->left), &(b->right), prec) >= 0)
-	  inexact_right = mpfr_sin (&(a->right), &(b->left), GMP_RNDU);
+	  inexact_right = mpfr_sin (&(a->right), &(b->left), MPFI_RNDU);
 	else
-	  inexact_right = mpfr_sin (&(a->right), &(b->right), GMP_RNDU);
-	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
+	  inexact_right = mpfr_sin (&(a->right), &(b->right), MPFI_RNDU);
+	inexact_left = mpfr_set_si (&(a->left), -1, MPFI_RNDD);
 	break;
       case 2:
-	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
-	inexact_right = mpfr_sin (&(a->right), &(b->right), GMP_RNDU);
+	inexact_left = mpfr_set_si (&(a->left), -1, MPFI_RNDD);
+	inexact_right = mpfr_sin (&(a->right), &(b->right), MPFI_RNDU);
 	break;
       }
       break;
@@ -123,73 +123,73 @@ mpfi_sin (mpfi_ptr a, mpfi_srcptr b)
       case 0:
 	mpz_add_ui (z, z, 1);
 	if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
-	  inexact_left = mpfr_sin (&(a->left), &(b->left), GMP_RNDD);
+	  inexact_left = mpfr_sin (&(a->left), &(b->left), MPFI_RNDD);
 	else
-	  inexact_left = mpfr_sin (&(a->left), &(b->right), GMP_RNDD);
-	inexact_right = mpfr_set_si (&(a->right), 1, GMP_RNDU);
+	  inexact_left = mpfr_sin (&(a->left), &(b->right), MPFI_RNDD);
+	inexact_right = mpfr_set_si (&(a->right), 1, MPFI_RNDU);
 	break;
       case 1:
         mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
-	inexact_left = mpfr_sin (tmp, &(b->right), GMP_RNDD);
-	inexact_right = mpfr_sin (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->left), tmp, GMP_RNDD); /* exact */
+	inexact_left = mpfr_sin (tmp, &(b->right), MPFI_RNDD);
+	inexact_right = mpfr_sin (&(a->right), &(b->left), MPFI_RNDU);
+	mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
         mpfr_clear (tmp);
 	break;
       case 2:
-	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
-	inexact_right = mpfr_set_si (&(a->right), 1, GMP_RNDU);
+	inexact_left = mpfr_set_si (&(a->left), -1, MPFI_RNDD);
+	inexact_right = mpfr_set_si (&(a->right), 1, MPFI_RNDU);
 	break;
       case 3:
-	inexact_left = mpfr_sin (&(a->left), &(b->left), GMP_RNDD);
-	inexact_right = mpfr_set_si (&(a->right), 1, GMP_RNDU);
+	inexact_left = mpfr_sin (&(a->left), &(b->left), MPFI_RNDD);
+	inexact_right = mpfr_set_si (&(a->right), 1, MPFI_RNDU);
 	break;
       }
       break;
     case 2:
       switch (ql_mod4) {
       case 0:
-	inexact_left = mpfr_sin (&(a->left), &(b->right), GMP_RNDD);
-	inexact_right = mpfr_set_si (&(a->right), 1, GMP_RNDU);
+	inexact_left = mpfr_sin (&(a->left), &(b->right), MPFI_RNDD);
+	inexact_right = mpfr_set_si (&(a->right), 1, MPFI_RNDU);
 	break;
       case 1:
       case 2:
         mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
-	inexact_left = mpfr_sin (tmp, &(b->right), GMP_RNDD);
-	inexact_right = mpfr_sin (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->left), tmp, GMP_RNDD); /* exact */
+	inexact_left = mpfr_sin (tmp, &(b->right), MPFI_RNDD);
+	inexact_right = mpfr_sin (&(a->right), &(b->left), MPFI_RNDU);
+	mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
         mpfr_clear (tmp);
 	break;
       case 3:
 	mpz_add_ui (z, z, 1);
 	if (mpfi_cmp_sym_pi (z, &(b->left), &(b->right), prec) >= 0)
-	  inexact_left = mpfr_sin (&(a->left), &(b->left), GMP_RNDD);
+	  inexact_left = mpfr_sin (&(a->left), &(b->left), MPFI_RNDD);
 	else
-	  inexact_left = mpfr_sin (&(a->left), &(b->right), GMP_RNDD);
-	inexact_right = mpfr_set_si (&(a->right), 1, GMP_RNDU);
+	  inexact_left = mpfr_sin (&(a->left), &(b->right), MPFI_RNDD);
+	inexact_right = mpfr_set_si (&(a->right), 1, MPFI_RNDU);
 	break;
       }
       break;
     case 3:
       switch (ql_mod4) {
       case 0:
-	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
-	inexact_right = mpfr_set_si (&(a->right), 1, GMP_RNDU);
+	inexact_left = mpfr_set_si (&(a->left), -1, MPFI_RNDD);
+	inexact_right = mpfr_set_si (&(a->right), 1, MPFI_RNDU);
 	break;
       case 1:
-	inexact_right = mpfr_sin (&(a->right), &(b->left), GMP_RNDU);
-	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
+	inexact_right = mpfr_sin (&(a->right), &(b->left), MPFI_RNDU);
+	inexact_left = mpfr_set_si (&(a->left), -1, MPFI_RNDD);
 	break;
       case 2:
 	mpz_add_ui (z, z, 1);
 	if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
-	  inexact_right = mpfr_sin (&(a->right), &(b->left), GMP_RNDU);
+	  inexact_right = mpfr_sin (&(a->right), &(b->left), MPFI_RNDU);
 	else
-	  inexact_right = mpfr_sin (&(a->right), &(b->right), GMP_RNDU);
-	inexact_left = mpfr_set_si (&(a->left), -1, GMP_RNDD);
+	  inexact_right = mpfr_sin (&(a->right), &(b->right), MPFI_RNDU);
+	inexact_left = mpfr_set_si (&(a->left), -1, MPFI_RNDD);
 	break;
       case 3:
-	inexact_left = mpfr_sin (&(a->left), &(b->left), GMP_RNDD);
-	inexact_right = mpfr_sin (&(a->right), &(b->right), GMP_RNDU);
+	inexact_left = mpfr_sin (&(a->left), &(b->left), MPFI_RNDD);
+	inexact_right = mpfr_sin (&(a->right), &(b->right), MPFI_RNDU);
 	break;
       }
       break;

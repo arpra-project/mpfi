@@ -55,19 +55,19 @@ mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
     /* x is a singleton */
     return mpfi_set (y, x);
   }
-  inex_div = mpfr_div_2exp (radius, radius, 1, GMP_RNDU); /* either underflow
+  inex_div = mpfr_div_2exp (radius, radius, 1, MPFI_RNDU); /* either underflow
                                                              or exact*/
 
   /* factor must be greater than 1 + |fact|, so it is not possible to perform
      this addition directly in C with the double precision since the usual
      rouding mode is rounding to nearest. */
-  inex_conv = mpfr_set_d (factor, fact < 0.0 ? -fact : fact, GMP_RNDU);
+  inex_conv = mpfr_set_d (factor, fact < 0.0 ? -fact : fact, MPFI_RNDU);
   inex_factor = mpfr_add_ui (factor, factor, 1, MPFI_RNDU);
 
-  inex_rad = mpfr_mul (radius, radius, factor, GMP_RNDU);
+  inex_rad = mpfr_mul (radius, radius, factor, MPFI_RNDU);
   inex_centre = mpfi_mid (centre, x);
-  inex_left = mpfr_sub (&(y->left), centre, radius, GMP_RNDD);
-  inex_right = mpfr_add (&(y->right), centre, radius, GMP_RNDU);
+  inex_left = mpfr_sub (&(y->left), centre, radius, MPFI_RNDD);
+  inex_right = mpfr_add (&(y->right), centre, radius, MPFI_RNDU);
 
   mpfr_clear (radius);
   mpfr_clear (factor);

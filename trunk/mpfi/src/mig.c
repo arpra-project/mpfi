@@ -37,11 +37,11 @@ mpfi_mig (mpfr_ptr m, mpfi_srcptr x)
   }
 
   if (mpfi_is_nonneg_default (x))
-    inexact = mpfr_set (m, &(x->left), GMP_RNDD);
+    inexact = mpfr_set (m, &(x->left), MPFI_RNDD);
   else if (mpfi_is_nonpos_default (x))
-    inexact = mpfr_neg (m, &(x->right), GMP_RNDD);
+    inexact = mpfr_neg (m, &(x->right), MPFI_RNDD);
   else { /* x contains 0 */
-    inexact = mpfr_set_ui (m, 0, GMP_RNDD);
+    inexact = mpfr_set_ui (m, 0, MPFI_RNDD);
   }
 
   return inexact;

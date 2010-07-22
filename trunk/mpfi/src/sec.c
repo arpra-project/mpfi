@@ -92,15 +92,15 @@ mpfi_sec (mpfi_ptr a, mpfi_srcptr b)
     if (qr_mod4 == ql_mod4) {
       if (qr_mod4 == 0 || qr_mod4 == 1) {
 	/* sec is increasing on b */
-	inexact_left = mpfr_sec (&(a->left), &(b->left), GMP_RNDD);
-	inexact_right = mpfr_sec (&(a->right), &(b->right), GMP_RNDU);
+	inexact_left = mpfr_sec (&(a->left), &(b->left), MPFI_RNDD);
+	inexact_right = mpfr_sec (&(a->right), &(b->right), MPFI_RNDU);
       }
       else {
 	/* sec is decreasing on b */
         mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
-	inexact_left = mpfr_sec (tmp, &(b->right), GMP_RNDD);
-	inexact_right = mpfr_sec (&(a->right), &(b->left), GMP_RNDU);
-	mpfr_set (&(a->left), tmp, GMP_RNDD); /* exact */
+	inexact_left = mpfr_sec (tmp, &(b->right), MPFI_RNDD);
+	inexact_right = mpfr_sec (&(a->right), &(b->left), MPFI_RNDU);
+	mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
         mpfr_clear (tmp);
       }
     }
@@ -108,19 +108,19 @@ mpfi_sec (mpfi_ptr a, mpfi_srcptr b)
       mpz_add (z, z_left, z_right);
       mpz_add_ui (z, z, 1);
       if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
-	inexact_left = mpfr_sec (&(a->left), &(b->left), GMP_RNDD);
+	inexact_left = mpfr_sec (&(a->left), &(b->left), MPFI_RNDD);
       else
-	inexact_left = mpfr_sec (&(a->left), &(b->right), GMP_RNDD);
-      inexact_right = mpfr_set_si (&(a->right), -1, GMP_RNDU);
+	inexact_left = mpfr_sec (&(a->left), &(b->right), MPFI_RNDD);
+      inexact_right = mpfr_set_si (&(a->right), -1, MPFI_RNDU);
     }
     else {
       mpz_add (z, z_left, z_right);
       mpz_add_ui (z, z, 1);
       if (mpfi_cmp_sym_pi (z, &(b->right), &(b->left), prec) >= 0)
-	inexact_right = mpfr_sec (&(a->right), &(b->left), GMP_RNDU);
+	inexact_right = mpfr_sec (&(a->right), &(b->left), MPFI_RNDU);
       else
-	inexact_right = mpfr_sec (&(a->right), &(b->right), GMP_RNDU);
-      inexact_left = mpfr_set_ui (&(a->left), +1, GMP_RNDD);
+	inexact_right = mpfr_sec (&(a->right), &(b->right), MPFI_RNDU);
+      inexact_left = mpfr_set_ui (&(a->left), +1, MPFI_RNDD);
     }
 
     if (inexact_left) inexact = 1;
