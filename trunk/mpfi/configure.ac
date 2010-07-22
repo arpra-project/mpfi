@@ -59,12 +59,12 @@ AC_CHECK_LIB([gmp], [__gmpz_init],
 AC_MSG_CHECKING(for valid GMP)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include "gmp.h"
-#if (__GNU_MP_VERSION < 4)
-# error "min: GMP 4.0.0"
+#if (__GNU_MP_VERSION*100+__GNU_MP_VERSION_MINOR*10 < 410)
+# error "min: GMP 4.1.0"
 #endif
 ]], [[]])],[AC_MSG_RESULT(yes)],[
  AC_MSG_RESULT(no)
- AC_MSG_ERROR([GMP 4.0.0 min required])
+ AC_MSG_ERROR([GMP 4.1.0 min required])
 ])
 
 AC_CHECK_LIB([mpfr], [mpfr_init],
