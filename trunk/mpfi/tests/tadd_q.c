@@ -88,7 +88,6 @@ main (int argc, char **argv)
 
   check_data (&i_add_q, "add_q.dat");
   check_overflow ();
-  check_random (&i_add_q, 53, 53, 3); /* very slow, checking reduced range */
 
   test_end ();
   mpfi_fun_clear (&i_add_q);

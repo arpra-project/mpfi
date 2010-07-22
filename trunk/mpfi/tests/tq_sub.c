@@ -110,7 +110,6 @@ main (int argc, char **argv)
   test_start ();
 
   check_data (&i_q_sub, "q_sub.dat");
-  check_random (&i_q_sub, 53, 53, 3);
   check_overflow ();
 
   test_end ();
