@@ -40,11 +40,11 @@ mpfi_z_sub (mpfi_ptr a, mpz_srcptr b, mpfi_srcptr c)
     MPFR_RET_NAN;
 
   if (MPFI_LEFT_IS_INEXACT (inexact_sub)
-      || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
+      || (inexact_set && !mpfr_inf_p (&a->left))) {
     inexact += 1;
   }
   if (MPFI_RIGHT_IS_INEXACT (inexact_sub)
-      ||(inexact_set && !mpfr_inf_p (&a->right) && !mpfr_zero_p (&a->right))){
+      ||(inexact_set && !mpfr_inf_p (&a->right))){
     inexact += 2;
   }
 
