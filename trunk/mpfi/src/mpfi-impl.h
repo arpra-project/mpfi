@@ -51,14 +51,7 @@ MA 02110-1301, USA. */
 # error "Could not detect BITS_PER_MP_LIMB. Get GMP 4.0.0 at least."
 #endif
 
-/* Try to detect MPFR 2.0.1 or above */
-#ifndef mpfr_round_prec
-# define MPFR_RET_NAN return (__mpfr_flags |= MPFR_FLAGS_NAN), 0
-#elif MPFR_VERSION >= MPFR_VERSION_NUM(2,2,0)
-# define MPFR_RET_NAN do {mpfr_set_nanflag(); return 0; }while (0)
-#else
-# define MPFR_RET_NAN return (__gmpfr_flags |= MPFR_FLAGS_NAN), 0
-#endif
+#define MPFR_RET_NAN do {mpfr_set_nanflag(); return 0;} while (0)
 
 #define MPFR_IS_NAN(x)  (mpfr_nan_p(x))
 #define MPFR_IS_ZERO(x) (mpfr_sgn(x) == 0)
