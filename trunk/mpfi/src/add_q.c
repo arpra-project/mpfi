@@ -39,18 +39,14 @@ mpfi_add_q (mpfi_ptr a, mpfi_srcptr b, mpq_srcptr c)
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if ( mpfr_inf_p (&(a->left)) ) {
-    if  (MPFI_LEFT_IS_INEXACT (inexact_add)) /* overflow */
-      inexact += 1;
-  }
-  else if (MPFI_LEFT_IS_INEXACT (inexact_set) || MPFI_LEFT_IS_INEXACT (inexact_add))
+  if (MPFI_LEFT_IS_INEXACT (inexact_add)
+      || (inexact_set && !mpfr_inf_p (&a->left))) {
     inexact += 1;
-  if ( mpfr_inf_p (&(a->right)) ) {
-    if (MPFI_RIGHT_IS_INEXACT (inexact_add) )  /* overflow */
-      inexact += 2;
   }
-  else if (MPFI_RIGHT_IS_INEXACT (inexact_set) || MPFI_RIGHT_IS_INEXACT (inexact_add))
+  if (MPFI_RIGHT_IS_INEXACT (inexact_add)
+      || (inexact_set && !mpfr_inf_p (&a->right))) {
     inexact += 2;
+  }
 
   return inexact;
 }
