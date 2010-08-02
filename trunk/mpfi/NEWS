@@ -50,6 +50,7 @@ Changes between MPFI version 1.4 and 1.5
   --with-mpfr-dir=DIR changed to --with-mpfr=DIR
   --with-mpfr-libpath=DIR changed to --with-mpfr-lib=DIR
   --with-mpfr-incpath=DIR changed to --with-mpfr-include=DIR
+* now require at least GMP version 4.1.0 and MPFR version 2.4.0
 * each function is in its own file (compile_time *= 8;)
 * remove limitation to 1000 characters in mpfi_set_str.
 * fix documentation for functions mpfi_blow, mpfi_is_inside
