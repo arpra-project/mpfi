@@ -136,7 +136,7 @@ File: mpfi.info,  Node: Installing MPFI,  Next: Reporting Bugs,  Prev: Introduct
 2 Installing MPFI
 *****************
 
-To build MPFI, you first have to install MPFR (version 3.2.0 or above)
+To build MPFI, you first have to install MPFR (version 2.4.0 or above)
 on your computer.  You need a C compiler, preferably GCC, but any
 reasonable compiler should work.  And you need a standard Unix `make'
 program, plus some other standard Unix utility programs.
@@ -892,20 +892,13 @@ information, see the MPFR documentation or related bibliography.
      of whether none, one or both endpoints are exact.
 
  -- Function: int mpfi_const_log2 (mpfi_t ROP)
-     Sets ROP to the logarithm of 2 with the precision of ROP.  Returns
-     an indication of whether none, one or both endpoints are exact.
-
  -- Function: int mpfi_const_pi (mpfi_t ROP)
-     Sets ROP to the value of Pi with the precision of ROP.  Returns an
-     indication of whether none, one or both endpoints are exact.
-
  -- Function: int mpfi_const_euler (mpfi_t ROP)
-     Sets ROP to the Euler's constant, with the precision of ROP.
-     Returns an indication of whether none, one or both endpoints are
-     exact.
-
  -- Function: int mpfi_const_catalan (mpfi_t ROP)
-     Sets ROP to the Catalan's constant, with the precision of ROP.
+     Sets ROP respectively to the logarithm of 2, to the value of Pi,
+     to the Euler's constant, and to the Catalan's constant, with the
+     precision of ROP.
+
      Returns an indication of whether none, one or both endpoints are
      exact.
 
@@ -1306,10 +1299,10 @@ Function and Type Index
 * mpfi_cmp_si:                           Interval Comparison. (line  19)
 * mpfi_cmp_ui:                           Interval Comparison. (line  18)
 * mpfi_cmp_z:                            Interval Comparison. (line  20)
-* mpfi_const_catalan:                    Special Functions.   (line 109)
-* mpfi_const_euler:                      Special Functions.   (line 104)
+* mpfi_const_catalan:                    Special Functions.   (line  99)
+* mpfi_const_euler:                      Special Functions.   (line  98)
 * mpfi_const_log2:                       Special Functions.   (line  96)
-* mpfi_const_pi:                         Special Functions.   (line 100)
+* mpfi_const_pi:                         Special Functions.   (line  97)
 * mpfi_cos:                              Special Functions.   (line  25)
 * mpfi_cosh:                             Special Functions.   (line  51)
 * mpfi_cot:                              Special Functions.   (line  34)
@@ -1517,15 +1510,15 @@ Node: Floating-point Quantities24219
 Node: Converting Intervals27097
 Node: Interval Arithmetic27572
 Node: Special Functions33931
-Node: Interval Comparison39088
-Node: I/O of Intervals41916
-Node: Operating on the Endpoints44930
-Node: Set Operations47402
-Node: Miscellaneous Interval Functions49311
-Node: Error Handling50545
-Node: Contributors51152
-Node: References51488
-Node: Concept Index52611
-Node: Function Index55544
+Node: Interval Comparison38754
+Node: I/O of Intervals41582
+Node: Operating on the Endpoints44596
+Node: Set Operations47068
+Node: Miscellaneous Interval Functions48977
+Node: Error Handling50211
+Node: Contributors50818
+Node: References51154
+Node: Concept Index52277
+Node: Function Index55210
 
 End Tag Table

@@ -1164,32 +1164,22 @@ Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
 @deftypefun int mpfi_const_log2 (mpfi_t @var{rop})
-Sets @var{rop} to the logarithm of 2 
-with the precision of @var{rop}. 
-Returns an indication of whether none, one or both endpoints are exact.
-@end deftypefun
-
-@deftypefun int mpfi_const_pi (mpfi_t @var{rop})
+@deftypefunx int mpfi_const_pi (mpfi_t @var{rop})
+@deftypefunx int mpfi_const_euler (mpfi_t @var{rop})
+@deftypefunx int mpfi_const_catalan (mpfi_t @var{rop})
 @ifinfo
-Sets @var{rop} to the value of Pi with the precision of @var{rop}. 
+Sets @var{rop} respectively to the logarithm of 2, to the value of Pi,
+to the Euler's constant, and to the Catalan's constant, with the
+precision of @var{rop}.
 @end ifinfo
 @iftex
 @tex
-Sets @var{rop} to the value of $\pi$ with the precision of @var{rop}. 
+Sets @var{rop} respectively to the logarithm of 2, to the value of
+$\pi$, to the Euler's constant, and to the Catalan's constant, with
+the precision of @var{rop}.
 @end tex
 @end iftex
-Returns an indication of whether none, one or both endpoints are exact.
-@end deftypefun
 
-@deftypefun int mpfi_const_euler (mpfi_t @var{rop})
-Sets @var{rop} to the Euler's constant,
-with the precision of @var{rop}. 
-Returns an indication of whether none, one or both endpoints are exact.
-@end deftypefun
-
-@deftypefun int mpfi_const_catalan (mpfi_t @var{rop})
-Sets @var{rop} to the Catalan's constant,
-with the precision of @var{rop}. 
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
