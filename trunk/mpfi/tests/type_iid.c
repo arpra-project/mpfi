@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 extern unsigned long line_number;
-unsigned long test_line_number;   /* start line of a test */
+static unsigned long test_line_number;   /* start line of a test */
 
 void
 read_line_iid (mpfi_function_ptr this, FILE* fp)

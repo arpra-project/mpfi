@@ -29,7 +29,7 @@ MA 02110-1301, USA. */
 
 extern char * pathname;
 extern unsigned long line_number;
-unsigned long test_line_number;   /* start line of a test */
+static unsigned long test_line_number;   /* start line of a test */
 
 void
 read_line_is (mpfi_function_ptr this, FILE* fp)
