@@ -80,7 +80,7 @@ by the Free Software Foundation.
 
 @page
 @vskip 0pt plus 1filll
-@c Copyright @copyright{} 2002 Spaces and Arenaire INRIA projects, Lab. ANO, USTL
+@c Copyright @copyright{} 2002-2010 Spaces and Arenaire INRIA projects, Lab. ANO - USTL
 
 @sp 2
 
@@ -150,9 +150,9 @@ Initialization and Assignment Functions
 
 @node Copying, Introduction to MPFI, Top, Top
 @comment  node-name, next, previous,  up
-@unnumbered MPFR/MPFI Copying Conditions
+@unnumbered MPFI Copying Conditions
 @cindex Copying conditions
-@cindex Conditions for copying MPFR/MPFI
+@cindex Conditions for copying MPFI
 
 This library is @dfn{free}; this means that everyone is free to use it and
 free to redistribute it on a free basis.  The library is not in the public
@@ -169,19 +169,20 @@ and that you know you can do these things.@refill
 
 To make sure that everyone has such rights, we have to forbid you to deprive
 anyone else of these rights.  For example, if you distribute copies of the
-MPFR/MPFI library, you must give the recipients all the rights that you have.  You
+MPFI library, you must give the recipients all the rights that you have.  You
 must make sure that they, too, receive or can get the source code.  And you
 must tell them their rights.@refill
 
 Also, for our own protection, we must make certain that everyone finds out
-that there is no warranty for the MPFR/MPFI library.  If it is modified by
+that there is no warranty for the MPFI library.  If it is modified by
 someone else and passed on, we want their recipients to know that what they
 have is not what we distributed, so that any problems introduced by others
 will not reflect on our reputation.@refill
 
-The precise conditions of the license for the MPFR/MPFI library are found in the
+The precise conditions of the license for the MPFI library are found in the
 Lesser General Public License that accompany the source code.
-See the file COPYING.LIB in the main MPFR directory.@refill
+As MPFI is built upon MPFR and share its license,
+see the file COPYING.LIB in the main MPFR directory.@refill
 
 @node Introduction to MPFI, Installing MPFI, Copying, Top
 @comment  node-name,  next,  previous,  up
@@ -192,31 +193,34 @@ MPFI is intended to be a portable library written in C
 for arbitrary precision interval arithmetic
 with intervals represented using MPFR 
 reliable floating-point numbers. It is based on the GNU MP 
-library and on the MPFR library and is part of the latter.
+library and on the MPFR library.
 The purpose of an arbitrary precision interval
 arithmetic is on the one hand to get @dfn{guaranteed}
 results, thanks to interval computation, and on the other
 hand to obtain accurate results, thanks to multiple
 precision arithmetic. The MPFI library is built upon
-MPFR in order to benefit from the correct roundings
-provided by MPFR.
+MPFR in order to benefit from the correct rounding
+provided, for each operation or function, by MPFR.
 Further advantages of using MPFR are its portability
 and compliance with the IEEE 754 standard for floating-point
 arithmetic.
 
 
-This version of MPFR/MPFI is released under the GNU Lesser General Public
+This version of MPFI is released under the GNU Lesser General Public
 License.
-It is permitted to link MPFR/MPFI to non-free programs, as long as when
-distributing them the MPFR/MPFI source code and a means to re-link with a
-modified MPFR/MPFI is provided.
+It is permitted to link MPFI to non-free programs, as long as when
+distributing them the MPFI source code and a means to re-link with a
+modified MPFI is provided.
 
+As interval arithmetic currently undergoes standardization, through
+the work of the IEEE 1788 working group, future versions of MPFI
+may evolve in order to reflect the standardized definitions and behaviours.
 
 
 @c @section How to use this Manual
 @c 
-@c Everyone should read @ref{MPFR Basics}.  If you need to install the library
-@c yourself, you need to read @ref{Installing MPFR}, too.
+@c Everyone should read @ref{MPFI Basics}.  If you need to install the library
+@c yourself, you need to read @ref{Installing MPFI}, too.
 @c 
 @c The rest of the manual can be used for later reference, although it is
 @c probably a good idea to glance through it.
@@ -267,12 +271,7 @@ On most platforms, a dynamic library will be produced too.
 This will make sure MPFI was built correctly.
 If you get error messages from the test program, please
 report this to
-@c FIXME: update this list of email
-@samp{Nathalie.Revol@@ens-lyon.fr,
- Fabrice.Rouillier@@loria.fr,
- sylvain.chevillard@@ens-lyon.org,
- christoph.lauter@@ens-lyon.org,
- hong.diep.nguyen@@ens-lyon.fr}.
+@samp{mpfi-users@@lists.gforge.inria.fr}.
 (@xref{Reporting Bugs}, for information on what to include in useful
 bug reports.)
 
@@ -302,7 +301,7 @@ Create an info version of the manual, in @file{mpfi.info}.
 @item
 @samp{mpfi.pdf}
 
-Create a Postscript version of the manual, in @file{mpfi.ps}.
+Create a PDF version of the manual, in @file{mpfi.pdf}.
 
 @item
 @samp{mpfi.dvi} or @samp{dvi}
@@ -337,8 +336,14 @@ Since it has not been intensively tested,
 you may discover that
 MPFI suffers from all bugs of the underlying libraries, plus many many more.
 
-Please report any problem to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr, sylvain.chevillard@@ens-lyon.org, christoph.lauter@@ens-lyon.org, hong.diep.nguyen@@ens-lyon.fr}.
+Please report any problem to @samp{mpfi-users@@lists.gforge.inria.fr}.
 @xref{Reporting Bugs}.
+
+@section Getting the Latest Version of MPFI
+
+The latest version of MPFI is available from
+@url{https://gforge.inria.fr/frs/?group_id=157}.
+
 
 @node Reporting Bugs, MPFI Basics, Installing MPFI, Top
 @comment  node-name,  next,  previous,  up
@@ -346,8 +351,8 @@ Please report any problem to @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillie
 @cindex Reporting bugs
 
 If you think you have found a bug in the MPFI library, please investigate it 
-and report it. We have made this library available to you, and it is not to ask
-too much from you, to ask you to report the bugs that you find.
+and report it. We have made this library available to you, and we expect
+you will report the bugs that you find.
 
 There are a few things you should think about when you put your bug report
 together.
@@ -367,7 +372,7 @@ If your bug report is good, we will do our best to help you to get a corrected
 version of the library; if the bug report is poor, we won't do anything about
 it (except kidding you for sending poor bug reports).
 
-Send your bug report to: @samp{Nathalie.Revol@@ens-lyon.fr, Fabrice.Rouillier@@loria.fr, sylvain.chevillard@@ens-lyon.org, christoph.lauter@@ens-lyon.org, hong.diep.nguyen@@ens-lyon.fr}.
+Send your bug report to: @samp{mpfi-users@@lists.gforge.inria.fr}.
 
 If you think something in this manual is unclear, or downright incorrect, or if
 the language needs to be improved, please send a note to the same address.
@@ -421,6 +426,8 @@ is @code{mpfr_t}.
 The @dfn{Precision} is the number of bits used to represent the mantissa
 of a floating-point number;
 the corresponding C data type is @code{mp_prec_t}.
+MPFI assumes that both endpoints of an interval use the same precision.
+The behaviour is undefined if this is not the case.
 
 
 @section Function Classes
@@ -466,11 +473,6 @@ variables, since any variable uses a memory space of fixed size.
 Hence unless you change its precision, or clear and reinitialize it, 
 an interval variable will have the same allocated space during all its
 lifetime.
-
-@section Getting the Latest Version of MPFI
-
-The latest version of MPFI is available from
-@file{http://www.ens-lyon.fr/~nrevol/nr_software.html}.
 
 @node Interval Functions, Contributors, MPFI Basics, Top
 @comment  node-name,  next,  previous,  up
@@ -1510,7 +1512,7 @@ Resets the error number to 0.
 @unnumbered Contributors
 
 MPFI has been written by Fabrice Rouillier, Nathalie Revol, Sylvain
-Chevillard, Hong Diep Nguyen and Christoph Lauter. Its development
+Chevillard, Hong Diep Nguyen, Christoph Lauter and Philippe Th@'eveny. Its development
 has greatly benefited from the patient and supportive help of the MPFR
 team.
 
