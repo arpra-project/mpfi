@@ -35,13 +35,16 @@ MA 02110-1301, USA. */
 int
 read_stderr (FILE *stream)
 {
-  if (fgetc (stream) != EOF) {
-    while (fgetc(stream) != EOF) {}
+  int ret = 0;
 
-    return -1;
+  /* something to read? */
+  ret = (fgetc (stream) != EOF);
+  if (fseek (stream, 0, SEEK_END) != 0) {
+    printf ("Internal error: cannot reset stream.\n");
+    exit (1);
   }
 
-  return 0;
+  return ret;
 }
 
 int
