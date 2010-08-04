@@ -436,7 +436,9 @@ is @code{mpfr_t}.
 @noindent
 The @dfn{Precision} is the number of bits used to represent the mantissa
 of a floating-point number;
-the corresponding C data type is @code{mp_prec_t}.
+the corresponding C data type is @code{mp_prec_t} (renamed
+@code{mpfr_prec_t} since the MPFR version 3.0.0, both types are
+compatible).
 MPFI assumes that both endpoints of an interval use the same precision.
 The behaviour is undefined if this is not the case.
 
