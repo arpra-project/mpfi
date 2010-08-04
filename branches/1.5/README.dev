@@ -1,0 +1,9 @@
+
+to compile MPFI from the repository, type the following commands:
+$ autoreconf -i
+$ ./configure
+$ make
+$ make check
+
+to make a new package from the source:
+$ make dist
