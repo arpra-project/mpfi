@@ -122,11 +122,22 @@ Floating-Point Interval Library
 * Concept Index::               
 * Function Index::              
 
+Interval Functions
+
+
+Initialization and Assignment Functions
+
+* Initializing Intervals::      
+* Assigning Intervals::         
+* Simultaneous Interval Init & Assign::  
+
 @detailmenu
  --- The Detailed Node Listing ---
 
 Interval Functions
 
+* Return Values::
+* Rounding Modes and Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        

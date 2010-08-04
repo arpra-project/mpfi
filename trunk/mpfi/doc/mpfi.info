@@ -31,8 +31,8 @@ translation approved by the Free Software Foundation.
 
 File: mpfi.info,  Node: Top,  Next: Copying,  Prev: (dir),  Up: (dir)
 
-MPFI 1.5.
-*********
+MPFI 1.6-dev.
+*************
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -50,10 +50,21 @@ Floating-Point Interval Library
 * Concept Index::
 * Function Index::
 
+Interval Functions
+
+
+Initialization and Assignment Functions
+
+* Initializing Intervals::
+* Assigning Intervals::
+* Simultaneous Interval Init & Assign::
+
  --- The Detailed Node Listing ---
 
 Interval Functions
 
+* Return Values::
+* Rounding Modes and Precision Handling::
 * Initializing and Assigning Intervals::
 * Floating-point Quantities::
 * Converting Intervals::
@@ -75,8 +86,8 @@ Initialization and Assignment Functions
 
 File: mpfi.info,  Node: Copying,  Next: Introduction to MPFI,  Prev: Top,  Up: Top
 
-MPFR/MPFI Copying Conditions
-****************************
+MPFI Copying Conditions
+***********************
 
 This library is "free"; this means that everyone is free to use it and
 free to redistribute it on a free basis.  The library is not in the
@@ -93,19 +104,20 @@ of it in new free programs, and that you know you can do these things.
 
    To make sure that everyone has such rights, we have to forbid you to
 deprive anyone else of these rights.  For example, if you distribute
-copies of the MPFR/MPFI library, you must give the recipients all the
-rights that you have.  You must make sure that they, too, receive or
-can get the source code.  And you must tell them their rights.
+copies of the MPFI library, you must give the recipients all the rights
+that you have.  You must make sure that they, too, receive or can get
+the source code.  And you must tell them their rights.
 
    Also, for our own protection, we must make certain that everyone
-finds out that there is no warranty for the MPFR/MPFI library.  If it
-is modified by someone else and passed on, we want their recipients to
+finds out that there is no warranty for the MPFI library.  If it is
+modified by someone else and passed on, we want their recipients to
 know that what they have is not what we distributed, so that any
 problems introduced by others will not reflect on our reputation.
 
-   The precise conditions of the license for the MPFR/MPFI library are
-found in the Lesser General Public License that accompany the source
-code.  See the file COPYING.LIB in the main MPFR directory.
+   The precise conditions of the license for the MPFI library are found
+in the Lesser General Public License that accompany the source code.
+As MPFI is built upon MPFR and share its license, see the file
+COPYING.LIB in the main MPFR directory.
 
 
 File: mpfi.info,  Node: Introduction to MPFI,  Next: Installing MPFI,  Prev: Copying,  Up: Top
@@ -116,19 +128,23 @@ File: mpfi.info,  Node: Introduction to MPFI,  Next: Installing MPFI,  Prev: Cop
 MPFI is intended to be a portable library written in C for arbitrary
 precision interval arithmetic with intervals represented using MPFR
 reliable floating-point numbers. It is based on the GNU MP library and
-on the MPFR library and is part of the latter.  The purpose of an
-arbitrary precision interval arithmetic is on the one hand to get
-"guaranteed" results, thanks to interval computation, and on the other
-hand to obtain accurate results, thanks to multiple precision
-arithmetic. The MPFI library is built upon MPFR in order to benefit
-from the correct roundings provided by MPFR.  Further advantages of
-using MPFR are its portability and compliance with the IEEE 754
-standard for floating-point arithmetic.
+on the MPFR library.  The purpose of an arbitrary precision interval
+arithmetic is on the one hand to get "guaranteed" results, thanks to
+interval computation, and on the other hand to obtain accurate results,
+thanks to multiple precision arithmetic. The MPFI library is built upon
+MPFR in order to benefit from the correct rounding provided, for each
+operation or function, by MPFR.  Further advantages of using MPFR are
+its portability and compliance with the IEEE 754 standard for
+floating-point arithmetic.
 
-   This version of MPFR/MPFI is released under the GNU Lesser General
-Public License.  It is permitted to link MPFR/MPFI to non-free
-programs, as long as when distributing them the MPFR/MPFI source code
-and a means to re-link with a modified MPFR/MPFI is provided.
+   This version of MPFI is released under the GNU Lesser General Public
+License.  It is permitted to link MPFI to non-free programs, as long as
+when distributing them the MPFI source code and a means to re-link with
+a modified MPFI is provided.
+
+   As interval arithmetic currently undergoes standardization, through
+the work of the IEEE 1788 working group, future versions of MPFI may
+evolve in order to reflect the standardized definitions and behaviours.
 
 
 File: mpfi.info,  Node: Installing MPFI,  Next: Reporting Bugs,  Prev: Introduction to MPFI,  Up: Top
@@ -170,9 +186,7 @@ systems.  In the MPFI source directory, type the following commands.
 
      This will make sure MPFI was built correctly.  If you get error
      messages from the test program, please report this to
-     `Nathalie.Revol@ens-lyon.fr,  Fabrice.Rouillier@loria.fr,
-     sylvain.chevillard@ens-lyon.org,  christoph.lauter@ens-lyon.org,
-     hong.diep.nguyen@ens-lyon.fr'.  (*Note Reporting Bugs::, for
+     `mpfi-users@lists.gforge.inria.fr'.  (*Note Reporting Bugs::, for
      information on what to include in useful bug reports.)
 
   4. `make install'
@@ -194,7 +208,7 @@ systems.  In the MPFI source directory, type the following commands.
 
    * `mpfi.pdf'
 
-     Create a Postscript version of the manual, in `mpfi.ps'.
+     Create a PDF version of the manual, in `mpfi.pdf'.
 
    * `mpfi.dvi' or `dvi'
 
@@ -221,10 +235,14 @@ some Linux distributions.  Since it has not been intensively tested,
 you may discover that MPFI suffers from all bugs of the underlying
 libraries, plus many many more.
 
-   Please report any problem to `Nathalie.Revol@ens-lyon.fr,
-Fabrice.Rouillier@loria.fr, sylvain.chevillard@ens-lyon.org,
-christoph.lauter@ens-lyon.org, hong.diep.nguyen@ens-lyon.fr'.  *Note
-Reporting Bugs::.
+   Please report any problem to `mpfi-users@lists.gforge.inria.fr'.
+*Note Reporting Bugs::.
+
+2.2 Getting the Latest Version of MPFI
+======================================
+
+The latest version of MPFI is available from
+`https://gforge.inria.fr/frs/?group_id=157'.
 
 
 File: mpfi.info,  Node: Reporting Bugs,  Next: MPFI Basics,  Prev: Installing MPFI,  Up: Top
@@ -234,8 +252,7 @@ File: mpfi.info,  Node: Reporting Bugs,  Next: MPFI Basics,  Prev: Installing MP
 
 If you think you have found a bug in the MPFI library, please
 investigate it and report it. We have made this library available to
-you, and it is not to ask too much from you, to ask you to report the
-bugs that you find.
+you, and we expect you will report the bugs that you find.
 
    There are a few things you should think about when you put your bug
 report together.
@@ -254,9 +271,7 @@ using gcc, `gcc -v'.  Also, include the output from `uname -a'.
 corrected version of the library; if the bug report is poor, we won't
 do anything about it (except kidding you for sending poor bug reports).
 
-   Send your bug report to: `Nathalie.Revol@ens-lyon.fr,
-Fabrice.Rouillier@loria.fr, sylvain.chevillard@ens-lyon.org,
-christoph.lauter@ens-lyon.org, hong.diep.nguyen@ens-lyon.fr'.
+   Send your bug report to: `mpfi-users@lists.gforge.inria.fr'.
 
    If you think something in this manual is unclear, or downright
 incorrect, or if the language needs to be improved, please send a note
@@ -298,6 +313,8 @@ for such objects is `mpfr_t'.
 
 The "Precision" is the number of bits used to represent the mantissa of
 a floating-point number; the corresponding C data type is `mp_prec_t'.
+MPFI assumes that both endpoints of an interval use the same precision.
+The behaviour is undefined if this is not the case.
 
 4.2 Function Classes
 ====================
@@ -339,12 +356,6 @@ MPFI variables, since any variable uses a memory space of fixed size.
 Hence unless you change its precision, or clear and reinitialize it, an
 interval variable will have the same allocated space during all its
 lifetime.
-
-4.4 Getting the Latest Version of MPFI
-======================================
-
-The latest version of MPFI is available from
-`http://www.ens-lyon.fr/~nrevol/nr_software.html'.
 
 
 File: mpfi.info,  Node: Interval Functions,  Next: Contributors,  Prev: MPFI Basics,  Up: Top
@@ -1105,7 +1116,7 @@ File: mpfi.info,  Node: Set Operations,  Next: Miscellaneous Interval Functions,
      Returns a positive value if OP is empty (its endpoints are in
      reverse order) and 0 otherwise. Nothing is done in arithmetic or
      special functions to handle empty intervals: this is the
-     responsability of the user to avoid computing with empty intervals.
+     responsibility of the user to avoid computing with empty intervals.
 
  -- Function: int mpfi_intersect (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the intersection (possibly empty) of the intervals OP1
@@ -1172,8 +1183,9 @@ Contributors
 ************
 
 MPFI has been written by Fabrice Rouillier, Nathalie Revol, Sylvain
-Chevillard, Hong Diep Nguyen and Christoph Lauter. Its development has
-greatly benefited from the patient and supportive help of the MPFR team.
+Chevillard, Hong Diep Nguyen, Christoph Lauter and Philippe The'veny.
+Its development has greatly benefited from the patient and supportive
+help of the MPFR team.
 
 
 File: mpfi.info,  Node: References,  Next: Concept Index,  Prev: Contributors,  Up: Top
@@ -1220,7 +1232,7 @@ Concept Index
 
 * Arithmetic functions:                  Interval Arithmetic.  (line  6)
 * Comparison functions:                  Interval Comparison.  (line  6)
-* Conditions for copying MPFR/MPFI:      Copying.              (line  6)
+* Conditions for copying MPFI:           Copying.              (line  6)
 * Conversion functions:                  Converting Intervals. (line  6)
 * Copying conditions:                    Copying.              (line  6)
 * Error handling:                        Error Handling.       (line  6)
@@ -1494,31 +1506,31 @@ Function and Type Index
 
 Tag Table:
 Node: Top1338
-Node: Copying2210
-Node: Introduction to MPFI3978
-Node: Installing MPFI5103
-Node: Reporting Bugs8486
-Node: MPFI Basics9956
-Node: Interval Functions13453
-Node: Return Values14712
-Node: Rounding Modes and Precision Handling15698
-Node: Initializing and Assigning Intervals18785
-Node: Initializing Intervals19144
-Node: Assigning Intervals20962
-Node: Simultaneous Interval Init & Assign22956
-Node: Floating-point Quantities24219
-Node: Converting Intervals27097
-Node: Interval Arithmetic27572
-Node: Special Functions33931
-Node: Interval Comparison38754
-Node: I/O of Intervals41582
-Node: Operating on the Endpoints44596
-Node: Set Operations47068
-Node: Miscellaneous Interval Functions48977
-Node: Error Handling50211
-Node: Contributors50818
-Node: References51154
-Node: Concept Index52277
-Node: Function Index55210
+Node: Copying2432
+Node: Introduction to MPFI4224
+Node: Installing MPFI5548
+Node: Reporting Bugs8850
+Node: MPFI Basics10173
+Node: Interval Functions13618
+Node: Return Values14877
+Node: Rounding Modes and Precision Handling15863
+Node: Initializing and Assigning Intervals18950
+Node: Initializing Intervals19309
+Node: Assigning Intervals21127
+Node: Simultaneous Interval Init & Assign23121
+Node: Floating-point Quantities24384
+Node: Converting Intervals27262
+Node: Interval Arithmetic27737
+Node: Special Functions34096
+Node: Interval Comparison38919
+Node: I/O of Intervals41747
+Node: Operating on the Endpoints44761
+Node: Set Operations47233
+Node: Miscellaneous Interval Functions49142
+Node: Error Handling50376
+Node: Contributors50983
+Node: References51338
+Node: Concept Index52461
+Node: Function Index55394
 
 End Tag Table
