@@ -1428,7 +1428,7 @@ Return 0 if at least one argument is NaN or an invalid interval.
 @deftypefun int mpfi_is_empty (mpfi_t @var{op})
 Returns a positive value if @var{op} is empty (its endpoints are in reverse order)
 and 0 otherwise. Nothing is done in arithmetic or special functions
-to handle empty intervals: this is the responsability of the user
+to handle empty intervals: this is the responsibility of the user
 to avoid computing with empty intervals.
 @end deftypefun
 
