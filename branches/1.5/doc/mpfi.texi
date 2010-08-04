@@ -63,7 +63,7 @@ by the Free Software Foundation.
 
 @title MPFI 1.5.
 @subtitle Multiple Precision Floating-Point Interval Library
-@subtitle July 2010
+@subtitle August 2010
 
 @author Spaces, INRIA Lorraine,
 @author Arenaire, INRIA Rhone-Alpes,
