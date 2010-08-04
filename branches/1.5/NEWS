@@ -1,4 +1,5 @@
-Copyright 1999, 2000, 2001, 2002 - 2009 Spaces project, Inria Lorraine
+Copyright 1999, 2000, 2001, 2002 - 2009, 2010,
+                     Spaces project, Inria Lorraine
                      and Arenaire project, Inria Rhone-Alpes, France
                      and Lab. ANO, USTL (Univ. of Lille),  France
 
@@ -21,27 +22,12 @@ the Free Software Foundation, Inc.,  51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA
 
 
-Changes between MPFI version 1.0 and 1.1
-
-* GNU autoconf/automake standards
-* mpfi-impl.h (non exported internal macros)
-
-
-Changes between MPFI version 1.1 and 1.3.4-RC3
-
-* unknown history
-
-
-Changes between MPFI 1.3.4-RC3 and 1.4
-
-* bugfixes for trigonometric functions
-* add compilation for a shared library
-
 Changes between MPFI version 1.4 and 1.5
 
 * new functions : Catalan's constant, cubic root, reciprocal square root,
   secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot,
   get_version, urandom
+* new test suite (99.2% LOC)
 * can now be compiled outside the source directory
 * change configure options to be consistent with the ones in MPFR and MPC:
   --with-gmp-dir=DIR changed to --with-gmp=DIR
@@ -64,3 +50,17 @@ Changes between MPFI version 1.4 and 1.5
   mpfi_is_inside_q, mpfi_is_inside_fr, mpfi_is_pos, mpfi_is_strictly_pos,
   mpfi_is_nonneg, mpfi_is_neg, mpfi_is_strictly_neg, mpfi_is_nonpos,
   mpfi_inf_p, mpfi_bounded_p
+
+Changes between MPFI 1.3.4-RC3 and 1.4
+
+* bugfixes for trigonometric functions
+* add compilation for a shared library
+
+Changes between MPFI version 1.1 and 1.3.4-RC3
+
+* unknown history
+
+Changes between MPFI version 1.0 and 1.1
+
+* GNU autoconf/automake standards
+* mpfi-impl.h (non exported internal macros)
