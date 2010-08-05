@@ -692,7 +692,7 @@ use @code{mpfi_set_prec} instead, or @code{mpfi_round_prec} if you want to keep 
 @end deftypefun
 
 @deftypefun void mpfi_clear (mpfi_t @var{x})
-Frees the space occupied by @var{x}.  Make sure to call this function for all
+Frees the space occupied by the significands of the endpoints of @var{x}.  Make sure to call this function for all
 @code{mpfi_t} variables when you are done with them.
 @end deftypefun
 
@@ -726,7 +726,7 @@ These functions assign new values to already initialized intervals
 @deftypefunx int mpfi_set_z (mpfi_t @var{rop}, mpz_t @var{op})
 @deftypefunx int mpfi_set_q (mpfi_t @var{rop}, mpq_t @var{op})
 @deftypefunx int mpfi_set_fr (mpfi_t @var{rop}, mpfr_t @var{op})
-Sets the value of @var{rop} from @var{op}, outward rounded to the precision of @var{rop}:
+Sets the value of @var{rop} from @var{op}, rounded outward to the precision of @var{rop}:
 @var{op} then belongs to @var{rop}.
 The returned value indicates whether none, one or both endpoints are exact.
 Please note that even a @code{long int} may have to be rounded,
@@ -810,14 +810,16 @@ or in other words to the upward rounded difference between the right endpoint
 of @var{op} and its left endpoint, divided by the absolute value
 of the center of @var{op} if it is not zero.
 Returns 0 if the result is exact and a positive value if the returned value
-is an overestimation.
+is an overestimation, in this case the returned value may not be the correct
+rounding of the exact value.
 @end deftypefun
 
 @deftypefun int mpfi_diam (mpfr_t @var{rop}, mpfi_t @var{op})
 Sets the value of @var{rop} to the relative diameter of @var{op}
 if @var{op} does not contain zero and to its absolute diameter otherwise.
 Returns 0 if the result is exact and a positive value if the returned value
-is an overestimation.
+is an overestimation, it may not be the correct rounding of the exact value
+in the latter case.
 @end deftypefun
 
 @deftypefun int mpfi_mag (mpfr_t rop, mpfi_t op)
@@ -844,7 +846,8 @@ middle of @var{op} and a negative value if @var{rop} < the middle of @var{op}.
 Sets @var{rop} to a floating-point number
 picked up at random in @var{op}, according to a uniform distribution.
 
-This function is deprecated; @code{mpfi_urandom} should be used instead.
+This function is deprecated and may disappear in future versions of MPFI;
+@code{mpfi_urandom} should be used instead.
 @end deftypefun
 
 @deftypefun void mpfi_urandom (mpfr_t rop, mpfi_t op, gmp_randstate_t state)
@@ -857,7 +860,7 @@ random state initialization functions
 (@pxref{Random State Initialization,,, gmp.info,GNU MP}).
 @end ifinfo
 @ifnotinfo
-(see Section ``Random State Initialization'' in @cite{GNU MP}).
+(see Section ``Random State Initialization'' in @cite{GNU MP} manual).
 @end ifnotinfo
 @end deftypefun
 
