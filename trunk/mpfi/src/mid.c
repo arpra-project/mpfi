@@ -42,9 +42,9 @@ mpfi_mid (mpfr_ptr m, mpfi_srcptr y)
   if (MPFR_IS_INF(m))
     {
     mpfr_init2(tmp_l, mpfi_get_prec(y));
-    mpfr_div_2ui(tmp_l, &(y->left), 1, GMP_RNDN); /* should be exact*
+    mpfr_div_2ui(tmp_l, &(y->left), 1, GMP_RNDN); /* should be exact*/
     mpfr_init2(tmp_r, mpfi_get_prec(y));
-    mpfr_div_2ui(tmp_r, &(y->right), 1, GMP_RNDN); /* should be exact*
+    mpfr_div_2ui(tmp_r, &(y->right), 1, GMP_RNDN); /* should be exact*/
     inexact_add = mpfr_add (m, tmp_l, tmp_r, GMP_RNDN);
     }
   else 
