@@ -39,7 +39,7 @@ mpfi_mid (mpfr_ptr m, mpfi_srcptr y)
   inexact_add = mpfr_add (m, &(y->left), &(y->right), GMP_RNDN);
 
   /* In case of overflow: first division by 2 and then addition */
-  if (MPFR_IS_INF(m)
+  if (MPFR_IS_INF(m))
     {
     mpfr_init2(tmp_l, mpfi_get_prec(y));
     mpfr_div_2ui(tmp_l, &(y->left), 1, GMP_RNDN); /* should be exact*
