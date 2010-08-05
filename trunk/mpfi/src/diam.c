@@ -67,7 +67,7 @@ mpfi_diam_rel (mpfr_ptr diam, mpfi_srcptr interv)
   if (mpfr_nan_p (diam))
     MPFR_RET_NAN;
 
-  if (inexact || inexact_sub)
+  if (inexact || inexact_sub || inexact_mid)
     return 1;
   else
     return 0;
