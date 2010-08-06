@@ -38,8 +38,8 @@ Changes between MPFI version 1.4 and 1.5
   --with-mpfr-incpath=DIR changed to --with-mpfr-include=DIR
 * now require at least GMP version 4.1.0 and MPFR version 2.4.0
 * each function is in its own file (compile_time *= 8;)
-* remove limitation to 1000 characters in mpfi_set_str.
-* fix documentation for functions mpfi_blow, mpfi_is_inside
+* limitation to 1000 characters in mpfi_set_str removed.
+* fix documentation for functions mpfi_blow, mpfi_is_inside at least.
 * fix bug in mpfi_ui_sub when reusing a variable (bug reported by
   Sisyphus 2010-01-19).
 * fix bug in mpfi_blow: the result could be underestimated when the factor was
@@ -58,7 +58,7 @@ Changes between MPFI 1.3.4-RC3 and 1.4
 
 Changes between MPFI version 1.1 and 1.3.4-RC3
 
-* unknown history
+* mainly, keep on par with new developments in MPFR during these years
 
 Changes between MPFI version 1.0 and 1.1
 
