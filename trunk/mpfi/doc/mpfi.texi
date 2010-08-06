@@ -1047,6 +1047,9 @@ Returns an indication of whether none, one or both endpoints are exact.
 @deftypefunx int mpfi_mul_2si (mpfi_t @var{rop}, mpfi_t @var{op1}, long int @var{op2})
 @ifinfo
 Sets @var{rop} to @var{op1} times 2 raised to @var{op2}.
+
+@code{mpfi_mul_2exp} is identical to @code{mpfi_mul_2ui} and is kept for compatibility
+with former versions of MPFI only. It is deprecated and could disappear in future versions of MPFI.
 @end ifinfo
 @iftex
 @tex
