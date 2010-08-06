@@ -1351,6 +1351,12 @@ is greater than 10, @samp{@@} will be used instead of @samp{e} as
 exponent delimiter.
 
 Returns the number of bytes written, or if an error occurred, return 0.
+
+As @code{mpfi_out_str} outputs an enclosure of the input interval, and as
+@code{mpfi_inp_str} provides an enclosure of the interval it reads, these
+functions are not reciprocal. More precisely, when they are called one after
+the other, the resulting interval contains the initial one, and this inclusion
+may be strict.
 @end deftypefun
 
 @deftypefun size_t mpfi_inp_str (mpfi_t @var{rop}, FILE *@var{stream}, int @var{base})
