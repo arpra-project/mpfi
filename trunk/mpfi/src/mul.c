@@ -1,4 +1,5 @@
 /* mul.c -- Multiply two intervals.
+Z 3  4 -16   -0     53  -32  -18 -17/1
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
@@ -26,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi-impl.h"
 
 int
-mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
+mpfi_mul (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
 {
   mpfr_t t1;
   mpfr_t t2;
@@ -34,7 +35,7 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
   int inexact = 0;
 
   /* Handling the NaN cases */
-  if ( MPFI_NAN_P (u) || MPFI_NAN_P (c) )
+  if ( MPFI_NAN_P (b) || MPFI_NAN_P (c) )
     {
       mpfr_set_nan (&(a->left));
       mpfr_set_nan (&(a->right));
@@ -43,99 +44,99 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr u, mpfi_srcptr c)
 
   /* Handling the case where one operand is 0, in order */
   /* to avoid problems with 0 * an infinite interval    */
-  if (MPFI_IS_ZERO (u)) {
-    return (mpfi_set (a, u));
+  if (MPFI_IS_ZERO (b)) {
+    return (mpfi_set (a, b));
   }
   if (MPFI_IS_ZERO (c)) {
     return (mpfi_set (a, c));
   }
 
-  if (mpfr_sgn (&(u->left)) >= 0) {
+  if (mpfr_sgn (&(b->left)) >= 0) {
     if (mpfr_sgn (&(c->left)) >=0) {
       /* u nonnegative and c nonnegative */
-      inexact_left = mpfr_mul (&(a->left), &(u->left), &(c->left), MPFI_RNDD);
-      inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
+      inexact_left = mpfr_mul (&(a->left), &(b->left), &(c->left), MPFI_RNDD);
+      inexact_right = mpfr_mul (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
     }
     else {
       mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
       if (mpfr_sgn (&(c->right)) <= 0) {
-	/* u nonnegative and c non-positive */
-        inexact_left = mpfr_mul (t1, &(u->right), &(c->left), MPFI_RNDD);
-        inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->right), MPFI_RNDU);
+	/* b nonnegative and c non-positive */
+        inexact_left = mpfr_mul (t1, &(b->right), &(c->left), MPFI_RNDD);
+        inexact_right = mpfr_mul (&(a->right), &(b->left), &(c->right), MPFI_RNDU);
       }
       else {
-	/* u nonnegative and c overlapping 0 */
-	inexact_left = mpfr_mul (t1, &(u->right), &(c->left), MPFI_RNDD);
-	inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
+	/* b nonnegative and c overlapping 0 */
+	inexact_left = mpfr_mul (t1, &(b->right), &(c->left), MPFI_RNDD);
+	inexact_right = mpfr_mul (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
       }
       mpfr_set (&(a->left), t1, MPFI_RNDD); /* exact */
       mpfr_clear (t1);
     }
   }
   else {
-    if (mpfr_sgn (&(u->right)) <= 0) {
-      /* u non-positive */
+    if (mpfr_sgn (&(b->right)) <= 0) {
+      /* b non-positive */
       mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
       if (mpfr_sgn (&(c->left)) >= 0) {
-        /* u non-positive and c nonnegative */
-        inexact_left = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
-        inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->left), MPFI_RNDU);
+        /* b non-positive and c nonnegative */
+        inexact_left = mpfr_mul (t1, &(b->left), &(c->right), MPFI_RNDD);
+        inexact_right = mpfr_mul (&(a->right), &(b->right), &(c->left), MPFI_RNDU);
       }
       else {
         if (mpfr_sgn (&(c->right)) <= 0) {
-	  /* u non-positive and c non-positive */
-          inexact_left = mpfr_mul (t1, &(u->right), &(c->right), MPFI_RNDD);
-          inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->left), MPFI_RNDU);
+	  /* b non-positive and c non-positive */
+          inexact_left = mpfr_mul (t1, &(b->right), &(c->right), MPFI_RNDD);
+          inexact_right = mpfr_mul (&(a->right), &(b->left), &(c->left), MPFI_RNDU);
         }
         else {
-	  /* u non-positive and c overlapping 0 */
-	  inexact_left = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
-	  inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->left), MPFI_RNDU);
+	  /* b non-positive and c overlapping 0 */
+	  inexact_left = mpfr_mul (t1, &(b->left), &(c->right), MPFI_RNDD);
+	  inexact_right = mpfr_mul (&(a->right), &(b->left), &(c->left), MPFI_RNDU);
         }
       }
       mpfr_set (&(a->left), t1, MPFI_RNDD); /* exact */
       mpfr_clear (t1);
     }
     else {
-      /* u contains 0 */
+      /* b contains 0 */
       if (mpfr_sgn (&(c->left)) >= 0) {
-	/* u overlapping 0 and c nonnegative  */
+	/* b overlapping 0 and c nonnegative  */
         mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
 
-	inexact_left = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
-	inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
+	inexact_left = mpfr_mul (t1, &(b->left), &(c->right), MPFI_RNDD);
+	inexact_right = mpfr_mul (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
 
         mpfr_set (&(a->left), t1, MPFI_RNDD);
         mpfr_clear (t1);
       }
       else {
 	if (mpfr_sgn (&(c->right)) <= 0) {
-	  /* u overlapping 0 and c non-positive */
+	  /* b overlapping 0 and c non-positive */
           mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
 
-	  inexact_left = mpfr_mul (t1, &(u->right), &(c->left), MPFI_RNDD);
-	  inexact_right = mpfr_mul (&(a->right), &(u->left), &(c->left), MPFI_RNDU);
+	  inexact_left = mpfr_mul (t1, &(b->right), &(c->left), MPFI_RNDD);
+	  inexact_right = mpfr_mul (&(a->right), &(b->left), &(c->left), MPFI_RNDU);
 
           mpfr_set (&(a->left), t1, MPFI_RNDD);
           mpfr_clear (t1);
 	}
 	else {
-	  /* u overlapping 0 and c overlapping 0
+	  /* b overlapping 0 and c overlapping 0
 	     Beware the case where the result is one of the operands! */
           int inexact_tmp;
 
 	  mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
 	  mpfr_init2 (t2, mpfr_get_prec (&(a->left)));
-	  inexact_right = mpfr_mul (t1, &(u->left), &(c->right), MPFI_RNDD);
-	  inexact_left = mpfr_mul (t2, &(u->right), &(c->left), MPFI_RNDD);
+	  inexact_right = mpfr_mul (t1, &(b->left), &(c->right), MPFI_RNDD);
+	  inexact_left = mpfr_mul (t2, &(b->right), &(c->left), MPFI_RNDD);
 	  if (mpfr_cmp (t1, t2) < 0) {
 	    mpfr_swap (t2, t1); /* same precision */
             inexact_left = inexact_right;
 	  }
 
           mpfr_set_prec (t1, mpfr_get_prec (&(a->right)));
-	  inexact_tmp = mpfr_mul (t1, &(u->left), &(c->left), MPFI_RNDU);
-	  inexact_right = mpfr_mul (&(a->right), &(u->right), &(c->right), MPFI_RNDU);
+	  inexact_tmp = mpfr_mul (t1, &(b->left), &(c->left), MPFI_RNDU);
+	  inexact_right = mpfr_mul (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
 	  if (mpfr_cmp (t1, &(a->right)) > 0) {
             mpfr_set (&(a->right), t1, MPFI_RNDU); /* exact */
 	    inexact_right = inexact_tmp;
