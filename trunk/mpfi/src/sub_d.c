@@ -28,25 +28,35 @@ MA 02110-1301, USA. */
 int
 mpfi_sub_d (mpfi_ptr a, mpfi_srcptr b, const double c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_sub, inexact = 0;
+  int inexact_left, inexact_right, inexact = 0;
 
-  mpfi_init2 (tmp, 64); /* 64 for IA86-FPU87 issues */
-  inexact_set = mpfi_set_d (tmp, c);
-  inexact_sub = mpfi_sub (a, b, tmp);
-  MPFI_CLEAR (tmp);
-
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
-
-  if (MPFI_LEFT_IS_INEXACT (inexact_sub)
-      || (inexact_set && !mpfr_inf_p (&a->left))) {
-    inexact += 1;
+  if (c==0.0) {
+    return mpfi_set (a, b);
   }
-  if (MPFI_RIGHT_IS_INEXACT (inexact_sub)
-      || (inexact_set && !mpfr_inf_p (&a->right))) {
-    inexact += 2;
+  else if (MPFI_IS_ZERO (b)) {
+    return mpfi_set_d (a, -c);
   }
+  else {
+    inexact_left = mpfr_sub_d (&(a->left), &(b->left), c, MPFI_RNDD);
+    inexact_right = mpfr_sub_d (&(a->right), &(b->right), c, MPFI_RNDU);
 
-  return inexact;
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
+
+    if (MPFI_NAN_P (a))
+      MPFR_RET_NAN;
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
+
+    return inexact;
+    }
+
 }

@@ -28,16 +28,39 @@ MA 02110-1301, USA. */
 int
 mpfi_fr_sub (mpfi_ptr a, mpfr_srcptr b, mpfi_srcptr c)
 {
-  mpfi_t tmp;
-  int inexact;
+  mpfr_t tmp;
+  int inexact_left, inexact_right, inexact = 0;
 
-  mpfi_init2 (tmp, mpfr_get_prec (b));
-  mpfi_set_fr (tmp, b); /* exact */
-  inexact = mpfi_sub (a, tmp, c);
-  MPFI_CLEAR (tmp);
+  if (MPFI_IS_ZERO (c)) {
+    return mpfi_set_fr (a, b);
+  }
+  else if (MPFR_IS_ZERO(b)) {
+    return mpfi_neg (a, c);
+  }
+  else {
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
+    inexact_left = mpfr_sub (tmp, b, &(c->right), MPFI_RNDD);
+    inexact_right = mpfr_sub (&(a->right), b, &(c->left), MPFI_RNDU);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
+    mpfr_clear (tmp);
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
 
-  return inexact;
+    if (MPFI_NAN_P (a))
+      MPFR_RET_NAN;
+
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
+
+    return inexact;
+    }
 }

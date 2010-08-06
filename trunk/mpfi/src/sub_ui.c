@@ -28,17 +28,20 @@ MA 02110-1301, USA. */
 int
 mpfi_sub_ui (mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 {
-  int inexact_left, inexact_right, inexact = 0;
+   int inexact_left, inexact_right, inexact = 0;
 
-  if (c == 0) {
-    return (mpfi_set (a,b));
+  if (c==0) {
+    return mpfi_set (a, b);
   }
   else if (MPFI_IS_ZERO (b)) {
-    mpfi_set_ui (a,c);
-    return (mpfi_neg (a,a));
+    inexact = mpfi_set_ui(a, c);
+    mpfi_neg (a, a); /* exact */
+    if (inexact == 1) inexact = 2;
+    else if (inexact == 2) inexact = 1;
+    return inexact;
   }
   else {
-    inexact_left  = mpfr_sub_ui (&(a->left), &(b->left), c, MPFI_RNDD);
+    inexact_left = mpfr_sub_ui (&(a->left), &(b->left), c, MPFI_RNDD);
     inexact_right = mpfr_sub_ui (&(a->right), &(b->right), c, MPFI_RNDU);
 
     /* do not allow -0 as lower bound */
@@ -58,5 +61,6 @@ mpfi_sub_ui (mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
       inexact += 2;
 
     return inexact;
-  }
+    }
+
 }
