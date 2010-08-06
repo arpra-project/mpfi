@@ -35,16 +35,42 @@ MA 02110-1301, USA. */
 int
 mpfi_mul_si (mpfi_ptr a, mpfi_srcptr b, const long c)
 {
-  mpfi_t tmp;
-  int inexact;
+  mpfr_t tmp;
+  int inexact_left, inexact_right, inexact=0;
 
-  mpfi_init2 (tmp, sizeof(c) * CHAR_BIT);
-  mpfi_set_si (tmp, c); /* exact */
-  inexact = mpfi_mul (a, b, tmp);
-  MPFI_CLEAR (tmp);
+  if ( MPFI_NAN_P (b) )
+    {
+      mpfr_set_nan (&(a->left));
+      mpfr_set_nan (&(a->right));
+      MPFR_RET_NAN;
+    }
+
+  if (c == 0)
+    {
+    return mpfi_set_si(a, 0);
+    }
+  else if (c < 0)
+    {
+    mpfr_init2(tmp, mpfr_get_prec( &(a->left)) );
+    inexact_left = mpfr_mul_si (tmp, &(b->right), c, MPFI_RNDD);
+    inexact_right = mpfr_mul_si( &(a->right), &(b->left), c, MPFI_RNDU);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
+    mpfr_clear(tmp);
+    }
+  else /* c > 0 */
+    {
+    inexact_left = mpfr_mul_si( &(a->left), &(b->left), c, MPFI_RNDD);
+    inexact_right = mpfr_mul_si( &(a->right), &(b->right), c, MPFI_RNDU);
+    }
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
+
+  /* no need to check to sign of the bounds in case they are 0 */
+  if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
 
   return inexact;
 }

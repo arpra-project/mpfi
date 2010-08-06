@@ -28,25 +28,42 @@ MA 02110-1301, USA. */
 int
 mpfi_mul_d (mpfi_ptr a, mpfi_srcptr b, const double c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_mul, inexact=0;
+  mpfr_t tmp;
+  int inexact_left, inexact_right, inexact=0;
 
-  mpfi_init2 (tmp, 64); /* 64 for IA86-FPU87 issues */
-  inexact_set = mpfi_set_d (tmp, c);
-  inexact_mul = mpfi_mul (a, b, tmp);
-  MPFI_CLEAR (tmp);
+ if ( MPFI_NAN_P (b) )
+    {
+      mpfr_set_nan (&(a->left));
+      mpfr_set_nan (&(a->right));
+      MPFR_RET_NAN;
+    }
+
+  if (c == 0.0)
+    {
+    return mpfi_set_si(a, 0);
+    }
+  else if (c < 0.0)
+    {
+    mpfr_init2(tmp, mpfr_get_prec( &(a->left)) );
+    inexact_left = mpfr_mul_d (tmp, &(b->right), c, MPFI_RNDD);
+    inexact_right = mpfr_mul_d( &(a->right), &(b->left), c, MPFI_RNDU);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
+    mpfr_clear(tmp);
+    }
+  else /* c > 0.0 */
+    {
+    inexact_left = mpfr_mul_d( &(a->left), &(b->left), c, MPFI_RNDD);
+    inexact_right = mpfr_mul_d( &(a->right), &(b->right), c, MPFI_RNDU);
+    }
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if (MPFI_LEFT_IS_INEXACT (inexact_mul)
-      || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
-    inexact += 1;
-  }
-  if (MPFI_RIGHT_IS_INEXACT (inexact_mul)
-      ||(inexact_set && !mpfr_inf_p (&a->right) && !mpfr_zero_p (&a->right))){
-    inexact += 2;
-  }
+  /* no need to check to sign of the bounds in case they are 0 */
+  if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
 
   return inexact;
 }

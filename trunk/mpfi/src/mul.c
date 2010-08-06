@@ -1,5 +1,4 @@
 /* mul.c -- Multiply two intervals.
-Z 3  4 -16   -0     53  -32  -18 -17/1
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
                      Spaces project, Inria Lorraine
@@ -53,7 +52,7 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
 
   if (mpfr_sgn (&(b->left)) >= 0) {
     if (mpfr_sgn (&(c->left)) >=0) {
-      /* u nonnegative and c nonnegative */
+      /* b nonnegative and c nonnegative */
       inexact_left = mpfr_mul (&(a->left), &(b->left), &(c->left), MPFI_RNDD);
       inexact_right = mpfr_mul (&(a->right), &(b->right), &(c->right), MPFI_RNDU);
     }
@@ -127,11 +126,11 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
 
 	  mpfr_init2 (t1, mpfr_get_prec (&(a->left)));
 	  mpfr_init2 (t2, mpfr_get_prec (&(a->left)));
-	  inexact_right = mpfr_mul (t1, &(b->left), &(c->right), MPFI_RNDD);
+	  inexact_tmp = mpfr_mul (t1, &(b->left), &(c->right), MPFI_RNDD);
 	  inexact_left = mpfr_mul (t2, &(b->right), &(c->left), MPFI_RNDD);
 	  if (mpfr_cmp (t1, t2) < 0) {
 	    mpfr_swap (t2, t1); /* same precision */
-            inexact_left = inexact_right;
+            inexact_left = inexact_tmp;
 	  }
 
           mpfr_set_prec (t1, mpfr_get_prec (&(a->right)));
@@ -149,6 +148,7 @@ mpfi_mul (mpfi_ptr a, mpfi_srcptr b, mpfi_srcptr c)
     }
   }
 
+  /* no need to check to sign of an endpoint equal to 0, it should be OK */
   if (inexact_left)
     inexact += 1;
   if (inexact_right)
