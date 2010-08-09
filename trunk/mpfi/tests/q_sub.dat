@@ -123,6 +123,7 @@
       0x1001/1
   53 -0x1fffffffffffffp-52 -0x1p-550
 
-# the precision of the result is too small for the mpq value
-3  4 -20  -0      -97/3  53 -32  -17
-3  4 +0    16     -17/1  53 -32  -18
+# check if a double rounding occurs
+3  4 -16  -0.3125      -97/3  53 -32  -17
+3  4 -0.34375 15       -52/3  53 -32  -17
+0  4  1    15          -17/1  53 -32  -18

@@ -26,6 +26,20 @@ MA 02110-1301, USA. */
 #include "mpfi-impl.h"
 
 int
+mpfi_mpfr_q_sub (mpfr_ptr x, mpq_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
+{
+  /* mpfr_q_sub does not exist (at least up to version 3.0) */
+
+  /* Here we use the fact that x and y do not point to the same variable */
+  int inex;
+
+  inex = mpfr_sub_q (x, y, z, rnd == MPFI_RNDD ? MPFI_RNDU : MPFI_RNDD);
+  mpfr_neg (x, x, MPFI_RNDD);
+
+  return -inex;
+}
+
+int
 mpfi_q_sub (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
 {
   mpfr_t tmp;
@@ -39,8 +53,8 @@ mpfi_q_sub (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
   }
   else {
     mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
-    inexact_left = mpfr_q_sub (tmp, b, &(c->right), MPFI_RNDD);
-    inexact_right = mpfr_q_sub (&(a->right), b, &(c->left), MPFI_RNDU);
+    inexact_left = mpfi_mpfr_q_sub (tmp, b, &(c->right), MPFI_RNDD);
+    inexact_right = mpfi_mpfr_q_sub (&(a->right), b, &(c->left), MPFI_RNDU);
     mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear (tmp);
 
