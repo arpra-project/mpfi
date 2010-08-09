@@ -70,11 +70,11 @@ check_line_iq (mpfi_function_ptr this)
   inex = f_IQ (got, op);
   if (inex != expected_inex || !same_value (got, expected)) {
     printf ("Failed line %lu.\nop = ", test_line_number);
-    mpq_out_str (stdout, 16, op);
+    mpq_out_str (stdout, 10, op);
     printf ("\ngot      = ");
-    mpfi_out_str (stdout, 16, 0, got);
+    mpfi_out_str (stdout, 10, 0, got);
     printf ("\nexpected = ");
-    mpfi_out_str (stdout, 16, 0, expected);
+    mpfi_out_str (stdout, 10, 0, expected);
     putchar ('\n');
     if (inex != expected_inex)
       printf ("inexact flag: got = %u, expected = %u\n", inex, expected_inex);
