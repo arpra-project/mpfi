@@ -137,7 +137,7 @@ Initialization and Assignment Functions
 Interval Functions
 
 * Return Values::
-* Rounding Modes and Precision Handling::
+* Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
@@ -527,7 +527,7 @@ precision of a calculation), see the MPFR documentation.
 
 @menu
 * Return Values::
-* Rounding Modes and Precision Handling::
+* Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
