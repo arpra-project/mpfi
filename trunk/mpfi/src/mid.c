@@ -49,8 +49,10 @@ mpfi_mid (mpfr_ptr m, mpfi_srcptr y)
       mpfr_init2(tmp_r, mpfi_get_prec(y));
       mpfr_div_2ui(tmp_r, &(y->right), 1, GMP_RNDN); /* should be exact*/
       inexact_add = mpfr_add (m, tmp_l, tmp_r, GMP_RNDN);
+      mpfr_clear (tmp_l);
+      mpfr_clear (tmp_r);
       }
-    else 
+    else
       {
       inexact_div2 = mpfr_div_2ui (m, m, 1, GMP_RNDN);
       }
