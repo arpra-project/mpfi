@@ -103,13 +103,13 @@ check_underflow (void)
       || !same_mpfr_value (&(got->right), &(expected->right))) {
     printf ("Error: mpfi_div_q (rop, op, q) does not return correct value\n"
             "op = ");
-    mpfi_out_str (stdout, 16, 0, expected);
+    mpfi_out_str (stdout, 10, 0, expected);
     printf ("\nq  = ");
-    mpq_out_str (stdout, 16, q);
+    mpq_out_str (stdout, 10, q);
     printf ("\ngot      = ");
-    mpfi_out_str (stdout, 16, 0, got);
+    mpfi_out_str (stdout, 10, 0, got);
     printf ("\nexpected = ");
-    mpfi_out_str (stdout, 16, 0, expected);
+    mpfi_out_str (stdout, 10, 0, expected);
     printf ("\n");
 
     if (!MPFI_BOTH_ARE_INEXACT(inex)) {
