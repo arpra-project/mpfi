@@ -45,15 +45,43 @@ mpfi_mul_q (mpfi_ptr a, mpfi_srcptr b, mpq_srcptr c)
   else if (mpq_sgn(c) <0) /* c < 0 */
     {
     mpfr_init2(tmp, mpfr_get_prec( &(a->left)) );
+
     inexact_left = mpfr_mul_q (tmp, &(b->right), c, MPFI_RNDD);
+    if (mpfr_inf_p (tmp) && !mpfr_inf_p (&(b->right)))
+      {
+        /* work around MPFR bug in mpfr_mul_q (present in MPFR-3.0.0) */
+        inexact_left = 1; /* overflow */
+      }
+
     inexact_right = mpfr_mul_q( &(a->right), &(b->left), c, MPFI_RNDU);
+    if (mpfr_inf_p (&(a->right)) && !mpfr_inf_p (&(b->left)))
+      {
+        /* work around MPFR bug in mpfr_mul_q */
+        inexact_right = 1; /* overflow */
+      }
+
     mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear(tmp);
     }
   else /* c > 0 */
     {
+    int mpfr_bug_work_around;
+
+    mpfr_bug_work_around = !mpfr_inf_p (&(b->left));
     inexact_left = mpfr_mul_q( &(a->left), &(b->left), c, MPFI_RNDD);
+    if (mpfr_bug_work_around && mpfr_inf_p (&(a->left)))
+      {
+        /* work around MPFR bug in mpfr_mul_q */
+        inexact_left = 1; /* overflow */
+      }
+
+    mpfr_bug_work_around = !mpfr_inf_p (&(b->right));
     inexact_right = mpfr_mul_q( &(a->right), &(b->right), c, MPFI_RNDU);
+    if (mpfr_bug_work_around && mpfr_inf_p (&(a->right)))
+      {
+        /* work around MPFR bug in mpfr_mul_q */
+        inexact_right = 1; /* overflow */
+      }
     }
 
   if (MPFI_NAN_P (a))
