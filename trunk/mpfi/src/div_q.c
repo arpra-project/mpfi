@@ -28,32 +28,77 @@ MA 02110-1301, USA. */
 int
 mpfi_div_q (mpfi_ptr a, mpfi_srcptr b, mpq_srcptr c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_div, inexact=0;
+  mpfr_t tmp;
+  int inexact_left, inexact_right;
+  int inexact = 0;
 
-  mpfi_init2 (tmp, mpfi_get_prec (a));
-  inexact_set = mpfi_set_q (tmp, c);
-  inexact_div = mpfi_div (a, b, tmp);
-  MPFI_CLEAR (tmp);
+  if (MPFI_NAN_P (b))
+    {
+      mpfr_set_nan (&(a->left));
+      mpfr_set_nan (&(a->right));
+      MPFR_RET_NAN;
+    }
+
+  if (!mpq_sgn (c))             /* c = 0 */
+    {
+      if (mpfr_zero_p (&(b->left)))
+        mpfr_set_nan (&(a->left));
+      else
+        mpfr_set_inf (&(a->left), -1);
+      inexact_left = 0;
+
+      if (mpfr_zero_p (&(b->right)))
+        mpfr_set_nan (&(a->right));
+      else
+        mpfr_set_inf (&(a->right), +1);
+      inexact_right = 0;
+    }
+  else if (mpq_sgn (c) < 0)     /* c < 0 */
+    {
+      mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
+      inexact_left = mpfr_div_q (tmp, &(b->right), c, MPFI_RNDD);
+      if (mpfr_inf_p (tmp) && !mpfr_inf_p (&(b->right)))
+        {
+          /* work around MPFR bug in mpfr_div_q (present in MPFR-3.0.0) */
+          inexact_left = 1; /* overflow */
+        }
+      inexact_right = mpfr_div_q (&(a->right), &(b->left), c, MPFI_RNDU);
+      if (mpfr_inf_p (&(a->right)) && !mpfr_inf_p (&(b->left)))
+        {
+          /* work around MPFR bug in mpfr_div_q */
+          inexact_right = 1; /* overflow */
+        }
+      mpfr_set (&(a->left), tmp, MPFI_RNDD);    /* exact */
+      mpfr_clear (tmp);
+    }
+  else                          /* c > 0 */
+    {
+      int mpfr_bug_work_around;
+      mpfr_bug_work_around = !mpfr_inf_p (&(b->left));
+      inexact_left = mpfr_div_q (&(a->left), &(b->left), c, MPFI_RNDD);
+      if (mpfr_bug_work_around && mpfr_inf_p (&(a->left)))
+        {
+          /* work around MPFR bug in mpfr_div_q */
+          inexact_left = 1; /* overflow */
+        }
+
+      mpfr_bug_work_around = !mpfr_inf_p (&(b->right));
+      inexact_right = mpfr_div_q (&(a->right), &(b->right), c, MPFI_RNDU);
+      if (mpfr_bug_work_around && mpfr_inf_p (&(a->right)))
+        {
+          /* work around MPFR bug in mpfr_div_q */
+          inexact_right = 1; /* overflow */
+        }
+    }
 
   if (MPFI_NAN_P (a))
     MPFR_RET_NAN;
 
-  if (MPFI_LEFT_IS_INEXACT (inexact_div)
-      || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
-    /* the first condition MPFI_LEFT_IS_INEXACT (inexact_div) handles, among
-       others, overflow and underflow cases.
-       if a->left = infinity in non-overflow case, then a->left is the
-       quotient of an infinite endpoint of b with c, thus it is exact even if
-       tmp is not exact.
-       if a->left = 0 in non-underflow case, then a->left is the quotient of a
-       zero endpoint of b with c, thus it is exact. */
+  /* no need to check to sign of the bounds in case they are 0 */
+  if (inexact_left)
     inexact += 1;
-  }
-  if (MPFI_RIGHT_IS_INEXACT (inexact_div)
-      ||(inexact_set && !mpfr_inf_p (&a->right) && !mpfr_zero_p (&a->right))){
+  if (inexact_right)
     inexact += 2;
-  }
 
   return inexact;
 }
