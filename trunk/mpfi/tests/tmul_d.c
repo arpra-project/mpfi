@@ -137,6 +137,30 @@ check_underflow ()
   mpfi_clear (c);
 }
 
+void
+check_nan ()
+{
+  double nan;
+  mpfi_t a, b, c;
+
+  nan = 0.0/0.0;
+  if (nan == nan)
+    return;
+
+  mpfi_init2 (a, 53);
+  mpfi_init2 (b, 53);
+  mpfi_init2 (c, 53);
+
+  mpfi_set_ui (a, 10);
+  mpfr_set_nan (&(c->left));
+  mpfr_set_nan (&(c->right));
+  check (b, a, nan, c, MPFI_FLAGS_BOTH_ENDPOINTS_EXACT);
+
+  mpfi_clear (a);
+  mpfi_clear (b);
+  mpfi_clear (c);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -149,6 +173,7 @@ main (int argc, char **argv)
   check_random (&i_mul_d, 2, 1000, 10);
   check_overflow ();
   check_underflow ();
+  check_nan ();
 
   test_end ();
   mpfi_fun_clear (&i_mul_d);
