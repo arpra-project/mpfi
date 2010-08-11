@@ -31,6 +31,23 @@ mpfi_q_div (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
   mpfi_t tmp;
   int inexact_set, inexact_div, inexact=0;
 
+  if (MPFI_NAN_P (c)) {
+    mpfr_set_nan (&(a->left));
+    mpfr_set_nan (&(a->right));
+    MPFR_RET_NAN;
+  }
+
+  if (MPFI_HAS_ZERO (c)) {    /* a = ]-oo, +oo [ */
+    mpfr_set_inf (&(a->left), -1);
+    mpfr_set_inf (&(a->right), 1);
+    return inexact;
+  }
+
+  if (mpq_sgn (b) == 0) {    /* a = [-0, +0] */
+    mpfi_set_ui (a, 0);
+    return inexact;
+  }
+
   mpfi_init2 (tmp, mpfi_get_prec (a));
   inexact_set = mpfi_set_q (tmp, b);
   inexact_div = mpfi_div (a, tmp, c);
