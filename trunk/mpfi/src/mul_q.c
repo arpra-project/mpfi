@@ -84,9 +84,6 @@ mpfi_mul_q (mpfi_ptr a, mpfi_srcptr b, mpq_srcptr c)
       }
     }
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
-
   /* no need to check to sign of the bounds in case they are 0 */
   if (inexact_left)
       inexact += 1;

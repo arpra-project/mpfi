@@ -56,9 +56,6 @@ mpfi_mul_si (mpfi_ptr a, mpfi_srcptr b, const long c)
     inexact_right = mpfr_mul_si( &(a->right), &(b->right), c, MPFI_RNDU);
     }
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
-
   /* no need to check to sign of the bounds in case they are 0 */
   if (inexact_left)
       inexact += 1;

@@ -61,9 +61,6 @@ mpfi_ui_div (mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
     mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
   }
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
-
   if (inexact_left)
     inexact += 1;
   if (inexact_right)

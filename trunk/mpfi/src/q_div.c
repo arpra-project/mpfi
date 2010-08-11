@@ -53,9 +53,6 @@ mpfi_q_div (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
   inexact_div = mpfi_div (a, tmp, c);
   MPFI_CLEAR (tmp);
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
-
   if (MPFI_LEFT_IS_INEXACT (inexact_div)
       || (inexact_set && !mpfr_inf_p (&a->left) && !mpfr_zero_p (&a->left))) {
     /* the first condition MPFI_LEFT_IS_INEXACT (inexact_div) handles, among
