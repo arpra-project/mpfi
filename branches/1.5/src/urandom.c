@@ -29,9 +29,9 @@ MA 02110-1301, USA. */
 void
 mpfi_urandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
 {
-  mp_prec_t prec;
+  mp_prec_t prec, tmp_prec;
   mpfr_t diam, fact;
-  prec = mpfr_get_prec (m);
+
 
   if (MPFI_NAN_P(y)) {
     mpfr_set_nan (m);
@@ -43,6 +43,12 @@ mpfi_urandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
     return;
   }
 
+  prec = mpfr_get_prec (m);
+  tmp_prec = mpfi_get_prec(y);
+  if (tmp_prec > prec)
+    {
+    prec = tmp_prec;
+    }
   mpfr_init2 (diam, prec);
   mpfr_init2 (fact, prec);
 
