@@ -44,6 +44,8 @@ Changes between MPFI version 1.4 and 1.5
   Sisyphus 2010-01-19).
 * fix bug in mpfi_blow: the result could be underestimated when the factor was
   small compared to 1.
+* fix double rounding error in basic arithmetic functions with a non-interval
+  parameter (like mpfi_add_si).
 * the following functions now return 0 (false) if one or more of their
   operands is NaN or has a NaN as an endpoint : mpfi_is_inside,
   mpfi_is_inside_d, mpfi_is_inside_ui, mpfi_is_inside_si, mpfi_is_inside_z,
