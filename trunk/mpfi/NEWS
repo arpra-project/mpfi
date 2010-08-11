@@ -27,7 +27,7 @@ Changes between MPFI version 1.4 and 1.5
 * new functions : Catalan's constant, cubic root, reciprocal square root,
   secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot,
   get_version, urandom
-* new test suite (99.2% LOC)
+* new test suite (99.7% LOC)
 * can now be compiled outside the source directory
 * change configure options to be consistent with the ones in MPFR and MPC:
   --with-gmp-dir=DIR changed to --with-gmp=DIR
