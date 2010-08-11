@@ -25,26 +25,39 @@ MA 02110-1301, USA. */
 
 #include "mpfi-impl.h"
 
-#ifdef HAVE_LIMITS_H
-#include <limits.h>
-#endif
-#ifndef CHAR_BIT
-# define CHAR_BIT 8
-#endif
-
 int
 mpfi_sub_si (mpfi_ptr a, mpfi_srcptr b, const long c)
 {
-  mpfi_t tmp;
-  int inexact;
+   int inexact_left, inexact_right, inexact = 0;
 
-  mpfi_init2 (tmp, sizeof(c) * CHAR_BIT);
-  mpfi_set_si (tmp, c); /* exact */
-  inexact = mpfi_sub (a, b, tmp);
-  MPFI_CLEAR (tmp);
+  if (c==0) {
+    return mpfi_set (a, b);
+  }
+  else if (MPFI_IS_ZERO (b)) {
+    return mpfi_set_si(a, -c);
+  }
+  else {
+    inexact_left = mpfr_sub_si (&(a->left), &(b->left), c, MPFI_RNDD);
+    inexact_right = mpfr_sub_si (&(a->right), &(b->right), c, MPFI_RNDU);
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
 
-  return inexact;
+    if (MPFI_NAN_P (a))
+      MPFR_RET_NAN;
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
+
+    return inexact;
+    }
+
 }
+

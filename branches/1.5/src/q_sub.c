@@ -26,27 +26,56 @@ MA 02110-1301, USA. */
 #include "mpfi-impl.h"
 
 int
+mpfi_mpfr_q_sub (mpfr_ptr x, mpq_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
+{
+  /* mpfr_q_sub does not exist (at least up to version 3.0) */
+
+  /* Here we use the fact that x and y do not point to the same variable */
+  int inex;
+
+  inex = mpfr_sub_q (x, y, z, rnd == MPFI_RNDD ? MPFI_RNDU : MPFI_RNDD);
+  mpfr_neg (x, x, MPFI_RNDD);
+
+  return -inex;
+}
+
+int
 mpfi_q_sub (mpfi_ptr a, mpq_srcptr b, mpfi_srcptr c)
 {
-  mpfi_t tmp;
-  int inexact_set, inexact_sub, inexact=0;
+  mpfr_t tmp;
+  int inexact_left, inexact_right, inexact = 0;
 
-  mpfi_init2 (tmp, mpfi_get_prec (a));
-  inexact_set = mpfi_set_q (tmp, b);
-  inexact_sub = mpfi_sub (a, tmp, c);
-  MPFI_CLEAR (tmp);
-
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
-
-  if (MPFI_LEFT_IS_INEXACT (inexact_sub)
-      || (inexact_set && !mpfr_inf_p (&a->left))) {
-    inexact += 1;
+  if (MPFI_IS_ZERO (c)) {
+    return mpfi_set_q (a, b);
   }
-  if (MPFI_RIGHT_IS_INEXACT (inexact_sub)
-      ||(inexact_set && !mpfr_inf_p (&a->right))){
-    inexact += 2;
+  else if (!mpq_sgn(b)) {
+    return mpfi_neg (a, c);
   }
+  else {
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
+    inexact_left = mpfi_mpfr_q_sub (tmp, b, &(c->right), MPFI_RNDD);
+    inexact_right = mpfi_mpfr_q_sub (&(a->right), b, &(c->left), MPFI_RNDU);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
+    mpfr_clear (tmp);
 
-  return inexact;
+    /* do not allow -0 as lower bound */
+    if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+      mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+    }
+    /* do not allow +0 as upper bound */
+    if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+      mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+    }
+
+    if (MPFI_NAN_P (a))
+      MPFR_RET_NAN;
+    if (inexact_left)
+      inexact += 1;
+    if (inexact_right)
+      inexact += 2;
+
+    return inexact;
+    }
+
 }
+
