@@ -27,6 +27,49 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 void
+check_overflow (void)
+{
+  mpfi_t i;
+  mpfr_t expected;
+  mpfr_t got;
+  int inex;
+
+  mpfr_init2 (expected, 128);
+  mpfr_init2 (got, 128);
+  mpfi_init2 (i, 128);
+
+  mpfr_set_inf (&(i->right), +1);
+  mpfr_nextbelow (&(i->right));
+  mpfr_set (expected, &(i->right), MPFI_RNDD);
+  mpfr_nextbelow (expected);
+  mpfr_set (&(i->left), expected, MPFI_RNDD);
+  mpfr_nextbelow (&(i->left));
+
+  inex = mpfi_mid (got, i);
+
+  if (mpfr_cmp (got, expected) != 0 || inex != 0) {
+    printf ("Error: mpfi_mid(I) does not correct value.\nI =");
+    mpfi_out_str (stdout, 16, 0, I);
+    printf ("  result: ");
+    mpfr_out_str (stdout, 16, 0, got, MPFI_RNDU);
+    if (inex >= 0) {
+      printf ("return value: %d\n   expected: 0\n", inex);
+    }
+    else {
+      printf ("\nexpected: ");
+      mpfr_out_str (stdout, 16, 0, expected, MPFI_RNDU);
+      printf ("\n");
+    }
+
+    exit (1);
+  }
+
+  mpfr_clear (expected);
+  mpfr_clear (got);
+  mpfi_clear (i);
+}
+
+void
 check_underflow (void)
 {
   mpfi_t i;
@@ -66,6 +109,7 @@ main (int argc, char **argv)
   mpfi_fun_init_RI (&i_mid, mpfi_mid, NULL);
 
   check_data (&i_mid, "mid.dat");
+  check_overflow ();
   check_underflow ();
 
   mpfi_fun_clear (&i_mid);

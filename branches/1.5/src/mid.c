@@ -33,10 +33,30 @@ MA 02110-1301, USA. */
 int
 mpfi_mid (mpfr_ptr m, mpfi_srcptr y)
 {
-  int inexact_add, inexact_div2;
+  int inexact_add, inexact_div2=0;
+  mpfr_t tmp_l, tmp_r;
 
   inexact_add = mpfr_add (m, &(y->left), &(y->right), GMP_RNDN);
-  inexact_div2 = mpfr_div_2ui (m, m, 1, GMP_RNDN);
+
+  /*  when one of the bound is infinite: nothing to be done */
+  if ( ! (MPFR_IS_INF(&(y->left)) || MPFR_IS_INF(&y->right)) )
+    {
+    /* In case of overflow: first division by 2 and then addition  */
+    if (MPFR_IS_INF(m))
+      {
+      mpfr_init2(tmp_l, mpfi_get_prec(y));
+      mpfr_div_2ui(tmp_l, &(y->left), 1, GMP_RNDN); /* should be exact*/
+      mpfr_init2(tmp_r, mpfi_get_prec(y));
+      mpfr_div_2ui(tmp_r, &(y->right), 1, GMP_RNDN); /* should be exact*/
+      inexact_add = mpfr_add (m, tmp_l, tmp_r, GMP_RNDN);
+      mpfr_clear (tmp_l);
+      mpfr_clear (tmp_r);
+      }
+    else
+      {
+      inexact_div2 = mpfr_div_2ui (m, m, 1, GMP_RNDN);
+      }
+    }
 
   /* Hope it copes correctly with an underflow in the division by 2... */
   if (inexact_div2)
