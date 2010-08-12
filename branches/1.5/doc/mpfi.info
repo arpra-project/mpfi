@@ -7,7 +7,8 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
    This file documents MPFI, a library for interval arithmetic, which
-is part of the MPFR multiple precision floating-point arithmetic library
+is built upon the MPFR multiple precision floating-point arithmetic
+library
 
    Copyright (C) 2002-2010, Spaces team, INRIA Lorraine and LORIA,
 France, Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France, and
@@ -49,10 +50,21 @@ Floating-Point Interval Library
 * Concept Index::
 * Function Index::
 
+Interval Functions
+
+
+Initialization and Assignment Functions
+
+* Initializing Intervals::
+* Assigning Intervals::
+* Simultaneous Interval Init & Assign::
+
  --- The Detailed Node Listing ---
 
 Interval Functions
 
+* Return Values::
+* Precision Handling::
 * Initializing and Assigning Intervals::
 * Floating-point Quantities::
 * Converting Intervals::
@@ -105,7 +117,7 @@ problems introduced by others will not reflect on our reputation.
    The precise conditions of the license for the MPFI library are found
 in the Lesser General Public License that accompany the source code.
 As MPFI is built upon MPFR and share its license, see the file
-COPYING.LIB in the main MPFR directory.
+COPYING.LESSER in the main MPFR directory.
 
 
 File: mpfi.info,  Node: Introduction to MPFI,  Next: Installing MPFI,  Prev: Copying,  Up: Top
@@ -131,7 +143,7 @@ when distributing them the MPFI source code and a means to re-link with
 a modified MPFI is provided.
 
    As interval arithmetic currently undergoes standardization, through
-the work of the IEEE 1788 working group, future versions of MPFI may
+the work of the IEEE-1788 working group, future versions of MPFI may
 evolve in order to reflect the standardized definitions and behaviours.
 
 
@@ -194,7 +206,7 @@ systems.  In the MPFI source directory, type the following commands.
 
      Create an info version of the manual, in `mpfi.info'.
 
-   * `mpfi.pdf'
+   * `mpfi.pdf' or `pdf'
 
      Create a PDF version of the manual, in `mpfi.pdf'.
 
@@ -202,7 +214,7 @@ systems.  In the MPFI source directory, type the following commands.
 
      Create a DVI version of the manual, in `mpfi.dvi'.
 
-   * `mpfi.ps'
+   * `mpfi.ps' or `ps'
 
      Create a Postscript version of the manual, in `mpfi.ps'.
 
@@ -253,7 +265,8 @@ the results printed are incorrect and in that case, in what way.
 
    Please include compiler version information in your bug report.
 This can be extracted using `cc -V' on some machines or, if you're
-using gcc, `gcc -v'.  Also, include the output from `uname -a'.
+using gcc, `gcc -v'.  Also, include the output from `uname -a', along
+with the version of GMP and of MPFR you use.
 
    If your bug report is good, we will do our best to help you to get a
 corrected version of the library; if the bug report is poor, we won't
@@ -282,6 +295,8 @@ You should include these files in any program using the MPFI library:
 4.1 Nomenclature and Types
 ==========================
 
+As MPFI is built upon MPFR, it is advisable to read MPFR's manual first.
+
 An "interval" is a connected set of real numbers, it is represented in
 MPFI by its endpoints which are MPFR floating-point numbers.  The C
 data type for these objects is `mpfi_t'. An interval can have finite or
@@ -290,19 +305,27 @@ have one (or both) NaN endpoint(s): this indicates that an invalid
 operation has been performed and that the resulting interval has no
 mathematical meaning. An empty interval has its left endpoint larger
 than its right endpoint. The handling of empty intervals is not
-performed by MPFI and relies on the user.  Some functions on intervals
-return a floating-point value: among such functions are `mpfi_get_left'
-that returns the left endpoint of an interval and `mpfi_diam_abs' that
-gets the width of the input interval.
+performed by MPFI and relies on the user.  Both the meaning of "invalid
+operation", the representation of the empty set and its handling may
+change in future versions of MPFI, according to the standardization of
+interval arithmetic in IEEE-1788.
+
+   Some functions on intervals return a floating-point value: among such
+functions are `mpfi_get_left' that returns the left endpoint of an
+interval and `mpfi_diam_abs' that gets the width of the input interval.
 
 A "Floating point number" or "Float" for short, is an arbitrary
 precision mantissa with a limited precision exponent.  The C data type
 for such objects is `mpfr_t'.
 
 The "Precision" is the number of bits used to represent the mantissa of
-a floating-point number; the corresponding C data type is `mp_prec_t'.
-MPFI assumes that both endpoints of an interval use the same precision.
-The behaviour is undefined if this is not the case.
+a floating-point number; the corresponding C data type is `mp_prec_t'
+(renamed `mpfr_prec_t' since MPFR version 3.0.0, both types are
+compatible).
+
+   MPFI assumes that both endpoints of an interval use the same
+precision.  However when this does not hold, the largest precision is
+considered.
 
 4.2 Function Classes
 ====================
@@ -311,7 +334,7 @@ There is only one class of functions in the MPFI library:
 
   1. Functions for interval arithmetic based on floating-point numbers,
      with names beginning with `mpfi_'.  The associated type is
-     `mpfi_t'.  There are around 150 functions in this class.
+     `mpfi_t'.  There are around 165 functions in this class.
 
 4.3 MPFI Variable Conventions
 =============================
@@ -326,13 +349,13 @@ in the same expression.  For example, the function for the exponential,
 the set of exponentials of every real belonging to X and puts the
 result back in X.
 
-   Before you can assign an MPFI variable, you need to initialize it by
-calling one of the special initialization functions.  When you're done
-with a variable, you need to clear it out, using one of the appropriate
-functions.
+   Before you can give a value to an MPFI variable, you need to
+initialize it by calling one of the special initialization functions.
+When you're done with a variable, you need to clear it out, using one
+of the appropriate functions.
 
-   A variable should be initialized once only, or at least cleared out
-between different initializations.  After a variable has been
+   A variable should be initialized only once, or at least be cleared
+out between different initializations.  After a variable has been
 initialized, it can be assigned any number of times.
 
    For efficiency reasons, avoid to initialize and clear out a variable
@@ -369,7 +392,7 @@ variable, precision of a calculation), see the MPFR documentation.
 * Menu:
 
 * Return Values::
-* Rounding Modes and Precision Handling::
+* Precision Handling::
 * Initializing and Assigning Intervals::
 * Floating-point Quantities::
 * Converting Intervals::
@@ -383,7 +406,7 @@ variable, precision of a calculation), see the MPFR documentation.
 * Error Handling::
 
 
-File: mpfi.info,  Node: Return Values,  Next: Rounding Modes and Precision Handling,  Prev: Interval Functions,  Up: Interval Functions
+File: mpfi.info,  Node: Return Values,  Next: Precision Handling,  Prev: Interval Functions,  Up: Interval Functions
 
 5.1 Return Values
 =================
@@ -392,44 +415,34 @@ Four integer values (of C type `int') can be returned by a typical
 `mpfi' function. These values indicate whether none, one or two
 endpoints of the computed interval are exact: since they are rounded
 values, they can differ from the exact result. Here are their names:
-   * `MPFI_FLAGS_BOTH_ENDPOINTS_EXACT'
+   * `MPFI_FLAGS_BOTH_ENDPOINTS_EXACT' 
 
    * `MPFI_FLAGS_LEFT_ENDPOINT_INEXACT': the left endpoint is inexact
-     whereas the right endpoint is exact;
+     whereas the right endpoint is exact; 
 
    * `MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT': the right endpoint is inexact
-     whereas the left endpoint is exact;
+     whereas the left endpoint is exact; 
 
    * `MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT'
    To test the exactness of one endpoint, the following functions are
 available (their names are self-explanatory):
-   * `MPFI_BOTH_ARE_EXACT'
+   * `MPFI_BOTH_ARE_EXACT' 
 
-   * `MPFI_LEFT_IS_INEXACT'
+   * `MPFI_LEFT_IS_INEXACT' 
 
-   * `MPFI_RIGHT_IS_INEXACT'
+   * `MPFI_RIGHT_IS_INEXACT' 
 
    * `MPFI_BOTH_ARE_INEXACT'
 
 
-File: mpfi.info,  Node: Rounding Modes and Precision Handling,  Next: Initializing and Assigning Intervals,  Prev: Return Values,  Up: Interval Functions
+File: mpfi.info,  Node: Precision Handling,  Next: Initializing and Assigning Intervals,  Prev: Return Values,  Up: Interval Functions
 
-5.2 Rounding Modes and Precision Handling
-=========================================
+5.2 Precision Handling
+======================
 
-Only two rounding modes are useful when computing with intervals
-represented by their endpoints, namely downward and upward roundings
-used for outward rounding:
-   * `MPFI_RNDU': round towards plus infinity
-
-   * `MPFI_RNDD': round towards minus infinity
-   The four rounding modes provided by MPFR are still available, see
-MPFR documentation to get their names and information on how to modify
-them.
-
-   The default computing precision is handled by MPFR, getting or
-setting its value is performed using the following MPFR functions (cf.
-MPFR documentation):
+The default computing precision is handled by MPFR, getting or setting
+its value is performed using the following MPFR functions (cf. MPFR
+documentation):
 
  -- Macro: void mpfr_set_default_prec (mp_prec_t PREC)
      Sets the default precision to be *exactly* PREC bits.  The
@@ -449,16 +462,15 @@ precision gradually in iterative algorithms like Newton-Raphson, making
 the computation precision closely match the actual accurate part of the
 numbers.
 
- -- Function: int mpfi_set_prec (mpfi_t X, mp_prec_t PREC)
+ -- Function: void mpfi_set_prec (mpfi_t X, mp_prec_t PREC)
      Resets the precision of X to be *exactly* PREC bits.  The previous
      value stored in X is lost. It is equivalent to a call to
      `mpfi_clear(x)' followed by a call to `mpfi_init2(x, prec)', but
      more efficient as no allocation is done in case the current
      allocated space for the mantissas of the endpoints of X is enough.
-     It returns a non-zero value iff the memory allocation failed.
-
-     In case you want to keep the previous value stored in X, use
-     `mpfi_round_prec' instead.
+     The precision PREC can be any integer between `MPFR_PREC_MIN' and
+     `MPFR_PREC_MAX'.  In case you want to keep the previous value
+     stored in X, use `mpfi_round_prec' instead.
 
  -- Function: mp_prec_t mpfi_get_prec (mpfi_t X)
      Return the largest precision actually used for assignments of X,
@@ -470,13 +482,13 @@ numbers.
      Rounds X with precision PREC, which may be different from that of
      X.  If PREC is greater or equal to the precision of X, then new
      space is allocated for the endpoints' mantissas, and they are
-     filled with zeroes.  Otherwise, the mantissas are outwards rounded
+     filled with zeroes.  Otherwise, the mantissas are rounded outwards
      to precision PREC.  In both cases, the precision of X is changed
      to PREC.  It returns a value indicating whether the possibly
      rounded endpoints are exact or not, cf. *note Return Values::.
 
 
-File: mpfi.info,  Node: Initializing and Assigning Intervals,  Next: Floating-point Quantities,  Prev: Rounding Modes and Precision Handling,  Up: Interval Functions
+File: mpfi.info,  Node: Initializing and Assigning Intervals,  Next: Floating-point Quantities,  Prev: Precision Handling,  Up: Interval Functions
 
 5.3 Initialization and Assignment Functions
 ===========================================
@@ -515,8 +527,9 @@ purpose.
      instead, or `mpfi_round_prec' if you want to keep its value.
 
  -- Function: void mpfi_clear (mpfi_t X)
-     Frees the space occupied by X.  Make sure to call this function
-     for all `mpfi_t' variables when you are done with them.
+     Frees the space occupied by the significands of the endpoints of
+     X.  Make sure to call this function for all `mpfi_t' variables
+     when you are done with them.
 
    Here is an example on how to initialize interval variables:
      {
@@ -545,7 +558,7 @@ These functions assign new values to already initialized intervals
  -- Function: int mpfi_set_z (mpfi_t ROP, mpz_t OP)
  -- Function: int mpfi_set_q (mpfi_t ROP, mpq_t OP)
  -- Function: int mpfi_set_fr (mpfi_t ROP, mpfr_t OP)
-     Sets the value of ROP from OP, outward rounded to the precision of
+     Sets the value of ROP from OP, rounded outward to the precision of
      ROP: OP then belongs to ROP.  The returned value indicates whether
      none, one or both endpoints are exact.  Please note that even a
      `long int' may have to be rounded, if the destination precision is
@@ -616,13 +629,15 @@ center or the width, also called diameter, of an interval.
      right endpoint of OP and its left endpoint, divided by the
      absolute value of the center of OP if it is not zero.  Returns 0
      if the result is exact and a positive value if the returned value
-     is an overestimation.
+     is an overestimation, in this case the returned value may not be
+     the correct rounding of the exact value.
 
  -- Function: int mpfi_diam (mpfr_t ROP, mpfi_t OP)
      Sets the value of ROP to the relative diameter of OP if OP does
      not contain zero and to its absolute diameter otherwise.  Returns
      0 if the result is exact and a positive value if the returned value
-     is an overestimation.
+     is an overestimation, it may not be the correct rounding of the
+     exact value in the latter case.
 
  -- Function: int mpfi_mag (mpfr_t rop, mpfi_t op)
      Sets the value of ROP to the magnitude of OP, i.e. to the largest
@@ -645,7 +660,8 @@ center or the width, also called diameter, of an interval.
      Sets ROP to a floating-point number picked up at random in OP,
      according to a uniform distribution.
 
-     This function is deprecated; `mpfi_urandom' should be used instead.
+     This function is deprecated and may disappear in future versions
+     of MPFI; `mpfi_urandom' should be used instead.
 
  -- Function: void mpfi_urandom (mpfr_t rop, mpfi_t op, gmp_randstate_t
           state)
@@ -781,9 +797,14 @@ intervals when the divisor contains 0, should be available soon.
  -- Function: int mpfi_mul_2ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
  -- Function: int mpfi_mul_2si (mpfi_t ROP, mpfi_t OP1, long int OP2)
-     Sets ROP to OP1 times 2 raised to OP2.  Returns an indication of
-     whether none, one or both endpoints are exact.  Just increases the
-     exponents of the endpoints by OP2 when ROP and OP1 are identical.
+     Sets ROP to OP1 times 2 raised to OP2.
+
+     `mpfi_mul_2exp' is identical to `mpfi_mul_2ui' and is kept for
+     compatibility with former versions of MPFI only. It is deprecated
+     and could disappear in future versions of MPFI.  Returns an
+     indication of whether none, one or both endpoints are exact.  Just
+     increases the exponents of the endpoints by OP2 when ROP and OP1
+     are identical.
 
  -- Function: int mpfi_div_2exp (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
@@ -1007,6 +1028,12 @@ endpoints and also around the comma separating the endpoints.
      Returns the number of bytes written, or if an error occurred,
      return 0.
 
+     As `mpfi_out_str' outputs an enclosure of the input interval, and
+     as `mpfi_inp_str' provides an enclosure of the interval it reads,
+     these functions are not reciprocal. More precisely, when they are
+     called one after the other, the resulting interval contains the
+     initial one, and this inclusion may be strict.
+
  -- Function: size_t mpfi_inp_str (mpfi_t ROP, FILE *STREAM, int BASE)
      Inputs a string in base BASE from stdio stream STREAM, and puts the
      read float in ROP.  The string is of the form `number' or `[
@@ -1104,7 +1131,7 @@ File: mpfi.info,  Node: Set Operations,  Next: Miscellaneous Interval Functions,
      Returns a positive value if OP is empty (its endpoints are in
      reverse order) and 0 otherwise. Nothing is done in arithmetic or
      special functions to handle empty intervals: this is the
-     responsability of the user to avoid computing with empty intervals.
+     responsibility of the user to avoid computing with empty intervals.
 
  -- Function: int mpfi_intersect (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the intersection (possibly empty) of the intervals OP1
@@ -1189,6 +1216,9 @@ This is a largely lacunary list of introductory references.
    * The main Web site for interval computations is
      `http://cs.utep.edu/interval-comp/main.html'.
 
+   * The Web site of the IEEE-1788 working group for the standardization
+     of interval arithmetic is `http://grouper.ieee.org/groups/1788/'.
+
    * G. Alefeld and J. Herzberger, "Introduction to interval analysis",
      Academic Press, 1983.
 
@@ -1208,6 +1238,9 @@ This is a largely lacunary list of introductory references.
    * H. Ratschek and J. Rokne, "New computer methods for global
      optimization", Ellis Horwood Ltd, 1988.
 
+   * N. Revol and F. Rouillier, "Motivations for an arbitrary precision
+     interval arithmetic and the MPFI library", Reliable Computing,
+     vol. 11, no 4, pp 275-290, 2005.
 
 
 File: mpfi.info,  Node: Concept Index,  Next: Function Index,  Prev: References,  Up: Top
@@ -1224,7 +1257,7 @@ Concept Index
 * Conversion functions:                  Converting Intervals. (line  6)
 * Copying conditions:                    Copying.              (line  6)
 * Error handling:                        Error Handling.       (line  6)
-* Floating-point number:                 MPFI Basics.          (line 30)
+* Floating-point number:                 MPFI Basics.          (line 36)
 * Functions operating on endpoints:      Operating on the Endpoints.
                                                                (line  6)
 * I/O functions:                         I/O of Intervals.     (line  6)
@@ -1232,7 +1265,7 @@ Concept Index
                                                                (line  6)
 * Input functions:                       I/O of Intervals.     (line  6)
 * Installation:                          Installing MPFI.      (line  6)
-* Interval:                              MPFI Basics.          (line 17)
+* Interval:                              MPFI Basics.          (line 19)
 * Interval arithmetic functions:         Interval Arithmetic.  (line  6)
 * Interval assignment functions:         Assigning Intervals.  (line  6)
 * Interval comparisons functions:        Interval Comparison.  (line  6)
@@ -1246,13 +1279,10 @@ Concept Index
                                                                (line  6)
 * mpfi.h:                                MPFI Basics.          (line  6)
 * Output functions:                      I/O of Intervals.     (line  6)
-* Precision <1>:                         Rounding Modes and Precision Handling.
-                                                               (line  3)
-* Precision:                             MPFI Basics.          (line 34)
+* Precision <1>:                         Precision Handling.   (line  3)
+* Precision:                             MPFI Basics.          (line 40)
 * Reporting bugs:                        Reporting Bugs.       (line  6)
 * Return values:                         Return Values.        (line  3)
-* Rounding modes:                        Rounding Modes and Precision Handling.
-                                                               (line  3)
 * Set functions on intervals:            Set Operations.       (line  6)
 * Special functions:                     Special Functions.    (line  6)
 * User-defined precision:                Interval Functions.   (line 18)
@@ -1266,7 +1296,7 @@ Function and Type Index
  [index ]
 * Menu:
 
-* mp_prec_t:                             MPFI Basics.         (line  34)
+* mp_prec_t:                             MPFI Basics.         (line  40)
 * mpfi_abs:                              Interval Arithmetic. (line 102)
 * mpfi_acos:                             Special Functions.   (line  39)
 * mpfi_acosh:                            Special Functions.   (line  66)
@@ -1278,7 +1308,7 @@ Function and Type Index
 * mpfi_add_ui:                           Interval Arithmetic. (line  10)
 * mpfi_add_z:                            Interval Arithmetic. (line  12)
 * mpfi_alea:                             Floating-point Quantities.
-                                                              (line  48)
+                                                              (line  50)
 * mpfi_asin:                             Special Functions.   (line  40)
 * mpfi_asinh:                            Special Functions.   (line  67)
 * mpfi_atan:                             Special Functions.   (line  41)
@@ -1288,6 +1318,8 @@ Function and Type Index
                                                               (line  18)
 * mpfi_blow:                             Miscellaneous Interval Functions.
                                                               (line  12)
+* MPFI_BOTH_ARE_EXACT:                   Return Values.       (line  21)
+* MPFI_BOTH_ARE_INEXACT:                 Return Values.       (line  25)
 * mpfi_bounded_p:                        Interval Comparison. (line  63)
 * mpfi_cbrt:                             Interval Arithmetic. (line  98)
 * mpfi_clear:                            Initializing Intervals.
@@ -1312,15 +1344,15 @@ Function and Type Index
 * mpfi_d_div:                            Interval Arithmetic. (line  60)
 * mpfi_d_sub:                            Interval Arithmetic. (line  20)
 * mpfi_diam:                             Floating-point Quantities.
-                                                              (line  25)
+                                                              (line  26)
 * mpfi_diam_abs:                         Floating-point Quantities.
                                                               (line  10)
 * mpfi_diam_rel:                         Floating-point Quantities.
                                                               (line  17)
 * mpfi_div:                              Interval Arithmetic. (line  58)
-* mpfi_div_2exp:                         Interval Arithmetic. (line 117)
-* mpfi_div_2si:                          Interval Arithmetic. (line 120)
-* mpfi_div_2ui:                          Interval Arithmetic. (line 119)
+* mpfi_div_2exp:                         Interval Arithmetic. (line 122)
+* mpfi_div_2si:                          Interval Arithmetic. (line 125)
+* mpfi_div_2ui:                          Interval Arithmetic. (line 124)
 * mpfi_div_d:                            Interval Arithmetic. (line  59)
 * mpfi_div_fr:                           Interval Arithmetic. (line  71)
 * mpfi_div_q:                            Interval Arithmetic. (line  69)
@@ -1331,6 +1363,10 @@ Function and Type Index
 * mpfi_exp:                              Special Functions.   (line  16)
 * mpfi_exp2:                             Special Functions.   (line  21)
 * mpfi_expm1:                            Special Functions.   (line  79)
+* MPFI_FLAGS_BOTH_ENDPOINTS_EXACT:       Return Values.       (line  10)
+* MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT:     Return Values.       (line  16)
+* MPFI_FLAGS_LEFT_ENDPOINT_INEXACT:      Return Values.       (line  10)
+* MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT:     Return Values.       (line  13)
 * mpfi_fr_div:                           Interval Arithmetic. (line  72)
 * mpfi_fr_sub:                           Interval Arithmetic. (line  32)
 * mpfi_get_d:                            Converting Intervals.
@@ -1339,8 +1375,7 @@ Function and Type Index
                                                               (line  11)
 * mpfi_get_left:                         Operating on the Endpoints.
                                                               (line   7)
-* mpfi_get_prec:                         Rounding Modes and Precision Handling.
-                                                              (line  50)
+* mpfi_get_prec:                         Precision Handling.  (line  39)
 * mpfi_get_right:                        Operating on the Endpoints.
                                                               (line  12)
 * mpfi_get_version:                      Miscellaneous Interval Functions.
@@ -1370,7 +1405,7 @@ Function and Type Index
                                                               (line   8)
 * mpfi_init_set_z:                       Simultaneous Interval Init & Assign.
                                                               (line  11)
-* mpfi_inp_str:                          I/O of Intervals.    (line  41)
+* mpfi_inp_str:                          I/O of Intervals.    (line  47)
 * mpfi_intersect:                        Set Operations.      (line  27)
 * mpfi_interv_d:                         Operating on the Endpoints.
                                                               (line  37)
@@ -1402,16 +1437,17 @@ Function and Type Index
 * mpfi_is_strictly_neg:                  Interval Comparison. (line  42)
 * mpfi_is_strictly_pos:                  Interval Comparison. (line  32)
 * mpfi_is_zero:                          Interval Comparison. (line  48)
+* MPFI_LEFT_IS_INEXACT:                  Return Values.       (line  21)
 * mpfi_log:                              Special Functions.   (line  10)
 * mpfi_log10:                            Special Functions.   (line  85)
 * mpfi_log1p:                            Special Functions.   (line  73)
 * mpfi_log2:                             Special Functions.   (line  84)
 * mpfi_mag:                              Floating-point Quantities.
-                                                              (line  31)
+                                                              (line  33)
 * mpfi_mid:                              Floating-point Quantities.
-                                                              (line  43)
+                                                              (line  45)
 * mpfi_mig:                              Floating-point Quantities.
-                                                              (line  37)
+                                                              (line  39)
 * mpfi_mul:                              Interval Arithmetic. (line  36)
 * mpfi_mul_2exp:                         Interval Arithmetic. (line 108)
 * mpfi_mul_2si:                          Interval Arithmetic. (line 111)
@@ -1425,7 +1461,7 @@ Function and Type Index
 * mpfi_nan_p:                            Interval Comparison. (line  55)
 * mpfi_neg:                              Interval Arithmetic. (line  76)
 * mpfi_out_str:                          I/O of Intervals.    (line  22)
-* mpfi_print_binary:                     I/O of Intervals.    (line  58)
+* mpfi_print_binary:                     I/O of Intervals.    (line  64)
 * mpfi_put:                              Operating on the Endpoints.
                                                               (line  25)
 * mpfi_put_d:                            Operating on the Endpoints.
@@ -1445,16 +1481,15 @@ Function and Type Index
 * mpfi_reset_error:                      Error Handling.      (line  18)
 * mpfi_revert_if_needed:                 Operating on the Endpoints.
                                                               (line  20)
-* mpfi_round_prec:                       Rounding Modes and Precision Handling.
-                                                              (line  56)
+* MPFI_RIGHT_IS_INEXACT:                 Return Values.       (line  23)
+* mpfi_round_prec:                       Precision Handling.  (line  45)
 * mpfi_sec:                              Special Functions.   (line  32)
 * mpfi_sech:                             Special Functions.   (line  59)
 * mpfi_set:                              Assigning Intervals. (line  10)
 * mpfi_set_d:                            Assigning Intervals. (line  13)
 * mpfi_set_error:                        Error Handling.      (line  15)
 * mpfi_set_fr:                           Assigning Intervals. (line  16)
-* mpfi_set_prec:                         Rounding Modes and Precision Handling.
-                                                              (line  39)
+* mpfi_set_prec:                         Precision Handling.  (line  29)
 * mpfi_set_q:                            Assigning Intervals. (line  15)
 * mpfi_set_si:                           Assigning Intervals. (line  12)
 * mpfi_set_str:                          Assigning Intervals. (line  23)
@@ -1474,51 +1509,49 @@ Function and Type Index
 * mpfi_sub_ui:                           Interval Arithmetic. (line  22)
 * mpfi_sub_z:                            Interval Arithmetic. (line  27)
 * mpfi_swap:                             Assigning Intervals. (line  35)
-* mpfi_t:                                MPFI Basics.         (line  17)
+* mpfi_t:                                MPFI Basics.         (line  19)
 * mpfi_tan:                              Special Functions.   (line  27)
 * mpfi_tanh:                             Special Functions.   (line  53)
 * mpfi_ui_div:                           Interval Arithmetic. (line  64)
 * mpfi_ui_sub:                           Interval Arithmetic. (line  24)
 * mpfi_union:                            Set Operations.      (line  34)
 * mpfi_urandom:                          Floating-point Quantities.
-                                                              (line  55)
+                                                              (line  58)
 * mpfi_z_div:                            Interval Arithmetic. (line  68)
 * mpfi_z_sub:                            Interval Arithmetic. (line  28)
-* mpfr_get_default_prec:                 Rounding Modes and Precision Handling.
-                                                              (line  30)
-* mpfr_set_default_prec:                 Rounding Modes and Precision Handling.
-                                                              (line  21)
-* mpfr_t:                                MPFI Basics.         (line  30)
+* mpfr_get_default_prec:                 Precision Handling.  (line  20)
+* mpfr_set_default_prec:                 Precision Handling.  (line  11)
+* mpfr_t:                                MPFI Basics.         (line  36)
 
 
 
 Tag Table:
-Node: Top1324
-Node: Copying2196
-Node: Introduction to MPFI3988
-Node: Installing MPFI5312
-Node: Reporting Bugs8614
-Node: MPFI Basics9937
-Node: Interval Functions13382
-Node: Return Values14641
-Node: Rounding Modes and Precision Handling15627
-Node: Initializing and Assigning Intervals18714
-Node: Initializing Intervals19073
-Node: Assigning Intervals20891
-Node: Simultaneous Interval Init & Assign22885
-Node: Floating-point Quantities24148
-Node: Converting Intervals27026
-Node: Interval Arithmetic27501
-Node: Special Functions33860
-Node: Interval Comparison38683
-Node: I/O of Intervals41511
-Node: Operating on the Endpoints44525
-Node: Set Operations46997
-Node: Miscellaneous Interval Functions48906
-Node: Error Handling50140
-Node: Contributors50747
-Node: References51102
-Node: Concept Index52225
-Node: Function Index55158
+Node: Top1327
+Node: Copying2394
+Node: Introduction to MPFI4189
+Node: Installing MPFI5513
+Node: Reporting Bugs8832
+Node: MPFI Basics10206
+Node: Interval Functions14042
+Node: Return Values15282
+Node: Precision Handling16255
+Node: Initializing and Assigning Intervals18902
+Node: Initializing Intervals19242
+Node: Assigning Intervals21102
+Node: Simultaneous Interval Init & Assign23096
+Node: Floating-point Quantities24359
+Node: Converting Intervals27455
+Node: Interval Arithmetic27930
+Node: Special Functions34487
+Node: Interval Comparison39310
+Node: I/O of Intervals42138
+Node: Operating on the Endpoints45487
+Node: Set Operations47959
+Node: Miscellaneous Interval Functions49868
+Node: Error Handling51102
+Node: Contributors51709
+Node: References52064
+Node: Concept Index53510
+Node: Function Index56210
 
 End Tag Table

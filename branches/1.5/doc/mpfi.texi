@@ -28,7 +28,7 @@
 
 @ifinfo
 This file documents MPFI, a library for interval arithmetic,
-which is part of the MPFR multiple precision floating-point
+which is built upon the MPFR multiple precision floating-point
 arithmetic library
 
 Copyright (C) 2002-2010, Spaces team, INRIA Lorraine and LORIA, France,
@@ -122,11 +122,22 @@ Floating-Point Interval Library
 * Concept Index::               
 * Function Index::              
 
+Interval Functions
+
+
+Initialization and Assignment Functions
+
+* Initializing Intervals::      
+* Assigning Intervals::         
+* Simultaneous Interval Init & Assign::  
+
 @detailmenu
  --- The Detailed Node Listing ---
 
 Interval Functions
 
+* Return Values::
+* Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
@@ -182,7 +193,7 @@ will not reflect on our reputation.@refill
 The precise conditions of the license for the MPFI library are found in the
 Lesser General Public License that accompany the source code.
 As MPFI is built upon MPFR and share its license,
-see the file COPYING.LIB in the main MPFR directory.@refill
+see the file COPYING.LESSER in the main MPFR directory.@refill
 
 @node Introduction to MPFI, Installing MPFI, Copying, Top
 @comment  node-name,  next,  previous,  up
@@ -213,7 +224,7 @@ distributing them the MPFI source code and a means to re-link with a
 modified MPFI is provided.
 
 As interval arithmetic currently undergoes standardization, through
-the work of the IEEE 1788 working group, future versions of MPFI
+the work of the IEEE-1788 working group, future versions of MPFI
 may evolve in order to reflect the standardized definitions and behaviours.
 
 
@@ -299,7 +310,7 @@ There are some other useful make targets:
 Create an info version of the manual, in @file{mpfi.info}.
 
 @item
-@samp{mpfi.pdf}
+@samp{mpfi.pdf} or @samp{pdf}
 
 Create a PDF version of the manual, in @file{mpfi.pdf}.
 
@@ -309,7 +320,7 @@ Create a PDF version of the manual, in @file{mpfi.pdf}.
 Create a DVI version of the manual, in @file{mpfi.dvi}.
 
 @item
-@samp{mpfi.ps}
+@samp{mpfi.ps} or @samp{ps}
 
 Create a Postscript version of the manual, in @file{mpfi.ps}.
 
@@ -366,7 +377,7 @@ printed are incorrect and in that case, in what way.
 Please include compiler version information
 in your bug report.  This can be extracted using @samp{cc -V} on some machines or,
 if you're using gcc, @samp{gcc -v}.  Also, include the output from @samp{uname
--a}.
+-a}, along with the version of GMP and of MPFR you use.
 
 If your bug report is good, we will do our best to help you to get a corrected
 version of the library; if the bug report is poor, we won't do anything about
@@ -396,6 +407,8 @@ You should include these files in any program using the MPFI library:
 
 @section Nomenclature and Types
 
+As MPFI is built upon MPFR, it is advisable to read MPFR's manual first.
+
 @cindex Interval
 @tindex @code{mpfi_t}
 @noindent
@@ -408,6 +421,10 @@ an invalid operation has been performed and that the resulting interval
 has no mathematical meaning. An empty interval has its left endpoint larger
 than its right endpoint. The handling of empty intervals is not performed
 by MPFI and relies on the user.
+Both the meaning of "invalid operation", the representation of the empty set
+and its handling may change in future versions of MPFI,
+according to the standardization of interval arithmetic in IEEE-1788.
+
 Some functions on intervals return a floating-point value: among such
 functions are @code{mpfi_get_left} that returns the left endpoint of
 an interval and @code{mpfi_diam_abs} that gets the width of the
@@ -422,14 +439,17 @@ is @code{mpfr_t}.
 
 @cindex Precision
 @tindex @code{mp_prec_t}
+@comment a changer en mpfr_prec_t quand on demandera MPFR 3.0.0 ou plus
 @noindent
 The @dfn{Precision} is the number of bits used to represent the mantissa
 of a floating-point number;
 the corresponding C data type is @code{mp_prec_t} (renamed
-@code{mpfr_prec_t} since the MPFR version 3.0.0, both types are
+@code{mpfr_prec_t} since MPFR version 3.0.0, both types are
 compatible).
+
 MPFI assumes that both endpoints of an interval use the same precision.
-The behaviour is undefined if this is not the case.
+@c The behaviour is undefined if this is not the case.
+However when this does not hold, the largest precision is considered. 
 
 
 @section Function Classes
@@ -438,9 +458,10 @@ There is only one class of functions in the MPFI library:
 
 @enumerate
 @item
+@tindex @code{mpfi_t}
 Functions for interval arithmetic based on floating-point numbers,
 with names beginning with
-@code{mpfi_}.  The associated type is @code{mpfi_t}.  There are around 150
+@code{mpfi_}.  The associated type is @code{mpfi_t}.  There are around 165
 functions in this class.
 @end enumerate
 
@@ -457,12 +478,12 @@ This
 computes the set of exponentials of every real belonging to @var{x}
 and puts the result back in @var{x}.
 
-Before you can assign an MPFI variable, you need to initialize it by calling
+Before you can give a value to an MPFI variable, you need to initialize it by calling
 one of the special initialization functions.  When you're done with a
 variable, you need to clear it out, using one of the appropriate
 functions.
 
-A variable should be initialized once only, or at least cleared out between
+A variable should be initialized only once, or at least be cleared out between
 different initializations.  After a variable has been initialized, it can be
 assigned any number of times.
 
@@ -475,6 +496,8 @@ variables, since any variable uses a memory space of fixed size.
 Hence unless you change its precision, or clear and reinitialize it, 
 an interval variable will have the same allocated space during all its
 lifetime.
+
+@c TO DO later: a section on "Special values and exceptions" and possibly a section on "Memory handling / Multithreading"
 
 @node Interval Functions, Contributors, MPFI Basics, Top
 @comment  node-name,  next,  previous,  up
@@ -504,7 +527,7 @@ precision of a calculation), see the MPFR documentation.
 
 @menu
 * Return Values::
-* Rounding Modes and Precision Handling::
+* Precision Handling::
 * Initializing and Assigning Intervals::  
 * Floating-point Quantities::   
 * Converting Intervals::        
@@ -518,7 +541,8 @@ precision of a calculation), see the MPFR documentation.
 * Error Handling::              
 @end menu
 
-@node Return Values, Rounding Modes and Precision Handling, Interval Functions, Interval Functions
+@comment @node Return Values, Rounding Modes and Precision Handling, Interval Functions, Interval Functions
+@node Return Values, Precision Handling, Interval Functions, Interval Functions
 @comment  node-name,  next,  previous,  up
 @cindex Return values
 @section Return Values
@@ -529,39 +553,48 @@ indicate whether none, one or two endpoints of the computed interval are
 exact: since they are rounded values, they can differ from the exact
 result. Here are their names:
 @itemize @bullet
+@tindex @code{MPFI_FLAGS_BOTH_ENDPOINTS_EXACT}
 @item @code{MPFI_FLAGS_BOTH_ENDPOINTS_EXACT}
+@tindex @code{MPFI_FLAGS_LEFT_ENDPOINT_INEXACT}
 @item @code{MPFI_FLAGS_LEFT_ENDPOINT_INEXACT}: the left endpoint is inexact
 whereas the right endpoint is exact;
+@tindex @code{MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT}
 @item @code{MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT}: the right endpoint is inexact
 whereas the left endpoint is exact;
+@tindex @code{MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT}
 @item @code{MPFI_FLAGS_BOTH_ENDPOINTS_INEXACT}
 @end itemize
 To test the exactness of one endpoint, the following functions are available
 (their names are self-explanatory):
 @itemize @bullet
+@tindex @code{MPFI_BOTH_ARE_EXACT}
 @item @code{MPFI_BOTH_ARE_EXACT}
+@tindex @code{MPFI_LEFT_IS_INEXACT}
 @item @code{MPFI_LEFT_IS_INEXACT}
+@tindex @code{MPFI_RIGHT_IS_INEXACT}
 @item @code{MPFI_RIGHT_IS_INEXACT}
+@tindex @code{MPFI_BOTH_ARE_INEXACT}
 @item @code{MPFI_BOTH_ARE_INEXACT}
 @end itemize
 
 
-@node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
+@comment @node Rounding Modes and Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
+@node Precision Handling, Initializing and Assigning Intervals, Return Values, Interval Functions
 @comment  node-name,  next,  previous,  up
-@cindex Rounding modes
+@comment @cindex Rounding modes
 @cindex Precision
-@section Rounding Modes and Precision Handling
+@section Precision Handling
 
-Only two rounding modes are useful when computing with intervals
-represented by their endpoints, namely downward and upward roundings
-used for outward rounding:
-@itemize @bullet
-@item @code{MPFI_RNDU}: round towards plus infinity
-@item @code{MPFI_RNDD}: round towards minus infinity
-@end itemize
-The four rounding modes provided by MPFR are still available,
-see MPFR documentation to get their names and information on how
-to modify them.
+@comment Only two rounding modes are useful when computing with intervals
+@comment represented by their endpoints, namely downward and upward roundings
+@comment used for outward rounding:
+@comment @itemize @bullet
+@comment @item @code{MPFI_RNDU}: round towards plus infinity
+@comment @item @code{MPFI_RNDD}: round towards minus infinity
+@comment @end itemize
+@comment The four rounding modes provided by MPFR are still available,
+@comment see MPFR documentation to get their names and information on how
+@comment to modify them.
 
 The default computing precision is handled by MPFR, getting or setting
 its value is performed using the following MPFR functions
@@ -588,15 +621,15 @@ calculation.  A typical use would be for adjusting the precision gradually in
 iterative algorithms like Newton-Raphson, making the computation precision
 closely match the actual accurate part of the numbers.
 
-@deftypefun int mpfi_set_prec (mpfi_t @var{x}, mp_prec_t @var{prec})
+@deftypefun void mpfi_set_prec (mpfi_t @var{x}, mp_prec_t @var{prec})
 Resets the precision of @var{x} to be @strong{exactly} @var{prec} bits.
 The previous value stored in @var{x} is lost. It is equivalent to
 a call to @code{mpfi_clear(x)} followed by a call to 
 @code{mpfi_init2(x, prec)}, but more efficient as no allocation is done in
 case the current allocated space for the mantissas of the endpoints
 of @var{x} is enough.
-It returns a non-zero value iff the memory allocation failed.
-
+The precision @var{prec} can be any integer between @code{MPFR_PREC_MIN} and
+@code{MPFR_PREC_MAX}.
 In case you want to keep the previous value stored in @var{x},
 use @code{mpfi_round_prec} instead.
 @end deftypefun
@@ -612,13 +645,14 @@ Rounds @var{x} with precision @var{prec}, which
 may be different from that of @var{x}. 
 If @var{prec} is greater or equal to the precision of @var{x}, then new
 space is allocated for the endpoints' mantissas, and they are filled with zeroes.
-Otherwise, the mantissas are outwards rounded to precision @var{prec}.
+Otherwise, the mantissas are rounded outwards to precision @var{prec}.
 In both cases, the precision of @var{x} is changed to @var{prec}.
 It returns a value indicating whether the possibly rounded endpoints are exact or not,
 cf. @ref{Return Values}.
 @end deftypefun
 
-@node Initializing and Assigning Intervals, Floating-point Quantities, Rounding Modes and Precision Handling, Interval Functions
+@comment @node Initializing and Assigning Intervals, Floating-point Quantities, Rounding Modes and Precision Handling, Interval Functions
+@node Initializing and Assigning Intervals, Floating-point Quantities, Precision Handling, Interval Functions
 @comment  node-name,  next,  previous,  up
 @section Initialization and Assignment Functions
 
@@ -658,7 +692,7 @@ use @code{mpfi_set_prec} instead, or @code{mpfi_round_prec} if you want to keep 
 @end deftypefun
 
 @deftypefun void mpfi_clear (mpfi_t @var{x})
-Frees the space occupied by @var{x}.  Make sure to call this function for all
+Frees the space occupied by the significands of the endpoints of @var{x}.  Make sure to call this function for all
 @code{mpfi_t} variables when you are done with them.
 @end deftypefun
 
@@ -692,7 +726,7 @@ These functions assign new values to already initialized intervals
 @deftypefunx int mpfi_set_z (mpfi_t @var{rop}, mpz_t @var{op})
 @deftypefunx int mpfi_set_q (mpfi_t @var{rop}, mpq_t @var{op})
 @deftypefunx int mpfi_set_fr (mpfi_t @var{rop}, mpfr_t @var{op})
-Sets the value of @var{rop} from @var{op}, outward rounded to the precision of @var{rop}:
+Sets the value of @var{rop} from @var{op}, rounded outward to the precision of @var{rop}:
 @var{op} then belongs to @var{rop}.
 The returned value indicates whether none, one or both endpoints are exact.
 Please note that even a @code{long int} may have to be rounded,
@@ -776,14 +810,16 @@ or in other words to the upward rounded difference between the right endpoint
 of @var{op} and its left endpoint, divided by the absolute value
 of the center of @var{op} if it is not zero.
 Returns 0 if the result is exact and a positive value if the returned value
-is an overestimation.
+is an overestimation, in this case the returned value may not be the correct
+rounding of the exact value.
 @end deftypefun
 
 @deftypefun int mpfi_diam (mpfr_t @var{rop}, mpfi_t @var{op})
 Sets the value of @var{rop} to the relative diameter of @var{op}
 if @var{op} does not contain zero and to its absolute diameter otherwise.
 Returns 0 if the result is exact and a positive value if the returned value
-is an overestimation.
+is an overestimation, it may not be the correct rounding of the exact value
+in the latter case.
 @end deftypefun
 
 @deftypefun int mpfi_mag (mpfr_t rop, mpfi_t op)
@@ -810,7 +846,8 @@ middle of @var{op} and a negative value if @var{rop} < the middle of @var{op}.
 Sets @var{rop} to a floating-point number
 picked up at random in @var{op}, according to a uniform distribution.
 
-This function is deprecated; @code{mpfi_urandom} should be used instead.
+This function is deprecated and may disappear in future versions of MPFI;
+@code{mpfi_urandom} should be used instead.
 @end deftypefun
 
 @deftypefun void mpfi_urandom (mpfr_t rop, mpfi_t op, gmp_randstate_t state)
@@ -823,7 +860,7 @@ random state initialization functions
 (@pxref{Random State Initialization,,, gmp.info,GNU MP}).
 @end ifinfo
 @ifnotinfo
-(see Section ``Random State Initialization'' in @cite{GNU MP}).
+(see Section ``Random State Initialization'' in @cite{GNU MP} manual).
 @end ifnotinfo
 @end deftypefun
 
@@ -1010,6 +1047,9 @@ Returns an indication of whether none, one or both endpoints are exact.
 @deftypefunx int mpfi_mul_2si (mpfi_t @var{rop}, mpfi_t @var{op1}, long int @var{op2})
 @ifinfo
 Sets @var{rop} to @var{op1} times 2 raised to @var{op2}.
+
+@code{mpfi_mul_2exp} is identical to @code{mpfi_mul_2ui} and is kept for compatibility
+with former versions of MPFI only. It is deprecated and could disappear in future versions of MPFI.
 @end ifinfo
 @iftex
 @tex
@@ -1314,6 +1354,12 @@ is greater than 10, @samp{@@} will be used instead of @samp{e} as
 exponent delimiter.
 
 Returns the number of bytes written, or if an error occurred, return 0.
+
+As @code{mpfi_out_str} outputs an enclosure of the input interval, and as
+@code{mpfi_inp_str} provides an enclosure of the interval it reads, these
+functions are not reciprocal. More precisely, when they are called one after
+the other, the resulting interval contains the initial one, and this inclusion
+may be strict.
 @end deftypefun
 
 @deftypefun size_t mpfi_inp_str (mpfi_t @var{rop}, FILE *@var{stream}, int @var{base})
@@ -1531,7 +1577,12 @@ available at @code{http://www.mpfr.org}.
 
 @item
 The main Web site for interval computations is
-@code{http://cs.utep.edu/interval-comp/main.html}.
+@url{http://cs.utep.edu/interval-comp/main.html}.
+
+@item
+The Web site of the IEEE-1788 working group for the standardization
+of interval arithmetic is
+@url{http://grouper.ieee.org/groups/1788/}.
 
 @item
 G. Alefeld and J. Herzberger, "Introduction to interval analysis",
@@ -1558,6 +1609,10 @@ Cambridge University Press, 1990.
 H. Ratschek and J. Rokne, "New computer methods for global optimization",
 Ellis Horwood Ltd, 1988.
 
+@item
+N. Revol and F. Rouillier, 
+"Motivations for an arbitrary precision interval arithmetic and the MPFI library",
+Reliable Computing, vol. 11, no 4, pp 275--290, 2005.
 @end itemize
 
 
