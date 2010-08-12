@@ -75,6 +75,36 @@ check_overflow (void)
   mpfi_clear (got);
 }
 
+void
+check_nan ()
+{
+  double nan;
+  mpfi_t got, interval;
+  int inex;
+
+  nan = 0.0/0.0;
+  if (nan == nan)
+    return;
+
+  mpfi_init2 (got, 53);
+  mpfi_init2 (interval, 53);
+
+  mpfi_set_ui (interval, 10);
+  inex = mpfi_d_div (got, nan, interval);
+  if (!MPFI_BOTH_ARE_EXACT (inex) || !MPFI_NAN_P (got)) {
+    printf ("Error in mpfi_d_div (rop, %g, op).\nop = ", nan);
+    mpfi_out_str (stdout, 10, 0, interval);
+    printf ("\nrop = ");
+    mpfi_out_str (stdout, 10, 0, got);
+    printf ("\nreturn value = %d\n", inex);
+
+    exit (1);
+  }
+
+  mpfi_clear (got);
+  mpfi_clear (interval);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -86,6 +116,7 @@ main (int argc, char **argv)
   check_data (&i_d_div, "d_div.dat");
   check_random (&i_d_div, 2, 1000, 10);
   check_overflow ();
+  check_nan ();
 
   test_end ();
   mpfi_fun_clear (&i_d_div);

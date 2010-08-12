@@ -37,41 +37,80 @@ check_overflow ()
   mpq_init (q);
   mpfi_init2 (a, 53);
   mpfr_init2 (max, 53);
-  mpq_set_ui (q, 1, 2);
-  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
   mpfr_set_inf (max, +1);
   mpfr_nextbelow (max);
+
+  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
   mpfr_set (&(a->right), max, MPFI_RNDU);
+  mpq_set_ui (q, 3, 4);
 
   inexact = mpfi_div_q (a, a, q);
 
   if (!mpfr_inf_p (&(a->right))) {
-    printf ("Error: mpfi_div_q does not correctly handle positive "
+    printf ("Error[1]: mpfi_div_q does not correctly handle positive "
             "overflow.\n");
     exit (1);
   }
 
   if (!MPFI_RIGHT_IS_INEXACT (inexact)) {
-    printf ("Error: mpfi_div_q does not return correct value when positive "
+    printf ("Error[1]: mpfi_div_q does not return correct value when positive "
+            "overflow.\n");
+    exit (1);
+  }
+
+  mpfr_set_ui (&(a->left), 1, MPFI_RNDD);
+  mpfr_set (&(a->right), max, MPFI_RNDU);
+  mpq_set_si (q, -3, 4);
+
+  inexact = mpfi_div_q (a, a, q);
+
+  if (!mpfr_inf_p (&(a->left))) {
+    printf ("Error[2]: mpfi_div_q does not correctly handle negative "
+            "overflow.\n");
+    exit (1);
+  }
+
+  if (!MPFI_LEFT_IS_INEXACT (inexact)) {
+    printf ("Error[2]: mpfi_div_q does not return correct value when negative "
             "overflow.\n");
     exit (1);
   }
 
   mpfr_set_inf (max, -1);
   mpfr_nextabove (max);
+
   mpfr_set (&(a->left), max, MPFI_RNDD);
   mpfr_set_ui (&(a->right), 1, MPFI_RNDU);
+  mpq_set_ui (q, 3, 4);
 
   inexact = mpfi_div_q (a, a, q);
 
   if (!mpfr_inf_p (&(a->left))) {
-    printf ("Error: mpfi_div_q does not correctly handle negative "
+    printf ("Error[3]: mpfi_div_q does not correctly handle negative "
             "overflow.\n");
     exit (1);
   }
 
   if (!MPFI_LEFT_IS_INEXACT (inexact)) {
-    printf ("Error: mpfi_div_q does not return correct value when negative "
+    printf ("Error[3]: mpfi_div_q does not return correct value when negative "
+            "overflow.\n");
+    exit (1);
+  }
+
+  mpfr_set (&(a->left), max, MPFI_RNDD);
+  mpfr_set_ui (&(a->right), 1, MPFI_RNDU);
+  mpq_set_si (q, -3, 4);
+
+  inexact = mpfi_div_q (a, a, q);
+
+  if (!mpfr_inf_p (&(a->right))) {
+    printf ("Error[4]: mpfi_div_q does not correctly handle positive "
+            "overflow.\n");
+    exit (1);
+  }
+
+  if (!MPFI_RIGHT_IS_INEXACT (inexact)) {
+    printf ("Error[4]: mpfi_div_q does not return correct value when positive "
             "overflow.\n");
     exit (1);
   }
@@ -103,13 +142,13 @@ check_underflow (void)
       || !same_mpfr_value (&(got->right), &(expected->right))) {
     printf ("Error: mpfi_div_q (rop, op, q) does not return correct value\n"
             "op = ");
-    mpfi_out_str (stdout, 16, 0, expected);
+    mpfi_out_str (stdout, 10, 0, expected);
     printf ("\nq  = ");
-    mpq_out_str (stdout, 16, q);
+    mpq_out_str (stdout, 10, q);
     printf ("\ngot      = ");
-    mpfi_out_str (stdout, 16, 0, got);
+    mpfi_out_str (stdout, 10, 0, got);
     printf ("\nexpected = ");
-    mpfi_out_str (stdout, 16, 0, expected);
+    mpfi_out_str (stdout, 10, 0, expected);
     printf ("\n");
 
     if (!MPFI_BOTH_ARE_INEXACT(inex)) {

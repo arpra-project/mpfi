@@ -53,7 +53,7 @@
 0 53  nan  nan    53 -inf  nan  0
 0 53  nan  nan    53 -inf  nan  64
 0 53 +0   -0      53 +0   -0   -1
-0 53  nan +inf    53 +0   -0    0
+0 53  nan  nan    53 +0   -0    0
 0 53 +0   -0      53 +0   -0    1
 
 # the precision of the result is to small for the mpz value

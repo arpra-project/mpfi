@@ -25,26 +25,46 @@ MA 02110-1301, USA. */
 
 #include "mpfi-impl.h"
 
-#ifdef HAVE_LIMITS_H
-#include <limits.h>
-#endif
-#ifndef CHAR_BIT
-# define CHAR_BIT 8
-#endif
-
 int
 mpfi_ui_div (mpfi_ptr a, const unsigned long b, mpfi_srcptr c)
 {
-  mpfi_t tmp;
-  int inexact;
+  mpfr_t tmp;
+  int inexact_left = 0, inexact_right = 0, inexact = 0;
 
-  mpfi_init2 (tmp, sizeof(b) * CHAR_BIT);
-  mpfi_set_ui (tmp, b); /* exact */
-  inexact = mpfi_div (a, tmp, c);
-  MPFI_CLEAR (tmp);
-
-  if (MPFI_NAN_P (a))
+  if (MPFI_NAN_P (c)) {
+    mpfr_set_nan (&(a->left));
+    mpfr_set_nan (&(a->right));
     MPFR_RET_NAN;
+  }
+
+  if (MPFI_HAS_ZERO (c)) {    /* a = ]-oo, +oo [ */
+    mpfr_set_inf (&(a->left), -1);
+    mpfr_set_inf (&(a->right), 1);
+  }
+  else if (b == 0) {
+      mpfi_set_ui (a, 0);
+  }
+  else {
+    mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
+    inexact_left = mpfr_ui_div (tmp, b, &(c->right), MPFI_RNDD);
+    inexact_right = mpfr_ui_div (&(a->right), b, &(c->left), MPFI_RNDU);
+    mpfr_set (&(a->left), tmp, MPFI_RNDD);
+    mpfr_clear (tmp);
+  }
+
+  /* do not allow -0 as lower bound */
+  if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left))) {
+    mpfr_neg (&(a->left), &(a->left), MPFI_RNDU);
+  }
+  /* do not allow +0 as upper bound */
+  if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right))) {
+    mpfr_neg (&(a->right), &(a->right), MPFI_RNDD);
+  }
+
+  if (inexact_left)
+    inexact += 1;
+  if (inexact_right)
+    inexact += 2;
 
   return inexact;
 }
