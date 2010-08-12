@@ -25,26 +25,33 @@ MA 02110-1301, USA. */
 
 #include "mpfi-impl.h"
 
-#ifdef HAVE_LIMITS_H
-#include <limits.h>
-#endif
-#ifndef CHAR_BIT
-# define CHAR_BIT 8
-#endif
-
 int
 mpfi_mul_ui (mpfi_ptr a, mpfi_srcptr b, const unsigned long c)
 {
-  mpfi_t tmp;
-  int inexact = 0;
+  int inexact_left, inexact_right, inexact=0;
 
-  mpfi_init2 (tmp, sizeof(c) * CHAR_BIT);
-  mpfi_set_ui (tmp, c); /* exact */
-  inexact = mpfi_mul (a, b, tmp);
-  MPFI_CLEAR (tmp);
+  if ( MPFI_NAN_P (b) )
+    {
+      mpfr_set_nan (&(a->left));
+      mpfr_set_nan (&(a->right));
+      MPFR_RET_NAN;
+    }
 
-  if (MPFI_NAN_P (a))
-    MPFR_RET_NAN;
+  if (c == 0)
+    {
+    return mpfi_set_si(a, 0);
+    }
+  else /* c > 0 */
+    {
+    inexact_left = mpfr_mul_ui( &(a->left), &(b->left), c, MPFI_RNDD);
+    inexact_right = mpfr_mul_ui( &(a->right), &(b->right), c, MPFI_RNDU);
+    }
+
+  /* no need to check to sign of the bounds in case they are 0 */
+  if (inexact_left)
+      inexact += 1;
+  if (inexact_right)
+      inexact += 2;
 
   return inexact;
 }

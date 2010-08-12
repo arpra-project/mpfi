@@ -31,6 +31,13 @@ mpfi_mul_fr (mpfi_ptr a, mpfi_srcptr b, mpfr_srcptr c)
   mpfi_t tmp;
   int inexact = 0;
 
+ if ( MPFI_NAN_P (b) || mpfr_nan_p(c) )
+    {
+      mpfr_set_nan (&(a->left));
+      mpfr_set_nan (&(a->right));
+      MPFR_RET_NAN;
+    }
+
   mpfi_init2 (tmp, mpfr_get_prec (c));
   mpfi_set_fr (tmp, c); /* exact */
   inexact = mpfi_mul (a, b, tmp);
