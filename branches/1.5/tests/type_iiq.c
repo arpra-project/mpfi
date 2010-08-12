@@ -64,13 +64,13 @@ check_line_iiq (mpfi_function_ptr this)
   inex = f_IIQ (got, op1, op2);
   if (inex != expected_inex || !same_value (got, expected)) {
     printf ("Failed line %lu.\nop1 = ", test_line_number);
-    mpfi_out_str (stdout, 16, 0, op1);
+    mpfi_out_str (stdout, 10, 0, op1);
     printf ("\nop2 = ");
-    mpq_out_str (stdout, 16, op2);
+    mpq_out_str (stdout, 10, op2);
     printf ("\ngot      = ");
-    mpfi_out_str (stdout, 16, 0, got);
+    mpfi_out_str (stdout, 10, 0, got);
     printf ("\nexpected = ");
-    mpfi_out_str (stdout, 16, 0, expected);
+    mpfi_out_str (stdout, 10, 0, expected);
     putchar ('\n');
     if (inex != expected_inex)
       printf ("inexact flag: got = %u, expected = %u\n",
@@ -87,13 +87,13 @@ check_line_iiq (mpfi_function_ptr this)
     if (inex != expected_inex || !same_value (got, expected)) {
       printf ("Error when reusing first input argument as output (line %lu)."
               "\nop1 = ", test_line_number);
-      mpfi_out_str (stdout, 16, 0, op1);
+      mpfi_out_str (stdout, 10, 0, op1);
       printf ("\nop2 = ");
-      mpq_out_str (stdout, 16, op2);
+      mpq_out_str (stdout, 10, op2);
       printf ("\ngot      = ");
-      mpfi_out_str (stdout, 16, 0, got);
+      mpfi_out_str (stdout, 10, 0, got);
       printf ("\nexpected = ");
-      mpfi_out_str (stdout, 16, 0, expected);
+      mpfi_out_str (stdout, 10, 0, expected);
       putchar ('\n');
       if (inex != expected_inex)
         printf ("inexact flag: got = %u, expected = %u\n",
