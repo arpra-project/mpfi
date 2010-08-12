@@ -27,7 +27,7 @@ Changes between MPFI version 1.4 and 1.5
 * new functions : Catalan's constant, cubic root, reciprocal square root,
   secant, cosecant, cotangent and hyperbolic counterparts, atan2, hypot,
   get_version, urandom
-* new test suite (99.2% LOC)
+* new test suite (99.7% LOC)
 * can now be compiled outside the source directory
 * change configure options to be consistent with the ones in MPFR and MPC:
   --with-gmp-dir=DIR changed to --with-gmp=DIR
@@ -38,12 +38,14 @@ Changes between MPFI version 1.4 and 1.5
   --with-mpfr-incpath=DIR changed to --with-mpfr-include=DIR
 * now require at least GMP version 4.1.0 and MPFR version 2.4.0
 * each function is in its own file (compile_time *= 8;)
-* remove limitation to 1000 characters in mpfi_set_str.
-* fix documentation for functions mpfi_blow, mpfi_is_inside
+* limitation to 1000 characters in mpfi_set_str removed.
+* fix documentation for functions mpfi_blow, mpfi_is_inside at least.
 * fix bug in mpfi_ui_sub when reusing a variable (bug reported by
   Sisyphus 2010-01-19).
 * fix bug in mpfi_blow: the result could be underestimated when the factor was
   small compared to 1.
+* fix double rounding error in basic arithmetic functions with a non-interval
+  parameter (like mpfi_add_si).
 * the following functions now return 0 (false) if one or more of their
   operands is NaN or has a NaN as an endpoint : mpfi_is_inside,
   mpfi_is_inside_d, mpfi_is_inside_ui, mpfi_is_inside_si, mpfi_is_inside_z,
@@ -58,7 +60,7 @@ Changes between MPFI 1.3.4-RC3 and 1.4
 
 Changes between MPFI version 1.1 and 1.3.4-RC3
 
-* unknown history
+* mainly, keep on par with new developments in MPFR during these years
 
 Changes between MPFI version 1.0 and 1.1
 
