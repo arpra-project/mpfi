@@ -60,13 +60,16 @@ main (int argc, char **argv)
     mpfr_set_prec (x, p);
     mpfi_set_prec (interval, p);
 
-    random_mpfr (x); /* x != 0*/
+    random_mpfr (x);
     mpfi_set_fr (interval, x);
-    if (mpfi_is_zero (interval)) {
+    if (mpfi_is_zero (interval) && !mpfr_zero_p (x)) {
       print_error (interval);
     }
 
     random_mpfr (x);
+    if (mpfr_zero_p (x))
+      mpfr_nextabove (x);
+    /* x != 0*/
     mpfi_put_fr (interval, x);
     if (mpfi_is_zero (interval)) {
       print_error (interval);
