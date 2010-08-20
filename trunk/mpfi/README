@@ -3,11 +3,11 @@ To install MPFI library :
 
 ./configure extra options (read INSTALL for general options)
 
---with-gmp-dir=<gmp installation directory>
+--with-gmp=<gmp installation directory>
 
 IMPORTANT:
 Note that default installation path is /usr/local/lib.
-If you configured MPFI with --prefix=some/path or if you are using a system 
+If you configured MPFI with --prefix=some/path or if you are using a system
 like Debian, the library may not be found at running time.
 
 If you compile a soft using mpfi and have an error at execution time such as:
