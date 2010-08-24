@@ -264,7 +264,7 @@ options: @samp{--with-gmp=DIR} assumes that GMP is installed in the
 Alternatively, you can use the @samp{--with-gmp-lib=DIR} and
 @samp{--with-gmp-include=DIR} to specify respectively the GMP lib and GMP
 include directories.
-Options @samp{--with-mpfr=DIR}, @samp{--with-mpfr-include}, and
+Options @samp{--with-mpfr=DIR}, @samp{--with-mpfr-include=DIR}, and
 @samp{--with-mpfr-lib=DIR} have the same usage for the MPFR library.
 
 See the @file{INSTALL} file and the output of @samp{./configure
