@@ -52,6 +52,15 @@ AC_PROG_MAKE_SET
 LT_INIT
 
 # Checks for libraries.
+dnl Check GMP Header
+AC_MSG_CHECKING(for gmp.h)
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+#include "gmp.h"
+]])],[AC_MSG_RESULT(yes)],[
+ AC_MSG_RESULT(no)
+ AC_MSG_ERROR([gmp.h can't be found, or is unusable.])
+])
+
 AC_CHECK_LIB([gmp], [__gmpz_init],
              [LIBS="-lgmp $LIBS"],
              [AC_MSG_ERROR([libgmp not found.])])
@@ -65,6 +74,15 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 ]], [[]])],[AC_MSG_RESULT(yes)],[
  AC_MSG_RESULT(no)
  AC_MSG_ERROR([GMP 4.1.0 min required])
+])
+
+dnl Check MPFR Header
+AC_MSG_CHECKING(for mpfr.h)
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+#include "mpfr.h"
+]])],[AC_MSG_RESULT(yes)],[
+ AC_MSG_RESULT(no)
+ AC_MSG_ERROR([mpfr.h can't be found, or is unusable.])
 ])
 
 AC_CHECK_LIB([mpfr], [mpfr_init],
