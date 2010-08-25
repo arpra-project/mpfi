@@ -21,6 +21,11 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc.,  51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA
 
+Changes between MPFI version 1.5 and 1.5.1
+
+* Look for GMP and MPFR headers at configure time.
+* Fix documentation.
+* Fix bug in random tests.
 
 Changes between MPFI version 1.4 and 1.5
 

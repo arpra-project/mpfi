@@ -1,7 +1,7 @@
 \input texinfo    @c -*-texinfo-*-
 @c %**start of header
 @setfilename mpfi.info
-@settitle MPFI 1.5.
+@settitle MPFI 1.5.1-dev.
 @synindex tp fn
 @iftex
 @afourpaper
@@ -61,7 +61,7 @@ by the Free Software Foundation.
 @titlepage
 @c  use the new format for titles
 
-@title MPFI 1.5.
+@title MPFI 1.5.1-dev.
 @subtitle Multiple Precision Floating-Point Interval Library
 @subtitle August 2010
 
@@ -103,7 +103,7 @@ by the Free Software Foundation.
 @ifinfo
 @node Top, Copying, (dir), (dir)
 
-@top MPFI 1.5.
+@top MPFI 1.5.1-dev.
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
