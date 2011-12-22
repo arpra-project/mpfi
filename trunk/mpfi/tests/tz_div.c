@@ -25,6 +25,7 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 #include "mpfi-tests.h"
+#include "mpfi_config.h"
 
 void
 check_overflow (void)
@@ -82,6 +83,7 @@ check_overflow (void)
   mpfi_clear (got);
 }
 
+#ifndef HAVE_MPFR_Z_DIV
 /* fake non-existing function */
 int
 mpfr_z_div (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
@@ -96,6 +98,7 @@ mpfr_z_div (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
 
   return ret;
 }
+#endif /*HAVE_MPFR_Z_DIV */
 
 int
 main (int argc, char **argv)

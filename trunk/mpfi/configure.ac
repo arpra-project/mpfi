@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([mpfi],[1.6-dev],[mpfi-users@lists.gforge.inria.fr])
+AC_INIT([mpfi],[1.5.1-dev],[mpfi-users@lists.gforge.inria.fr])
 AC_CONFIG_SRCDIR([src/mpfi.h])
 AC_CONFIG_HEADERS([mpfi_config.h])
 
@@ -108,6 +108,7 @@ AC_TYPE_SIZE_T
 
 # Checks for library functions.
 AC_CHECK_FUNCS([dup2 gettimeofday])
+AC_CHECK_FUNCS([mpfr_q_sub mpfr_z_sub mpfr_z_div])
 
 AC_CONFIG_FILES([Makefile
                  doc/Makefile
