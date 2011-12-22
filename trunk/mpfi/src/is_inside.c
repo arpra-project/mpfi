@@ -46,11 +46,11 @@ mpfi_is_inside (mpfi_srcptr a, mpfi_srcptr b)
 int
 mpfi_is_inside_d (const double a, mpfi_srcptr b)
 {
-  int dummy, res;
+  int res;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (b));
-  dummy = mpfi_set_d (tmp, a);
+  mpfi_set_d (tmp, a);
   res = mpfi_is_inside (tmp, b);
   MPFI_CLEAR (tmp);
 
@@ -82,11 +82,11 @@ mpfi_is_inside_si (const long a, mpfi_srcptr b)
 int
 mpfi_is_inside_z (mpz_srcptr a, mpfi_srcptr b)
 {
-  int dummy, res;
+  int res;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (b));
-  dummy = mpfi_set_z (tmp, a);
+  mpfi_set_z (tmp, a);
   res = mpfi_is_inside (tmp, b);
   MPFI_CLEAR (tmp);
 
@@ -96,14 +96,14 @@ mpfi_is_inside_z (mpz_srcptr a, mpfi_srcptr b)
 int
 mpfi_is_inside_q (mpq_srcptr a, mpfi_srcptr b)
 {
-  int dummy, res;
+  int res;
   mpfi_t tmp;
   /* Returns 0 if one of the operands is a NaN */
   if (MPFI_NAN_P (b))
     return 0;
 
   mpfi_init2 (tmp, mpfi_get_prec (b));
-  dummy = mpfi_set_q (tmp, a);
+  mpfi_set_q (tmp, a);
   res = mpfi_is_inside (tmp, b);
   MPFI_CLEAR (tmp);
 

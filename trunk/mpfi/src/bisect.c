@@ -30,7 +30,7 @@ mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
 {
   mp_prec_t prec, prec1, prec2;
   mpfr_t centre;
-  int inexact_centre, dummy;
+  int inexact_centre;
 
   if ( MPFI_NAN_P (y) ) {
     mpfr_set_nan (&(y1->left));
@@ -40,7 +40,7 @@ mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
     MPFR_RET_NAN;
   }
   else if ( !mpfi_bounded_p (y) ) {
-    dummy = mpfi_set (y1, y);
+    mpfi_set (y1, y);
     mpfr_set_nan (&(y2->left));
     mpfr_set_nan (&(y2->right));
     MPFR_RET_NAN;
@@ -57,14 +57,12 @@ mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
 
   inexact_centre = mpfi_mid (centre, y);
 
-  dummy = mpfr_set (&(y1->left), &(y->left), MPFI_RNDD);
-  dummy = mpfr_set (&(y2->right), &(y->right), MPFI_RNDU);
-  dummy = mpfr_set (&(y1->right), centre, MPFI_RNDU); /* FIXME: double
-                                                         rounding
-                                                         error */
-  dummy = mpfr_set (&(y2->left), centre, MPFI_RNDD); /* FIXME: double
-                                                         rounding
-                                                         error */
+  mpfr_set (&(y1->left), &(y->left), MPFI_RNDD);
+  mpfr_set (&(y2->right), &(y->right), MPFI_RNDU);
+  mpfr_set (&(y1->right), centre, MPFI_RNDU); /* FIXME: double rounding
+                                                        error */
+  mpfr_set (&(y2->left), centre, MPFI_RNDD); /* FIXME: double rounding
+                                                       error */
 
   /* do not allow +0 as upper bound. Note that left endpoint of y2
      cannot be -0 because if centre is zero its precision is

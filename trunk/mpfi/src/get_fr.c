@@ -28,6 +28,5 @@ MA 02110-1301, USA. */
 void
 mpfi_get_fr (mpfr_ptr m, mpfi_srcptr a)
 {
-  int dummy;
-  dummy = mpfi_mid (m, a);
+  mpfi_mid (m, a);
 }
