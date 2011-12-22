@@ -85,5 +85,8 @@
 /* Version number of package */
 #undef VERSION
 
+/* Define to 1 if it is a development version. */
+#undef WARN_IF_REVERTED_ENDPOINTS
+
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t

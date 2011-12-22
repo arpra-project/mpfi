@@ -26,6 +26,7 @@ MA 02110-1301, USA. */
 
 #include <string.h>
 #include "mpfi-tests.h"
+#include "mpfi_config.h"
 
 char *pathname;
 unsigned long line_number; /* file name with complete path and currently read
@@ -400,10 +401,13 @@ read_mpfi (FILE *f, mpfi_ptr a)
   mpfi_set_prec (a, read_prec (f));
   read_mpfr_number (f, &(a->left));
   read_mpfr_number (f, &(a->right));
+
+#ifdef WARN_IF_REVERTED_ENDPOINTS
   if (mpfr_cmp (&(a->left), &(a->right)) > 0)
     printf ("Warning: reverted endpoints line %lu\n", line_number);
   if (mpfr_zero_p (&(a->left)) && mpfr_signbit (&(a->left)))
     printf ("Warning: -0 as lower bound line %lu\n", line_number);
   if (mpfr_zero_p (&(a->right)) && !mpfr_signbit (&(a->right)))
     printf ("Warning: +0 in upper bound line %lu\n", line_number);
+#endif
 }

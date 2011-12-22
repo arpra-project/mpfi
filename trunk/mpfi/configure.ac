@@ -110,6 +110,12 @@ AC_TYPE_SIZE_T
 AC_CHECK_FUNCS([dup2 gettimeofday])
 AC_CHECK_FUNCS([mpfr_q_sub mpfr_z_sub mpfr_z_div])
 
+case $AC_PACKAGE_VERSION in
+  *-dev)
+   AC_DEFINE([WARN_IF_REVERTED_ENDPOINTS], 1,
+    [Define to 1 if it is a development version.]);;
+esac
+
 AC_CONFIG_FILES([Makefile
                  doc/Makefile
                  src/Makefile
