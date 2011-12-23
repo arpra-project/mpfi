@@ -1,6 +1,6 @@
-This is /home/ptheveny/svn/mpfi-trunk/mpfi/doc/mpfi.info, produced by
-makeinfo version 4.13 from
-/home/ptheveny/svn/mpfi-trunk/mpfi/doc/mpfi.texi.
+This is /home/ptheveny/repositories/mpfi/trunk/mpfi/doc/mpfi.info,
+produced by makeinfo version 4.13 from
+/home/ptheveny/repositories/mpfi/trunk/mpfi/doc/mpfi.texi.
 
 INFO-DIR-SECTION Software libraries
 START-INFO-DIR-ENTRY
@@ -153,7 +153,7 @@ File: mpfi.info,  Node: Installing MPFI,  Next: Reporting Bugs,  Prev: Introduct
 2 Installing MPFI
 *****************
 
-To build MPFI, you first have to install MPFR (version 2.4.0 or above)
+To build MPFI, you first have to install MPFR (version 2.4.2 or above)
 on your computer.  You need a C compiler, preferably GCC, but any
 reasonable compiler should work.  And you need a standard Unix `make'
 program, plus some other standard Unix utility programs.
@@ -171,7 +171,7 @@ systems.  In the MPFI source directory, type the following commands.
      `DIR' directory.  Alternatively, you can use the
      `--with-gmp-lib=DIR' and `--with-gmp-include=DIR' to specify
      respectively the GMP lib and GMP include directories.  Options
-     `--with-mpfr=DIR', `--with-mpfr-include', and
+     `--with-mpfr=DIR', `--with-mpfr-include=DIR', and
      `--with-mpfr-lib=DIR' have the same usage for the MPFR library.
 
      See the `INSTALL' file and the output of `./configure --help' for
@@ -1527,32 +1527,32 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1341
-Node: Copying2416
-Node: Introduction to MPFI4211
-Node: Installing MPFI5535
-Node: Reporting Bugs8854
-Node: MPFI Basics10228
-Node: Interval Functions14064
-Node: Return Values15304
-Node: Precision Handling16277
-Node: Initializing and Assigning Intervals18924
-Node: Initializing Intervals19264
-Node: Assigning Intervals21124
-Node: Simultaneous Interval Init & Assign23118
-Node: Floating-point Quantities24381
-Node: Converting Intervals27477
-Node: Interval Arithmetic27952
-Node: Special Functions34509
-Node: Interval Comparison39332
-Node: I/O of Intervals42160
-Node: Operating on the Endpoints45509
-Node: Set Operations47981
-Node: Miscellaneous Interval Functions49890
-Node: Error Handling51124
-Node: Contributors51731
-Node: References52086
-Node: Concept Index53532
-Node: Function Index56232
+Node: Top1359
+Node: Copying2434
+Node: Introduction to MPFI4229
+Node: Installing MPFI5553
+Node: Reporting Bugs8876
+Node: MPFI Basics10250
+Node: Interval Functions14086
+Node: Return Values15326
+Node: Precision Handling16299
+Node: Initializing and Assigning Intervals18946
+Node: Initializing Intervals19286
+Node: Assigning Intervals21146
+Node: Simultaneous Interval Init & Assign23140
+Node: Floating-point Quantities24403
+Node: Converting Intervals27499
+Node: Interval Arithmetic27974
+Node: Special Functions34531
+Node: Interval Comparison39354
+Node: I/O of Intervals42182
+Node: Operating on the Endpoints45531
+Node: Set Operations48003
+Node: Miscellaneous Interval Functions49912
+Node: Error Handling51146
+Node: Contributors51753
+Node: References52108
+Node: Concept Index53554
+Node: Function Index56254
 
 End Tag Table
