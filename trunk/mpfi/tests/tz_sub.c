@@ -85,7 +85,7 @@ check_overflow ()
   mpfi_clear (got);
 }
 
-#if HAVE_MPFR_Z_SUB
+#ifndef HAVE_MPFR_Z_SUB
 /* fake non-existing function */
 int
 mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
