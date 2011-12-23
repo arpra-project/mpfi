@@ -242,7 +242,7 @@ may evolve in order to reflect the standardized definitions and behaviours.
 @chapter Installing MPFI
 @cindex Installation
 
-To build MPFI, you first have to install MPFR (version 2.4.0 or above)
+To build MPFI, you first have to install MPFR (version 2.4.2 or above)
 on your computer.
 You need a C compiler, preferably GCC, but any reasonable compiler
 should work.
