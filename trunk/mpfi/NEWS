@@ -29,6 +29,7 @@ Changes between MPFI version 1.5 and 1.5.1
   in MPFR 3.1.0, the other ones are only used in tests)
 * code cleanup (unused variables)
 * tadd_q does no more check overflow by default (required too much memory)
+* sign of zeros choice documented
 
 Changes between MPFI version 1.4 and 1.5
 

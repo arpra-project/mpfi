@@ -419,11 +419,11 @@ A @dfn{valid interval} can have finite or infinite endpoints, but its left
 endpoint is not larger than its right endpoint and cannot be +infinity or -0
 (respectively, the right endpoint cannot be -infinity or +0). @footnote{The
 restriction on the infinite values follows the definition of interval, and the
-sign of the zero bounds allows a straightforward and efficient implementation
-of the four arithmetic functions as explained in the paper of T. Hickey,
-Q. Ju, and M. H. Van Emden, @cite{Interval arithmetic: From principles to
-implementation} (@xref{References}).} As a consequence, the unique
-representation of the zero singleton is @math{[+0, -0]}.
+sign of the zero bounds allows a simple implementation of the four arithmetic
+operations as explained in the paper of T. Hickey, Q. Ju, and M. H. Van Emden,
+@cite{Interval arithmetic: From principles to implementation}
+(@xref{References}).}  As a consequence, the unique representation of the zero
+singleton is @math{[+0, -0]}.
 @end itemize
 
 MPFI functions may return non-valid intervals with the semantic defined as
