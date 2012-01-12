@@ -426,8 +426,8 @@ operations as explained in the paper of T. Hickey, Q. Ju, and M. H. Van Emden,
 singleton is @math{[+0, -0]}.
 @end itemize
 
-MPFI functions may return non-valid intervals with the semantic defined as
-follows:
+MPFI functions may return intervals that are not valid as input value. Their
+semantic defined as follows:
 @itemize
 @item
 One (or both) NaN endpoint(s) indicates that an invalid operation has been
