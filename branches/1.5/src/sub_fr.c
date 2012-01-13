@@ -34,9 +34,6 @@ mpfi_sub_fr (mpfi_ptr a, mpfi_srcptr b, mpfr_srcptr c)
   if (MPFR_IS_ZERO (c)) {
     return mpfi_set (a, b);
   }
-  else if (MPFI_IS_ZERO (b)) {
-    return mpfi_neg (a, c);
-  }
   else {
     mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
     inexact_left = mpfr_sub (tmp, &(b->left), c, MPFI_RNDD);
