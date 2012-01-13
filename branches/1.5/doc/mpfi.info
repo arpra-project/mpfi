@@ -1,5 +1,5 @@
-This is /home/ptheveny/svn/mpfi-1.5/doc/mpfi.info, produced by makeinfo
-version 4.13 from /home/ptheveny/svn/mpfi-1.5/doc/mpfi.texi.
+This is ../../mpfi/doc/mpfi.info, produced by makeinfo version 4.13
+from ../../mpfi/doc/mpfi.texi.
 
 INFO-DIR-SECTION Software libraries
 START-INFO-DIR-ENTRY
@@ -31,8 +31,8 @@ translation approved by the Free Software Foundation.
 
 File: mpfi.info,  Node: Top,  Next: Copying,  Prev: (dir),  Up: (dir)
 
-MPFI 1.5.
-*********
+MPFI 1.5.1.
+***********
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -152,7 +152,7 @@ File: mpfi.info,  Node: Installing MPFI,  Next: Reporting Bugs,  Prev: Introduct
 2 Installing MPFI
 *****************
 
-To build MPFI, you first have to install MPFR (version 2.4.0 or above)
+To build MPFI, you first have to install MPFR (version 2.4.2 or above)
 on your computer.  You need a C compiler, preferably GCC, but any
 reasonable compiler should work.  And you need a standard Unix `make'
 program, plus some other standard Unix utility programs.
@@ -170,7 +170,7 @@ systems.  In the MPFI source directory, type the following commands.
      `DIR' directory.  Alternatively, you can use the
      `--with-gmp-lib=DIR' and `--with-gmp-include=DIR' to specify
      respectively the GMP lib and GMP include directories.  Options
-     `--with-mpfr=DIR', `--with-mpfr-include', and
+     `--with-mpfr=DIR', `--with-mpfr-include=DIR', and
      `--with-mpfr-lib=DIR' have the same usage for the MPFR library.
 
      See the `INSTALL' file and the output of `./configure --help' for
@@ -297,18 +297,30 @@ You should include these files in any program using the MPFI library:
 
 As MPFI is built upon MPFR, it is advisable to read MPFR's manual first.
 
-An "interval" is a connected set of real numbers, it is represented in
-MPFI by its endpoints which are MPFR floating-point numbers.  The C
-data type for these objects is `mpfi_t'. An interval can have finite or
-infinite endpoints and its meaning is straightforward.  It can also
-have one (or both) NaN endpoint(s): this indicates that an invalid
-operation has been performed and that the resulting interval has no
-mathematical meaning. An empty interval has its left endpoint larger
-than its right endpoint. The handling of empty intervals is not
-performed by MPFI and relies on the user.  Both the meaning of "invalid
-operation", the representation of the empty set and its handling may
-change in future versions of MPFI, according to the standardization of
-interval arithmetic in IEEE-1788.
+An "interval" is a closed connected set of real numbers, it is
+represented in MPFI by its endpoints which are MPFR floating-point
+numbers.  The C data type for these objects is `mpfi_t'.
+
+   MPFI functions operate on valid intervals (defined below), their
+behavior with non-valid intervals as input is undefined.
+   * A "valid interval" can have finite or infinite endpoints, but its
+     left endpoint is not larger than its right endpoint and cannot be
+     +infinity or -0 (respectively, the right endpoint cannot be
+     -infinity or +0). (1)  As a consequence, the unique representation
+     of the zero singleton is [+0, -0].
+
+   MPFI functions may return intervals that are not valid as input
+value. Their semantic defined as follows:
+   * One (or both) NaN endpoint(s) indicates that an invalid operation
+     has been performed and that the resulting interval has no
+     mathematical meaning.
+
+   * An "empty interval" has its left endpoint larger than its right
+     endpoint.
+
+   Both the meaning of "invalid operation", the representation of the
+empty set and its handling may change in future versions of MPFI,
+according to the standardization of interval arithmetic in IEEE-1788.
 
    Some functions on intervals return a floating-point value: among such
 functions are `mpfi_get_left' that returns the left endpoint of an
@@ -334,7 +346,7 @@ There is only one class of functions in the MPFI library:
 
   1. Functions for interval arithmetic based on floating-point numbers,
      with names beginning with `mpfi_'.  The associated type is
-     `mpfi_t'.  There are around 165 functions in this class.
+     `mpfi_t'.  There are around 170 functions in this class.
 
 4.3 MPFI Variable Conventions
 =============================
@@ -367,6 +379,14 @@ MPFI variables, since any variable uses a memory space of fixed size.
 Hence unless you change its precision, or clear and reinitialize it, an
 interval variable will have the same allocated space during all its
 lifetime.
+
+   ---------- Footnotes ----------
+
+   (1) The restriction on the infinite values follows the definition of
+interval, and the sign of the zero bounds allows a simple
+implementation of the four arithmetic operations as explained in the
+paper of T. Hickey, Q. Ju, and M. H. Van Emden, `Interval arithmetic:
+From principles to implementation' (*Note References::.)
 
 
 File: mpfi.info,  Node: Interval Functions,  Next: Contributors,  Prev: MPFI Basics,  Up: Top
@@ -1257,7 +1277,7 @@ Concept Index
 * Conversion functions:                  Converting Intervals. (line  6)
 * Copying conditions:                    Copying.              (line  6)
 * Error handling:                        Error Handling.       (line  6)
-* Floating-point number:                 MPFI Basics.          (line 36)
+* Floating-point number:                 MPFI Basics.          (line 48)
 * Functions operating on endpoints:      Operating on the Endpoints.
                                                                (line  6)
 * I/O functions:                         I/O of Intervals.     (line  6)
@@ -1280,7 +1300,7 @@ Concept Index
 * mpfi.h:                                MPFI Basics.          (line  6)
 * Output functions:                      I/O of Intervals.     (line  6)
 * Precision <1>:                         Precision Handling.   (line  3)
-* Precision:                             MPFI Basics.          (line 40)
+* Precision:                             MPFI Basics.          (line 52)
 * Reporting bugs:                        Reporting Bugs.       (line  6)
 * Return values:                         Return Values.        (line  3)
 * Set functions on intervals:            Set Operations.       (line  6)
@@ -1296,7 +1316,7 @@ Function and Type Index
  [index ]
 * Menu:
 
-* mp_prec_t:                             MPFI Basics.         (line  40)
+* mp_prec_t:                             MPFI Basics.         (line  52)
 * mpfi_abs:                              Interval Arithmetic. (line 102)
 * mpfi_acos:                             Special Functions.   (line  39)
 * mpfi_acosh:                            Special Functions.   (line  66)
@@ -1521,37 +1541,38 @@ Function and Type Index
 * mpfi_z_sub:                            Interval Arithmetic. (line  28)
 * mpfr_get_default_prec:                 Precision Handling.  (line  20)
 * mpfr_set_default_prec:                 Precision Handling.  (line  11)
-* mpfr_t:                                MPFI Basics.         (line  36)
+* mpfr_t:                                MPFI Basics.         (line  48)
 
 
 
 Tag Table:
-Node: Top1327
-Node: Copying2394
-Node: Introduction to MPFI4189
-Node: Installing MPFI5513
-Node: Reporting Bugs8832
-Node: MPFI Basics10206
-Node: Interval Functions14042
-Node: Return Values15282
-Node: Precision Handling16255
-Node: Initializing and Assigning Intervals18902
-Node: Initializing Intervals19242
-Node: Assigning Intervals21102
-Node: Simultaneous Interval Init & Assign23096
-Node: Floating-point Quantities24359
-Node: Converting Intervals27455
-Node: Interval Arithmetic27930
-Node: Special Functions34487
-Node: Interval Comparison39310
-Node: I/O of Intervals42138
-Node: Operating on the Endpoints45487
-Node: Set Operations47959
-Node: Miscellaneous Interval Functions49868
-Node: Error Handling51102
-Node: Contributors51709
-Node: References52064
-Node: Concept Index53510
-Node: Function Index56210
+Node: Top1293
+Node: Copying2364
+Node: Introduction to MPFI4159
+Node: Installing MPFI5483
+Node: Reporting Bugs8806
+Node: MPFI Basics10180
+Ref: MPFI Basics-Footnote-114454
+Node: Interval Functions14781
+Node: Return Values16021
+Node: Precision Handling16994
+Node: Initializing and Assigning Intervals19641
+Node: Initializing Intervals19981
+Node: Assigning Intervals21841
+Node: Simultaneous Interval Init & Assign23835
+Node: Floating-point Quantities25098
+Node: Converting Intervals28194
+Node: Interval Arithmetic28669
+Node: Special Functions35226
+Node: Interval Comparison40049
+Node: I/O of Intervals42877
+Node: Operating on the Endpoints46226
+Node: Set Operations48698
+Node: Miscellaneous Interval Functions50607
+Node: Error Handling51841
+Node: Contributors52448
+Node: References52803
+Node: Concept Index54249
+Node: Function Index56949
 
 End Tag Table
