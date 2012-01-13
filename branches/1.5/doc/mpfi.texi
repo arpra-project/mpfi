@@ -200,21 +200,16 @@ see the file COPYING.LESSER in the main MPFR directory.@refill
 @chapter Introduction to MPFI
 
 
-MPFI is intended to be a portable library written in C
-for arbitrary precision interval arithmetic
-with intervals represented using MPFR 
-reliable floating-point numbers. It is based on the GNU MP 
-library and on the MPFR library.
-The purpose of an arbitrary precision interval
-arithmetic is on the one hand to get @dfn{guaranteed}
-results, thanks to interval computation, and on the other
-hand to obtain accurate results, thanks to multiple
-precision arithmetic. The MPFI library is built upon
-MPFR in order to benefit from the correct rounding
-provided, for each operation or function, by MPFR.
-Further advantages of using MPFR are its portability
-and compliance with the IEEE 754 standard for floating-point
-arithmetic.
+MPFI is intended to be a portable library written in C for arbitrary precision
+interval arithmetic with intervals represented using MPFR reliable
+floating-point numbers. It is based on the GNU MP library and on the MPFR
+library.  The purpose of an arbitrary precision interval arithmetic is on the
+one hand to get @dfn{guaranteed} results, thanks to interval computation, and
+on the other hand to obtain accurate results, thanks to multiple precision
+arithmetic. The MPFI library is built upon MPFR in order to benefit from the
+correct rounding provided, for each operation or function, by MPFR.  Further
+advantages of using MPFR are its portability and compliance with the IEEE 754
+standard for floating-point arithmetic.
 
 
 This version of MPFI is released under the GNU Lesser General Public
@@ -412,18 +407,38 @@ As MPFI is built upon MPFR, it is advisable to read MPFR's manual first.
 @cindex Interval
 @tindex @code{mpfi_t}
 @noindent
-An @dfn{interval} is a connected set of real numbers, it is represented
+An @dfn{interval} is a closed connected set of real numbers, it is represented
 in MPFI by its endpoints which are MPFR floating-point numbers.
-The C data type for these objects is @code{mpfi_t}. An interval can
-have finite or infinite endpoints and its meaning is straightforward.
-It can also have one (or both) NaN endpoint(s): this indicates that
-an invalid operation has been performed and that the resulting interval
-has no mathematical meaning. An empty interval has its left endpoint larger
-than its right endpoint. The handling of empty intervals is not performed
-by MPFI and relies on the user.
+The C data type for these objects is @code{mpfi_t}.
+
+MPFI functions operate on valid intervals (defined below), their behavior with
+non-valid intervals as input is undefined.
+@itemize
+@item
+A @dfn{valid interval} can have finite or infinite endpoints, but its left
+endpoint is not larger than its right endpoint and cannot be +infinity or -0
+(respectively, the right endpoint cannot be -infinity or +0). @footnote{The
+restriction on the infinite values follows the definition of interval, and the
+sign of the zero bounds allows a straightforward and efficient implementation
+of the four arithmetic functions as explained in the paper of T. Hickey,
+Q. Ju, and M. H. Van Emden, @cite{Interval arithmetic: From principles to
+implementation} (@xref{References}).} As a consequence, the unique
+representation of the zero singleton is @math{[+0, -0]}.
+@end itemize
+
+MPFI functions may return non-valid intervals with the semantic defined as
+follows:
+@itemize
+@item
+One (or both) NaN endpoint(s) indicates that an invalid operation has been
+performed and that the resulting interval has no mathematical meaning.
+@item
+An @dfn{empty interval} has its left endpoint larger than its right endpoint.
+@end itemize
+
 Both the meaning of "invalid operation", the representation of the empty set
-and its handling may change in future versions of MPFI,
-according to the standardization of interval arithmetic in IEEE-1788.
+and its handling may change in future versions of MPFI, according to the
+standardization of interval arithmetic in IEEE-1788.
 
 Some functions on intervals return a floating-point value: among such
 functions are @code{mpfi_get_left} that returns the left endpoint of
@@ -461,7 +476,7 @@ There is only one class of functions in the MPFI library:
 @tindex @code{mpfi_t}
 Functions for interval arithmetic based on floating-point numbers,
 with names beginning with
-@code{mpfi_}.  The associated type is @code{mpfi_t}.  There are around 165
+@code{mpfi_}.  The associated type is @code{mpfi_t}.  There are around 170
 functions in this class.
 @end enumerate
 
