@@ -92,12 +92,12 @@ AC_CHECK_LIB([mpfr], [mpfr_init],
 AC_MSG_CHECKING(for valid MPFR)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include "mpfr.h"
-#if (MPFR_VERSION < MPFR_VERSION_NUM(2,4,0))
-# error "min: MPFR 2.4.0"
+#if (MPFR_VERSION < MPFR_VERSION_NUM(2,4,2))
+# error "min: MPFR 2.4.2"
 #endif
 ]], [[]])],[AC_MSG_RESULT(yes)],[
  AC_MSG_RESULT(no)
- AC_MSG_ERROR([MPFR 2.4.0 min required])
+ AC_MSG_ERROR([MPFR 2.4.2 min required])
 ])
 
 # Checks for header files.
