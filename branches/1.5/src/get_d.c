@@ -30,10 +30,9 @@ mpfi_get_d (mpfi_srcptr a)
 {
   double res;
   mpfr_t tmp;
-  int dummy;
 
   mpfr_init2 (tmp, 53); /* Double rounding may occur for subnormal numbers */
-  dummy = mpfi_mid (tmp, a);
+  mpfi_mid (tmp, a);
   res = mpfr_get_d (tmp, GMP_RNDN);
   mpfr_clear (tmp);
 

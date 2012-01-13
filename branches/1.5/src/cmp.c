@@ -54,11 +54,11 @@ mpfi_cmp_default (mpfi_srcptr a, mpfi_srcptr b)
 int
 mpfi_cmp_d_default (mpfi_srcptr a, const double b)
 {
-  int dummy, res = 0;
+  int res = 0;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (a));
-  dummy = mpfi_set_d (tmp, b);
+  mpfi_set_d (tmp, b);
   res = mpfi_cmp (a, tmp);
   MPFI_CLEAR (tmp);
 
@@ -68,11 +68,11 @@ mpfi_cmp_d_default (mpfi_srcptr a, const double b)
 int
 mpfi_cmp_ui_default (mpfi_srcptr a, const unsigned long b)
 {
-  int dummy, res = 0;
+  int res = 0;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (a));
-  dummy = mpfi_set_ui (tmp, b);
+  mpfi_set_ui (tmp, b);
   res = mpfi_cmp (a, tmp);
   MPFI_CLEAR (tmp);
 
@@ -82,11 +82,11 @@ mpfi_cmp_ui_default (mpfi_srcptr a, const unsigned long b)
 int
 mpfi_cmp_si_default (mpfi_srcptr a, const long b)
 {
-  int dummy, res = 0;
+  int res = 0;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (a));
-  dummy = mpfi_set_si (tmp, b);
+  mpfi_set_si (tmp, b);
   res = mpfi_cmp (a, tmp);
   MPFI_CLEAR (tmp);
 
@@ -96,11 +96,11 @@ mpfi_cmp_si_default (mpfi_srcptr a, const long b)
 int
 mpfi_cmp_z_default (mpfi_srcptr a, mpz_srcptr b)
 {
-  int dummy, res = 0;
+  int res = 0;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (a));
-  dummy = mpfi_set_z (tmp, b);
+  mpfi_set_z (tmp, b);
   res = mpfi_cmp (a, tmp);
   MPFI_CLEAR (tmp);
 
@@ -110,11 +110,11 @@ mpfi_cmp_z_default (mpfi_srcptr a, mpz_srcptr b)
 int
 mpfi_cmp_q_default (mpfi_srcptr a, mpq_srcptr b)
 {
-  int dummy, res = 0;
+  int res = 0;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (a));
-  dummy = mpfi_set_q (tmp, b);
+  mpfi_set_q (tmp, b);
   res = mpfi_cmp (a, tmp);
   MPFI_CLEAR (tmp);
 
@@ -124,11 +124,11 @@ mpfi_cmp_q_default (mpfi_srcptr a, mpq_srcptr b)
 int
 mpfi_cmp_fr_default (mpfi_srcptr a, mpfr_srcptr b)
 {
-  int dummy, res = 0;
+  int res = 0;
   mpfi_t tmp;
 
   mpfi_init2 (tmp, mpfi_get_prec (a));
-  dummy = mpfi_set_fr (tmp, b);
+  mpfi_set_fr (tmp, b);
   res = mpfi_cmp (a, tmp);
   MPFI_CLEAR (tmp);
 
