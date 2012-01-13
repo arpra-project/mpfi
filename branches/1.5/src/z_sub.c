@@ -27,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi_config.h"
 
 #ifndef HAVE_MPFR_Z_SUB
-int
+static int
 mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
 {
   /* mpfr_z_sub does not exist (at least up to version 3.0) */
