@@ -108,6 +108,7 @@ AC_TYPE_SIZE_T
 
 # Checks for library functions.
 AC_CHECK_FUNCS([dup2 gettimeofday])
+AC_CHECK_FUNCS([mpfr_q_sub mpfr_z_sub mpfr_z_div])
 
 AC_CONFIG_FILES([Makefile
                  doc/Makefile

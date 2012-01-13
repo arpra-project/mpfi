@@ -21,6 +21,15 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
+/* Define to 1 if you have the `mpfr_q_sub' function. */
+#undef HAVE_MPFR_Q_SUB
+
+/* Define to 1 if you have the `mpfr_z_div' function. */
+#undef HAVE_MPFR_Z_DIV
+
+/* Define to 1 if you have the `mpfr_z_sub' function. */
+#undef HAVE_MPFR_Z_SUB
+
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 

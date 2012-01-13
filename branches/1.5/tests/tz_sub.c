@@ -85,6 +85,7 @@ check_overflow ()
   mpfi_clear (got);
 }
 
+#if HAVE_MPFR_Z_SUB
 /* fake non-existing function */
 int
 mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
@@ -100,6 +101,7 @@ mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
   mpfr_neg (x, x, MPFI_RNDU);
   return -ret;
 }
+#endif /* HAVE_MPFR_Z_SUB */
 
 int
 main (int argc, char **argv)

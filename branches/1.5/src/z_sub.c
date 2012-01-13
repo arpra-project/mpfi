@@ -24,9 +24,11 @@ the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA. */
 
 #include "mpfi-impl.h"
+#include "mpfi_config.h"
 
+#ifndef HAVE_MPFR_Z_SUB
 int
-mpfi_mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
+mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
 {
   /* mpfr_z_sub does not exist (at least up to version 3.0) */
 
@@ -38,6 +40,7 @@ mpfi_mpfr_z_sub (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
 
   return -inex;
 }
+#endif /* HAVE_MPFR_Z_SUB */
 
 int
 mpfi_z_sub (mpfi_ptr a, mpz_srcptr b, mpfi_srcptr c)
@@ -53,8 +56,8 @@ mpfi_z_sub (mpfi_ptr a, mpz_srcptr b, mpfi_srcptr c)
   }
   else {
     mpfr_init2 (tmp, mpfr_get_prec (&(a->left)));
-    inexact_left  = mpfi_mpfr_z_sub (tmp, b, &(c->right), MPFI_RNDD);
-    inexact_right = mpfi_mpfr_z_sub (&(a->right), b, &(c->left), MPFI_RNDU);
+    inexact_left  = mpfr_z_sub (tmp, b, &(c->right), MPFI_RNDD);
+    inexact_right = mpfr_z_sub (&(a->right), b, &(c->left), MPFI_RNDU);
     mpfr_set (&(a->left), tmp, MPFI_RNDD); /* exact */
     mpfr_clear (tmp);
 
