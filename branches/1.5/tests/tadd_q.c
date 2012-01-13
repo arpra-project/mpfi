@@ -87,7 +87,9 @@ main (int argc, char **argv)
   test_start ();
 
   check_data (&i_add_q, "add_q.dat");
-  check_overflow ();
+
+  if (getenv ("MPFI_CHECK_EXPENSIVE_OVERFLOW") != NULL)
+    check_overflow ();
 
   test_end ();
   mpfi_fun_clear (&i_add_q);
