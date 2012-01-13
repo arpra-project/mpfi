@@ -27,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi_config.h"
 
 #ifndef HAVE_MPFR_Q_SUB
-int
+static int
 mpfr_q_sub (mpfr_ptr x, mpq_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
 {
   /* mpfr_q_sub does not exist (at least up to version 3.0) */
