@@ -1,6 +1,6 @@
 /* read_data.c -- Helper functions to read data files.
 
-Copyright 2009, 2010,
+Copyright 2009, 2010, 2011,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France

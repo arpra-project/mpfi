@@ -1,6 +1,6 @@
 /* is_inside.c -- Test whether the first operand is in the second one.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010, 2011,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
