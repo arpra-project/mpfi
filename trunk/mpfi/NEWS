@@ -24,6 +24,8 @@ MA 02110-1301, USA
 Changes between MPFI version 1.5 and 1.5.1
 * fix bug in mpfi_sub_fr (reported by Takayuki YAMAGUCHI)
 * now require at least GMP version 4.1.0 and MPFR version 2.4.2
+* new symbols MPFI_VERSION_MAJOR, MPFI_VERSION_MINOR, MPFI_VERSION_PATCHLEVEL,
+  and MPFI_VERSION_STRING in mpfi.h
 * detect availability of mpfr_z_sub, mpfr_z_div, and mpfr_q_sub and use a
   custom implementation for the ones not provided by MPFR (mpfr_z_sub appeared
   in MPFR 3.1.0, the other ones are used in tests only)
