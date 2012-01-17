@@ -33,7 +33,11 @@ MA 02110-1301, USA. */
 #include <gmp.h>
 #include <mpfr.h>
 
-
+/* Define MPFI version number */
+#define MPFI_VERSION_MAJOR 1
+#define MPFI_VERSION_MINOR 5
+#define MPFI_VERSION_PATCHLEVEL 1
+#define MPFI_VERSION_STRING "1.5.1"
 
 typedef struct {
   __mpfr_struct left;

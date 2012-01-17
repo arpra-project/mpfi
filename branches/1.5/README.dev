@@ -12,8 +12,8 @@ $ svn copy                                                      \
    svn+ssh://username@scm.gforge.inria.fr/svn/mpfi/trunk/mpfi   \
    svn+ssh://username@scm.gforge.inria.fr/svn/mpfi/branches/1.5 \
    -m "Create branch 1.5"
-2) Update version number in configure.ac and in doc/mpfi.texi in the new
-   branch. Update the date in doc/mpfi.texi.
+2) Update version number in configure.ac, in doc/mpfi.texi, and in src/mpfi.h
+   in the new branch. Update the date in doc/mpfi.texi.
 3) Update the NEWS file.
 4) Build new packages for the release version in three formats (tar.gz,
    tar.bz2 and zip):
