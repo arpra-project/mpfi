@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([mpfi],[1.5.1-rc1],[mpfi-users@lists.gforge.inria.fr])
+AC_INIT([mpfi],[1.5.1],[mpfi-users@lists.gforge.inria.fr])
 AC_CONFIG_SRCDIR([src/mpfi.h])
 AC_CONFIG_HEADERS([mpfi_config.h])
 
