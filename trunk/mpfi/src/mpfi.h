@@ -35,9 +35,9 @@ MA 02110-1301, USA. */
 
 /* Define MPFI version number */
 #define MPFI_VERSION_MAJOR 1
-#define MPFI_VERSION_MINOR 5
-#define MPFI_VERSION_PATCHLEVEL 1
-#define MPFI_VERSION_STRING "1.5.1"
+#define MPFI_VERSION_MINOR 6
+#define MPFI_VERSION_PATCHLEVEL 0
+#define MPFI_VERSION_STRING "1.6.0"
 
 typedef struct {
   __mpfr_struct left;
