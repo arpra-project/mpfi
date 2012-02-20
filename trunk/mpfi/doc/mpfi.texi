@@ -1251,11 +1251,11 @@ Returns an indication of whether none, one or both endpoints are exact.
 The comparison of two intervals is not clearly defined when they overlap.
 MPFI proposes default comparison functions, but they can easily be customized
 according to the user's needs.
-The default comparison functions return a positive value if the first interval has all
-its elements strictly lower than all elements of the second one,
-a negative value if the first interval has all its elements strictly greater than all
-elements of the second one and 0 otherwise, i.e. if they overlap or if one is contained
-in the other.
+The default comparison functions return a positive value if the first interval
+has all its elements strictly greater than all elements of the second one, a
+negative value if the first interval has all its elements strictly lower than
+all elements of the second one and 0 otherwise, i.e. if they overlap or if one
+is contained in the other.
 
 @deftypefun int mpfi_cmp (mpfi_t @var{op1}, mpfi_t @var{op2})
 @deftypefunx int mpfi_cmp_d (mpfi_t @var{op1}, double @var{op2})
