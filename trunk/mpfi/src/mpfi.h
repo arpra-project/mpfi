@@ -46,7 +46,7 @@ typedef struct {
 
 typedef __mpfi_struct mpfi_t[1];
 typedef __mpfi_struct *mpfi_ptr;
-typedef __gmp_const __mpfi_struct *mpfi_srcptr;
+typedef const __mpfi_struct *mpfi_srcptr;
 
 #ifdef __cplusplus
 extern "C" {
