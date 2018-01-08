@@ -57,7 +57,10 @@ mpfi_diam_rel (mpfr_ptr diam, mpfi_srcptr interv)
        Note that in case of underflow, mpfr_sgn(center)==0 and the
        if-condition fails, preventing the next operation to actually increase
        the absolute value of center */
-    mpfr_sub_one_ulp (center, MPFI_RNDD);
+    if (mpfr_sgn (center) > 0)
+      mpfr_nextbelow (center);
+    else
+      mpfr_nextabove (center);
   }
   mpfr_abs (center, center, MPFI_RNDD); /* always exact */
 

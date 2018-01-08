@@ -31,8 +31,8 @@ void
 mpfi_print_binary (mpfi_srcptr x)
 {
   printf ("[ ");
-  mpfr_print_binary (&(x->left));
+  mpfr_printf ("%Rf", &(x->left));
   printf (" , ");
-  mpfr_print_binary (&(x->right));
+  mpfr_printf ("%Rf", &(x->right));
   printf (" ]");
 }

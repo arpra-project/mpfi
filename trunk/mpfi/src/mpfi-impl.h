@@ -69,9 +69,6 @@ MA 02110-1301, USA. */
 extern "C" {
 #endif
 
-/* WARNING: this is an MPFR internal function which may be removed in future
-   MPFR versions. Should be replaced by mpfr_printf. */
-void mpfr_print_binary _MPFR_PROTO ((mpfr_srcptr));
 
 
 mp_prec_t mpfi_quadrant (mpz_ptr, mpfr_srcptr);
