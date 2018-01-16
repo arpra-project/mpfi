@@ -10,9 +10,9 @@ END-INFO-DIR-ENTRY
 is built upon the MPFR multiple precision floating-point arithmetic
 library
 
-   Copyright (C) 2002-2010, Spaces team, INRIA Lorraine and LORIA,
-France, Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France, and
-Lab. ANO, University of Sciences and Technologies of Lille, France.
+   Copyright (C) 2002-2018, Ouragan team, Inria Paris, France, Arenaire
+team, INRIA Rhone-Alpes and LIP, ENS Lyon, France, and Lab. ANO,
+University of Sciences and Technologies of Lille, France.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -1546,33 +1546,33 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1284
-Node: Copying2355
-Node: Introduction to MPFI4150
-Node: Installing MPFI5474
-Node: Reporting Bugs8797
-Node: MPFI Basics10171
-Ref: MPFI Basics-Footnote-114445
-Node: Interval Functions14772
-Node: Return Values16012
-Node: Precision Handling16985
-Node: Initializing and Assigning Intervals19632
-Node: Initializing Intervals19972
-Node: Assigning Intervals21832
-Node: Simultaneous Interval Init & Assign23826
-Node: Floating-point Quantities25089
-Node: Converting Intervals28185
-Node: Interval Arithmetic28660
-Node: Special Functions35217
-Node: Interval Comparison40040
-Node: I/O of Intervals42868
-Node: Operating on the Endpoints46217
-Node: Set Operations48689
-Node: Miscellaneous Interval Functions50598
-Node: Error Handling51832
-Node: Contributors52439
-Node: References52794
-Node: Concept Index54240
-Node: Function Index56940
+Node: Top1272
+Node: Copying2343
+Node: Introduction to MPFI4138
+Node: Installing MPFI5462
+Node: Reporting Bugs8785
+Node: MPFI Basics10159
+Ref: MPFI Basics-Footnote-114433
+Node: Interval Functions14760
+Node: Return Values16000
+Node: Precision Handling16973
+Node: Initializing and Assigning Intervals19620
+Node: Initializing Intervals19960
+Node: Assigning Intervals21820
+Node: Simultaneous Interval Init & Assign23814
+Node: Floating-point Quantities25077
+Node: Converting Intervals28173
+Node: Interval Arithmetic28648
+Node: Special Functions35205
+Node: Interval Comparison40028
+Node: I/O of Intervals42856
+Node: Operating on the Endpoints46205
+Node: Set Operations48677
+Node: Miscellaneous Interval Functions50586
+Node: Error Handling51820
+Node: Contributors52427
+Node: References52782
+Node: Concept Index54228
+Node: Function Index56928
 
 End Tag Table

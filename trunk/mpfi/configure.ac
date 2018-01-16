@@ -9,7 +9,7 @@ AC_CONFIG_HEADERS([mpfi_config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_USE_SYSTEM_EXTENSIONS
-AM_INIT_AUTOMAKE([1.9 -Wall -Werror dist-bzip2 dist-zip dist-xz])
+AM_INIT_AUTOMAKE([1.9 -Wall -Werror dist-bzip2 dist-zip])
 AM_SILENT_RULES([no])
 AM_MAINTAINER_MODE([])
 
