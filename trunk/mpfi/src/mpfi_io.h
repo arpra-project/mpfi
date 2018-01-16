@@ -31,7 +31,7 @@ MA 02110-1301, USA. */
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "mpfi.h"
+#include <mpfi.h>
 
 /*#define isblank isspace*/
 #define MPFI_ISSPACE isspace

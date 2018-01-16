@@ -91,8 +91,8 @@ check_random_interval (mp_prec_t prec_min, mp_prec_t prec_max, mp_prec_t step)
 
         if (!MPFI_NAN_P (i) && !MPFI_INF_P (i) && n_read != n_written) {
           printf ("mpfi_inp_str did not read the complete output of "
-                  "mpfi_out_str.\nnumber of read characters: %d\n"
-                  "expected: %d\n", n_read, n_written);
+                  "mpfi_out_str.\nnumber of read characters: %zu\n"
+                  "expected: %zu\n", n_read, n_written);
         }
 
         exit (1);
@@ -150,7 +150,7 @@ check_file (const char *datafile)
       if (n_mpfr != n_mpfi) {
         printf ("Error: mpfi_inp_str does not read the same number of "
                 "characters as mpfr_inp_str in file \"%s\" line 1.\n"
-                "    read: %u\nexpected: %u\n", datafile, n_mpfi, n_mpfr);
+                "    read: %zu\nexpected: %zu\n", datafile, n_mpfi, n_mpfr);
 
         exit (1);
       }
@@ -179,7 +179,7 @@ check_file (const char *datafile)
       if (n_mpfr != n_mpfi) {
         printf ("Error: mpfi_inp_str does not read the same number of "
                 "characters as mpfr_inp_str in file \"%s\" line 1.\n"
-                "    read: %u\nexpected: %u\n", datafile, n_mpfi, n_mpfr);
+                "    read: %zu\nexpected: %zu\n", datafile, n_mpfi, n_mpfr);
 
         exit (1);
       }

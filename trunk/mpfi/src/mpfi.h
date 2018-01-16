@@ -1,6 +1,6 @@
 /* mpfi.h -- Include file for mpfi.
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010, 2012,
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010, 2012, 2018,
                      Spaces project, Inria Lorraine
                      and Salsa project, INRIA Rocquencourt,
                      and Arenaire project, Inria Rhone-Alpes, France
@@ -35,9 +35,9 @@ MA 02110-1301, USA. */
 
 /* Define MPFI version number */
 #define MPFI_VERSION_MAJOR 1
-#define MPFI_VERSION_MINOR 6
-#define MPFI_VERSION_PATCHLEVEL 0
-#define MPFI_VERSION_STRING "1.6.0"
+#define MPFI_VERSION_MINOR 5
+#define MPFI_VERSION_PATCHLEVEL 3
+#define MPFI_VERSION_STRING "1.5.3"
 
 typedef struct {
   __mpfr_struct left;

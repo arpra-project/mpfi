@@ -2,12 +2,16 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([mpfi],[1.5.2],[mpfi-users@lists.gforge.inria.fr])
+AC_INIT([mpfi],[1.5.3],[mpfi-users@lists.gforge.inria.fr],[mpfi],[https://gforge.inria.fr/projects/mpfi/])
 AC_CONFIG_SRCDIR([src/mpfi.h])
 AC_CONFIG_HEADERS([mpfi_config.h])
 
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.9 -Wall -Werror dist-bzip2 dist-zip])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_USE_SYSTEM_EXTENSIONS
+AM_INIT_AUTOMAKE([1.9 -Wall -Werror dist-bzip2 dist-zip dist-xz])
+AM_SILENT_RULES([no])
+AM_MAINTAINER_MODE([])
 
 dnl Extra arguments to configure
 AC_ARG_WITH([mpfr_include],

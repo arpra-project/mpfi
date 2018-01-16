@@ -1,6 +1,5 @@
-This is /home/ptheveny/repositories/mpfi/trunk/mpfi/doc/mpfi.info,
-produced by makeinfo version 4.13 from
-/home/ptheveny/repositories/mpfi/trunk/mpfi/doc/mpfi.texi.
+Ceci est le fichier Info mpfi.info, produit par Makeinfo version 4.8 Ã 
+partir mpfi.texi.
 
 INFO-DIR-SECTION Software libraries
 START-INFO-DIR-ENTRY
@@ -32,8 +31,8 @@ translation approved by the Free Software Foundation.
 
 File: mpfi.info,  Node: Top,  Next: Copying,  Prev: (dir),  Up: (dir)
 
-MPFI 1.6-dev.
-*************
+MPFI 1.5.3.
+***********
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -483,7 +482,7 @@ precision gradually in iterative algorithms like Newton-Raphson, making
 the computation precision closely match the actual accurate part of the
 numbers.
 
- -- Function: void mpfi_set_prec (mpfi_t X, mp_prec_t PREC)
+ -- Fonction: void mpfi_set_prec (mpfi_t X, mp_prec_t PREC)
      Resets the precision of X to be *exactly* PREC bits.  The previous
      value stored in X is lost. It is equivalent to a call to
      `mpfi_clear(x)' followed by a call to `mpfi_init2(x, prec)', but
@@ -493,20 +492,20 @@ numbers.
      `MPFR_PREC_MAX'.  In case you want to keep the previous value
      stored in X, use `mpfi_round_prec' instead.
 
- -- Function: mp_prec_t mpfi_get_prec (mpfi_t X)
+ -- Fonction: mp_prec_t mpfi_get_prec (mpfi_t X)
      Return the largest precision actually used for assignments of X,
      i.e.  the number of bits used to store the mantissas of its
      endpoints.  Should the two endpoints have different precisions,
      the largest one is returned.
 
- -- Function: int mpfi_round_prec (mpfi_t X, mp_prec_t PREC)
+ -- Fonction: int mpfi_round_prec (mpfi_t X, mp_prec_t PREC)
      Rounds X with precision PREC, which may be different from that of
      X.  If PREC is greater or equal to the precision of X, then new
      space is allocated for the endpoints' mantissas, and they are
      filled with zeroes.  Otherwise, the mantissas are rounded outwards
      to precision PREC.  In both cases, the precision of X is changed
      to PREC.  It returns a value indicating whether the possibly
-     rounded endpoints are exact or not, cf. *note Return Values::.
+     rounded endpoints are exact or not, cf. *Note Return Values::.
 
 
 File: mpfi.info,  Node: Initializing and Assigning Intervals,  Next: Floating-point Quantities,  Prev: Precision Handling,  Up: Interval Functions
@@ -530,7 +529,7 @@ An `mpfi_t' object must be initialized before storing the first value in
 it.  The functions `mpfi_init' and `mpfi_init2' are used for that
 purpose.
 
- -- Function: void mpfi_init (mpfi_t X)
+ -- Fonction: void mpfi_init (mpfi_t X)
      Initializes X, and sets its value to NaN, to prevent from using an
      unassigned variable inadvertently.  Normally, a variable should be
      initialized once only or at least be cleared, using `mpfi_clear',
@@ -538,7 +537,7 @@ purpose.
      default precision, which can be changed by a call to
      `mpfr_set_default_prec'.
 
- -- Function: void mpfi_init2 (mpfi_t X, mp_prec_t PREC)
+ -- Fonction: void mpfi_init2 (mpfi_t X, mp_prec_t PREC)
      Initializes X, sets its precision (or more precisely the precision
      of its endpoints) to be *exactly* PREC bits, and sets its
      endpoints to NaN.  Normally, a variable should be initialized once
@@ -547,7 +546,7 @@ purpose.
      variable which has already been initialized, use `mpfi_set_prec'
      instead, or `mpfi_round_prec' if you want to keep its value.
 
- -- Function: void mpfi_clear (mpfi_t X)
+ -- Fonction: void mpfi_clear (mpfi_t X)
      Frees the space occupied by the significands of the endpoints of
      X.  Make sure to call this function for all `mpfi_t' variables
      when you are done with them.
@@ -572,20 +571,20 @@ File: mpfi.info,  Node: Assigning Intervals,  Next: Simultaneous Interval Init &
 These functions assign new values to already initialized intervals
 (*note Initializing Intervals::).
 
- -- Function: int mpfi_set (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_set_ui (mpfi_t ROP, unsigned long int OP)
- -- Function: int mpfi_set_si (mpfi_t ROP, long int OP)
- -- Function: int mpfi_set_d (mpfi_t ROP, double OP)
- -- Function: int mpfi_set_z (mpfi_t ROP, mpz_t OP)
- -- Function: int mpfi_set_q (mpfi_t ROP, mpq_t OP)
- -- Function: int mpfi_set_fr (mpfi_t ROP, mpfr_t OP)
+ -- Fonction: int mpfi_set (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_set_ui (mpfi_t ROP, unsigned long int OP)
+ -- Fonction: int mpfi_set_si (mpfi_t ROP, long int OP)
+ -- Fonction: int mpfi_set_d (mpfi_t ROP, double OP)
+ -- Fonction: int mpfi_set_z (mpfi_t ROP, mpz_t OP)
+ -- Fonction: int mpfi_set_q (mpfi_t ROP, mpq_t OP)
+ -- Fonction: int mpfi_set_fr (mpfi_t ROP, mpfr_t OP)
      Sets the value of ROP from OP, rounded outward to the precision of
      ROP: OP then belongs to ROP.  The returned value indicates whether
      none, one or both endpoints are exact.  Please note that even a
      `long int' may have to be rounded, if the destination precision is
      less than the machine word width.
 
- -- Function: int mpfi_set_str (mpfi_t ROP, char *S, int BASE)
+ -- Fonction: int mpfi_set_str (mpfi_t ROP, char *S, int BASE)
      Sets ROP to the value of the string S, in base BASE (between 2 and
      36), outward rounded to the precision of ROP: OP then belongs to
      ROP.  The exponent is read in decimal.  The string is of the form
@@ -597,7 +596,7 @@ These functions assign new values to already initialized intervals
 
      This function returns 1 if the input is incorrect, and 0 otherwise.
 
- -- Function: void mpfi_swap (mpfi_t X, mpfi_t Y)
+ -- Fonction: void mpfi_swap (mpfi_t X, mpfi_t Y)
      Swaps the values X and Y efficiently. Warning: the precisions are
      exchanged too; in case the precisions are different, `mpfi_swap'
      is thus not equivalent to three `mpfi_set' calls using a third
@@ -609,20 +608,20 @@ File: mpfi.info,  Node: Simultaneous Interval Init & Assign,  Prev: Assigning In
 5.3.3 Combined Initialization and Assignment Functions
 ------------------------------------------------------
 
- -- Function: int mpfi_init_set (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_init_set_ui (mpfi_t ROP, unsigned long int OP)
- -- Function: int mpfi_init_set_si (mpfi_t ROP, long int OP)
- -- Function: int mpfi_init_set_d (mpfi_t ROP, double OP)
- -- Function: int mpfi_init_set_z (mpfi_t ROP, mpz_t OP)
- -- Function: int mpfi_init_set_q (mpfi_t ROP, mpq_t OP)
- -- Function: int mpfi_init_set_fr (mpfi_t ROP, mpfr_t OP)
+ -- Fonction: int mpfi_init_set (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_init_set_ui (mpfi_t ROP, unsigned long int OP)
+ -- Fonction: int mpfi_init_set_si (mpfi_t ROP, long int OP)
+ -- Fonction: int mpfi_init_set_d (mpfi_t ROP, double OP)
+ -- Fonction: int mpfi_init_set_z (mpfi_t ROP, mpz_t OP)
+ -- Fonction: int mpfi_init_set_q (mpfi_t ROP, mpq_t OP)
+ -- Fonction: int mpfi_init_set_fr (mpfi_t ROP, mpfr_t OP)
      Initializes ROP and sets its value from OP, outward rounded so
      that OP belongs to ROP.  The precision of ROP will be taken from
      the active default precision, as set by `mpfr_set_default_prec'.
      The returned value indicates whether none, one or both endpoints
      are exact.
 
- -- Function: int mpfi_init_set_str (mpfi_t ROP, char *S, int BASE)
+ -- Fonction: int mpfi_init_set_str (mpfi_t ROP, char *S, int BASE)
      Initializes ROP and sets its value to the value of the string S,
      in base BASE (between 2 and 36), outward rounded to the precision
      of ROP: OP then belongs to ROP. The exponent is read in decimal.
@@ -637,14 +636,14 @@ File: mpfi.info,  Node: Floating-point Quantities,  Next: Converting Intervals, 
 Some functions on intervals return floating-point results, such as the
 center or the width, also called diameter, of an interval.
 
- -- Function: int mpfi_diam_abs (mpfr_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_diam_abs (mpfr_t ROP, mpfi_t OP)
      Sets the value of ROP to the upward rounded diameter of OP, or in
      other words to the upward rounded difference between the right
      endpoint of OP and its left endpoint.  Returns 0 if the diameter
      is exact and a positive value if the rounded value is greater than
      the exact diameter.
 
- -- Function: int mpfi_diam_rel (mpfr_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_diam_rel (mpfr_t ROP, mpfi_t OP)
      Sets the value of ROP to the upward rounded relative diameter of
      OP, or in other words to the upward rounded difference between the
      right endpoint of OP and its left endpoint, divided by the
@@ -653,38 +652,38 @@ center or the width, also called diameter, of an interval.
      is an overestimation, in this case the returned value may not be
      the correct rounding of the exact value.
 
- -- Function: int mpfi_diam (mpfr_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_diam (mpfr_t ROP, mpfi_t OP)
      Sets the value of ROP to the relative diameter of OP if OP does
      not contain zero and to its absolute diameter otherwise.  Returns
      0 if the result is exact and a positive value if the returned value
      is an overestimation, it may not be the correct rounding of the
      exact value in the latter case.
 
- -- Function: int mpfi_mag (mpfr_t rop, mpfi_t op)
+ -- Fonction: int mpfi_mag (mpfr_t rop, mpfi_t op)
      Sets the value of ROP to the magnitude of OP, i.e. to the largest
      absolute value of the elements of OP.  Returns 0 if the result is
      exact and a positive value if the returned value is an
      overestimation.
 
- -- Function: int mpfi_mig (mpfr_t rop, mpfi_t op)
+ -- Fonction: int mpfi_mig (mpfr_t rop, mpfi_t op)
      Sets the value of ROP to the mignitude of OP, i.e. to the smallest
      absolute value of the elements of OP.  Returns 0 if the result is
      exact and a negative value if the returned value is an
      underestimation.
 
- -- Function: int mpfi_mid (mpfr_t rop, mpfi_t op)
+ -- Fonction: int mpfi_mid (mpfr_t rop, mpfi_t op)
      Sets ROP to the middle of OP.  Returns 0 if the result is exact, a
      positive value if ROP > the middle of OP and a negative value if
      ROP < the middle of OP.
 
- -- Function: void mpfi_alea (mpfr_t rop, mpfi_t op)
+ -- Fonction: void mpfi_alea (mpfr_t rop, mpfi_t op)
      Sets ROP to a floating-point number picked up at random in OP,
      according to a uniform distribution.
 
      This function is deprecated and may disappear in future versions
      of MPFI; `mpfi_urandom' should be used instead.
 
- -- Function: void mpfi_urandom (mpfr_t rop, mpfi_t op, gmp_randstate_t
+ -- Fonction: void mpfi_urandom (mpfr_t rop, mpfi_t op, gmp_randstate_t
           state)
      Sets ROP to a floating-point number picked up at random in OP,
      according to a uniform distribution.
@@ -699,11 +698,11 @@ File: mpfi.info,  Node: Converting Intervals,  Next: Interval Arithmetic,  Prev:
 5.5 Conversion Functions
 ========================
 
- -- Function: double mpfi_get_d (mpfi_t OP)
+ -- Fonction: double mpfi_get_d (mpfi_t OP)
      Converts OP to a double, which is the center of OP rounded to the
      nearest double.
 
- -- Function: void mpfi_get_fr (mpfr_t ROP, mpfi_t OP)
+ -- Fonction: void mpfi_get_fr (mpfr_t ROP, mpfi_t OP)
      Converts OP to a floating-point number, which is the center of OP
      rounded to nearest.
 
@@ -713,43 +712,43 @@ File: mpfi.info,  Node: Interval Arithmetic,  Next: Special Functions,  Prev: Co
 5.6 Basic Arithmetic Functions
 ==============================
 
- -- Function: int mpfi_add (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_add_d (mpfi_t ROP, mpfi_t OP1, double OP2)
- -- Function: int mpfi_add_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_add (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_add_d (mpfi_t ROP, mpfi_t OP1, double OP2)
+ -- Fonction: int mpfi_add_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_add_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
- -- Function: int mpfi_add_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
- -- Function: int mpfi_add_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
- -- Function: int mpfi_add_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
+ -- Fonction: int mpfi_add_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_add_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
+ -- Fonction: int mpfi_add_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
+ -- Fonction: int mpfi_add_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
      Sets ROP to OP1 + OP2.  Returns a value indicating whether none,
      one or both endpoints are exact.
 
- -- Function: int mpfi_sub (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_sub_d (mpfi_t ROP, mpfi_t OP1, double OP2)
- -- Function: int mpfi_d_sub (mpfi_t ROP, double OP1, mpfi_t OP2)
- -- Function: int mpfi_sub_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_sub (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_sub_d (mpfi_t ROP, mpfi_t OP1, double OP2)
+ -- Fonction: int mpfi_d_sub (mpfi_t ROP, double OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_sub_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_ui_sub (mpfi_t ROP, unsigned long int OP1,
+ -- Fonction: int mpfi_ui_sub (mpfi_t ROP, unsigned long int OP1,
           mpfi_t OP2)
- -- Function: int mpfi_sub_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
- -- Function: int mpfi_si_sub (mpfi_t ROP, long int OP1, mpfi_t OP2)
- -- Function: int mpfi_sub_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
- -- Function: int mpfi_z_sub (mpfi_t ROP, mpz_t OP1, mpfi_t OP2)
- -- Function: int mpfi_sub_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
- -- Function: int mpfi_q_sub (mpfi_t ROP, mpq_t OP1, mpfi_t OP2)
- -- Function: int mpfi_sub_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
- -- Function: int mpfi_fr_sub (mpfi_t ROP, mpfr_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_sub_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_si_sub (mpfi_t ROP, long int OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_sub_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
+ -- Fonction: int mpfi_z_sub (mpfi_t ROP, mpz_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_sub_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
+ -- Fonction: int mpfi_q_sub (mpfi_t ROP, mpq_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_sub_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
+ -- Fonction: int mpfi_fr_sub (mpfi_t ROP, mpfr_t OP1, mpfi_t OP2)
      Sets ROP to OP1 - OP2.  Returns a value indicating whether none,
      one or both endpoints are exact.
 
- -- Function: int mpfi_mul (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_mul_d (mpfi_t ROP, mpfi_t OP1, double OP2)
- -- Function: int mpfi_mul_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_mul (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_mul_d (mpfi_t ROP, mpfi_t OP1, double OP2)
+ -- Fonction: int mpfi_mul_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_mul_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
- -- Function: int mpfi_mul_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
- -- Function: int mpfi_mul_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
- -- Function: int mpfi_mul_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
+ -- Fonction: int mpfi_mul_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_mul_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
+ -- Fonction: int mpfi_mul_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
+ -- Fonction: int mpfi_mul_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
      Sets ROP to OP1 * OP2.  Multiplication by an interval containing
      only zero results in 0.  Returns a value indicating whether none,
      one or both endpoints are exact.
@@ -764,60 +763,60 @@ the divisor contains only 0.  In this example, both endpoints are exact.
    The extended interval division, returning two semi-infinite
 intervals when the divisor contains 0, should be available soon.
 
- -- Function: int mpfi_div (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_div_d (mpfi_t ROP, mpfi_t OP1, double OP2)
- -- Function: int mpfi_d_div (mpfi_t ROP, double OP1, mpfi_t OP2)
- -- Function: int mpfi_div_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_div (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_div_d (mpfi_t ROP, mpfi_t OP1, double OP2)
+ -- Fonction: int mpfi_d_div (mpfi_t ROP, double OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_div_ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_ui_div (mpfi_t ROP, unsigned long int OP1,
+ -- Fonction: int mpfi_ui_div (mpfi_t ROP, unsigned long int OP1,
           mpfi_t OP2)
- -- Function: int mpfi_div_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
- -- Function: int mpfi_si_div (mpfi_t ROP, long int OP1, mpfi_t OP2)
- -- Function: int mpfi_div_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
- -- Function: int mpfi_z_div (mpfi_t ROP, mpz_t OP1, mpfi_t OP2)
- -- Function: int mpfi_div_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
- -- Function: int mpfi_q_div (mpfi_t ROP, mpq_t OP1, mpfi_t OP2)
- -- Function: int mpfi_div_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
- -- Function: int mpfi_fr_div (mpfi_t ROP, mpfr_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_div_si (mpfi_t ROP, mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_si_div (mpfi_t ROP, long int OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_div_z (mpfi_t ROP, mpfi_t OP1, mpz_t OP2)
+ -- Fonction: int mpfi_z_div (mpfi_t ROP, mpz_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_div_q (mpfi_t ROP, mpfi_t OP1, mpq_t OP2)
+ -- Fonction: int mpfi_q_div (mpfi_t ROP, mpq_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_div_fr (mpfi_t ROP, mpfi_t OP1, mpfr_t OP2)
+ -- Fonction: int mpfi_fr_div (mpfi_t ROP, mpfr_t OP1, mpfi_t OP2)
      Sets ROP to OP1/OP2.  Returns an indication of whether none, one
      or both endpoints are exact.
 
- -- Function: int mpfi_neg (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_neg (mpfi_t ROP, mpfi_t OP)
      Sets ROP to -OP.  Returns an indication of whether none, one or
      both endpoints are exact.
 
- -- Function: int mpfi_sqr (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_sqr (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the nonnegative square of OP.  Returns an indication
      of whether none, one or both endpoints are exact.  Indeed, in
      interval arithmetic, the square of an interval is a nonnegative
      interval whereas the product of an interval by itself can contain
      negative values.
 
- -- Function: int mpfi_inv (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_inv (mpfi_t ROP, mpfi_t OP)
      Sets ROP to 1/OP.  Inverse is defined even if the interval
      contains zero: when the denominator contains zero, the result is
      the whole real interval ]-Inf, Inf[.  Returns an indication of
      whether none, one or both endpoints are exact.
 
- -- Function: int mpfi_sqrt (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_sqrt (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the square root of OP.  Sets ROP to NaN if OP is
      negative.  Returns an indication of whether none, one or both
      endpoints are exact.
 
- -- Function: int mpfi_cbrt (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_cbrt (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the cubic root of OP.  Returns an indication of
      whether none, one or both endpoints are exact.
 
- -- Function: int mpfi_abs (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_abs (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the interval containing the absolute value of every
      element of OP.  Returns an indication of whether none, one or both
      endpoints are exact.
 
- -- Function: int mpfi_mul_2exp (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_mul_2exp (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_mul_2ui (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_mul_2ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_mul_2si (mpfi_t ROP, mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_mul_2si (mpfi_t ROP, mpfi_t OP1, long int OP2)
      Sets ROP to OP1 times 2 raised to OP2.
 
      `mpfi_mul_2exp' is identical to `mpfi_mul_2ui' and is kept for
@@ -827,11 +826,11 @@ intervals when the divisor contains 0, should be available soon.
      increases the exponents of the endpoints by OP2 when ROP and OP1
      are identical.
 
- -- Function: int mpfi_div_2exp (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_div_2exp (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_div_2ui (mpfi_t ROP, mpfi_t OP1, unsigned long
+ -- Fonction: int mpfi_div_2ui (mpfi_t ROP, mpfi_t OP1, unsigned long
           int OP2)
- -- Function: int mpfi_div_2si (mpfi_t ROP, mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_div_2si (mpfi_t ROP, mpfi_t OP1, long int OP2)
      Sets ROP to OP1 divided by 2 raised to OP2.  Returns an indication
      of whether none, one or both endpoints are exact.  Just decreases
      the exponents of the endpoints by OP2 when ROP and OP1 are
@@ -846,96 +845,96 @@ File: mpfi.info,  Node: Special Functions,  Next: Interval Comparison,  Prev: In
 These functions are based on their MPFR counterparts. For more
 information, see the MPFR documentation or related bibliography.
 
- -- Function: int mpfi_log (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_log (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the natural logarithm of OP, with the precision of ROP.
      Returns an indication of whether none, one or both endpoints are
      exact.  If OP contains negative numbers, then ROP has at least one
      NaN endpoint.
 
- -- Function: int mpfi_exp (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_exp (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the exponential of OP, with the precision of ROP.
      Returns an indication of whether none, one or both endpoints are
      exact.
 
- -- Function: int mpfi_exp2 (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_exp2 (mpfi_t ROP, mpfi_t OP)
      Sets ROP to 2 to the power OP, with the precision of ROP.  Returns
      an indication of whether none, one or both endpoints are exact.
 
- -- Function: int mpfi_cos (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_sin (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_tan (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_cos (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_sin (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_tan (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the cosine, sine or tangent of OP, with the precision
      of ROP.  Returns an indication of whether none, one or both
      endpoints are exact.
 
- -- Function: int mpfi_sec (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_csc (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_cot (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_sec (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_csc (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_cot (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the secant, cosecant or cotangent of OP, with the
      precision of ROP.  Returns an indication of whether none, one or
      both endpoints are exact.
 
- -- Function: int mpfi_acos (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_asin (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_atan (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_acos (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_asin (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_atan (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the arc-cosine, arc-sine or arc-tangent of OP, with
      the precision of ROP.  Returns an indication of whether none, one
      or both endpoints are exact.
 
- -- Function: int mpfi_atan2 (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_atan2 (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the arc-tangent2 of OP1 and OP2, with the precision of
      ROP.  Returns an indication of whether none, one or both endpoints
      are exact.
 
- -- Function: int mpfi_cosh (mpfi_t COP, mpfi_t OP)
- -- Function: int mpfi_sinh (mpfi_t SOP, mpfi_t OP)
- -- Function: int mpfi_tanh (mpfi_t TOP, mpfi_t OP)
+ -- Fonction: int mpfi_cosh (mpfi_t COP, mpfi_t OP)
+ -- Fonction: int mpfi_sinh (mpfi_t SOP, mpfi_t OP)
+ -- Fonction: int mpfi_tanh (mpfi_t TOP, mpfi_t OP)
      Sets COP to the hyperbolic cosine of OP, SOP to the hyperbolic
      sine of OP, TOP to the hyperbolic tangent of OP, with the
      precision of the result.  Returns an indication of whether none,
      one or both endpoints are exact.
 
- -- Function: int mpfi_sech (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_csch (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_coth (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_sech (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_csch (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_coth (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the hyperbolic secant, cosecant or cotangent of OP,
      with the precision of ROP.  Returns an indication of whether none,
      one or both endpoints are exact.
 
- -- Function: int mpfi_acosh (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_asinh (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_atanh (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_acosh (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_asinh (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_atanh (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the inverse hyperbolic cosine, sine or tangent of OP,
      with the precision of ROP.  Returns an indication of whether none,
      one or both endpoints are exact.
 
- -- Function: int mpfi_log1p (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_log1p (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the natural logarithm of one plus OP, with the
      precision of ROP.  Returns an indication of whether none, one or
      both endpoints are exact.  If OP contains negative numbers, then
      ROP has at least one NaN endpoint.
 
- -- Function: int mpfi_expm1 (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_expm1 (mpfi_t ROP, mpfi_t OP)
      Sets ROP to the exponential of OP, minus one, with the precision
      of ROP.  Returns an indication of whether none, one or both
      endpoints are exact.
 
- -- Function: int mpfi_log2 (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_log10 (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_log2 (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_log10 (mpfi_t ROP, mpfi_t OP)
      Sets ROP to log[t] OP with t=2 or 10 the base for the logarithm,
      with the precision of ROP.  Returns an indication of whether none,
      one or both endpoints are exact.  If OP contains negative numbers,
      then ROP has at least one NaN endpoint.
 
- -- Function: int mpfi_hypot (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_hypot (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the euclidean distance between points in OP1 and
      points in OP2, with the precision of ROP.  Returns an indication
      of whether none, one or both endpoints are exact.
 
- -- Function: int mpfi_const_log2 (mpfi_t ROP)
- -- Function: int mpfi_const_pi (mpfi_t ROP)
- -- Function: int mpfi_const_euler (mpfi_t ROP)
- -- Function: int mpfi_const_catalan (mpfi_t ROP)
+ -- Fonction: int mpfi_const_log2 (mpfi_t ROP)
+ -- Fonction: int mpfi_const_pi (mpfi_t ROP)
+ -- Fonction: int mpfi_const_euler (mpfi_t ROP)
+ -- Fonction: int mpfi_const_catalan (mpfi_t ROP)
      Sets ROP respectively to the logarithm of 2, to the value of Pi,
      to the Euler's constant, and to the Catalan's constant, with the
      precision of ROP.
@@ -953,59 +952,59 @@ The comparison of two intervals is not clearly defined when they
 overlap.  MPFI proposes default comparison functions, but they can
 easily be customized according to the user's needs.  The default
 comparison functions return a positive value if the first interval has
-all its elements strictly lower than all elements of the second one, a
+all its elements strictly greater than all elements of the second one, a
 negative value if the first interval has all its elements strictly
-greater than all elements of the second one and 0 otherwise, i.e. if
-they overlap or if one is contained in the other.
+lower than all elements of the second one and 0 otherwise, i.e. if they
+overlap or if one is contained in the other.
 
- -- Function: int mpfi_cmp (mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_cmp_d (mpfi_t OP1, double OP2)
- -- Function: int mpfi_cmp_ui (mpfi_t OP1, unsigned long int OP2)
- -- Function: int mpfi_cmp_si (mpfi_t OP1, long int OP2)
- -- Function: int mpfi_cmp_z (mpfi_t OP1, mpz_t OP2)
- -- Function: int mpfi_cmp_q (mpfi_t OP1, mpq_t OP2)
- -- Function: int mpfi_cmp_fr (mpfi_t OP1, mpfr_t OP2)
+ -- Fonction: int mpfi_cmp (mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_cmp_d (mpfi_t OP1, double OP2)
+ -- Fonction: int mpfi_cmp_ui (mpfi_t OP1, unsigned long int OP2)
+ -- Fonction: int mpfi_cmp_si (mpfi_t OP1, long int OP2)
+ -- Fonction: int mpfi_cmp_z (mpfi_t OP1, mpz_t OP2)
+ -- Fonction: int mpfi_cmp_q (mpfi_t OP1, mpq_t OP2)
+ -- Fonction: int mpfi_cmp_fr (mpfi_t OP1, mpfr_t OP2)
      Compares OP1 and OP2.  Return a positive value if OP1 > OP2, zero
      if OP1 overlaps or contains OP2, and a negative value if OP1 < OP2.
      In case one of the operands is invalid (which is represented by at
      least one NaN endpoint), it returns 1, even if both are invalid.
 
- -- Function: int mpfi_is_pos (mpfi_t OP)
+ -- Fonction: int mpfi_is_pos (mpfi_t OP)
      Returns a positive value if OP contains only positive numbers, the
      left endpoint can be zero.
 
- -- Function: int mpfi_is_strictly_pos (mpfi_t OP)
+ -- Fonction: int mpfi_is_strictly_pos (mpfi_t OP)
      Returns a positive value if OP contains only positive numbers.
 
- -- Function: int mpfi_is_nonneg (mpfi_t OP)
+ -- Fonction: int mpfi_is_nonneg (mpfi_t OP)
      Returns a positive value if OP contains only nonnegative numbers.
 
- -- Function: int mpfi_is_neg (mpfi_t OP)
+ -- Fonction: int mpfi_is_neg (mpfi_t OP)
      Returns a positive value if OP contains only negative numbers, the
      right endpoint can be zero.
 
- -- Function: int mpfi_is_strictly_neg (mpfi_t OP)
+ -- Fonction: int mpfi_is_strictly_neg (mpfi_t OP)
      Returns a positive value if OP contains only negative numbers.
 
- -- Function: int mpfi_is_nonpos (mpfi_t OP)
+ -- Fonction: int mpfi_is_nonpos (mpfi_t OP)
      Returns a positive value if OP contains only nonpositive numbers.
 
- -- Function: int mpfi_is_zero (mpfi_t OP)
+ -- Fonction: int mpfi_is_zero (mpfi_t OP)
      Returns a positive value if OP contains only 0.
 
- -- Function: int mpfi_has_zero (mpfi_t OP)
+ -- Fonction: int mpfi_has_zero (mpfi_t OP)
      Returns a positive value if OP contains 0 (and possibly other
      numbers).
 
- -- Function: int mpfi_nan_p (mpfi_t OP)
+ -- Fonction: int mpfi_nan_p (mpfi_t OP)
      Returns non-zero if OP is invalid, i.e. at least one of its
      endpoints is a Not-a-Number (NaN), zero otherwise.
 
- -- Function: int mpfi_inf_p (mpfi_t OP)
+ -- Fonction: int mpfi_inf_p (mpfi_t OP)
      Returns non-zero if at least one of the endpoints of OP is plus or
      minus infinity, zero otherwise.
 
- -- Function: int mpfi_bounded_p (mpfi_t OP)
+ -- Fonction: int mpfi_bounded_p (mpfi_t OP)
      Returns non-zero if OP is a bounded interval, i.e. neither invalid
      nor (semi-)infinite.
 
@@ -1029,7 +1028,7 @@ endpoints.  The input function has to be improved. For the time being,
 it is mandatory to insert spaces between the interval brackets and the
 endpoints and also around the comma separating the endpoints.
 
- -- Function: size_t mpfi_out_str (FILE *STREAM, int BASE, size_t
+ -- Fonction: size_t mpfi_out_str (FILE *STREAM, int BASE, size_t
           N_DIGITS, mpfi_t OP)
      Outputs OP on stdio stream STREAM, as a string of digits in base
      BASE. The output is an opening square bracket "[", followed by the
@@ -1055,7 +1054,7 @@ endpoints and also around the comma separating the endpoints.
      called one after the other, the resulting interval contains the
      initial one, and this inclusion may be strict.
 
- -- Function: size_t mpfi_inp_str (mpfi_t ROP, FILE *STREAM, int BASE)
+ -- Fonction: size_t mpfi_inp_str (mpfi_t ROP, FILE *STREAM, int BASE)
      Inputs a string in base BASE from stdio stream STREAM, and puts the
      read float in ROP.  The string is of the form `number' or `[
      number1 , number 2 ]'.  Each endpoint has the form `M@N' or, if the
@@ -1072,7 +1071,7 @@ endpoints and also around the comma separating the endpoints.
      Returns the number of bytes read, or if an error occurred, return
      0.
 
- -- Function: void mpfi_print_binary (mpfi_t OP)
+ -- Fonction: void mpfi_print_binary (mpfi_t OP)
      Outputs OP on stdout in raw binary format for each endpoint (the
      exponent is in decimal, yet).  The last bits from the least
      significant limb which do not belong to the mantissa are printed
@@ -1084,12 +1083,12 @@ File: mpfi.info,  Node: Operating on the Endpoints,  Next: Set Operations,  Prev
 5.10 Functions Operating on Endpoints
 =====================================
 
- -- Function: int mpfi_get_left (mpfr_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_get_left (mpfr_t ROP, mpfi_t OP)
      Sets ROP to the left endpoint of OP, rounded toward minus infinity.
      It returns a negative value if ROP differs from the left endpoint
      of OP (due to rounding) and 0 otherwise.
 
- -- Function: int mpfi_get_right (mpfr_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_get_right (mpfr_t ROP, mpfi_t OP)
      Sets ROP to the right endpoint of OP, rounded toward plus infinity.
      It returns a positive value if ROP differs from the right endpoint
      of OP (due to rounding) and 0 otherwise.
@@ -1097,31 +1096,31 @@ File: mpfi.info,  Node: Operating on the Endpoints,  Next: Set Operations,  Prev
    The following function should never be used... but it helps to
 return correct intervals when there is a bug.
 
- -- Function: int mpfi_revert_if_needed (mpfi_t ROP)
+ -- Fonction: int mpfi_revert_if_needed (mpfi_t ROP)
      Swaps the endpoints of ROP if they are not properly ordered, i.e.
      if the lower endpoint is greater than the right one.  It returns a
      non-zero value if the endpoints have been swapped, zero otherwise.
 
- -- Function: int mpfi_put (mpfi_t ROP, mpfi_t OP)
- -- Function: int mpfi_put_d (mpfi_t ROP, double OP)
- -- Function: int mpfi_put_ui (mpfi_t ROP, unsigned long int OP)
- -- Function: int mpfi_put_si (mpfi_t ROP, long int OP)
- -- Function: int mpfi_put_z (mpfi_t ROP, mpz_t OP)
- -- Function: int mpfi_put_q (mpfi_t ROP, mpq_t OP)
- -- Function: int mpfi_put_fr (mpfi_t ROP, mpfr_t OP)
+ -- Fonction: int mpfi_put (mpfi_t ROP, mpfi_t OP)
+ -- Fonction: int mpfi_put_d (mpfi_t ROP, double OP)
+ -- Fonction: int mpfi_put_ui (mpfi_t ROP, unsigned long int OP)
+ -- Fonction: int mpfi_put_si (mpfi_t ROP, long int OP)
+ -- Fonction: int mpfi_put_z (mpfi_t ROP, mpz_t OP)
+ -- Fonction: int mpfi_put_q (mpfi_t ROP, mpq_t OP)
+ -- Fonction: int mpfi_put_fr (mpfi_t ROP, mpfr_t OP)
      Extends the interval ROP so that it contains OP.  In other words,
      ROP is set to the convex hull of ROP and OP.  It returns a value
      indicating whether none, one or both endpoints are inexact (due to
      possible roundings).
 
- -- Function: int mpfi_interv_d (mpfi_t ROP, double OP1, double OP2)
- -- Function: int mpfi_interv_ui (mpfi_t ROP, unsigned long int OP1,
+ -- Fonction: int mpfi_interv_d (mpfi_t ROP, double OP1, double OP2)
+ -- Fonction: int mpfi_interv_ui (mpfi_t ROP, unsigned long int OP1,
           unsigned long int OP2)
- -- Function: int mpfi_interv_si (mpfi_t ROP, long int OP1, long int
+ -- Fonction: int mpfi_interv_si (mpfi_t ROP, long int OP1, long int
           OP2)
- -- Function: int mpfi_interv_z (mpfi_t ROP, mpz_t OP1, mpz_t OP2)
- -- Function: int mpfi_interv_q (mpfi_t ROP, mpq_t OP1, mpq_t OP2)
- -- Function: int mpfi_interv_fr (mpfi_t ROP, mpfr_t OP1, mpfr_t OP2)
+ -- Fonction: int mpfi_interv_z (mpfi_t ROP, mpz_t OP1, mpz_t OP2)
+ -- Fonction: int mpfi_interv_q (mpfi_t ROP, mpq_t OP1, mpq_t OP2)
+ -- Fonction: int mpfi_interv_fr (mpfi_t ROP, mpfr_t OP1, mpfr_t OP2)
      Sets ROP to the interval having as endpoints OP1 and OP2.  The
      values of OP1 and OP2 are given in any order, the left endpoints
      of ROP is always the minimum of OP1 and ROP2.  It returns a value
@@ -1134,34 +1133,34 @@ File: mpfi.info,  Node: Set Operations,  Next: Miscellaneous Interval Functions,
 5.11 Set Functions on Intervals
 ===============================
 
- -- Function: int mpfi_is_strictly_inside (mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_strictly_inside (mpfi_t OP1, mpfi_t OP2)
      Returns a positive value if the second interval OP2 is contained in
      the interior of OP1, 0 otherwise.
 
- -- Function: int mpfi_is_inside (mpfi_t OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_d (double OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_ui (unsigned long OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_si (long int OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_z (mpz_t OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_q (mpq_t OP1, mpfi_t OP2)
- -- Function: int mpfi_is_inside_fr (mpfr_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside (mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside_d (double OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside_ui (unsigned long OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside_si (long int OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside_z (mpz_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside_q (mpq_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_is_inside_fr (mpfr_t OP1, mpfi_t OP2)
      Returns a positive value if OP1 is contained in OP2, 0 otherwise.
      Return 0 if at least one argument is NaN or an invalid interval.
 
- -- Function: int mpfi_is_empty (mpfi_t OP)
+ -- Fonction: int mpfi_is_empty (mpfi_t OP)
      Returns a positive value if OP is empty (its endpoints are in
      reverse order) and 0 otherwise. Nothing is done in arithmetic or
      special functions to handle empty intervals: this is the
      responsibility of the user to avoid computing with empty intervals.
 
- -- Function: int mpfi_intersect (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_intersect (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the intersection (possibly empty) of the intervals OP1
      and OP2.  It returns a value indicating whether none, one or both
      endpoints are inexact (due to possible roundings).  Warning: this
      function can return an empty interval (i.e. with endpoints in
      reverse order).
 
- -- Function: int mpfi_union (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
+ -- Fonction: int mpfi_union (mpfi_t ROP, mpfi_t OP1, mpfi_t OP2)
      Sets ROP to the convex hull of the union of the intervals OP1 and
      OP2.  It returns a value indicating whether none, one or both
      endpoints are inexact (due to possible roundings).
@@ -1172,24 +1171,24 @@ File: mpfi.info,  Node: Miscellaneous Interval Functions,  Next: Error Handling,
 5.12 Miscellaneous Interval Functions
 =====================================
 
- -- Function: int mpfi_increase (mpfi_t ROP, mpfr_t OP)
+ -- Fonction: int mpfi_increase (mpfi_t ROP, mpfr_t OP)
      Subtracts OP to the lower endpoint of ROP and adds it to the upper
      endpoint of ROP, sets the resulting interval to ROP.  It returns a
      value indicating whether none, one or both endpoints are inexact.
 
- -- Function: int mpfi_blow (mpfi_t ROP, mpfi_t OP1, double OP2)
+ -- Fonction: int mpfi_blow (mpfi_t ROP, mpfi_t OP1, double OP2)
      Sets ROP to the interval whose center is the center of OP1 and
      whose radius is the radius of OP1 multiplied by (1 + abs(OP2)).
      It returns a value indicating whether none, one or both endpoints
      are inexact.
 
- -- Function: int mpfi_bisect (mpfi_t ROP1, mpfi_t ROP2, mpfi_t OP)
+ -- Fonction: int mpfi_bisect (mpfi_t ROP1, mpfi_t ROP2, mpfi_t OP)
      Splits OP into two halves and sets them to ROP1 and ROP2.  Due to
      outward rounding, the two halves ROP1 and ROP2 may overlap.  It
      returns a value >0 if the splitting point is greater than the
      exact centre, <0 if it is smaller and 0 if it is the exact centre.
 
- -- Function: const char * mpfi_get_version ()
+ -- Fonction: const char * mpfi_get_version ()
      Returns the MPFI version number as a NULL terminated string.
 
 
@@ -1203,13 +1202,13 @@ File: mpfi.info,  Node: Error Handling,  Prev: Miscellaneous Interval Functions,
      prints the message MSG to the standard error stream. If the error
      number is already set, do nothing.
 
- -- Function: int mpfi_is_error ()
+ -- Fonction: int mpfi_is_error ()
      Returns 1 if the error number is set (to 1).
 
- -- Function: void mpfi_set_error (int OP)
+ -- Fonction: void mpfi_set_error (int OP)
      Sets the error number to OP.
 
- -- Function: void mpfi_reset_error ()
+ -- Fonction: void mpfi_reset_error ()
      Resets the error number to 0.
 
 
@@ -1530,7 +1529,7 @@ Function and Type Index
 * mpfi_sub_ui:                           Interval Arithmetic. (line  22)
 * mpfi_sub_z:                            Interval Arithmetic. (line  27)
 * mpfi_swap:                             Assigning Intervals. (line  35)
-* mpfi_t:                                MPFI Basics.         (line  19)
+* mpfi_t:                                MPFI Basics.         (line  66)
 * mpfi_tan:                              Special Functions.   (line  27)
 * mpfi_tanh:                             Special Functions.   (line  53)
 * mpfi_ui_div:                           Interval Arithmetic. (line  64)
@@ -1547,33 +1546,33 @@ Function and Type Index
 
 
 Tag Table:
-Node: Top1359
-Node: Copying2434
-Node: Introduction to MPFI4229
-Node: Installing MPFI5553
-Node: Reporting Bugs8876
-Node: MPFI Basics10250
-Ref: MPFI Basics-Footnote-114524
-Node: Interval Functions14851
-Node: Return Values16091
-Node: Precision Handling17064
-Node: Initializing and Assigning Intervals19711
-Node: Initializing Intervals20051
-Node: Assigning Intervals21911
-Node: Simultaneous Interval Init & Assign23905
-Node: Floating-point Quantities25168
-Node: Converting Intervals28264
-Node: Interval Arithmetic28739
-Node: Special Functions35296
-Node: Interval Comparison40119
-Node: I/O of Intervals42947
-Node: Operating on the Endpoints46296
-Node: Set Operations48768
-Node: Miscellaneous Interval Functions50677
-Node: Error Handling51911
-Node: Contributors52518
-Node: References52873
-Node: Concept Index54319
-Node: Function Index57019
+Node: Top1284
+Node: Copying2355
+Node: Introduction to MPFI4150
+Node: Installing MPFI5474
+Node: Reporting Bugs8797
+Node: MPFI Basics10171
+Ref: MPFI Basics-Footnote-114445
+Node: Interval Functions14772
+Node: Return Values16012
+Node: Precision Handling16985
+Node: Initializing and Assigning Intervals19632
+Node: Initializing Intervals19972
+Node: Assigning Intervals21832
+Node: Simultaneous Interval Init & Assign23826
+Node: Floating-point Quantities25089
+Node: Converting Intervals28185
+Node: Interval Arithmetic28660
+Node: Special Functions35217
+Node: Interval Comparison40040
+Node: I/O of Intervals42868
+Node: Operating on the Endpoints46217
+Node: Set Operations48689
+Node: Miscellaneous Interval Functions50598
+Node: Error Handling51832
+Node: Contributors52439
+Node: References52794
+Node: Concept Index54240
+Node: Function Index56940
 
 End Tag Table
