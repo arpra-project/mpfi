@@ -1,11 +1,8 @@
-/* nrandom.c -- Random element in the interval, following an exponential distribution.
+/* nrandom.c -- Random element in the interval, following a normal distribution.
+                without any guarantee, to be checked
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010, 2018
-                     Spaces project, Inria Lorraine
-                     and Salsa project, INRIA Rocquencourt,
-                     and Arenaire project, Inria Rhone-Alpes, France
-                     and AriC project, Inria Rhone-Alpes, France
-                     and Lab. ANO, USTL (Univ. of Lille),  France
+Copyright 2018
+                     AriC project, Inria Rhone-Alpes, France
 
 This file is part of the MPFI Library.
 
@@ -28,7 +25,7 @@ MA 02110-1301, USA. */
 
 /* Picks randomly a point m in y */
 void
-mpfi_erandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
+mpfi_nrandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
 {
   mpfr_prec_t prec, tmp_prec;
   mpfr_t diam, fact;
@@ -40,7 +37,7 @@ mpfi_erandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
   }
 
   if (mpfr_equal_p (&(y->left), &(y->right))) {
-    mpfr_set (m, &(y->left), MPFI_RNDN);
+    mpfr_set (m, &(y->left), MPFR_RNDN);
     return;
   }
 
@@ -54,20 +51,20 @@ mpfi_erandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
   mpfr_init2 (fact, prec);
 
   mpfi_diam_abs (diam, y);
-  mpfr_erandom (fact, state,  MPFI_RNDN); 
-  mpfr_add_d (fact, fact, 0.5, MPFI_RNDN);
+  mpfr_nrandom (fact, state,  MPFR_RNDN); 
+  mpfr_add_d (fact, fact, 0.5, MPFR_RNDN);
   if (mpfr_cmp_ui (fact, 0) < 0)
-    mpfr_set_ui(fact, 0, MPFI_RNDN);
+    mpfr_set_ui(fact, 0, MPFR_RNDN);
   else if (mpfr_cmp_ui(fact, 1) > 0)
-    mpfr_set_ui(fact, 1, MPFI_RNDN);  /* now fact lies between 0 and 1 */
+    mpfr_set_ui(fact, 1, MPFR_RNDN);  /* now fact lies between 0 and 1 */
 
   if (mpfr_cmp_ui (diam, 1) <= 0) {
     /* the picked point lies at a relative distance "fact" of the left
        endpoint: m = inf + (sup - inf) * fact  */
-    mpfr_mul (fact, fact, diam, MPFI_RNDN);
+    mpfr_mul (fact, fact, diam, MPFR_RNDN);
     /* FIXME: because of possible cancelation, the random distribution is
        not uniform among the floating-point numbers in y */
-    mpfr_add (m, &(y->left), fact, MPFI_RNDN);
+    mpfr_add (m, &(y->left), fact, MPFR_RNDN);
   }
   else {
     mpfr_exp_t e;
@@ -81,21 +78,21 @@ mpfi_erandom (mpfr_ptr m, mpfi_srcptr y, gmp_randstate_t state)
     }
     e += 1;
     /* resize fact in [0, 2^e] where e = 1 + max{exp(left), exp(right)} */
-    mpfr_mul_2exp (fact, fact, e, MPFI_RNDN);
-    mpfr_set (m, &(y->left), MPFI_RNDN);
+    mpfr_mul_2exp (fact, fact, e, MPFR_RNDN);
+    mpfr_set (m, &(y->left), MPFR_RNDN);
     if (mpfr_inf_p (m)) {
       mpfr_nextabove (m);
     }
     /* m may be outside y */
-    mpfr_add (m, m, fact, MPFI_RNDN);
+    mpfr_add (m, m, fact, MPFR_RNDN);
   }
   mpfr_clear (fact);
   mpfr_clear (diam);
 
   /* Ensure that m belongs to y (if the precision is sufficient) */
   if (mpfr_cmp (m, &(y->left)) < 0)
-    mpfr_set (m, &(y->left), MPFI_RNDU);
+    mpfr_set (m, &(y->left), MPFR_RNDU);
 
   if (mpfr_cmp (&(y->right), m) < 0)
-    mpfr_set (m, &(y->right), MPFI_RNDD);
+    mpfr_set (m, &(y->right), MPFR_RNDD);
 }
