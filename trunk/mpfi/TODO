@@ -1,3 +1,12 @@
+* set_sj and set_uj 
+  2018-31-07
+I tried... and failed, to add mpfi_set_sj and mpfi_set_uj:
+setting an interval from a huge interval. Pb with compilation: apparently I did not get how to test whether 
+the corresponding types (intmax_t and uintmax_t) are known, or not, by the compiler.
+Everything is ready: the code for these functions, some tests (actually, the same as for set_si and set_ui,
+thus more cases, and especially cornercases, should be added) and the lines in the Makefile.am. Makefile.in
+are already written. But it does not compile... so far.
+
 * Fix predicates
 From: "Sisyphus" <sisyphus1@optusnet.com.au>
 To: "philippe theveny" <philippe.theveny@inrialpes.fr>,
