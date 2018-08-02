@@ -21,9 +21,15 @@ along with the MPFI Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc.,  51 Franklin St, Fifth Floor, Boston,
 MA 02110-1301, USA
 
+Changes between MPFI version 1.5.3 and 1.5.4
+* MPFI now requires MPFR 3.0 or higher
+* mp_exp_t replaced by mpfr_exp_t, mp_prec_t replaced by mpfr_prec_t, mp_rnd_t replaced by mpfr_rnd_t
+  GMP_RNDx replaced by MPFR_RNDx
+* incorporation of "new" functionalities offered by MPFR since MPFR version 2.4.2:
+
 Changes between MPFI version 1.5.2 and 1.5.3
 * compatible with MPFR version 4.0.0
-* minors warning removed
+* minor warnings removed
 
 Changes between MPFI version 1.5 and 1.5.2
 * allow compilation as a DLL with Cygwin and Mingw on windows platforms
