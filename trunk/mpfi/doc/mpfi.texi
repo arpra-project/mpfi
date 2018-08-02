@@ -1,7 +1,7 @@
 \input texinfo    @c -*-texinfo-*-
 @c %**start of header
 @setfilename mpfi.info
-@settitle MPFI 1.5.3.
+@settitle MPFI 1.5.4.
 @synindex tp fn
 @iftex
 @afourpaper
@@ -32,7 +32,7 @@ which is built upon the MPFR multiple precision floating-point
 arithmetic library
 
 Copyright (C) 2002-2018, Ouragan team, Inria Paris, France,
-Arenaire team, INRIA Rhone-Alpes and LIP, ENS Lyon, France,
+Arenaire team and AriC team, INRIA Rhone-Alpes and LIP, ENS Lyon, France,
 and Lab. ANO, University of Sciences and Technologies of Lille, France.
 
 Permission is granted to make and distribute verbatim copies of
@@ -61,10 +61,11 @@ by the Free Software Foundation.
 @titlepage
 @c  use the new format for titles
 
-@title MPFI 1.5.3.
+@title MPFI 1.5.4.
 @subtitle Multiple Precision Floating-Point Interval Library
-@subtitle August 2010
+@subtitle August 2018
 
+@author AriC, INRIA Grenoble - Rhone-Alpes,
 @author Spaces, INRIA Lorraine,
 @author Arenaire, INRIA Rhone-Alpes,
 @author Lab. ANO, USTL (Univ. of Lille)
@@ -80,7 +81,7 @@ by the Free Software Foundation.
 
 @page
 @vskip 0pt plus 1filll
-@c Copyright @copyright{} 2002-2010 Spaces and Arenaire INRIA projects, Lab. ANO - USTL
+@c Copyright @copyright{} 2002-2018 Spaces, Arenaire and AriC INRIA projects, Lab. ANO - USTL
 
 @sp 2
 
@@ -103,7 +104,7 @@ by the Free Software Foundation.
 @ifinfo
 @node Top, Copying, (dir), (dir)
 
-@top MPFI 1.5.3.
+@top MPFI 1.5.4.
 
 This manual documents how to install and use the Multiple Precision
 Floating-Point Interval Library
@@ -237,12 +238,14 @@ may evolve in order to reflect the standardized definitions and behaviours.
 @chapter Installing MPFI
 @cindex Installation
 
-To build MPFI, you first have to install MPFR (version 2.4.2 or above)
+To build MPFI, you first have to install MPFR (version 4.0.1 or above)
 on your computer.
 You need a C compiler, preferably GCC, but any reasonable compiler
 should work.
 And you need a standard Unix @samp{make} program, plus some other
 standard Unix utility programs.
+
+@section How to Install
 
 Here are the steps needed to install the MPFI library on Unix systems.
 In the MPFI source directory, type the following commands.
@@ -252,6 +255,8 @@ In the MPFI source directory, type the following commands.
 @samp{./configure}
 
 This will prepare the build and setup the options according to your system.
+You can give options to specify the install directories (instead of the
+default @file{/usr/local}), and so on.
 
 You can specify the path to GMP and MPFR libraries with configure
 options: @samp{--with-gmp=DIR} assumes that GMP is installed in the
@@ -275,10 +280,18 @@ On most platforms, a dynamic library will be produced too.
 @samp{make check}
 
 This will make sure MPFI was built correctly.
+If any test fails, information about this failure can be found in the
+@file{tests/test-suite.log} file. If you want the contents of this file to
+be automatically output in case of failure, you can set the @samp{VERBOSE}
+environment variable to 1 before running @samp{make check}, for instance
+by typing:
+
+@samp{VERBOSE=1 make check}
+
 If you get error messages from the test program, please
 report this to
 @samp{mpfi-users@@lists.gforge.inria.fr}.
-(@xref{Reporting Bugs}, for information on what to include in useful
+(See @xref{Reporting Bugs}, for information on what to include in useful
 bug reports.)
 
 @item
@@ -296,26 +309,30 @@ using the prefix directory given as argument to @samp{--prefix}
 instead of @file{/usr/local}).
 @end enumerate
 
+@section Other `make' targets
+
 There are some other useful make targets:
 
 @itemize @bullet
 @item
-@samp{mpfi.info} or @samp{info}
+@samp{info}
 
 Create an info version of the manual, in @file{mpfi.info}.
 
+This file is already provided in the MPFI archives.
+
 @item
-@samp{mpfi.pdf} or @samp{pdf}
+@samp{pdf}
 
 Create a PDF version of the manual, in @file{mpfi.pdf}.
 
 @item
-@samp{mpfi.dvi} or @samp{dvi}
+@samp{dvi}
 
 Create a DVI version of the manual, in @file{mpfi.dvi}.
 
 @item
-@samp{mpfi.ps} or @samp{ps}
+@samp{ps}
 
 Create a Postscript version of the manual, in @file{mpfi.ps}.
 
@@ -449,16 +466,16 @@ input interval.
 @tindex @code{mpfr_t}
 @noindent
 A @dfn{Floating point number} or @dfn{Float} for short, is an arbitrary precision
-mantissa with a limited precision exponent.  The C data type for such objects
+significand (aslso called mantissa) with a limited precision exponent.  The C data type for such objects
 is @code{mpfr_t}.
 
 @cindex Precision
-@tindex @code{mp_prec_t}
+@tindex @code{mpfr_prec_t}
 @comment a changer en mpfr_prec_t quand on demandera MPFR 3.0.0 ou plus
 @noindent
-The @dfn{Precision} is the number of bits used to represent the mantissa
+The @dfn{Precision} is the number of bits used to represent the significand
 of a floating-point number;
-the corresponding C data type is @code{mp_prec_t} (renamed
+the corresponding C data type is @code{mpfr_prec_t} (renamed
 @code{mpfr_prec_t} since MPFR version 3.0.0, both types are
 compatible).
 
@@ -615,9 +632,9 @@ The default computing precision is handled by MPFR, getting or setting
 its value is performed using the following MPFR functions
 (cf. MPFR documentation):
 
-@deftypefn Macro void mpfr_set_default_prec (mp_prec_t @var{prec})
+@deftypefn Macro void mpfr_set_default_prec (mpfr_prec_t @var{prec})
 Sets the default precision to be @strong{exactly} @var{prec} bits.  The
-precision of a variable means the number of bits used to store the mantissas
+precision of a variable means the number of bits used to store the significands
 of its endpoints.
 All
 subsequent calls to @code{mpfi_init} will use this precision, but previously
@@ -625,9 +642,12 @@ initialized variables are unaffected.
 This default precision is set to 53 bits initially.
 The precision @var{prec} can be any integer between @code{MPFR_PREC_MIN} and
 @code{MPFR_PREC_MAX}.
+
+Note: when MPFR is built with the @samp{--enable-thread-safe} configure option,
+the default precision is local to each thread. See MPFR documentation for more information.
 @end deftypefn
 
-@deftypefn Macro mp_prec_t mpfr_get_default_prec ()
+@deftypefn Macro mpfr_prec_t mpfr_get_default_prec ()
 Returns the default MPFR/MPFI precision in bits.
 @end deftypefn
 
@@ -636,12 +656,12 @@ calculation.  A typical use would be for adjusting the precision gradually in
 iterative algorithms like Newton-Raphson, making the computation precision
 closely match the actual accurate part of the numbers.
 
-@deftypefun void mpfi_set_prec (mpfi_t @var{x}, mp_prec_t @var{prec})
+@deftypefun void mpfi_set_prec (mpfi_t @var{x}, mpfr_prec_t @var{prec})
 Resets the precision of @var{x} to be @strong{exactly} @var{prec} bits.
 The previous value stored in @var{x} is lost. It is equivalent to
 a call to @code{mpfi_clear(x)} followed by a call to 
 @code{mpfi_init2(x, prec)}, but more efficient as no allocation is done in
-case the current allocated space for the mantissas of the endpoints
+case the current allocated space for the significands of the endpoints
 of @var{x} is enough.
 The precision @var{prec} can be any integer between @code{MPFR_PREC_MIN} and
 @code{MPFR_PREC_MAX}.
@@ -649,18 +669,18 @@ In case you want to keep the previous value stored in @var{x},
 use @code{mpfi_round_prec} instead.
 @end deftypefun
 
-@deftypefun mp_prec_t mpfi_get_prec (mpfi_t @var{x})
-Return the largest precision actually used for assignments of @var{x}, i.e.
-the number of bits used to store the mantissas of its endpoints.
+@deftypefun mpfr_prec_t mpfi_get_prec (mpfi_t @var{x})
+Return the largest precision actually used for assignments of @var{x}, i.e.\
+the number of bits used to store the significands of its endpoints.
 Should the two endpoints have different precisions, the largest one is returned.
 @end deftypefun
 
-@deftypefun int mpfi_round_prec (mpfi_t @var{x}, mp_prec_t @var{prec})
+@deftypefun int mpfi_round_prec (mpfi_t @var{x}, mpfr_prec_t @var{prec})
 Rounds @var{x} with precision @var{prec}, which
 may be different from that of @var{x}. 
 If @var{prec} is greater or equal to the precision of @var{x}, then new
-space is allocated for the endpoints' mantissas, and they are filled with zeroes.
-Otherwise, the mantissas are rounded outwards to precision @var{prec}.
+space is allocated for the endpoints' significands, and they are filled with zeroes.
+Otherwise, the significands are rounded outwards to precision @var{prec}.
 In both cases, the precision of @var{x} is changed to @var{prec}.
 It returns a value indicating whether the possibly rounded endpoints are exact or not,
 cf. @ref{Return Values}.
@@ -694,9 +714,12 @@ or at least be cleared, using @code{mpfi_clear}, between consecutive
 initializations.  The
 precision of @var{x} is the default precision, which can be changed
 by a call to @code{mpfr_set_default_prec}.
+
+Warning! In a given program, some other libraries might change the default
+precision and not restore it. Thus it is safer to use @code{mpfi_init2}.
 @end deftypefun
 
-@deftypefun void mpfi_init2 (mpfi_t @var{x}, mp_prec_t @var{prec})
+@deftypefun void mpfi_init2 (mpfi_t @var{x}, mpfr_prec_t @var{prec})
 Initializes @var{x}, sets its precision (or more precisely the precision
 of its endpoints) to be @strong{exactly}
 @var{prec} bits, and sets its endpoints to NaN.
@@ -711,6 +734,7 @@ Frees the space occupied by the significands of the endpoints of @var{x}.  Make 
 @code{mpfi_t} variables when you are done with them.
 @end deftypefun
 
+
 @need 2000
 Here is an example on how to initialize interval variables:
 @example
@@ -722,6 +746,58 @@ Here is an example on how to initialize interval variables:
   /* Unless the program is about to exit, do ... */
   mpfi_clear (x);
   mpfi_clear (y);
+@}
+@end example
+
+@deftypefun void mpfi_inits (mpfi_t @var{x}, ...)
+Initialize all the @code{mpfi_t} variables of the given @code{va_list},
+set their precision to the default precision and their value to NaN@.
+See @code{mpfi_init} for more details.
+The @code{va_list} is assumed to be composed only of type @code{mpfi_t}
+(or equivalently @code{mpfi_ptr}).
+It begins from @var{x}, and ends when it encounters a null pointer (whose
+type must also be @code{mpfi_ptr}).
+
+Warning! In a given program, some other libraries might change the default
+precision and not restore it. Thus it is safer to use @code{mpfi_inits2}.
+@end deftypefun
+
+@deftypefun void mpfi_inits2 (mpfr_prec_t @var{prec}, mpfi_t @var{x}, ...)
+Initialize all the @code{mpfi_t} variables of the given variable
+argument @code{va_list}, set their precision to be @strong{exactly}
+@var{prec} bits and their value to NaN@.
+See @code{mpfi_init2} for more details.
+The @code{va_list} is assumed to be composed only of type @code{mpfi_t}
+(or equivalently @code{mpfi_ptr}).
+It begins from @var{x}, and ends when it encounters a null pointer (whose
+type must also be @code{mpfi_ptr}).
+@end deftypefun
+
+@deftypefun void mpfi_clears (mpfi_t @var{x}, ...)
+Free the space occupied by all the @code{mpfi_t} variables of the given
+@code{va_list}. See @code{mpfi_clear} for more details.
+The @code{va_list} is assumed to be composed only of type @code{mpfi_t}
+(or equivalently @code{mpfi_ptr}).
+It begins from @var{x}, and ends when it encounters a null pointer (whose
+type must also be @code{mpfi_ptr}).
+@end deftypefun
+
+Here is an example of how to use multiple initialization functions
+(since @code{NULL} is not necessarily defined in this context, we use
+@code{(mpfi_ptr) 0} instead, but @code{(mpfi_ptr) NULL} is also correct).
+
+@example
+@{
+  mpfi_t a, b, c;
+
+  mpfi_inits (a, b, c, (mpfi_ptr) 0); /* Use default precision */
+  @dots{}
+  mpfi_clears (a, b, c, (mpfi_ptr) 0);
+
+  /* Another possibility is to specify the precision */
+  mpfi_inits2 (200, a, b, c, (mpfi_ptr) 0); /* Use @emph{exactly} 200 bits */
+  @dots{}
+  mpfi_clears (a, b, c, (mpfi_ptr) 0);
 @}
 @end example
 
@@ -738,6 +814,8 @@ These functions assign new values to already initialized intervals
 @deftypefunx int mpfi_set_ui (mpfi_t @var{rop}, unsigned long int @var{op})
 @deftypefunx int mpfi_set_si (mpfi_t @var{rop}, long int @var{op})
 @deftypefunx int mpfi_set_d (mpfi_t @var{rop}, double @var{op})
+@deftypefunx int mpfi_set_flt (mpfi_t @var{rop}, float @var{op})
+@deftypefunx int mpfi_set_ld (mpfi_t @var{rop}, long double @var{op})
 @deftypefunx int mpfi_set_z (mpfi_t @var{rop}, mpz_t @var{op})
 @deftypefunx int mpfi_set_q (mpfi_t @var{rop}, mpq_t @var{op})
 @deftypefunx int mpfi_set_fr (mpfi_t @var{rop}, mpfr_t @var{op})
@@ -746,6 +824,8 @@ Sets the value of @var{rop} from @var{op}, rounded outward to the precision of @
 The returned value indicates whether none, one or both endpoints are exact.
 Please note that even a @code{long int} may have to be rounded,
 if the destination precision is less than the machine word width.
+
+No support (yet) for huge (signed or unsigned) integer, nor for float128, nor for decimal64.
 @end deftypefun
 
 @deftypefun int mpfi_set_str (mpfi_t @var{rop}, char *@var{s}, int @var{base})
@@ -758,8 +838,8 @@ The string is of the form @samp{number} or
 @c where the spaces around the floating-point endpoints are mandatory.
 Each endpoint has the form @samp{M@@N} or, if the
 base is 10 or less, alternatively @samp{MeN} or @samp{MEN}.
-@samp{M} is the mantissa and
-@samp{N} is the exponent.  The mantissa is always in the specified base.  The
+@samp{M} is the significand and
+@samp{N} is the exponent.  The significand is always in the specified base.  The
 exponent is 
 @c either in the specified base or, if @var{base} is negative, 
 in decimal.
@@ -839,14 +919,14 @@ in the latter case.
 
 @deftypefun int mpfi_mag (mpfr_t rop, mpfi_t op)
 Sets the value of @var{rop} to the magnitude of @var{op},
-i.e. to the largest absolute value of the elements of @var{op}.
+i.e.\ to the largest absolute value of the elements of @var{op}.
 Returns 0 if the result is exact and a positive value if the returned value
 is an overestimation.
 @end deftypefun
 
 @deftypefun int mpfi_mig (mpfr_t rop, mpfi_t op)
 Sets the value of @var{rop} to the mignitude of @var{op},
-i.e. to the smallest absolute value of the elements of @var{op}.
+i.e.\ to the smallest absolute value of the elements of @var{op}.
 Returns 0 if the result is exact and a negative value if the returned value
 is an underestimation.
 @end deftypefun
@@ -1254,7 +1334,7 @@ according to the user's needs.
 The default comparison functions return a positive value if the first interval
 has all its elements strictly greater than all elements of the second one, a
 negative value if the first interval has all its elements strictly lower than
-all elements of the second one and 0 otherwise, i.e. if they overlap or if one
+all elements of the second one and 0 otherwise, i.e.\ if they overlap or if one
 is contained in the other.
 
 @deftypefun int mpfi_cmp (mpfi_t @var{op1}, mpfi_t @var{op2})
@@ -1315,7 +1395,7 @@ Returns a positive value if @var{op} contains 0 (and possibly other numbers).
 @end deftypefun
 
 @deftypefun int mpfi_nan_p (mpfi_t @var{op})
-Returns non-zero if @var{op} is invalid, i.e. at least one of its
+Returns non-zero if @var{op} is invalid, i.e.\ at least one of its
 endpoints is a Not-a-Number (NaN), zero otherwise.
 @end deftypefun
 
@@ -1325,7 +1405,7 @@ plus or minus infinity, zero otherwise.
 @end deftypefun
 
 @deftypefun int mpfi_bounded_p (mpfi_t @var{op})
-Returns non-zero if @var{op} is a bounded interval, i.e. neither invalid
+Returns non-zero if @var{op} is a bounded interval, i.e.\ neither invalid
 nor (semi-)infinite.
 @end deftypefun
 
@@ -1385,8 +1465,8 @@ read float in @var{rop}.  The string is of the form @samp{number} or
 @c where the spaces around the floating-point endpoints are mandatory.
 Each endpoint has the form @samp{M@@N} or, if the
 base is 10 or less, alternatively @samp{MeN} or @samp{MEN}.
-@samp{M} is the mantissa and
-@samp{N} is the exponent.  The mantissa is always in the specified base.  The
+@samp{M} is the significand and
+@samp{N} is the exponent.  The significand is always in the specified base.  The
 exponent is 
 @c either in the specified base or, if @var{base} is negative, 
 in decimal.
@@ -1407,7 +1487,7 @@ Returns the number of bytes read, or if an error occurred, return 0.
 Outputs @var{op} on stdout
 in raw binary format for each endpoint (the exponent is in decimal, yet).
 The last bits from the least significant limb which do not belong to
-the mantissa are printed between square brackets;
+the significand are printed between square brackets;
 they should always be zero.
 @end deftypefun
 
@@ -1434,7 +1514,7 @@ intervals when there is a bug.
 
 @deftypefun int mpfi_revert_if_needed (mpfi_t @var{rop})
 Swaps the endpoints of @var{rop} if they are not properly ordered,
-i.e. if the lower endpoint is greater than the right one.
+i.e.\ if the lower endpoint is greater than the right one.
 It returns a non-zero value if the endpoints have been swapped, zero otherwise.
 @end deftypefun
 
@@ -1500,7 +1580,7 @@ Sets @var{rop} to the intersection (possibly empty) of the intervals
 @var{op1} and @var{op2}.
 It returns a value indicating whether none, one or both endpoints are inexact
 (due to possible roundings).
-Warning: this function can return an empty interval (i.e. with endpoints
+Warning: this function can return an empty interval (i.e.\ with endpoints
 in reverse order).
 @end deftypefun
 
