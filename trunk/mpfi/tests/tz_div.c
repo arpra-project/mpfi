@@ -86,7 +86,7 @@ check_overflow (void)
 #ifndef HAVE_MPFR_Z_DIV
 /* fake non-existing function */
 int
-mpfr_z_div (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mp_rnd_t rnd)
+mpfr_z_div (mpfr_ptr x, mpz_srcptr z, mpfr_srcptr y, mpfr_rnd_t rnd)
 {
   int ret;
   mpfr_t zz;

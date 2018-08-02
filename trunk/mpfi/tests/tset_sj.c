@@ -1,10 +1,7 @@
-/* tinv.c -- Test mpfi_inv.
+/* tset_sj.c -- Test mpfi_set_sj.
 
-Copyright 2009, 2010,
-                     Spaces project, Inria Lorraine
-                     and Salsa project, INRIA Rocquencourt,
-                     and Arenaire project, Inria Rhone-Alpes, France
-                     and Lab. ANO, USTL (Univ. of Lille),  France
+Copyright 2018-2018
+                     AriC project, Inria Grenoble - Rhone-Alpes, France
 
 
 This file is part of the MPFI Library.
@@ -27,24 +24,15 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 int
-fr_inv (mpfr_ptr y, mpfr_srcptr x, mpfr_rnd_t rnd)
-{
-  return mpfr_ui_div (y, 1, x, rnd);
-}
-
-int
 main (int argc, char **argv)
 {
-  struct mpfi_function_t i_inv;
+  struct mpfi_function_t i_set_sj;
 
-  mpfi_fun_init_II (&i_inv, mpfi_inv, fr_inv);
-  test_start ();
+  mpfi_fun_init_JS (&i_set_sj, mpfi_set_sj, NULL);
 
-  check_data (&i_inv, "inv.dat");
-  check_random (&i_inv, 2, 1000, 10);
+  check_data (&i_set_sj, "set_sj.dat");
 
-  test_end ();
-  mpfi_fun_clear (&i_inv);
+  mpfi_fun_clear (&i_set_sj);
 
   return 0;
 }

@@ -43,8 +43,8 @@ read_line_i (mpfi_function_ptr this, FILE* fp)
 void
 check_monotonicity (mpfi_function_ptr this)
 {
-  mp_prec_t precision;
-  mp_prec_t initial_precision;
+  mpfr_prec_t precision;
+  mpfr_prec_t initial_precision;
 
   /* rename operands for better readability */
   I_fun  f_I        = MPFI_FUN_GET (*this, I);
@@ -105,7 +105,7 @@ check_line_i (mpfi_function_ptr this)
 }
 
 void
-set_prec_i (mpfi_function_ptr this, mp_prec_t prec)
+set_prec_i (mpfi_function_ptr this, mpfr_prec_t prec)
 {
   mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
   mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);

@@ -83,7 +83,7 @@ check_line_iu (mpfi_function_ptr function)
 }
 
 void
-set_prec_iu (mpfi_function_ptr this, mp_prec_t prec)
+set_prec_iu (mpfi_function_ptr this, mpfr_prec_t prec)
 {
   mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
   mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);

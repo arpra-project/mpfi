@@ -44,7 +44,7 @@ main (int argc, char **argv)
 {
   mpfr_t x;
   mpfi_t interval;
-  mp_prec_t p;
+  mpfr_prec_t p;
 
   test_start ();
 

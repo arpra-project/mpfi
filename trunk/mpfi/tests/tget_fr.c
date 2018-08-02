@@ -110,11 +110,11 @@ test_special ()
 }
 
 void
-test_random (mp_prec_t prec_min, mp_prec_t prec_max)
+test_random (mpfr_prec_t prec_min, mpfr_prec_t prec_max)
 {
   mpfr_t x;
   mpfi_t i;
-  mp_prec_t prec;
+  mpfr_prec_t prec;
   unsigned long pi, px;
 
   mpfr_init2 (x, prec_max);

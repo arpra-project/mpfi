@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 
 /* the middle of two points is in their convex hull */
 int
-middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b, mp_rnd_t rnd)
+middle (mpfr_ptr m, mpfr_srcptr a, mpfr_srcptr b, mpfr_rnd_t rnd)
 {
   mpfr_t min, max;
 

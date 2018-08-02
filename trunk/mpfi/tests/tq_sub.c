@@ -89,7 +89,7 @@ check_overflow ()
 #ifndef HAVE_MPFR_Q_SUB
 /* fake non-existing function */
 int
-mpfr_q_sub (mpfr_ptr x, mpq_srcptr q, mpfr_srcptr y, mp_rnd_t rnd)
+mpfr_q_sub (mpfr_ptr x, mpq_srcptr q, mpfr_srcptr y, mpfr_rnd_t rnd)
 {
   int ret;
 

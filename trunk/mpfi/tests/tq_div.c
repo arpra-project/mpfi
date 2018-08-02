@@ -52,8 +52,8 @@ check_overflow (struct mpfi_function_t *i_q_div)
   mpq_ptr op1       = MPFI_FUN_ARG (*i_q_div, 3, mpq);
   mpfi_ptr op2      = MPFI_FUN_ARG (*i_q_div, 4, mpfi);
   int inex;
-  mp_exp_t emin;
-  mp_exp_t emax;
+  mpfr_exp_t emin;
+  mpfr_exp_t emax;
 
   emin = mpfr_get_emin ();
   emax = mpfr_get_emax ();

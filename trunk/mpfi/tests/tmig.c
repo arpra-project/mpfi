@@ -27,11 +27,11 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 void
-test_random (mp_prec_t prec_min, mp_prec_t prec_max)
+test_random (mpfr_prec_t prec_min, mpfr_prec_t prec_max)
 {
   mpfr_t x;
   mpfi_t i;
-  mp_prec_t prec;
+  mpfr_prec_t prec;
   int dl, dr, d0;
   int ret;
 

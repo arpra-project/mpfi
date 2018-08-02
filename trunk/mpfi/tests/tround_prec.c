@@ -27,7 +27,7 @@ MA 02110-1301, USA. */
 #include "mpfi-tests.h"
 
 void
-check (mpfi_ptr i, mp_prec_t new_prec,
+check (mpfi_ptr i, mpfr_prec_t new_prec,
        mpfr_srcptr expected_left, mpfr_srcptr expected_right,
        int expected_inex)
 {
@@ -133,7 +133,7 @@ special (void)
 void
 swing (void)
 {
-  mp_prec_t p;
+  mpfr_prec_t p;
   mpfi_t i;
   mpfr_t left, right, tmp;
   int inex [2] = {

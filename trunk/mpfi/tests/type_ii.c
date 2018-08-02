@@ -46,7 +46,7 @@ read_line_ii (mpfi_function_ptr this, FILE* fp)
 /* when one (at least) endpoint of the result is exact, it can be
    used to check the function at a different precision. */
 void
-check_with_different_prec (mpfi_function_ptr function, mp_prec_t prec)
+check_with_different_prec (mpfi_function_ptr function, mpfr_prec_t prec)
 {
   mpfr_t x;
 
@@ -229,7 +229,7 @@ random_ii (mpfi_function_ptr this)
 }
 
 void
-set_prec_ii (mpfi_function_ptr this, mp_prec_t prec)
+set_prec_ii (mpfi_function_ptr this, mpfr_prec_t prec)
 {
   mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
   mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);

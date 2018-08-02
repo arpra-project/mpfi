@@ -30,14 +30,14 @@ MA 02110-1301, USA. */
 #define TMP_FILENAME "io_str.tmp"
 
 void
-check_random_interval (mp_prec_t prec_min, mp_prec_t prec_max, mp_prec_t step)
+check_random_interval (mpfr_prec_t prec_min, mpfr_prec_t prec_max, mpfr_prec_t step)
 {
   FILE *tmp_file;
   size_t n_written, n_read;
   int base;
   mpfi_t i;
   mpfi_t read;
-  mp_prec_t p;
+  mpfr_prec_t p;
 
   mpfi_init2 (i, prec_max);
   mpfi_init2 (read, prec_max);
@@ -47,7 +47,7 @@ check_random_interval (mp_prec_t prec_min, mp_prec_t prec_max, mp_prec_t step)
     mpfi_set_prec (read, p);
     random_interval (i);
 
-    for (base = 2; base < 37; ++base) {
+    for (base = 2; base < 63; ++base) {
       tmp_file = fopen (TMP_FILENAME, "w");
       if (tmp_file == NULL) {
         printf ("Internal error: cannot open temporary file.\n");
@@ -117,7 +117,7 @@ check_file (const char *datafile)
   int c;
 
   int base;
-  mp_prec_t p;
+  mpfr_prec_t p;
   mpfr_t r;
   mpfi_t i;
   size_t n_mpfr, n_mpfi;
@@ -131,7 +131,7 @@ check_file (const char *datafile)
   for (p = 2; p < 1024; p += 17) {
     mpfr_set_prec (r, p);
     mpfi_set_prec (i, p);
-    for (base = 2; base < 37 ; ++base) {
+    for (base = 2; base < 63 ; ++base) {
       if (fseek (stream_mpfr, 0, SEEK_SET)) {
         printf ("Internal error: cannot reset position to the start of the "
                 "file \"%s\"\n", datafile);
@@ -144,7 +144,7 @@ check_file (const char *datafile)
 
         exit (1);
       }
-      n_mpfr = mpfr_inp_str (r, stream_mpfr, base, GMP_RNDN);
+      n_mpfr = mpfr_inp_str (r, stream_mpfr, base, MPFR_RNDN);
       n_mpfi = mpfi_inp_str (i, stream_mpfi, base);
 
       if (n_mpfr != n_mpfi) {
@@ -161,7 +161,7 @@ check_file (const char *datafile)
                 "included in the interval I read with\nmpfi_inp_str "
                 "(I, \"%s\", %u)\nR = ", datafile, datafile, base, datafile,
                 base);
-        mpfr_out_str (stdout, base, 0, r, GMP_RNDN);
+        mpfr_out_str (stdout, base, 0, r, MPFR_RNDN);
         printf ("(in base %u)\nI = ", base);
         mpfi_out_str (stdout, base, 0, i);
         printf ("(in base %u)\n", base);
@@ -173,7 +173,7 @@ check_file (const char *datafile)
     while ((c = getc (stream_mpfr)) != EOF) {
       ungetc (c, stream_mpfr);
 
-      n_mpfr = mpfr_inp_str (r, stream_mpfr, 10, GMP_RNDN);
+      n_mpfr = mpfr_inp_str (r, stream_mpfr, 10, MPFR_RNDN);
       n_mpfi = mpfi_inp_str (i, stream_mpfi, 10);
 
       if (n_mpfr != n_mpfi) {
@@ -189,7 +189,7 @@ check_file (const char *datafile)
                 "read with\nmpfr_inp_str (R, \"%s\", 10, MPFR_RNDN)\nis not "
                 "included in the interval I read with\nmpfi_inp_str "
                 "(I, \"%s\", 10)\nR = ", datafile, datafile, datafile);
-        mpfr_out_str (stdout, 16, 0, r, GMP_RNDN);
+        mpfr_out_str (stdout, 16, 0, r, MPFR_RNDN);
         printf ("(in base 16)\nI = ");
         mpfi_out_str (stdout, 16, 0, i);
         printf ("(in base 16)\n");

@@ -40,9 +40,9 @@ mpfi_fun_clear (mpfi_function_ptr func)
 
 void
 check_random (mpfi_function_ptr function,
-              mp_prec_t prec_min, mp_prec_t prec_max, int nb_tests)
+              mpfr_prec_t prec_min, mpfr_prec_t prec_max, int nb_tests)
 {
-  mp_prec_t prec;
+  mpfr_prec_t prec;
   int i;
 
   if (!rands_initialized)

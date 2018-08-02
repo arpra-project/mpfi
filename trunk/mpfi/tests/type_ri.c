@@ -77,7 +77,7 @@ check_line_ri (mpfi_function_ptr this)
 }
 
 void
-set_prec_ri (mpfi_function_ptr this, mp_prec_t prec)
+set_prec_ri (mpfi_function_ptr this, mpfr_prec_t prec)
 {
   mpfr_set_prec (MPFI_FUN_ARG (*this, 0, mpfr), prec);
   mpfr_set_prec (MPFI_FUN_ARG (*this, 2, mpfr), prec);

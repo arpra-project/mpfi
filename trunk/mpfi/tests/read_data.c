@@ -226,6 +226,47 @@ read_ui (FILE *f, unsigned long *i)
 }
 
 void
+read_uj (FILE *f, uintmax_t *i)
+{
+  mpfr_t x;
+
+  /* unknown constant...
+  mpfr_init2 (x, INTMAX_WIDTH);
+  */
+  mpfr_init2 (x, sizeof(uintmax_t));
+
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading integer "
+            "in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
+    printf ("Error: Impossible to read integer in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+
+  if (mpfr_fits_uintmax_p (x, MPFI_RNDD))
+    *i = mpfr_get_uj (x, MPFI_RNDD);
+  else {
+    printf ("Error: the number ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
+    printf (" read in file '%s' line %lu does not fit "
+            "in an unsigned long int\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+
+  mpfr_clear (x);
+}
+
+void
 read_si (FILE *f, long *i)
 {
   mpfr_t x;
@@ -251,6 +292,45 @@ read_si (FILE *f, long *i)
     printf ("Error: the number ");
     mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
     printf (" read in file '%s' line %lu does not fit in a long int\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+
+  mpfr_clear (x);
+}
+
+void
+read_sj (FILE *f, intmax_t *i)
+{
+  mpfr_t x;
+
+  /* unknown constant...
+  mpfr_init2 (x, INTMAX_WIDTH);
+  */
+  mpfr_init2 (x, sizeof(intmax_t));
+
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading integer "
+            "in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
+    printf ("Error: Impossible to read integer in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  if (mpfr_fits_intmax_p (x, MPFI_RNDD))
+    *i = mpfr_get_sj (x, MPFI_RNDD);
+  else {
+    printf ("Error: the number ");
+    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
+    printf (" read in file '%s' line %lu does not fit in a huge int\n",
             pathname, line_number);
     exit (1);
   }
@@ -290,6 +370,78 @@ read_double (FILE *f, double *d)
 
   *d = mpfr_get_d (x, MPFI_RNDD);
   ret = mpfr_cmp_d (x, *d); /* verify conversion */
+
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+
+  mpfr_clear (x);
+
+  return ret;
+}
+
+int
+read_float (FILE *f, float *d)
+{
+  int ret;
+  mpfr_t x;
+
+#if defined(FLT_MANT_DIG) && FLT_MANT_DIG > 24
+  mpfr_init2 (x, FLT_MANT_DIG);
+#else
+  mpfr_init2 (x, 24);
+#endif
+
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading float"
+            "in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
+    printf ("Error: Impossible to read float in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  *d = mpfr_get_flt (x, MPFI_RNDD);
+  ret = mpfr_cmp_d (x, *d); /* verify conversion */
+
+  nextchar = getc (f);
+  skip_whitespace_comments (f);
+
+  mpfr_clear (x);
+
+  return ret;
+}
+
+int
+read_long_double (FILE *f, long double *d)
+{
+  int ret;
+  mpfr_t x;
+
+#if defined(LDBL_MANT_DIG) && LDBL_MANT_DIG > 64
+  mpfr_init2 (x, LDBL_MANT_DIG);
+#else
+  mpfr_init2 (x, 64);
+#endif
+
+  if (nextchar == EOF) {
+    printf ("Error: Unexpected EOF when reading long double"
+            "in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+  ungetc (nextchar, f);
+  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
+    printf ("Error: Impossible to read long double in file '%s' line %lu\n",
+            pathname, line_number);
+    exit (1);
+  }
+
+  *d = mpfr_get_ld (x, MPFI_RNDD);
+  ret = mpfr_cmp_ld (x, *d); /* verify conversion */
 
   nextchar = getc (f);
   skip_whitespace_comments (f);
@@ -377,7 +529,7 @@ read_mpfr_number (FILE *f, mpfr_ptr x)
     exit (1);
   }
   ungetc (nextchar, f);
-  if (mpfr_inp_str (x, f, 0, GMP_RNDN) == 0) {
+  if (mpfr_inp_str (x, f, 0, MPFR_RNDN) == 0) {
     printf ("Error: Impossible to read mpfr number "
             "in file '%s' line %lu\n",
             pathname, line_number);

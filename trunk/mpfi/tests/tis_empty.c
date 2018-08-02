@@ -29,9 +29,9 @@ MA 02110-1301, USA. */
 int
 main (int argc, char **argv)
 {
-  mp_prec_t prec_min = 2;
-  mp_prec_t prec_max = 1000;
-  mp_prec_t prec;
+  mpfr_prec_t prec_min = 2;
+  mpfr_prec_t prec_max = 1000;
+  mpfr_prec_t prec;
   int step = 10;
 
   mpfi_t i;

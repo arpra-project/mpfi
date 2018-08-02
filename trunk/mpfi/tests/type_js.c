@@ -1,11 +1,8 @@
-/* type_is.c -- Test functions associated with functions of the type
-                mpfi_f (mpfi_t, long).
+/* type_js.c -- Test functions associated with functions of the type
+                mpfi_f (mpfi_t, intmax_t).
 
-Copyright 2010,
-                     Spaces project, Inria Lorraine
-                     and Salsa project, INRIA Rocquencourt,
-                     and Arenaire project, Inria Rhone-Alpes, France
-                     and Lab. ANO, USTL (Univ. of Lille),  France
+Copyright 2018,
+                     AriC project, Inria Grenoble - Rhone-Alpes, France
 
 
 This file is part of the MPFI Library.
@@ -32,7 +29,7 @@ extern unsigned long line_number;
 static unsigned long test_line_number;   /* start line of a test */
 
 void
-read_line_is (mpfi_function_ptr this, FILE* fp)
+read_line_js (mpfi_function_ptr this, FILE* fp)
 {
   mpfi_ptr got      = MPFI_FUN_ARG (*this, 0, mpfi);
   mpfi_ptr expected = MPFI_FUN_ARG (*this, 2, mpfi);
@@ -45,7 +42,7 @@ read_line_is (mpfi_function_ptr this, FILE* fp)
   /* [2] expected value */
   read_mpfi (fp, expected);
   /* [3] integral operand */
-  read_si (fp, &(MPFI_FUN_ARG (*this, 3, si)));
+  read_sj (fp, &(MPFI_FUN_ARG (*this, 3, si)));
 
   /* data validation */
   if (mpfi_get_prec (got) != mpfi_get_prec (expected)) {
@@ -56,18 +53,18 @@ read_line_is (mpfi_function_ptr this, FILE* fp)
 }
 
 void
-check_line_is (mpfi_function_ptr this)
+check_line_js (mpfi_function_ptr this)
 {
   int inex;
 
   /* rename operands for better readability */
-  IS_fun  f_IS      = MPFI_FUN_GET (*this, IS);
+  JS_fun  f_JS      = MPFI_FUN_GET (*this, JS);
   mpfi_ptr got      = MPFI_FUN_ARG (*this, 0, mpfi);
   int expected_inex = MPFI_FUN_ARG (*this, 1, i);
   mpfi_ptr expected = MPFI_FUN_ARG (*this, 2, mpfi);
-  long op           = MPFI_FUN_ARG (*this, 3, si);
+  intmax_t op       = MPFI_FUN_ARG (*this, 3, sj);
 
-  inex = f_IS (got, op);
+  inex = f_JS (got, op);
   if (inex != expected_inex || !same_value (got, expected)) {
     printf ("Failed line %lu.\nop = %ld", test_line_number, op);
     printf ("\ngot      = ");
@@ -83,21 +80,21 @@ check_line_is (mpfi_function_ptr this)
 }
 
 void
-set_prec_is (mpfi_function_ptr this, mpfr_prec_t prec)
+set_prec_js (mpfi_function_ptr this, mpfr_prec_t prec)
 {
   mpfi_set_prec (MPFI_FUN_ARG (*this, 0, mpfi), prec);
   mpfi_set_prec (MPFI_FUN_ARG (*this, 2, mpfi), prec);
 }
 
 void
-clear_is (mpfi_function_ptr this)
+clear_js (mpfi_function_ptr this)
 {
   /* [0] initial value (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 0, mpfi));
   /* [1] return value (int), needs no deallocation */
   /* [2] expected value (mpfi_t) */
   mpfi_clear (MPFI_FUN_ARG (*this, 2, mpfi));
-  /* [3] operand (long), needs no deallocation */
+  /* [3] operand (intmax_t), needs no deallocation */
 
   free (MPFI_FUN_ARGS (*this));
   MPFI_FUN_ARGS (*this) = NULL;
@@ -106,12 +103,12 @@ clear_is (mpfi_function_ptr this)
 /* In operands array, variables are in the same order as for data in
    '.dat' files plus one additional variable before them. */
 void
-mpfi_fun_init_IS (mpfi_function_ptr this, IS_fun mpfi_function,
+mpfi_fun_init_JS (mpfi_function_ptr this, JS_fun mpfi_function,
               NULL_fun mpfr_function)
 {
-  this->type = IS;
-  this->func.IS = mpfi_function;
-  this->mpfr_func.IS = mpfr_function;
+  this->type = JS;
+  this->func.JS = mpfi_function;
+  this->mpfr_func.JS = mpfr_function;
   this->random_domain = NULL;
 
   /* init operands */
@@ -123,12 +120,12 @@ mpfi_fun_init_IS (mpfi_function_ptr this, IS_fun mpfi_function,
   /* [1] return value (int), needs no initialization */
   /* [2] expected value (mpfi_t) */
   mpfi_init2 (MPFI_FUN_ARG (*this, 2, mpfi), 1024);
-  /* [3] operand (signed long), needs no initialization */
+  /* [3] operand (signed huge), needs no initialization */
 
   /* init methods */
-  this->set_prec   = set_prec_is;
-  this->read_line  = read_line_is;
-  this->check_line = check_line_is;
+  this->set_prec   = set_prec_js;
+  this->read_line  = read_line_js;
+  this->check_line = check_line_js;
   this->random     = NULL;
-  this->clear      = clear_is;
+  this->clear      = clear_js;
 }
