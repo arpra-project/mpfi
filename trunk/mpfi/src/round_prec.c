@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 /* The precision of the interval x is set to prec,     */
 /* the previous value of x is kept.                    */
 int
-mpfi_round_prec (mpfi_ptr x, mp_prec_t prec)
+mpfi_round_prec (mpfi_ptr x, mpfr_prec_t prec)
 {
   int inexact_left, inexact_right, inexact = 0;
 

@@ -1,4 +1,4 @@
-/* init.c -- Initialize an interval.
+/* init2.c -- Initialize an interval.
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2010, 2018
                      Spaces project, Inria Lorraine
@@ -27,9 +27,8 @@ MA 02110-1301, USA. */
 #include "mpfi-impl.h"
 
 void
-mpfi_init (mpfi_t x)
+mpfi_init2 (mpfi_t x, mpfr_prec_t p)
 {
-  mpfr_init (&(x->left));
-  mpfr_init (&(x->right));
+  mpfr_init2 (&(x->left),p);
+  mpfr_init2 (&(x->right),p);
 }
-

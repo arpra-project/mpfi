@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 /* The precision of the interval x is set to prec,  */
 /* the previous value of x is lost.                 */
 void
-mpfi_set_prec (mpfi_ptr x,mp_prec_t prec)
+mpfi_set_prec (mpfi_ptr x,mpfr_prec_t prec)
 {
   mpfr_set_prec (&(x->right),prec);
   mpfr_set_prec (&(x->left),prec);

@@ -28,10 +28,10 @@ MA 02110-1301, USA. */
 /* compares z * Pi/2 - x and y where z is an integer (mpz)              */
 /* the result is exact                                                  */
 int
-mpfi_cmp_sym_pi (mpz_srcptr z, mpfr_srcptr x, mpfr_srcptr y, mp_prec_t prec_init)
+mpfi_cmp_sym_pi (mpz_srcptr z, mpfr_srcptr x, mpfr_srcptr y, mpfr_prec_t prec_init)
 {
   /* Assumption: x and y are neither NaN nor Infinite */
-  mp_prec_t prec;
+  mpfr_prec_t prec;
   mpfi_t pi_over_two, tmp;
   int not_ok;
 

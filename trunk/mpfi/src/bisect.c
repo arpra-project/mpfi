@@ -28,7 +28,7 @@ MA 02110-1301, USA. */
 int
 mpfi_bisect (mpfi_ptr y1, mpfi_ptr y2, mpfi_srcptr y)
 {
-  mp_prec_t prec, prec1, prec2;
+  mpfr_prec_t prec, prec1, prec2;
   mpfr_t centre;
   int inexact_centre;
 

@@ -33,7 +33,7 @@ mpfi_get_d (mpfi_srcptr a)
 
   mpfr_init2 (tmp, 53); /* Double rounding may occur for subnormal numbers */
   mpfi_mid (tmp, a);
-  res = mpfr_get_d (tmp, GMP_RNDN);
+  res = mpfr_get_d (tmp, MPFR_RNDN);
   mpfr_clear (tmp);
 
   return res;

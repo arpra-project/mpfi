@@ -29,7 +29,7 @@ int
 mpfi_sin (mpfi_ptr a, mpfi_srcptr b)
 {
   int inexact_left, inexact_right, inexact = 0;
-  mp_prec_t prec, prec_left, prec_right;
+  mpfr_prec_t prec, prec_left, prec_right;
   mpfr_t tmp;
   mpz_t z, zmod4;
   mpz_t quad_left, quad_right;

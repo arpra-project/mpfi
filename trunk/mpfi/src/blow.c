@@ -32,7 +32,7 @@ int
 mpfi_blow (mpfi_ptr y, mpfi_srcptr x, double fact)
 /* if c = mid (x) and r = rad (x), y = [c - (1+fact)*r , c + (1+fact)*r] */
 {
-  mp_prec_t prec;
+  mpfr_prec_t prec;
   mpfr_t radius, factor;
   mpfr_t centre;
   int inex_diam, inex_div, inex_conv, inex_factor, inex_rad;

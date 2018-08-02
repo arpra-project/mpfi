@@ -71,8 +71,8 @@ extern "C" {
 
 
 
-mp_prec_t mpfi_quadrant (mpz_ptr, mpfr_srcptr);
-int     mpfi_cmp_sym_pi (mpz_srcptr, mpfr_srcptr, mpfr_srcptr, mp_prec_t);
+mpfr_prec_t mpfi_quadrant (mpz_ptr, mpfr_srcptr);
+int     mpfi_cmp_sym_pi (mpz_srcptr, mpfr_srcptr, mpfr_srcptr, mpfr_prec_t);
 
 /* default comparison functions */
 int    	mpfi_cmp_default    (mpfi_srcptr, mpfi_srcptr);

@@ -36,8 +36,8 @@ MA 02110-1301, USA. */
 /* Define MPFI version number */
 #define MPFI_VERSION_MAJOR 1
 #define MPFI_VERSION_MINOR 5
-#define MPFI_VERSION_PATCHLEVEL 3
-#define MPFI_VERSION_STRING "1.5.3"
+#define MPFI_VERSION_PATCHLEVEL 4
+#define MPFI_VERSION_STRING "1.5.4"
 
 typedef struct {
   __mpfr_struct left;
@@ -53,27 +53,34 @@ extern "C" {
 #endif
 
 /* Rounding                                     */
-int     mpfi_round_prec (mpfi_ptr, mp_prec_t prec);
+int     mpfi_round_prec (mpfi_ptr, mpfr_prec_t prec);
 
 
 /* Initialization, destruction and assignment   */
 
 /* initializations */
 void    mpfi_init       (mpfi_ptr);
-void    mpfi_init2      (mpfi_ptr, mp_prec_t);
+void    mpfi_init2      (mpfi_ptr, mpfr_prec_t);
+void 	mpfi_inits 	(mpfi_ptr x, ...);
+void 	mpfi_inits2 	(mpfr_prec_t p, mpfi_ptr x, ...);
 
 void    mpfi_clear      (mpfi_ptr);
+void 	mpfi_clears 	(mpfi_ptr x, ...);
 
 /* mpfi bounds have the same precision */
-mp_prec_t mpfi_get_prec (mpfi_srcptr);
-void    mpfi_set_prec   (mpfi_ptr, mp_prec_t);
+mpfr_prec_t mpfi_get_prec (mpfi_srcptr);
+void    mpfi_set_prec   (mpfi_ptr, mpfr_prec_t);
 
 
 /* assignment functions                         */
 int     mpfi_set        (mpfi_ptr, mpfi_srcptr);
 int     mpfi_set_si     (mpfi_ptr, const long);
 int     mpfi_set_ui     (mpfi_ptr, const unsigned long);
+/* int     mpfi_set_sj     (mpfi_ptr, const intmax_t); */
+/* int     mpfi_set_uj     (mpfi_ptr, const uintmax_t); */
 int     mpfi_set_d      (mpfi_ptr, const double);
+int     mpfi_set_flt    (mpfi_ptr, const float);
+int     mpfi_set_ld     (mpfi_ptr, const long double);
 int     mpfi_set_z      (mpfi_ptr, mpz_srcptr);
 int     mpfi_set_q      (mpfi_ptr, mpq_srcptr);
 int     mpfi_set_fr     (mpfi_ptr, mpfr_srcptr);
@@ -84,6 +91,8 @@ int     mpfi_init_set       (mpfi_ptr, mpfi_srcptr);
 int     mpfi_init_set_si    (mpfi_ptr, const long);
 int     mpfi_init_set_ui    (mpfi_ptr, const unsigned long);
 int     mpfi_init_set_d     (mpfi_ptr, const double);
+int     mpfi_init_set_flt   (mpfi_ptr, const float);
+int     mpfi_init_set_ld    (mpfi_ptr, const long double);
 int     mpfi_init_set_z     (mpfi_ptr, mpz_srcptr);
 int     mpfi_init_set_q     (mpfi_ptr, mpq_srcptr);
 int     mpfi_init_set_fr    (mpfi_ptr, mpfr_srcptr);
@@ -112,6 +121,8 @@ int     mpfi_mid        (mpfr_ptr, mpfi_srcptr);
 /* picks randomly a point m in y */
 void    mpfi_alea       (mpfr_ptr, mpfi_srcptr);
 void    mpfi_urandom    (mpfr_ptr, mpfi_srcptr, gmp_randstate_t);
+void    mpfi_nrandom    (mpfr_ptr, mpfi_srcptr, gmp_randstate_t);
+void    mpfi_erandom    (mpfr_ptr, mpfi_srcptr, gmp_randstate_t);
 
 
 /* Conversions                                  */

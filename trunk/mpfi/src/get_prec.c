@@ -27,10 +27,10 @@ MA 02110-1301, USA. */
 
 /* Returns the largest precision of the endpoints of x */
 /* Reminder: the endpoints' precisions are supposed to be the same */
-mp_prec_t
+mpfr_prec_t
 mpfi_get_prec (mpfi_srcptr x)
 {
-  mp_prec_t prec_left, prec_right;
+  mpfr_prec_t prec_left, prec_right;
 
   prec_left = mpfr_get_prec (&(x->left));
   prec_right = mpfr_get_prec (&(x->right));

@@ -28,12 +28,12 @@ MA 02110-1301, USA. */
 /* returns in quad the integer part of the division of x by Pi/2        */
 /* the result is exact                                                  */
 /* the returned value is the precision required to perform the division */
-mp_prec_t
+mpfr_prec_t
 mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
 {
 /* Assumption: x is neither a NaN nor an Infinite */
   int ok = 0;
-  mp_prec_t prec;
+  mpfr_prec_t prec;
   mpfi_t two_over_pi, tmp;
 
   prec = mpfr_get_prec (x);
@@ -61,7 +61,7 @@ mpfi_quadrant (mpz_ptr quad, mpfr_srcptr x)
       }
     } while (ok != 0);
 
-    mpfr_get_z (quad, &(tmp->left), GMP_RNDN); /* exact */
+    mpfr_get_z (quad, &(tmp->left), MPFR_RNDN); /* exact */
 
     mpfi_clear (two_over_pi);
     mpfi_clear (tmp);
