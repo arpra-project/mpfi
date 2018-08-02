@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([mpfi],[1.5.3],[mpfi-users@lists.gforge.inria.fr],[mpfi],[https://gforge.inria.fr/projects/mpfi/])
+AC_INIT([mpfi],[1.5.4],[mpfi-users@lists.gforge.inria.fr],[mpfi],[https://gforge.inria.fr/projects/mpfi/])
 AC_CONFIG_SRCDIR([src/mpfi.h])
 AC_CONFIG_HEADERS([mpfi_config.h])
 
@@ -107,6 +107,9 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 
 # Checks for header files.
 AC_CHECK_HEADERS([float.h limits.h stdlib.h string.h sys/time.h unistd.h])
+AC_CHECK_HEADER([stdarg.h],[AC_DEFINE([HAVE_STDARG],1,[Define if stdarg])],
+  [AC_CHECK_HEADER([varargs.h],,
+    AC_MSG_ERROR([stdarg.h or varargs.h not found]))])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
