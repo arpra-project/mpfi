@@ -46,7 +46,11 @@ typedef int (*I_fun)   (mpfi_t);
 typedef int (*II_fun)  (mpfi_t, mpfi_srcptr);
 typedef int (*IS_fun)  (mpfi_t, long);
 typedef int (*IU_fun)  (mpfi_t, unsigned long);
+typedef int (*JS_fun)  (mpfi_t, intmax_t);
+typedef int (*JU_fun)  (mpfi_t, uintmax_t);
 typedef int (*ID_fun)  (mpfi_t, double);
+typedef int (*IF_fun)  (mpfi_t, float);
+typedef int (*IL_fun)  (mpfi_t, long double);
 typedef int (*IZ_fun)  (mpfi_t, mpz_srcptr);
 typedef int (*IQ_fun)  (mpfi_t, mpq_srcptr);
 typedef int (*IR_fun)  (mpfi_t, mpfr_srcptr);
@@ -65,19 +69,19 @@ typedef int (*IQI_fun) (mpfi_t, mpq_srcptr, mpfi_srcptr);
 typedef int (*IRI_fun) (mpfi_t, mpfr_srcptr, mpfi_srcptr);
 typedef int (*RI_fun)  (mpfr_t, mpfi_srcptr);
 
-typedef int (*R_fun)   (mpfr_t, mp_rnd_t);
-typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mp_rnd_t);
-typedef int (*RRU_fun) (mpfr_t, mpfr_srcptr, unsigned long, mp_rnd_t);
-typedef int (*RRS_fun) (mpfr_t, mpfr_srcptr, long, mp_rnd_t);
-typedef int (*RRD_fun) (mpfr_t, mpfr_srcptr, double, mp_rnd_t);
-typedef int (*RRZ_fun) (mpfr_t, mpfr_srcptr, mpz_srcptr, mp_rnd_t);
-typedef int (*RRQ_fun) (mpfr_t, mpfr_srcptr, mpq_srcptr, mp_rnd_t);
-typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);
-typedef int (*RUR_fun) (mpfr_t, unsigned long, mpfr_srcptr, mp_rnd_t);
-typedef int (*RSR_fun) (mpfr_t, long, mpfr_srcptr, mp_rnd_t);
-typedef int (*RDR_fun) (mpfr_t, double, mpfr_srcptr, mp_rnd_t);
-typedef int (*RZR_fun) (mpfr_t, mpz_srcptr, mpfr_srcptr, mp_rnd_t);
-typedef int (*RQR_fun) (mpfr_t, mpq_srcptr, mpfr_srcptr, mp_rnd_t);
+typedef int (*R_fun)   (mpfr_t, mpfr_rnd_t);
+typedef int (*RR_fun)  (mpfr_t, mpfr_srcptr, mpfr_rnd_t);
+typedef int (*RRU_fun) (mpfr_t, mpfr_srcptr, unsigned long, mpfr_rnd_t);
+typedef int (*RRS_fun) (mpfr_t, mpfr_srcptr, long, mpfr_rnd_t);
+typedef int (*RRD_fun) (mpfr_t, mpfr_srcptr, double, mpfr_rnd_t);
+typedef int (*RRZ_fun) (mpfr_t, mpfr_srcptr, mpz_srcptr, mpfr_rnd_t);
+typedef int (*RRQ_fun) (mpfr_t, mpfr_srcptr, mpq_srcptr, mpfr_rnd_t);
+typedef int (*RRR_fun) (mpfr_t, mpfr_srcptr, mpfr_srcptr, mpfr_rnd_t);
+typedef int (*RUR_fun) (mpfr_t, unsigned long, mpfr_srcptr, mpfr_rnd_t);
+typedef int (*RSR_fun) (mpfr_t, long, mpfr_srcptr, mpfr_rnd_t);
+typedef int (*RDR_fun) (mpfr_t, double, mpfr_srcptr, mpfr_rnd_t);
+typedef int (*RZR_fun) (mpfr_t, mpz_srcptr, mpfr_srcptr, mpfr_rnd_t);
+typedef int (*RQR_fun) (mpfr_t, mpq_srcptr, mpfr_srcptr, mpfr_rnd_t);
 typedef void *NULL_fun;
 
 typedef union
@@ -86,7 +90,11 @@ typedef union
   II_fun  II;      /* output: mpfi_t, input: mpfi_t */
   IS_fun  IS;      /* output: mpfi_t, input: long */
   IU_fun  IU;      /* output: mpfi_t, input: unsigned long */
+  JS_fun  JS;      /* output: mpfi_t, input: intmax_t */
+  JU_fun  JU;      /* output: mpfi_t, input: uintmax_t */
   ID_fun  ID;      /* output: mpfi_t, input: double */
+  IF_fun  IF;      /* output: mpfi_t, input: float */
+  IL_fun  IL;      /* output: mpfi_t, input: long double */
   IZ_fun  IZ;      /* output: mpfi_t, input: mpz_t */
   IQ_fun  IQ;      /* output: mpfi_t, input: mpq_t */
   IR_fun  IR;      /* output: mpfi_t, input: mpfr_t */
@@ -113,7 +121,11 @@ typedef union
   RRR_fun  III;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
   NULL_fun IS;     /* dummy, no corresponding mpfr function */
   NULL_fun IU;     /* dummy, no corresponding mpfr function */
+  NULL_fun JS;     /* dummy, no corresponding mpfr function */
+  NULL_fun JU;     /* dummy, no corresponding mpfr function */
   NULL_fun ID;     /* dummy, no corresponding mpfr function */
+  NULL_fun IF;     /* dummy, no corresponding mpfr function */
+  NULL_fun IL;     /* dummy, no corresponding mpfr function */
   NULL_fun IZ;     /* dummy, no corresponding mpfr function */
   NULL_fun IQ;     /* dummy, no corresponding mpfr function */
   NULL_fun IR;     /* dummy, no corresponding mpfr function */
@@ -138,7 +150,11 @@ typedef enum
     II,    /* one input: interval */
     IS,    /* one input: long */
     IU,    /* one input: unsigned long */
+    JS,    /* one input: intmax_t */
+    JU,    /* one input: uintmax_t */
     ID,    /* one input: double */
+    IF,    /* one input: float */
+    IL,    /* one input: long double */
     IZ,    /* one input: mpz_t */
     IQ,    /* one input: mpq_t */
     IR,    /* one input: mpfr_t */
@@ -162,7 +178,11 @@ typedef union {
   int           i;
   unsigned long ui;
   signed long   si;
+  uintmax_t 	uj;
+  intmax_t 	sj;
   double        d;
+  float         f;
+  long double   ld;
   mpz_t         mpz;
   mpq_t         mpq;
   mpfr_t        mpfr;
@@ -180,7 +200,7 @@ struct mpfi_function_t
   mpfi_fun_operand_t* operands;
   I_fun               random_domain;
 
-  void (*set_prec)   (mpfi_function_ptr, mp_prec_t);
+  void (*set_prec)   (mpfi_function_ptr, mpfr_prec_t);
   void (*read_line)  (mpfi_function_ptr, FILE *);
   void (*check_line) (mpfi_function_ptr);
   void (*random)     (mpfi_function_ptr);
@@ -211,13 +231,17 @@ extern "C" {
 void test_start         (void);
 void test_end           (void);
 void check_data         (mpfi_function_ptr, const char *);
-void check_random       (mpfi_function_ptr, mp_prec_t, mp_prec_t, int);
+void check_random       (mpfi_function_ptr, mpfr_prec_t, mpfr_prec_t, int);
 
 void mpfi_fun_init_I    (mpfi_function_ptr, I_fun, R_fun);
 void mpfi_fun_init_II   (mpfi_function_ptr, II_fun, RR_fun);
 void mpfi_fun_init_IU   (mpfi_function_ptr, IU_fun, NULL_fun);
 void mpfi_fun_init_IS   (mpfi_function_ptr, IS_fun, NULL_fun);
+void mpfi_fun_init_JU   (mpfi_function_ptr, JU_fun, NULL_fun);
+void mpfi_fun_init_JS   (mpfi_function_ptr, JS_fun, NULL_fun);
 void mpfi_fun_init_ID   (mpfi_function_ptr, ID_fun, NULL_fun);
+void mpfi_fun_init_IF   (mpfi_function_ptr, IF_fun, NULL_fun);
+void mpfi_fun_init_IL   (mpfi_function_ptr, IL_fun, NULL_fun);
 void mpfi_fun_init_IZ   (mpfi_function_ptr, IZ_fun, NULL_fun);
 void mpfi_fun_init_IQ   (mpfi_function_ptr, IQ_fun, NULL_fun);
 void mpfi_fun_init_IR   (mpfi_function_ptr, IR_fun, NULL_fun);
@@ -262,13 +286,17 @@ void read_sign          (FILE*, int*);
 void read_exactness     (FILE*, int*);
 void read_ui            (FILE*, unsigned long*);
 void read_si            (FILE*, long*);
+void read_uj            (FILE*, uintmax_t*);
+void read_sj            (FILE*, intmax_t*);
 int  read_double        (FILE*, double*);
+int  read_float         (FILE*, float*);
+int  read_long_double   (FILE*, long double*);
 void read_mpz           (FILE*, mpz_ptr);
 void read_mpq           (FILE*, mpq_ptr);
 void read_mpfr          (FILE*, mpfr_ptr);
 void read_mpfi          (FILE*, mpfi_ptr);
 
-void check_with_different_prec (mpfi_function_ptr, mp_prec_t);
+void check_with_different_prec (mpfi_function_ptr, mpfr_prec_t);
 
 #ifdef __cplusplus
 }
