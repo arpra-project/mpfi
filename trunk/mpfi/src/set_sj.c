@@ -50,6 +50,31 @@ int inexact_left, inexact_right, inexact=0;
   return inexact;
 }
 
+
+/* Combined initialization and assignment      */
+
+int
+mpfi_init_set_sj (mpfi_ptr a, const intmax_t b)
+{
+  int inexact_left, inexact_right, inexact = 0;
+
+  inexact_left = mpfr_init_set_sj (&(a->left), b, MPFI_RNDD);
+  inexact_right = mpfr_init_set_sj (&(a->right), b, MPFI_RNDU);
+
+  if (b == 0) {
+    /* fix signed zero so as to return [+0, -0] */
+    mpfr_setsign (&(a->left), &(a->left), 0, MPFI_RNDU);
+    mpfr_setsign (&(a->right), &(a->right), 1, MPFI_RNDD);
+  }
+
+  if (inexact_left)
+    inexact += 1;
+  if (inexact_right)
+    inexact += 2;
+
+  return inexact;
+}
+
 int
 mpfi_set_sj_2exp (mpfi_t x, intmax_t b, intmax_t e)
 {

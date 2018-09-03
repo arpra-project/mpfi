@@ -759,6 +759,30 @@ center or the width, also called diameter, of an interval.
      state initialization functions (*note (gmp.info)Random State
      Initialization::).
 
+ -- Function: void mpfi_nrandom (mpfr_t rop, mpfi_t op, gmp_randstate_t
+          state)
+     Sets ROP to a floating-point number picked up at random in OP,
+     according to a normal distribution.
+
+     The argument STATE should be initialized as for 'mpfi_urandom'.
+
+     Caveat: the normal distribution on the set of floating-point
+     numbers is different from the normal distribution on the set of
+     real numbers.  No guarantee is given on the quality of the
+     distribution.
+
+ -- Function: void mpfi_erandom (mpfr_t rop, mpfi_t op, gmp_randstate_t
+          state)
+     Sets ROP to a floating-point number picked up at random in OP,
+     according to an exponential distribution.
+
+     The argument STATE should be initialized as for 'mpfi_urandom'.
+
+     Caveat: the exponential distribution on the set of floating-point
+     numbers is different from the exponential distribution on the set
+     of real numbers.  No guarantee is given on the quality of the
+     distribution.
+
 
 File: mpfi.info,  Node: Converting Intervals,  Next: Interval Arithmetic,  Prev: Floating-point Quantities,  Up: Interval Functions
 
@@ -1448,6 +1472,8 @@ Function and Type Index
 * mpfi_div_z:                            Interval Arithmetic. (line  66)
 * mpfi_d_div:                            Interval Arithmetic. (line  59)
 * mpfi_d_sub:                            Interval Arithmetic. (line  19)
+* mpfi_erandom:                          Floating-point Quantities.
+                                                              (line  77)
 * MPFI_ERROR:                            Error Handling.      (line   6)
 * mpfi_exp:                              Special Functions.   (line  15)
 * mpfi_exp2:                             Special Functions.   (line  20)
@@ -1553,6 +1579,8 @@ Function and Type Index
 * mpfi_mul_z:                            Interval Arithmetic. (line  40)
 * mpfi_nan_p:                            Interval Comparison. (line  54)
 * mpfi_neg:                              Interval Arithmetic. (line  75)
+* mpfi_nrandom:                          Floating-point Quantities.
+                                                              (line  65)
 * mpfi_out_str:                          I/O of Intervals.    (line  20)
 * mpfi_print_binary:                     I/O of Intervals.    (line  63)
 * mpfi_put:                              Operating on the Endpoints.
@@ -1638,18 +1666,18 @@ Node: Initializing Intervals20737
 Node: Assigning Intervals24770
 Node: Simultaneous Interval Init & Assign26988
 Node: Floating-point Quantities28254
-Node: Converting Intervals31324
-Node: Interval Arithmetic31799
-Node: Special Functions38356
-Node: Interval Comparison43180
-Node: I/O of Intervals46011
-Node: Operating on the Endpoints49373
-Node: Set Operations51847
-Node: Miscellaneous Interval Functions53758
-Node: Error Handling54993
-Node: Contributors55601
-Node: References55956
-Node: Concept Index57404
-Node: Function Index60104
+Node: Converting Intervals32316
+Node: Interval Arithmetic32791
+Node: Special Functions39348
+Node: Interval Comparison44172
+Node: I/O of Intervals47003
+Node: Operating on the Endpoints50365
+Node: Set Operations52839
+Node: Miscellaneous Interval Functions54750
+Node: Error Handling55985
+Node: Contributors56593
+Node: References56948
+Node: Concept Index58396
+Node: Function Index61096
 
 End Tag Table

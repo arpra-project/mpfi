@@ -200,6 +200,9 @@ int     mpfi_cbrt       (mpfi_ptr, mpfi_srcptr);
 /* every element of the second interval */
 int     mpfi_abs        (mpfi_ptr, mpfi_srcptr);
 
+/* extended division: returns 2 intervals if the denominator contains 0 */
+int	mpfi_div_ext	(mpfi_ptr, mpfi_ptr, mpfi_srcptr, mpfi_srcptr);
+
 /* various operations */
 int     mpfi_mul_2exp   (mpfi_ptr, mpfi_srcptr, unsigned long);
 int     mpfi_mul_2ui    (mpfi_ptr, mpfi_srcptr, unsigned long);

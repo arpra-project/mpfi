@@ -959,6 +959,24 @@ random state initialization functions
 @end ifnotinfo
 @end deftypefun
 
+@deftypefun void mpfi_nrandom (mpfr_t rop, mpfi_t op, gmp_randstate_t state)
+Sets @var{rop} to a floating-point number picked up at random in
+@var{op}, according to a normal distribution.
+
+The argument @var{state} should be initialized as for @code{mpfi_urandom}.
+
+Caveat: the normal distribution on the set of floating-point numbers is different from the normal distribution on the set of real numbers. No guarantee is given on the quality of the distribution.
+@end deftypefun
+
+@deftypefun void mpfi_erandom (mpfr_t rop, mpfi_t op, gmp_randstate_t state)
+Sets @var{rop} to a floating-point number picked up at random in
+@var{op}, according to an exponential distribution.
+
+The argument @var{state} should be initialized as for @code{mpfi_urandom}.
+
+Caveat: the exponential distribution on the set of floating-point numbers is different from the exponential distribution on the set of real numbers. No guarantee is given on the quality of the distribution.
+@end deftypefun
+
 
 @node Converting Intervals, Interval Arithmetic, Floating-point Quantities, Interval Functions
 @comment  node-name,  next,  previous,  up

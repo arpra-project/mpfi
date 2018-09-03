@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src
 
 check_LTLIBRARIES = libmpfi-tests.la
 libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
-    type_i.c type_ii.c type_iii.c type_iu.c type_is.c		\
+    type_i.c type_ii.c type_iii.c type_iiii.c type_iu.c type_is.c		\
     type_id.c type_if.c type_il.c type_iz.c type_iq.c type_ir.c type_iiu.c		\
     type_iis.c type_iid.c type_iiz.c type_iiq.c type_iir.c	\
     type_iui.c type_isi.c type_idi.c type_izi.c type_iqi.c	\
@@ -15,7 +15,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 #    tcmp_fr tcmp_q tcmp_si tcmp_ui tcmp_z tconst_catalan	\
 #    tconst_euler tconst_log2 tconst_pi tcos tcosh tcot tcoth	\
 #    tcsc tcsch td_div td_sub tdiam tdiam_abs tdiam_rel tdiv	\
-#    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_fr tdiv_q		\
+#    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_ext tdiv_fr tdiv_q		\
 #    tdiv_si tdiv_ui tdiv_z terror texp texp2 texpm1 tfr_div	\
 #    tfr_sub tget_d tget_endpoints tget_fr thas_zero thypot	\
 #    tincrease tinf_p tinit tinits tinit_set tintersect tinterv_d	\
@@ -40,7 +40,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tcmp_fr tcmp_q tcmp_si tcmp_ui tcmp_z tconst_catalan	\
     tconst_euler tconst_log2 tconst_pi tcos tcosh tcot tcoth	\
     tcsc tcsch td_div td_sub tdiam tdiam_abs tdiam_rel tdiv	\
-    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_fr tdiv_q		\
+    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_ext tdiv_fr tdiv_q	\
     tdiv_si tdiv_ui tdiv_z terror texp texp2 texpm1 tfr_div	\
     tfr_sub tget_d tget_endpoints tget_fr thas_zero thypot	\
     tincrease tinf_p tinit tinits tinit_set tintersect tinterv_d	\
@@ -67,7 +67,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
 #    const_pi.dat cos.dat cosh.dat cot.dat coth.dat csc.dat	\
 #    csch.dat d_div.dat d_sub.dat diam.dat diam_abs.dat		\
 #    diam_rel.dat div.dat div_2si.dat div_2ui.dat div_d.dat	\
-#    div_fr.dat div_q.dat div_si.dat div_ui.dat div_z.dat	\
+#    div_ext.dat div_fr.dat div_q.dat div_si.dat div_ui.dat div_z.dat	\
 #    exp.dat exp2.dat expm1.dat fr_div.dat fr_sub.dat		\
 #    has_zero.dat hypot.dat increase.dat inf_p.dat		\
 #    inp_str.dat intersect.dat inv.dat is_neg.dat		\
@@ -93,7 +93,7 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     const_pi.dat cos.dat cosh.dat cot.dat coth.dat csc.dat	\
     csch.dat d_div.dat d_sub.dat diam.dat diam_abs.dat		\
     diam_rel.dat div.dat div_2si.dat div_2ui.dat div_d.dat	\
-    div_fr.dat div_q.dat div_si.dat div_ui.dat div_z.dat	\
+    div_ext.dat div_fr.dat div_q.dat div_si.dat div_ui.dat div_z.dat	\
     exp.dat exp2.dat expm1.dat fr_div.dat fr_sub.dat		\
     has_zero.dat hypot.dat increase.dat inf_p.dat		\
     inp_str.dat intersect.dat inv.dat is_neg.dat		\
