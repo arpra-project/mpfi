@@ -1088,6 +1088,18 @@ Sets @var{rop} to @var{op1}/@var{op2}.
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
+@deftypefun int mpfi_div_ext (mpfi_t @var{rop1}, mpfi_t @var{rop2}, mpfi_t @var{op1}, mpfi_t @var{op2})
+Returns 0, 1 or 2 depending on the number of intervals corresponding to the result of the extended division of @var{op1} by @var{op2}:
+@ifinfo
+if @var{op2} contains 0, then it returns 2 and both @var{rop1} and @var{rop2} are set: @var{rop1} and @var{rop2} correspond to the results of the division of @var{op1} by [inf(@var{op2}), 0] and [0, sup(@var{op2}], in ascending order; otherwise the usual division is performed and 0 or 1 result is set, the other one(s) being NaN.
+@end ifinfo
+@iftex
+@tex
+if @var{op2} contains $0$, then it returns $2$ and both @var{rop1} and @var{rop2} are set: @var{rop1} and @var{rop2} correspond to the results of the division of @var{op1} by $[\mathrm{inf}(@var{op2}), 0]$ and $[0, \mathrm{sup}(@var{op2}]$, in ascending order; otherwise the usual division is performed and $0$ or $1$ result is set, the other one(s) being NaN.
+@end tex
+@end iftex
+@end deftypefun
+
 @deftypefun int mpfi_neg (mpfi_t @var{rop}, mpfi_t @var{op})
 Sets @var{rop} to @minus{}@var{op}.
 Returns an indication of whether none, one or both endpoints are exact.
@@ -1135,6 +1147,20 @@ Sets @var{rop} to $\sqrt{@var{op}}$.
 @end tex
 @end iftex
 Sets @var{rop} to NaN if @var{op} is negative.
+Returns an indication of whether none, one or both endpoints are exact.
+@end deftypefun
+
+@deftypefun int mpfi_rec_sqrt (mpfi_t @var{rop}, mpfi_t @var{op})
+@ifinfo
+Sets @var{rop} to the inverse of square root of @var{op}.
+Sets @var{rop} to NaN if @var{op} is negative.
+@end ifinfo
+@iftex
+@tex
+Sets @var{rop} to $1/\sqrt{@var{op}}$.
+Sets @var{rop} to NaN if @var{op} is negative.
+@end tex
+@end iftex
 Returns an indication of whether none, one or both endpoints are exact.
 @end deftypefun
 
