@@ -19,7 +19,7 @@ lib_LTLIBRARIES = libmpfi.la
 #   mul_d.c mul_fr.c mul_q.c mul_si.c mul_ui.c mul_z.c neg.c	\
 #   nrandom.c out_str.c predicates.c print_binary.c put.c 	\
 #   put_d.c put_fr.c put_q.c put_si.c put_ui.c put_z.c q_div.c	\
-#   q_sub.c quadrant.c revert_if_needed.c round_prec.c sec.c	\
+#   q_sub.c quadrant.c rec_sqrt.c revert_if_needed.c round_prec.c sec.c	\
 #   sech.c set.c set_d.c set_flt.c set_fr.c set_ld.c set_prec.c set_q.c	\
 #   set_si.c set_sj.c set_str.c set_ui.c set_uj.c set_z.c	\
 #   si_div.c si_sub.c sign.c sin.c				\
@@ -44,7 +44,7 @@ libmpfi_la_SOURCES = mpfi-impl.h abs.c acos.c acosh.c add.c	\
    mul_d.c mul_fr.c mul_q.c mul_si.c mul_ui.c mul_z.c neg.c	\
    nrandom.c out_str.c predicates.c print_binary.c put.c 	\
    put_d.c put_fr.c put_q.c put_si.c put_ui.c put_z.c q_div.c	\
-   q_sub.c quadrant.c revert_if_needed.c round_prec.c sec.c	\
+   q_sub.c quadrant.c rec_sqrt.c revert_if_needed.c round_prec.c sec.c	\
    sech.c set.c set_d.c set_flt.c set_fr.c set_ld.c set_prec.c set_q.c	\
    set_si.c set_str.c set_ui.c set_z.c				\
    si_div.c si_sub.c sign.c sin.c				\
