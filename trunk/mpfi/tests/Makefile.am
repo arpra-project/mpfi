@@ -27,7 +27,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 #    tis_zero tlog tlog10 tlog1p tlog2 tmag tmid tmig tmul	\
 #    tmul_2exp tmul_2si tmul_2ui tmul_d tmul_fr tmul_q		\
 #    tmul_si tmul_ui tmul_z tnan_p tneg tput_d tput_fr tput_q	\
-#    tput_si tput_ui tput_z tq_div tq_sub tround_prec tsec	\
+#    tput_si tput_ui tput_z tq_div tq_sub trec_sqrt tround_prec tsec	\
 #    tsech tset tset_d tset_flt tset_fr tset_ld tset_q tset_si tset_sj tset_str	\
 #    tset_ui tset_uj tset_z tsi_div tsi_sub tsin tsinh tsqr tsqrt\
 #    tsub tsub_d tsub_fr tsub_q tsub_si tsub_ui tsub_z tswap	\
@@ -52,9 +52,10 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tis_zero tlog tlog10 tlog1p tlog2 tmag tmid tmig tmul	\
     tmul_2exp tmul_2si tmul_2ui tmul_d tmul_fr tmul_q		\
     tmul_si tmul_ui tmul_z tnan_p tneg tput_d tput_fr tput_q	\
-    tput_si tput_ui tput_z tq_div tq_sub tround_prec tsec	\
-    tsech tset tset_d tset_flt tset_fr tset_ld tset_q tset_si tset_str		\
-    tset_ui tset_z tsi_div tsi_sub tsin tsinh tsqr tsqrt	\
+    tput_si tput_ui tput_z tq_div tq_sub trec_sqrt tround_prec	\
+    tsec tsech tset tset_d tset_flt tset_fr tset_ld tset_q	\
+    tset_si tset_str tset_ui tset_z tsi_div tsi_sub tsin tsinh	\
+    tsqr tsqrt							\
     tsub tsub_d tsub_fr tsub_q tsub_si tsub_ui tsub_z tswap	\
     ttan ttanh tui_div tui_sub tunion tz_div tz_sub		\
     tget_version
@@ -77,7 +78,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
 #    mul.dat mul_2si.dat mul_2ui.dat mul_d.dat mul_fr.dat	\
 #    mul_q.dat mul_si.dat mul_ui.dat mul_z.dat nan_p.dat		\
 #    neg.dat put_d.dat put_fr.dat put_q.dat put_si.dat		\
-#    put_ui.dat put_z.dat q_div.dat q_sub.dat sec.dat		\
+#    put_ui.dat put_z.dat q_div.dat q_sub.dat rec_sqrt.dat sec.dat		\
 #    sech.dat set_d.dat set_flt.dat set_fr.dat set_ld.dat set_q.dat set_si.dat set_sj.dat\
 #    set_ui.dat set_uj.dat set_z.dat si_div.dat si_sub.dat sin.dat\
 #    sinh.dat sqr.dat sqrt.dat sub.dat sub_d.dat sub_fr.dat	\
@@ -103,8 +104,9 @@ EXTRA_DIST = abs.dat acos.dat acosh.dat add.dat add_d.dat	\
     mul.dat mul_2si.dat mul_2ui.dat mul_d.dat mul_fr.dat	\
     mul_q.dat mul_si.dat mul_ui.dat mul_z.dat nan_p.dat		\
     neg.dat put_d.dat put_fr.dat put_q.dat put_si.dat		\
-    put_ui.dat put_z.dat q_div.dat q_sub.dat sec.dat		\
-    sech.dat set_d.dat set_flt.dat set_fr.dat set_ld.dat set_q.dat set_si.dat 		\
+    put_ui.dat put_z.dat q_div.dat q_sub.dat rec_sqrt.dat	\
+    sec.dat sech.dat set_d.dat set_flt.dat set_fr.dat set_ld.dat	\
+    set_q.dat set_si.dat			 		\
     set_ui.dat set_z.dat si_div.dat si_sub.dat sin.dat		\
     sinh.dat sqr.dat sqrt.dat sub.dat sub_d.dat sub_fr.dat	\
     sub_q.dat sub_si.dat sub_ui.dat sub_z.dat tan.dat		\
