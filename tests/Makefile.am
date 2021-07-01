@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src
 
 check_LTLIBRARIES = libmpfi-tests.la
 libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
-    type_i.c type_ii.c type_iii.c type_iiii.c type_iu.c type_is.c		\
+    type_i.c type_ii.c type_iii.c type_iu.c type_is.c		\
     type_id.c type_if.c type_il.c type_iz.c type_iq.c type_ir.c type_iiu.c		\
     type_iis.c type_iid.c type_iiz.c type_iiq.c type_iir.c	\
     type_iui.c type_isi.c type_idi.c type_izi.c type_iqi.c	\
