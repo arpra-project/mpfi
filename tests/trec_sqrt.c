@@ -31,7 +31,7 @@ main (int argc, char **argv)
 {
   struct mpfi_function_t i_rec_sqrt;
 
-  mpfi_fun_init_I (&i_rec_sqrt, mpfr_rec_sqrt);
+  mpfi_fun_init_II (&i_rec_sqrt, mpfi_rec_sqrt, mpfr_rec_sqrt);
   test_start ();
 
   check_data (&i_rec_sqrt, "rec_sqrt.dat");
