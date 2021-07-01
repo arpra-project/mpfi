@@ -55,7 +55,7 @@ typedef int (*IZ_fun)  (mpfi_t, mpz_srcptr);
 typedef int (*IQ_fun)  (mpfi_t, mpq_srcptr);
 typedef int (*IR_fun)  (mpfi_t, mpfr_srcptr);
 typedef int (*III_fun) (mpfi_t, mpfi_srcptr, mpfi_srcptr);
-typedef int (*IIII_fun)(mpfi_t, mpfi_t, mpfi_srcptr, mpfi_srcptr);
+//typedef int (*IIII_fun)(mpfi_t, mpfi_t, mpfi_srcptr, mpfi_srcptr);
 typedef int (*IIU_fun) (mpfi_t, mpfi_srcptr, unsigned long);
 typedef int (*IIS_fun) (mpfi_t, mpfi_srcptr, long);
 typedef int (*IID_fun) (mpfi_t, mpfi_srcptr, double);
@@ -100,7 +100,7 @@ typedef union
   IQ_fun  IQ;      /* output: mpfi_t, input: mpq_t */
   IR_fun  IR;      /* output: mpfi_t, input: mpfr_t */
   III_fun III;     /* output: mpfi_t, inputs: mpfi_t, mpfi_t */
-  IIII_fun IIII;   /* output: mpfi_t, mpfi_t, inputs: mpfi_t, mpfi_t */
+//  IIII_fun IIII;   /* output: mpfi_t, mpfi_t, inputs: mpfi_t, mpfi_t */
   IIU_fun IIU;     /* output: mpfi_t, inputs: mpfi_t, unsigned long */
   IIS_fun IIS;     /* output: mpfi_t, inputs: mpfi_t, signed long */
   IID_fun IID;     /* output: mpfi_t, inputs: mpfi_t, double */
@@ -121,7 +121,7 @@ typedef union
   R_fun    I;      /* output: mpfr_t, no input */
   RR_fun   II;     /* output: mpfr_t, input: mpfr_t */
   RRR_fun  III;    /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
-  RRR_fun  IIII;   /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
+//  RRR_fun  IIII;   /* output: mpfr_t, inputs: mpfr_t, mpfr_t */
   NULL_fun IS;     /* dummy, no corresponding mpfr function */
   NULL_fun IU;     /* dummy, no corresponding mpfr function */
 //  NULL_fun JS;     /* dummy, no corresponding mpfr function */
@@ -162,7 +162,7 @@ typedef enum
     IQ,    /* one input: mpq_t */
     IR,    /* one input: mpfr_t */
     III,   /* two inputs: intervals */
-    IIII,  /* two inputs: intervals */
+//    IIII,  /* two inputs: intervals */
     IIU,   /* two inputs: interval, unsigned long */
     IIS,   /* two inputs: interval, signed long */
     IID,   /* two inputs: interval, double */
@@ -250,7 +250,7 @@ void mpfi_fun_init_IZ   (mpfi_function_ptr, IZ_fun, NULL_fun);
 void mpfi_fun_init_IQ   (mpfi_function_ptr, IQ_fun, NULL_fun);
 void mpfi_fun_init_IR   (mpfi_function_ptr, IR_fun, NULL_fun);
 void mpfi_fun_init_III  (mpfi_function_ptr, III_fun, RRR_fun);
-void mpfi_fun_init_IIII (mpfi_function_ptr, IIII_fun, RRR_fun);
+//void mpfi_fun_init_IIII (mpfi_function_ptr, IIII_fun, RRR_fun);
 void mpfi_fun_init_IIU  (mpfi_function_ptr, IIU_fun, RRU_fun);
 void mpfi_fun_init_IIS  (mpfi_function_ptr, IIS_fun, RRS_fun);
 void mpfi_fun_init_IID  (mpfi_function_ptr, IID_fun, RRD_fun);

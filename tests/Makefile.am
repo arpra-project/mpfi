@@ -15,7 +15,7 @@ libmpfi_tests_la_SOURCES = mpfi-tests.h read_data.c random.c	\
 #    tcmp_fr tcmp_q tcmp_si tcmp_ui tcmp_z tconst_catalan	\
 #    tconst_euler tconst_log2 tconst_pi tcos tcosh tcot tcoth	\
 #    tcsc tcsch td_div td_sub tdiam tdiam_abs tdiam_rel tdiv	\
-#    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_ext tdiv_fr tdiv_q		\
+#    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_fr tdiv_q		\
 #    tdiv_si tdiv_ui tdiv_z terror texp texp2 texpm1 tfr_div	\
 #    tfr_sub tget_d tget_endpoints tget_fr thas_zero thypot	\
 #    tincrease tinf_p tinit tinits tinit_set tintersect tinterv_d	\
@@ -40,7 +40,7 @@ check_PROGRAMS = tabs tacos tacosh tadd tadd_d tadd_fr		\
     tcmp_fr tcmp_q tcmp_si tcmp_ui tcmp_z tconst_catalan	\
     tconst_euler tconst_log2 tconst_pi tcos tcosh tcot tcoth	\
     tcsc tcsch td_div td_sub tdiam tdiam_abs tdiam_rel tdiv	\
-    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_ext tdiv_fr tdiv_q	\
+    tdiv_2exp tdiv_2si tdiv_2ui tdiv_d tdiv_fr tdiv_q	\
     tdiv_si tdiv_ui tdiv_z terror texp texp2 texpm1 tfr_div	\
     tfr_sub tget_d tget_endpoints tget_fr thas_zero thypot	\
     tincrease tinf_p tinit tinits tinit_set tintersect tinterv_d	\
