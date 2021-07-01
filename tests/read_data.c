@@ -225,46 +225,46 @@ read_ui (FILE *f, unsigned long *i)
   mpfr_clear (x);
 }
 
-void
-read_uj (FILE *f, uintmax_t *i)
-{
-  mpfr_t x;
+/* void */
+/* read_uj (FILE *f, uintmax_t *i) */
+/* { */
+/*   mpfr_t x; */
 
-  /* unknown constant...
-  mpfr_init2 (x, INTMAX_WIDTH);
-  */
-  mpfr_init2 (x, sizeof(uintmax_t));
+/*   /\* unknown constant... */
+/*   mpfr_init2 (x, INTMAX_WIDTH); */
+/*   *\/ */
+/*   mpfr_init2 (x, sizeof(uintmax_t)); */
 
-  if (nextchar == EOF) {
-    printf ("Error: Unexpected EOF when reading integer "
-            "in file '%s' line %lu\n",
-            pathname, line_number);
-    exit (1);
-  }
-  ungetc (nextchar, f);
-  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
-    printf ("Error: Impossible to read integer in file '%s' line %lu\n",
-            pathname, line_number);
-    exit (1);
-  }
+/*   if (nextchar == EOF) { */
+/*     printf ("Error: Unexpected EOF when reading integer " */
+/*             "in file '%s' line %lu\n", */
+/*             pathname, line_number); */
+/*     exit (1); */
+/*   } */
+/*   ungetc (nextchar, f); */
+/*   if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) { */
+/*     printf ("Error: Impossible to read integer in file '%s' line %lu\n", */
+/*             pathname, line_number); */
+/*     exit (1); */
+/*   } */
 
 
-  if (mpfr_fits_uintmax_p (x, MPFI_RNDD))
-    *i = mpfr_get_uj (x, MPFI_RNDD);
-  else {
-    printf ("Error: the number ");
-    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
-    printf (" read in file '%s' line %lu does not fit "
-            "in an unsigned long int\n",
-            pathname, line_number);
-    exit (1);
-  }
+/*   if (mpfr_fits_uintmax_p (x, MPFI_RNDD)) */
+/*     *i = mpfr_get_uj (x, MPFI_RNDD); */
+/*   else { */
+/*     printf ("Error: the number "); */
+/*     mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD); */
+/*     printf (" read in file '%s' line %lu does not fit " */
+/*             "in an unsigned long int\n", */
+/*             pathname, line_number); */
+/*     exit (1); */
+/*   } */
 
-  nextchar = getc (f);
-  skip_whitespace_comments (f);
+/*   nextchar = getc (f); */
+/*   skip_whitespace_comments (f); */
 
-  mpfr_clear (x);
-}
+/*   mpfr_clear (x); */
+/* } */
 
 void
 read_si (FILE *f, long *i)
@@ -302,44 +302,44 @@ read_si (FILE *f, long *i)
   mpfr_clear (x);
 }
 
-void
-read_sj (FILE *f, intmax_t *i)
-{
-  mpfr_t x;
+/* void */
+/* read_sj (FILE *f, intmax_t *i) */
+/* { */
+/*   mpfr_t x; */
 
-  /* unknown constant...
-  mpfr_init2 (x, INTMAX_WIDTH);
-  */
-  mpfr_init2 (x, sizeof(intmax_t));
+/*   /\* unknown constant... */
+/*   mpfr_init2 (x, INTMAX_WIDTH); */
+/*   *\/ */
+/*   mpfr_init2 (x, sizeof(intmax_t)); */
 
-  if (nextchar == EOF) {
-    printf ("Error: Unexpected EOF when reading integer "
-            "in file '%s' line %lu\n",
-            pathname, line_number);
-    exit (1);
-  }
-  ungetc (nextchar, f);
-  if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) {
-    printf ("Error: Impossible to read integer in file '%s' line %lu\n",
-            pathname, line_number);
-    exit (1);
-  }
+/*   if (nextchar == EOF) { */
+/*     printf ("Error: Unexpected EOF when reading integer " */
+/*             "in file '%s' line %lu\n", */
+/*             pathname, line_number); */
+/*     exit (1); */
+/*   } */
+/*   ungetc (nextchar, f); */
+/*   if (mpfr_inp_str (x, f, 0, MPFI_RNDD) == 0) { */
+/*     printf ("Error: Impossible to read integer in file '%s' line %lu\n", */
+/*             pathname, line_number); */
+/*     exit (1); */
+/*   } */
 
-  if (mpfr_fits_intmax_p (x, MPFI_RNDD))
-    *i = mpfr_get_sj (x, MPFI_RNDD);
-  else {
-    printf ("Error: the number ");
-    mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD);
-    printf (" read in file '%s' line %lu does not fit in a huge int\n",
-            pathname, line_number);
-    exit (1);
-  }
+/*   if (mpfr_fits_intmax_p (x, MPFI_RNDD)) */
+/*     *i = mpfr_get_sj (x, MPFI_RNDD); */
+/*   else { */
+/*     printf ("Error: the number "); */
+/*     mpfr_out_str (stdout, 10, 0, x, MPFI_RNDD); */
+/*     printf (" read in file '%s' line %lu does not fit in a huge int\n", */
+/*             pathname, line_number); */
+/*     exit (1); */
+/*   } */
 
-  nextchar = getc (f);
-  skip_whitespace_comments (f);
+/*   nextchar = getc (f); */
+/*   skip_whitespace_comments (f); */
 
-  mpfr_clear (x);
-}
+/*   mpfr_clear (x); */
+/* } */
 
 /* WARNING: when reading a double value, all roundings are towards
    minus infinity and the precision depends on the host system. */
